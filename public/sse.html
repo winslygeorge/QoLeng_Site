@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SSE Updates</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+      padding: 2rem;
+    }
+    h1 {
+      color: #333;
+    }
+    #updates {
+      background: white;
+      border-radius: 8px;
+      padding: 1rem;
+      max-width: 600px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      overflow-y: auto;
+      height: 300px;
+    }
+    .update {
+      border-bottom: 1px solid #eee;
+      padding: 0.5rem 0;
+    }
+    .timestamp {
+      font-size: 0.8rem;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <h1>Live SSE Updates</h1>
+  <div id="updates"></div>
+
+  <script>
+    const updatesDiv = document.getElementById('updates');
+
+    // Connect to SSE endpoint
+    const evtSource = new EventSource('/sse/updates');
+
+    evtSource.onmessage = function(event) {
+      const msg = event.data;
+      const time = new Date().toLocaleTimeString();
+
+      const entry = document.createElement('div');
+      entry.classList.add('update');
+      entry.innerHTML = `
+        <div><strong>Message:</strong> ${msg}</div>
+        <div class="timestamp">${time}</div>
+      `;
+      updatesDiv.prepend(entry);
+    };
+
+    evtSource.onerror = function(err) {
+      console.error("SSE connection error:", err);
+      evtSource.close();
+      const error = document.createElement('div');
+      error.classList.add('update');
+      error.style.color = 'red';
+      error.textContent = '⚠️ Connection lost. Please refresh.';
+      updatesDiv.prepend(error);
+    };
+  </script>
+</body>
+</html>

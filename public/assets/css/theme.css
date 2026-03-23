@@ -1,0 +1,305 @@
+/* qoleng-theme.css */
+:root {
+    /* Dark Theme Colors */
+    --quantum-black: #0A0A0F;
+    --laser-blue: #0066FF;
+    --neural-grey: #E0E5EC;
+    --build-green: #00CC88;
+    --query-purple: #8A2BE2;
+    --warning-amber: #FFB300;
+    --dark-surface: #151520;
+    --dark-border: #2A2A3A;
+    --dark-text-secondary: #A0A5B5;
+
+    /* Light Theme Colors */
+    --quantum-white: #FBFBFF;
+    --neural-charcoal: #2A2A3A;
+    --light-surface: #FFFFFF;
+    --light-border: #E0E5EC;
+    --light-text-secondary: #5A6578;
+
+    /* Theme-Aware Variables (Dark Default) */
+    --bg-primary: var(--quantum-black);
+    --bg-surface: var(--dark-surface);
+    --text-primary: var(--neural-grey);
+    --text-secondary: var(--dark-text-secondary);
+    --border-color: var(--dark-border);
+}
+
+.light-theme {
+    --bg-primary: var(--quantum-white);
+    --bg-surface: var(--light-surface);
+    --text-primary: var(--neural-charcoal);
+    --text-secondary: var(--light-text-secondary);
+    --border-color: var(--light-border);
+}
+
+/* Utility Classes */
+.q-bg-primary {
+    background-color: var(--bg-primary);
+}
+
+.q-bg-surface {
+    background-color: var(--bg-surface);
+}
+
+.q-bg-laser-blue {
+    background-color: var(--laser-blue);
+}
+
+.q-bg-build-green {
+    background-color: var(--build-green);
+}
+
+.q-bg-query-purple {
+    background-color: var(--query-purple);
+}
+
+.q-bg-warning-amber {
+    background-color: var(--warning-amber);
+}
+
+.q-text-primary {
+    color: var(--text-primary);
+}
+
+.q-text-secondary {
+    color: var(--text-secondary);
+}
+
+.q-text-laser-blue {
+    color: var(--laser-blue);
+}
+
+.q-text-build-green {
+    color: var(--build-green);
+}
+
+.q-text-query-purple {
+    color: var(--query-purple);
+}
+
+.q-text-warning-amber {
+    color: var(--warning-amber);
+}
+
+.q-border {
+    border-color: var(--border-color);
+}
+
+.q-border-laser-blue {
+    border-color: var(--laser-blue);
+}
+
+.q-border-build-green {
+    border-color: var(--build-green);
+}
+
+.q-border-query-purple {
+    border-color: var(--query-purple);
+}
+
+.q-border-warning-amber {
+    border-color: var(--warning-amber);
+}
+
+/* Component Classes */
+.q-card {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.q-alert {
+    padding: 1rem 1.25rem;
+    border-radius: 6px;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-left: 4px solid;
+}
+
+.q-alert-success {
+    background-color: rgba(0, 204, 136, 0.1);
+    border-left-color: var(--build-green);
+    color: var(--build-green);
+}
+
+.q-alert-info {
+    background-color: rgba(0, 102, 255, 0.1);
+    border-left-color: var(--laser-blue);
+    color: var(--laser-blue);
+}
+
+.q-alert-warning {
+    background-color: rgba(255, 179, 0, 0.1);
+    border-left-color: var(--warning-amber);
+    color: var(--warning-amber);
+}
+
+.q-alert-data {
+    background-color: rgba(138, 43, 226, 0.1);
+    border-left-color: var(--query-purple);
+    color: var(--query-purple);
+}
+
+.q-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.875rem 1.75rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    font-family: inherit;
+}
+
+.q-btn-primary {
+    background-color: var(--laser-blue);
+    color: white;
+}
+
+.q-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 102, 255, 0.3);
+}
+
+.q-btn-secondary {
+    background-color: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.q-btn-secondary:hover {
+    background-color: var(--border-color);
+    transform: translateY(-2px);
+}
+
+.q-btn-success {
+    background-color: var(--build-green);
+    color: white;
+}
+
+.q-btn-data {
+    background-color: var(--query-purple);
+    color: white;
+}
+
+.q-btn-warning {
+    background-color: var(--warning-amber);
+    color: white;
+}
+
+/* Status Indicators */
+.q-status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.q-status-building {
+    background-color: var(--laser-blue);
+}
+
+.q-status-ready {
+    background-color: var(--build-green);
+}
+
+.q-status-query {
+    background-color: var(--query-purple);
+}
+
+.q-status-warning {
+    background-color: var(--warning-amber);
+}
+
+/* Code Syntax Classes */
+.q-code-keyword {
+    color: var(--laser-blue);
+}
+
+.q-code-string {
+    color: var(--build-green);
+}
+
+.q-code-type {
+    color: var(--query-purple);
+}
+
+.q-code-variable {
+    color: var(--neural-grey);
+}
+
+.light-theme .q-code-variable {
+    color: var(--neural-charcoal);
+}
+
+.q-code-comment {
+    color: #6A737D;
+}
+
+.light-theme .q-code-comment {
+    color: #9AA5B5;
+}
+
+/* Layout Utilities */
+.q-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+}
+
+.q-section {
+    padding: 5rem 0;
+}
+
+.q-section-alt {
+    background-color: var(--bg-surface);
+    padding: 5rem 0;
+}
+
+/* Typography */
+.q-heading-1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1.25rem;
+}
+
+.q-heading-2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 3rem;
+    text-align: center;
+    position: relative;
+}
+
+.q-heading-2::after {
+    content: '';
+    position: absolute;
+    bottom: -0.625rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 5rem;
+    height: 3px;
+    background: linear-gradient(90deg, var(--laser-blue), var(--build-green));
+    border-radius: 3px;
+}
+
+.q-body-large {
+    font-size: 1.3rem;
+    color: var(--text-secondary);
+}
+
+.q-tagline {
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    margin-bottom: 2.5rem;
+}

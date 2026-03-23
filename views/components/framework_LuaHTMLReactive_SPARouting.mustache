@@ -1,0 +1,1052 @@
+
+    <style>
+        /* Custom styles for code blocks and other elements */
+        .code-block {
+            background: #0A0A0F;
+            border-left: 4px solid #0066FF;
+        }
+        
+        .light-theme .code-block {
+            background: #F7F9FC;
+            border-left: 4px solid #0066FF;
+            color: #2A2A3A;
+        }
+        
+        .code-keyword {
+            color: #0066FF;
+        }
+        
+        .code-string {
+            color: #00CC88;
+        }
+        
+        .code-comment {
+            color: #6A737D;
+        }
+        
+        .light-theme .code-comment {
+            color: #9AA5B5;
+        }
+        
+        .code-variable {
+            color: #8A2BE2;
+        }
+        
+        .code-type {
+            color: #FFB300;
+        }
+        
+        /* Custom scrollbar for code blocks */
+        .code-block::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .code-block::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+        
+        .code-block::-webkit-scrollbar-thumb {
+            background: rgba(0, 102, 255, 0.5);
+            border-radius: 4px;
+        }
+        
+        .code-block::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 102, 255, 0.7);
+        }
+        
+        /* Additional custom styles */
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00CC88, #8A2BE2);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .data-source-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .function-signature {
+            background: #F0F4F8;
+            border-left: 4px solid #0066FF;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.5rem;
+        }
+        
+        .param-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        .param-table th, .param-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #E0E5EC;
+        }
+        
+        .param-table th {
+            background-color: #F7F9FC;
+            font-weight: 600;
+        }
+    </style>
+
+    <!-- Main Documentation Content -->
+    <main class="main-content-body max-w-6xl mx-auto px-6 py-8 light-theme">
+        <!-- Overview Section -->
+        <section id="overview" class="mb-16 animate-fadeIn">
+            <div class="bg-white rounded-xl shadow-lg p-8 border border-light-border">
+                <h1 class="text-4xl font-bold mb-6 text-neural-charcoal">Single Page Application (SPA) Management</h1>
+                <p class="text-xl text-light-text-secondary mb-8">
+                    Comprehensive guide to building Single Page Applications with Dawn Framework's Route Manager and Modal Manager.
+                    This documentation covers navigation, routing, dynamic modals, and state management for modern web applications.
+                </p>
+                
+                <div class="grid md:grid-cols-3 gap-6 mb-8">
+                    <div class="feature-card bg-blue-50 p-6 rounded-lg border border-blue-100">
+                        <div class="w-12 h-12 rounded-full bg-laser-blue flex items-center justify-center text-white mb-4">
+                            <i class="fas fa-route"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-laser-blue">Route Management</h3>
+                        <p class="text-light-text-secondary">Declarative routing with dynamic parameters and navigation</p>
+                    </div>
+                    
+                    <div class="feature-card bg-green-50 p-6 rounded-lg border border-green-100">
+                        <div class="w-12 h-12 rounded-full bg-build-green flex items-center justify-center text-white mb-4">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-build-green">Modal System</h3>
+                        <p class="text-light-text-secondary">Dynamic modal management with stacking and animations</p>
+                    </div>
+                    
+                    <div class="feature-card bg-purple-50 p-6 rounded-lg border border-purple-100">
+                        <div class="w-12 h-12 rounded-full bg-query-purple flex items-center justify-center text-white mb-4">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-query-purple">State Persistence</h3>
+                        <p class="text-light-text-secondary">Preserve component state across navigation and sessions</p>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold">Basic SPA Setup</h3>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Initialize Route Manager</span>
+<span class="code-keyword">local</span> RouteManager = <span class="code-keyword">require</span> <span class="code-string">"system.route_manager"</span>
+<span class="code-keyword">local</span> ModalManager = <span class="code-keyword">require</span> <span class="code-string">"system.modal_manager"</span>
+
+<span class="code-comment">-- Register your application routes</span>
+RouteManager.registerRoute(<span class="code-string">"home"</span>, <span class="code-keyword">require</span>(<span class="code-string">"pages.home"</span>), {
+    path = <span class="code-string">"/"</span>,
+    defaultRoute = true
+})
+
+RouteManager.registerRoute(<span class="code-string">"about"</span>, <span class="code-keyword">require</span>(<span class="code-string">"pages.about"</span>), {
+    path = <span class="code-string">"/about"</span>,
+    title = <span class="code-string">"About Us"</span>
+})
+
+<span class="code-comment">-- Register modal types</span>
+ModalManager.registerModalType(<span class="code-string">"promptModal"</span>, <span class="code-keyword">require</span>(<span class="code-string">"components.modal_prompt"</span>))
+
+<span class="code-comment">-- Load the managers</span>
+RouteManager:load()
+ModalManager:load()</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Route Manager Section -->
+        <section id="route-manager" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-laser-blue flex items-center justify-center text-white font-bold mr-4">1</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">Route Manager</h2>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Route Registration & Configuration</h3>
+                <p class="text-light-text-secondary mb-6">
+                    The Route Manager handles all navigation and routing logic, supporting static routes, dynamic parameters, 
+                    query strings, and animated transitions between views.
+                </p>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">registerRoute(name, component, options)</h4>
+                    <p class="text-light-text-secondary mb-3">Register a route with the routing system.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>name</td>
+                                <td>string</td>
+                                <td>Unique identifier for the route</td>
+                            </tr>
+                            <tr>
+                                <td>component</td>
+                                <td>FunctionalComponent</td>
+                                <td>The component to render for this route</td>
+                            </tr>
+                            <tr>
+                                <td>options</td>
+                                <td>table</td>
+                                <td>Configuration options for the route</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="mt-3">
+                        <p><strong>Options Properties:</strong></p>
+                        <ul class="list-disc pl-5 mt-2 text-light-text-secondary">
+                            <li><code>path</code> (string): URL path pattern</li>
+                            <li><code>title</code> (string): Page title for browser</li>
+                            <li><code>defaultRoute</code> (boolean): Set as default route</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Route Registration Examples</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Static route</span>
+RouteManager.registerRoute(<span class="code-string">"home"</span>, HomeComponent, {
+    path = <span class="code-string">"/"</span>,
+    defaultRoute = true
+})
+
+<span class="code-comment">-- Dynamic route with parameters</span>
+RouteManager.registerRoute(<span class="code-string">"userProfile"</span>, UserProfileComponent, {
+    path = <span class="code-string">"/user/:userId"</span>,
+    title = <span class="code-string">"User Profile"</span>
+})
+
+<span class="code-comment">-- Route with optional parameters</span>
+RouteManager.registerRoute(<span class="code-string">"products"</span>, ProductsComponent, {
+    path = <span class="code-string">"/products/:category?/:id?"</span>,
+    title = <span class="code-string">"Products"</span>
+})
+
+<span class="code-comment">-- Wildcard route</span>
+RouteManager.registerRoute(<span class="code-string">"catchAll"</span>, NotFoundComponent, {
+    path = <span class="code-string">"/*"</span>
+})</code></pre>
+                </div>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">navigateTo(ws_id, args)</h4>
+                    <p class="text-light-text-secondary mb-3">Navigate to a specific route with parameters and configuration.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ws_id</td>
+                                <td>string</td>
+                                <td>WebSocket connection ID</td>
+                            </tr>
+                            <tr>
+                                <td>args</td>
+                                <td>table</td>
+                                <td>Navigation arguments</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="mt-3">
+                        <p><strong>Args Properties:</strong></p>
+                        <ul class="list-disc pl-5 mt-2 text-light-text-secondary">
+                            <li><code>routeName</code> (string): Name of the route to navigate to</li>
+                            <li><code>params</code> (table): Route parameters and query parameters</li>
+                            <li><code>config</code> (table): Navigation configuration (animation, etc.)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Navigation Examples</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Simple navigation</span>
+RouteManager.methods.navigateTo(self, ws_id, {
+    routeName = <span class="code-string">"home"</span>
+})
+
+<span class="code-comment">-- Navigation with route parameters</span>
+RouteManager.methods.navigateTo(self, ws_id, {
+    routeName = <span class="code-string">"userProfile"</span>,
+    params = {
+        userId = <span class="code-string">"12345"</span>,
+        section = <span class="code-string">"settings"</span>
+    }
+})
+
+<span class="code-comment">-- Navigation with query parameters</span>
+RouteManager.methods.navigateTo(self, ws_id, {
+    routeName = <span class="code-string">"products"</span>,
+    params = {
+        category = <span class="code-string">"electronics"</span>,
+        sort = <span class="code-string">"price"</span>,
+        page = <span class="code-string">"2"</span>
+    }
+})
+
+<span class="code-comment">-- Navigation with custom configuration</span>
+RouteManager.methods.navigateTo(self, ws_id, {
+    routeName = <span class="code-string">"about"</span>,
+    config = {
+        animation = <span class="code-string">"slide"</span>,
+        animationDuration = 500,
+        preserveState = true
+    }
+})</code></pre>
+                </div>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">Accessing Route Parameters in Components</h4>
+                    <p class="text-light-text-secondary mb-3">
+                        Route parameters and query parameters are automatically passed to component props.
+                    </p>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Accessing Route Data</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- In your component's render function</span>
+<span class="code-keyword">function</span> UserProfile:renderLayout(state, props, children, H)
+    <span class="code-comment">-- Access route parameters</span>
+    <span class="code-keyword">local</span> userId = props.routeParams.userId
+    <span class="code-keyword">local</span> section = props.queryParams.section
+    
+    <span class="code-comment">-- Access route configuration</span>
+    <span class="code-keyword">local</span> routeConfig = props.routeConfig
+    
+    <span class="code-comment">-- Access route ID</span>
+    <span class="code-keyword">local</span> routeId = props.routeId
+    
+    <span class="code-keyword">return</span> H.e(<span class="code-string">"div"</span>, { 
+        id = props.routeId,
+        class = <span class="code-string">"user-profile"</span> 
+    }, {
+        H.e(<span class="code-string">"h1"</span>, {}, <span class="code-string">"User Profile: "</span> .. userId),
+        H.e(<span class="code-string">"p"</span>, {}, <span class="code-string">"Current section: "</span> .. (section <span class="code-keyword">or</span> <span class="code-string">"overview"</span>))
+    })
+<span class="code-keyword">end</span></code></pre>
+                </div>
+            </div>
+            
+            <!-- Advanced Routing Features -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Advanced Routing Features</h3>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">Programmatic Navigation</h4>
+                    <p class="text-light-text-secondary mb-3">
+                        Advanced navigation methods for complex routing scenarios.
+                    </p>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Advanced Navigation Methods</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Navigate to path (URL-based navigation)</span>
+RouteManager.methods.navigateToPath(self, ws_id, <span class="code-string">"/user/123?section=settings"</span>)
+
+<span class="code-comment">-- Navigate back in history</span>
+RouteManager.methods.navigateBack(self, ws_id, {})
+
+<span class="code-comment">-- Navigate to current route (refresh/reconnect)</span>
+RouteManager.methods.navigateToCurrent(self, ws_id, {})
+
+<span class="code-comment">-- Get current route information</span>
+<span class="code-keyword">local</span> currentRoute = RouteManager.methods.getCurrentRoute(self, ws_id, {})
+print(<span class="code-string">"Current route: "</span> .. currentRoute.name)
+
+<span class="code-comment">-- Get route history</span>
+<span class="code-keyword">local</span> history = RouteManager.methods.getRouteHistory(self, ws_id, {})
+<span class="code-keyword">for</span> i, entry <span class="code-keyword">in</span> ipairs(history) <span class="code-keyword">do</span>
+    print(<span class="code-string">"History entry "</span> .. i .. <span class="code-string">": "</span> .. entry.name)
+<span class="code-keyword">end</span></code></pre>
+                </div>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">Browser History Integration</h4>
+                    <p class="text-light-text-secondary mb-3">
+                        Automatic browser history management with popstate handling.
+                    </p>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Browser History Setup</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Initialize browser navigation (call once on app start)</span>
+RouteManager.methods.initializeBrowserNavigation(self, ws_id, {})
+
+<span class="code-comment">-- Handle popstate events automatically</span>
+RouteManager.methods.handlePopState(self, ws_id, {
+    <span class="code-comment">-- This is automatically called by the framework</span>
+    <span class="code-comment">-- when browser back/forward buttons are clicked</span>
+})
+
+<span class="code-comment">-- Manual URL parsing example</span>
+<span class="code-keyword">local</span> path, queryParams = RouteManager.parseUrl(<span class="code-string">"/user/123?section=settings&amp;tab=profile"</span>)
+<span class="code-keyword">local</span> routeName, allParams, routeInfo = RouteManager.resolveRoute(<span class="code-string">"/user/123?section=settings"</span>)</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modal Manager Section -->
+        <section id="modal-manager" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-build-green flex items-center justify-center text-white font-bold mr-4">2</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">Modal Manager</h2>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Modal Registration & Configuration</h3>
+                <p class="text-light-text-secondary mb-6">
+                    The Modal Manager provides a powerful system for creating, managing, and animating modal dialogs 
+                    with support for stacking, dragging, and complex interactions.
+                </p>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">registerModalType(name, modalComponent)</h4>
+                    <p class="text-light-text-secondary mb-3">Register a modal type for use throughout the application.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>name</td>
+                                <td>string</td>
+                                <td>Unique identifier for the modal type</td>
+                            </tr>
+                            <tr>
+                                <td>modalComponent</td>
+                                <td>FunctionalComponent</td>
+                                <td>The component to use for this modal type</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <p class="mt-3"><strong>Returns:</strong> None</p>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Modal Registration Examples</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Register different modal types</span>
+ModalManager.registerModalType(<span class="code-string">"promptModal"</span>, <span class="code-keyword">require</span>(<span class="code-string">"components.modals.prompt"</span>))
+ModalManager.registerModalType(<span class="code-string">"confirmModal"</span>, <span class="code-keyword">require</span>(<span class="code-string">"components.modals.confirm"</span>))
+ModalManager.registerModalType(<span class="code-string">"formModal"</span>, <span class="code-keyword">require</span>(<span class="code-string">"components.modals.form"</span>))
+ModalManager.registerModalType(<span class="code-string">"imageModal"</span>, <span class="code-keyword">require</span>(<span class="code-string">"components.modals.image"</span>))
+
+<span class="code-comment">-- Custom modal with specific functionality</span>
+<span class="code-keyword">local</span> CustomModal = <span class="code-keyword">require</span>(<span class="code-string">"components.custom_modal"</span>)
+ModalManager.registerModalType(<span class="code-string">"customModal"</span>, CustomModal)</code></pre>
+                </div>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">showModal(ws_id, args)</h4>
+                    <p class="text-light-text-secondary mb-3">Display a modal with specified configuration and properties.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ws_id</td>
+                                <td>string</td>
+                                <td>WebSocket connection ID</td>
+                            </tr>
+                            <tr>
+                                <td>args</td>
+                                <td>table</td>
+                                <td>Modal display arguments</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="mt-3">
+                        <p><strong>Args Properties:</strong></p>
+                        <ul class="list-disc pl-5 mt-2 text-light-text-secondary">
+                            <li><code>modalType</code> (string): Registered modal type name</li>
+                            <li><code>modalId</code> (string): Unique ID for this modal instance</li>
+                            <li><code>props</code> (table): Properties to pass to the modal component</li>
+                            <li><code>children</code> (table): Child components to add to the modal</li>
+                            <li><code>config</code> (table): Modal display configuration</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Showing Modals Examples</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Simple modal with basic configuration</span>
+ModalManager.methods.showModal(self, ws_id, {
+    modalType = <span class="code-string">"promptModal"</span>,
+    modalId = <span class="code-string">"welcome_modal"</span>,
+    props = {
+        title = <span class="code-string">"Welcome!"</span>,
+        message = <span class="code-string">"Welcome to our application."</span>,
+        buttons = {
+            { text = <span class="code-string">"OK"</span>, action = <span class="code-string">"close"</span> }
+        }
+    }
+})
+
+<span class="code-comment">-- Modal with custom configuration</span>
+ModalManager.methods.showModal(self, ws_id, {
+    modalType = <span class="code-string">"formModal"</span>,
+    modalId = <span class="code-string">"user_form"</span>,
+    props = {
+        title = <span class="code-string">"Edit User"</span>,
+        fields = {
+            { name = <span class="code-string">"username"</span>, label = <span class="code-string">"Username"</span>, type = <span class="code-string">"text"</span> },
+            { name = <span class="code-string">"email"</span>, label = <span class="code-string">"Email"</span>, type = <span class="code-string">"email"</span> }
+        },
+        onSubmit = <span class="code-keyword">function</span>(data)
+            <span class="code-comment">-- Handle form submission</span>
+        <span class="code-keyword">end</span>
+    },
+    config = {
+        animation = <span class="code-string">"slideUp"</span>,
+        animationDuration = 400,
+        backdrop = true,
+        backdropClose = true,
+        escapeClose = true,
+        draggable = true,
+        maxWidth = <span class="code-string">"500px"</span>
+    }
+})
+
+<span class="code-comment">-- Modal with child components</span>
+ModalManager.methods.showModal(self, ws_id, {
+    modalType = <span class="code-string">"customModal"</span>,
+    modalId = <span class="code-string">"complex_modal"</span>,
+    props = {
+        title = <span class="code-string">"Complex Modal"</span>,
+        data = complexData
+    },
+    children = {
+        {
+            compKey = <span class="code-string">"chart_component"</span>,
+            path = <span class="code-string">"components.charts.pie"</span>,
+            props = { data = chartData }
+        },
+        {
+            compKey = <span class="code-string">"stats_component"</span>,
+            path = <span class="code-string">"components.stats.summary"</span>,
+            props = { stats = statistics }
+        }
+    }
+})</code></pre>
+                </div>
+            </div>
+            
+            <!-- Modal Management Features -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Modal Management & Interactions</h3>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">Modal Control Methods</h4>
+                    <p class="text-light-text-secondary mb-3">
+                        Methods for controlling modal behavior, positioning, and lifecycle.
+                    </p>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Modal Control Examples</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Hide a modal (with animations)</span>
+ModalManager.methods.hideModal(self, ws_id, {
+    modalId = <span class="code-string">"welcome_modal"</span>
+})
+
+<span class="code-comment">-- Remove a modal immediately (no animations)</span>
+ModalManager.methods.removeModal(self, ws_id, {
+    modalId = <span class="code-string">"temp_modal"</span>
+})
+
+<span class="code-comment">-- Update modal position (for dragging)</span>
+ModalManager.methods.updateModalPosition(self, ws_id, {
+    modalId = <span class="code-string">"draggable_modal"</span>,
+    top = 100,
+    left = 200
+})
+
+<span class="code-comment">-- Bring modal to front (z-index management)</span>
+ModalManager.methods.bringToFront(self, ws_id, {
+    modalId = <span class="code-string">"important_modal"</span>
+})
+
+<span class="code-comment">-- Update modal properties dynamically</span>
+ModalManager.methods.updateModal(self, ws_id, {
+    modalId = <span class="code-string">"dynamic_modal"</span>,
+    props = {
+        title = <span class="code-string">"Updated Title"</span>,
+        content = <span class="code-string">"New content here"</span>
+    }
+})</code></pre>
+                </div>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">Modal Configuration Options</h4>
+                    <p class="text-light-text-secondary mb-3">
+                        Comprehensive configuration options for modal behavior and appearance.
+                    </p>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Complete Configuration Reference</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- All available modal configuration options</span>
+<span class="code-keyword">local</span> fullConfig = {
+    <span class="code-comment">-- Backdrop settings</span>
+    backdrop = true,              <span class="code-comment">-- Show backdrop</span>
+    backdropClose = true,         <span class="code-comment">-- Close modal on backdrop click</span>
+    
+    <span class="code-comment">-- Close behavior</span>
+    escapeClose = true,           <span class="code-comment">-- Close modal on ESC key</span>
+    closeButton = true,           <span class="code-comment">-- Show close button</span>
+    
+    <span class="code-comment">-- Animation settings</span>
+    animation = <span class="code-string">"fadeIn"</span>,         <span class="code-comment">-- fadeIn, slideUp, zoomIn, none</span>
+    animationDuration = 300,      <span class="code-comment">-- Animation duration in ms</span>
+    
+    <span class="code-comment">-- Styling</span>
+    maxWidth = <span class="code-string">"600px"</span>,           <span class="code-comment">-- Maximum modal width</span>
+    overlayClass = <span class="code-string">"modal-overlay"</span>, <span class="code-comment">-- CSS class for overlay</span>
+    containerClass = <span class="code-string">"modal-container"</span>, <span class="code-comment">-- CSS class for container</span>
+    contentClass = <span class="code-string">"modal-content"</span>,   <span class="code-comment">-- CSS class for content</span>
+    closeButtonClass = <span class="code-string">"modal-close-btn"</span>, <span class="code-comment">-- CSS class for close button</span>
+    
+    <span class="code-comment">-- Positioning</span>
+    position = <span class="code-string">"center"</span>,           <span class="code-comment">-- center, top, bottom</span>
+    draggable = true,             <span class="code-comment">-- Enable dragging</span>
+    
+    <span class="code-comment">-- Stacking (multiple modals)</span>
+    cascadeOffset = 20,           <span class="code-comment">-- Pixel offset for cascading modals</span>
+    minZIndex = 1000,             <span class="code-comment">-- Starting z-index</span>
+    zIndexIncrement = 10          <span class="code-comment">-- Z-index increment for each new modal</span>
+}
+
+ModalManager.methods.showModal(self, ws_id, {
+    modalType = <span class="code-string">"customModal"</span>,
+    modalId = <span class="code-string">"fully_configured"</span>,
+    props = { <span class="code-comment">-- modal-specific props</span> },
+    config = fullConfig
+})</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Examples Section -->
+        <section id="examples" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-query-purple flex items-center justify-center text-white font-bold mr-4">3</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">Real-World Examples</h2>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Complete SPA Application Example</h3>
+                <p class="text-light-text-secondary mb-6">
+                    A complete example showing Route Manager and Modal Manager working together in a real application.
+                </p>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Full Application Setup</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- app.lua - Main application file</span>
+<span class="code-keyword">local</span> RouteManager = <span class="code-keyword">require</span>(<span class="code-string">"system.route_manager"</span>)
+<span class="code-keyword">local</span> ModalManager = <span class="code-keyword">require</span>(<span class="code-string">"system.modal_manager"</span>)
+
+<span class="code-comment">-- Register routes</span>
+RouteManager.registerRoute(<span class="code-string">"home"</span>, <span class="code-keyword">require</span>(<span class="code-string">"pages.home"</span>), {
+    path = <span class="code-string">"/"</span>,
+    defaultRoute = true,
+    title = <span class="code-string">"Home - My App"</span>
+})
+
+RouteManager.registerRoute(<span class="code-string">"users"</span>, <span class="code-keyword">require</span>(<span class="code-string">"pages.users"</span>), {
+    path = <span class="code-string">"/users"</span>,
+    title = <span class="code-string">"Users - My App"</span>
+})
+
+RouteManager.registerRoute(<span class="code-string">"userDetail"</span>, <span class="code-keyword">require</span>(<span class="code-string">"pages.user_detail"</span>), {
+    path = <span class="code-string">"/users/:userId"</span>,
+    title = <span class="code-string">"User Details - My App"</span>
+})
+
+RouteManager.registerRoute(<span class="code-string">"settings"</span>, <span class="code-keyword">require</span>(<span class="code-string">"pages.settings"</span>), {
+    path = <span class="code-string">"/settings/:tab?"</span>,
+    title = <span class="code-string">"Settings - My App"</span>
+})
+
+<span class="code-comment">-- Register modals</span>
+ModalManager.registerModalType(<span class="code-string">"confirm"</span>, <span class="code-keyword">require</span>(<span class="code-string">"components.modals.confirm"</span>))
+ModalManager.registerModalType(<span class="code-string">"userForm"</span>, <span class="code-keyword">require</span>(<span class="code-string">"components.modals.user_form"</span>))
+ModalManager.registerModalType(<span class="code-string">"deleteConfirm"</span>, <span class="code-keyword">require</span>(<span class="code-string">"components.modals.delete_confirm"</span>))
+
+<span class="code-comment">-- Application component</span>
+<span class="code-keyword">local</span> Application = FunctionalComponent:extends()
+Application:setReactiveView()
+
+<span class="code-keyword">function</span> Application:renderLayout(state, props, children, H)
+    <span class="code-keyword">return</span> H.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"app"</span> }, {
+        <span class="code-comment">-- Navigation header</span>
+        H.e(<span class="code-string">"header"</span>, { class = <span class="code-string">"app-header"</span> }, {
+            H.e(<span class="code-string">"nav"</span>, { class = <span class="code-string">"main-nav"</span> }, {
+                H.e(<span class="code-string">"button"</span>, 
+                    HTML.merge({ class = <span class="code-string">"nav-link"</span> }, 
+                        HTML.onClick(
+                            HTML.patch(<span class="code-string">"routeManager"</span>, <span class="code-keyword">nil</span>, <span class="code-string">"navigateTo"</span>, {
+                                routeName = <span class="code-string">"home"</span>
+                            })
+                        )
+                    ), 
+                    <span class="code-string">"Home"</span>
+                ),
+                H.e(<span class="code-string">"button"</span>, 
+                    HTML.merge({ class = <span class="code-string">"nav-link"</span> }, 
+                        HTML.onClick(
+                            HTML.patch(<span class="code-string">"routeManager"</span>, <span class="code-keyword">nil</span>, <span class="code-string">"navigateTo"</span>, {
+                                routeName = <span class="code-string">"users"</span>
+                            })
+                        )
+                    ), 
+                    <span class="code-string">"Users"</span>
+                ),
+                H.e(<span class="code-string">"button"</span>, 
+                    HTML.merge({ class = <span class="code-string">"nav-link"</span> }, 
+                        HTML.onClick(
+                            HTML.patch(<span class="code-string">"routeManager"</span>, <span class="code-keyword">nil</span>, <span class="code-string">"navigateTo"</span>, {
+                                routeName = <span class="code-string">"settings"</span>,
+                                params = { tab = <span class="code-string">"profile"</span> }
+                            })
+                        )
+                    ), 
+                    <span class="code-string">"Settings"</span>
+                )
+            })
+        }),
+        
+        <span class="code-comment">-- Main content area (routes render here)</span>
+        H.e(<span class="code-string">"main"</span>, { class = <span class="code-string">"app-main"</span> }, {
+            HTML.Component(<span class="code-string">"routeManager"</span>, {})
+        }),
+        
+        <span class="code-comment">-- Modal container (modals render here)</span>
+        H.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"modal-area"</span> }, {
+            HTML.Component(<span class="code-string">"modalManager"</span>, {})
+        })
+    })
+<span class="code-keyword">end</span>
+
+<span class="code-comment">-- User list page with modal interactions</span>
+<span class="code-keyword">local</span> UsersPage = FunctionalComponent:extends()
+UsersPage:setReactiveView()
+
+UsersPage.methods.showAddUserModal = <span class="code-keyword">function</span>(self, ws_id, args)
+    ModalManager.methods.showModal(self, ws_id, {
+        modalType = <span class="code-string">"userForm"</span>,
+        modalId = <span class="code-string">"add_user_modal"</span>,
+        props = {
+            title = <span class="code-string">"Add New User"</span>,
+            mode = <span class="code-string">"create"</span>,
+            onSave = <span class="code-keyword">function</span>(userData)
+                <span class="code-comment">-- Save user logic</span>
+                <span class="code-keyword">local</span> ops = HTML.client.batch(
+                    HTML.client.callModuleFn(<span class="code-string">"window"</span>, <span class="code-string">"alert"</span>, {<span class="code-string">"User created successfully!"</span>}),
+                    HTML.patch(<span class="code-string">"modalManager"</span>, <span class="code-keyword">nil</span>, <span class="code-string">"hideModal"</span>, { modalId = <span class="code-string">"add_user_modal"</span> })
+                )
+                self:sendHTMLClientOperations(ws_id, ops)
+            <span class="code-keyword">end</span>
+        },
+        config = {
+            animation = <span class="code-string">"slideUp"</span>,
+            draggable = true,
+            backdropClose = true
+        }
+    })
+<span class="code-keyword">end</span>
+
+UsersPage.methods.showDeleteConfirm = <span class="code-keyword">function</span>(self, ws_id, args)
+    <span class="code-keyword">local</span> userId = args.userId
+    ModalManager.methods.showModal(self, ws_id, {
+        modalType = <span class="code-string">"deleteConfirm"</span>,
+        modalId = <span class="code-string">"delete_confirm_"</span> .. userId,
+        props = {
+            title = <span class="code-string">"Confirm Delete"</span>,
+            message = <span class="code-string">"Are you sure you want to delete this user?"</span>,
+            onConfirm = <span class="code-keyword">function</span>()
+                <span class="code-comment">-- Delete user logic</span>
+                <span class="code-keyword">local</span> ops = HTML.client.batch(
+                    HTML.client.callModuleFn(<span class="code-string">"window"</span>, <span class="code-string">"alert"</span>, {<span class="code-string">"User deleted!"</span>}),
+                    HTML.patch(<span class="code-string">"modalManager"</span>, <span class="code-keyword">nil</span>, <span class="code-string">"hideModal"</span>, { modalId = <span class="code-string">"delete_confirm_"</span> .. userId })
+                )
+                self:sendHTMLClientOperations(ws_id, ops)
+            <span class="code-keyword">end</span>,
+            onCancel = <span class="code-keyword">function</span>()
+                ModalManager.methods.hideModal(self, ws_id, { modalId = <span class="code-string">"delete_confirm_"</span> .. userId })
+            <span class="code-keyword">end</span>
+        }
+    })
+<span class="code-keyword">end</span>
+
+<span class="code-keyword">function</span> UsersPage:renderLayout(state, props, children, H)
+    <span class="code-keyword">local</span> users = state.users <span class="code-keyword">or</span> {}
+    
+    <span class="code-keyword">return</span> H.e(<span class="code-string">"div"</span>, { id = props.routeId, class = <span class="code-string">"users-page"</span> }, {
+        H.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"page-header"</span> }, {
+            H.e(<span class="code-string">"h1"</span>, {}, <span class="code-string">"Users"</span>),
+            H.e(<span class="code-string">"button"</span>, 
+                HTML.merge({ class = <span class="code-string">"btn btn-primary"</span> }, 
+                    HTML.onClick(
+                        HTML.patch(self:getComponentKey(), <span class="code-keyword">nil</span>, <span class="code-string">"showAddUserModal"</span>, {})
+                    )
+                ), 
+                <span class="code-string">"Add User"</span>
+            )
+        }),
+        
+        H.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"users-list"</span> }, 
+            #users > 0 <span class="code-keyword">and</span> 
+            H.map(users, <span class="code-keyword">function</span>(user, index)
+                <span class="code-keyword">return</span> H.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"user-card"</span> }, {
+                    H.e(<span class="code-string">"h3"</span>, {}, user.name),
+                    H.e(<span class="code-string">"p"</span>, {}, user.email),
+                    H.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"user-actions"</span> }, {
+                        H.e(<span class="code-string">"button"</span>, 
+                            HTML.merge({ class = <span class="code-string">"btn btn-secondary"</span> }, 
+                                HTML.onClick(
+                                    HTML.patch(<span class="code-string">"routeManager"</span>, <span class="code-keyword">nil</span>, <span class="code-string">"navigateTo"</span>, {
+                                        routeName = <span class="code-string">"userDetail"</span>,
+                                        params = { userId = user.id }
+                                    })
+                                )
+                            ), 
+                            <span class="code-string">"View Details"</span>
+                        ),
+                        H.e(<span class="code-string">"button"</span>, 
+                            HTML.merge({ class = <span class="code-string">"btn btn-danger"</span> }, 
+                                HTML.onClick(
+                                    HTML.patch(self:getComponentKey(), <span class="code-keyword">nil</span>, <span class="code-string">"showDeleteConfirm"</span>, {
+                                        userId = user.id
+                                    })
+                                )
+                            ), 
+                            <span class="code-string">"Delete"</span>
+                        )
+                    })
+                })
+            <span class="code-keyword">end</span>) <span class="code-keyword">or</span>
+            H.e(<span class="code-string">"p"</span>, {}, <span class="code-string">"No users found"</span>)
+        )
+    })
+<span class="code-keyword">end</span>
+
+<span class="code-comment">-- Load everything</span>
+Application:load()
+RouteManager:load()
+ModalManager:load()
+
+<span class="code-comment">-- Initialize browser navigation</span>
+Application.methods.onClientReady = <span class="code-keyword">function</span>(self, ws_id)
+    RouteManager.methods.initializeBrowserNavigation(self, ws_id, {})
+<span class="code-keyword">end</span>
+
+<span class="code-keyword">return</span> Application</code></pre>
+                </div>
+            </div>
+            
+            <!-- Integration Patterns -->
+            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Integration Patterns & Best Practices</h3>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <h4 class="font-bold text-lg mb-2 text-laser-blue">Route-Based Modals</h4>
+                        <p class="text-light-text-secondary mb-3">
+                            Use URL parameters to control modal state for shareable links.
+                        </p>
+                        <div class="bg-gray-800 text-gray-200 rounded p-3 text-xs">
+                            <code>/users?modal=add_user</code><br>
+                            <code>/products/123?modal=edit</code>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-green-50 p-4 rounded-lg">
+                        <h4 class="font-bold text-lg mb-2 text-build-green">State Preservation</h4>
+                        <p class="text-light-text-secondary mb-3">
+                            Preserve form state when navigating away and returning.
+                        </p>
+                        <div class="bg-gray-800 text-gray-200 rounded p-3 text-xs">
+                            <code>preserveState = true</code>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-purple-50 p-4 rounded-lg">
+                        <h4 class="font-bold text-lg mb-2 text-query-purple">Modal Stacking</h4>
+                        <p class="text-light-text-secondary mb-3">
+                            Manage multiple open modals with proper z-index and focus.
+                        </p>
+                        <div class="bg-gray-800 text-gray-200 rounded p-3 text-xs">
+                            <code>bringToFront()</code><br>
+                            <code>cascadeOffset</code>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-amber-50 p-4 rounded-lg">
+                        <h4 class="font-bold text-lg mb-2 text-warning-amber">Error Handling</h4>
+                        <p class="text-light-text-secondary mb-3">
+                            Graceful error handling for missing routes or components.
+                        </p>
+                        <div class="bg-gray-800 text-gray-200 rounded p-3 text-xs">
+                            <code>try/catch</code> patterns<br>
+                            <code>defaultRoute</code> fallback
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="mt-12 pt-8 border-t border-light-border text-center text-light-text-secondary">
+            <p>Dawn Framework SPA Management &copy; 2023</p>
+            <div class="flex justify-center space-x-4 mt-4">
+                <a href="#" class="text-laser-blue hover:underline">Core Server Docs</a>
+                <a href="#" class="text-laser-blue hover:underline">API Reference</a>
+                <a href="#" class="text-laser-blue hover:underline">Examples Repository</a>
+                <a href="#" class="text-laser-blue hover:underline">Community</a>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        // Copy code functionality
+        document.querySelectorAll('.copy-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const codeBlock = this.closest('.code-block').querySelector('pre code');
+                const textToCopy = codeBlock.textContent;
+                
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check mr-1"></i>Copied!';
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                    }, 2000);
+                });
+            });
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>

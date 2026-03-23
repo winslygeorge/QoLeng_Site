@@ -1,0 +1,948 @@
+
+    <style>
+        /* Custom styles for code blocks and other elements */
+        .code-block {
+            background: #0A0A0F;
+            border-left: 4px solid #0066FF;
+        }
+        
+        .light-theme .code-block {
+            background: #F7F9FC;
+            border-left: 4px solid #0066FF;
+            color: #2A2A3A;
+        }
+        
+        .code-keyword {
+            color: #0066FF;
+        }
+        
+        .code-string {
+            color: #00CC88;
+        }
+        
+        .code-comment {
+            color: #6A737D;
+        }
+        
+        .light-theme .code-comment {
+            color: #9AA5B5;
+        }
+        
+        .code-variable {
+            color: #8A2BE2;
+        }
+        
+        .code-type {
+            color: #FFB300;
+        }
+        
+        /* Custom scrollbar for code blocks */
+        .code-block::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .code-block::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+        
+        .code-block::-webkit-scrollbar-thumb {
+            background: rgba(0, 102, 255, 0.5);
+            border-radius: 4px;
+        }
+        
+        .code-block::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 102, 255, 0.7);
+        }
+        
+        /* Additional custom styles */
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00CC88, #8A2BE2);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+
+    <!-- Main Documentation Content -->
+    <main  class="main-content-body max-w-6xl mx-auto px-6 py-8 light-theme">
+        <!-- Overview Section -->
+        <section id="overview" class="mb-16 animate-fadeIn">
+            <div class="bg-white rounded-xl shadow-lg p-8 border border-light-border">
+                <h1 class="text-4xl font-bold mb-6 text-neural-charcoal">Dawn Server Core Module</h1>
+                <p class="text-xl text-light-text-secondary mb-8">
+                    A high-performance, feature-rich web server framework for building scalable applications with Lua.
+                    Dawn Server provides routing, middleware, WebSocket support, file operations, and much more in a single package.
+                </p>
+                
+                <div class="grid md:grid-cols-3 gap-6 mb-8">
+                    <div class="feature-card bg-blue-50 p-6 rounded-lg border border-blue-100">
+                        <div class="w-12 h-12 rounded-full bg-laser-blue flex items-center justify-center text-white mb-4">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-laser-blue">High Performance</h3>
+                        <p class="text-light-text-secondary">Built on uWebSockets for exceptional speed and low latency.</p>
+                    </div>
+                    
+                    <div class="feature-card bg-green-50 p-6 rounded-lg border border-green-100">
+                        <div class="w-12 h-12 rounded-full bg-build-green flex items-center justify-center text-white mb-4">
+                            <i class="fas fa-plug"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-build-green">Real-time Ready</h3>
+                        <p class="text-light-text-secondary">Built-in WebSocket and SSE support for real-time applications.</p>
+                    </div>
+                    
+                    <div class="feature-card bg-purple-50 p-6 rounded-lg border border-purple-100">
+                        <div class="w-12 h-12 rounded-full bg-query-purple flex items-center justify-center text-white mb-4">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-query-purple">Feature Complete</h3>
+                        <p class="text-light-text-secondary">Routing, middleware, file ops, reactive components, and more.</p>
+                    </div>
+                </div>
+                
+            <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+  <div class="flex justify-between items-center mb-4">
+    <h3 class="text-lg font-bold">Quick Route File Example</h3>
+    <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">
+      <i class="fas fa-copy mr-1"></i>Copy
+    </button>
+  </div>
+  <pre class="overflow-x-auto text-sm"><code><span class="code-keyword">local</span> json = <span class="code-keyword">require</span>(<span class="code-string">'dkjson'</span>)
+
+<span class="code-keyword">local</span> M = {}
+M.__index = M
+
+<span class="code-keyword">function</span> M:<span class="code-type">new</span>(server)
+  <span class="code-keyword">local</span> self = setmetatable({}, M)
+  self.server = server
+  <span class="code-keyword">return</span> self
+<span class="code-keyword">end</span>
+
+<span class="code-keyword">function</span> M:<span class="code-type">routes</span>()
+  <span class="code-comment">-- Your routes go here, e.g.:</span>
+  self.server:<span class="code-type">get</span>(<span class="code-string">"/hello"</span>, <span class="code-keyword">function</span>(req, res)
+    <span class="code-comment">-- Your data handling logic</span>
+    res:<span class="code-type">writeStatus</span>(200):<span class="code-type">send</span>(<span class="code-string">"Hello World, this is a practice route!"</span>)
+  <span class="code-keyword">end</span>)
+<span class="code-keyword">end</span>
+
+<span class="code-keyword">return</span> M
+</code></pre>
+</div>
+
+            </div>
+        </section>
+
+        <!-- Key Features Section -->
+        <section id="features" class="mb-16 animate-fadeIn">
+            <h2 class="text-3xl font-bold mb-8 text-neural-charcoal">Key Features</h2>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Feature 1 -->
+                <div class="bg-white rounded-xl shadow-md p-6 border border-light-border feature-card">
+                    <h3 class="text-xl font-bold mb-4 text-laser-blue flex items-center">
+                        <i class="fas fa-route mr-3"></i>Advanced Routing System
+                    </h3>
+                    <p class="text-light-text-secondary mb-4">
+                        Trie-based router with support for parameterized routes, wildcards, and route scoping.
+                    </p>
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <pre class="text-sm overflow-x-auto"><code>server:<span class="code-type">get</span>(<span class="code-string">"/users/:id"</span>, userHandler)
+server:<span class="code-type">scope</span>(<span class="code-string">"/api"</span>, <span class="code-keyword">function</span>(s)
+    s:<span class="code-type">get</span>(<span class="code-string">"/posts"</span>, listPosts)
+    s:<span class="code-type">post</span>(<span class="code-string">"/posts"</span>, createPost)
+<span class="code-keyword">end</span>)</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="bg-white rounded-xl shadow-md p-6 border border-light-border feature-card">
+                    <h3 class="text-xl font-bold mb-4 text-build-green flex items-center">
+                        <i class="fas fa-layer-group mr-3"></i>Middleware Support
+                    </h3>
+                    <p class="text-light-text-secondary mb-4">
+                        Flexible middleware system with global and route-specific middleware chains.
+                    </p>
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <pre class="text-sm overflow-x-auto"><code>server:<span class="code-type">use</span>(<span class="code-keyword">function</span>(req, res, next)
+    <span class="code-comment">-- Authentication middleware</span>
+    <span class="code-keyword">if</span> <span class="code-keyword">not</span> req.headers or <span class="code-keyword">not</span> req.headers.authorization <span class="code-keyword">then</span>
+        <span class="code-keyword">return</span> res:<span class="code-type">writeStatus</span>(401):<span class="code-type">send</span>(<span class="code-string">"Unauthorized"</span>)
+    <span class="code-keyword">end</span>
+    next()
+<span class="code-keyword">end</span>, "/api")</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="bg-white rounded-xl shadow-md p-6 border border-light-border feature-card">
+                    <h3 class="text-xl font-bold mb-4 text-query-purple flex items-center">
+                        <i class="fas fa-bolt mr-3"></i>Real-time Communication
+                    </h3>
+                    <p class="text-light-text-secondary mb-4">
+                        WebSocket and Server-Sent Events (SSE) support with built-in connection management.
+                    </p>
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <pre class="text-sm overflow-x-auto"><code>server:<span class="code-type">ws</span>(<span class="code-string">"/chat"</span>, <span class="code-keyword">function</span>()
+    <span class="code-comment">-- Do nothing here, This just set the route registry the real handling of ws happens in websocket channel handlers </span>
+<span class="code-keyword">end</span>)
+
+server:<span class="code-type">get</span>(<span class="code-string">"/sse/updates"</span>, <span class="code-keyword">function</span>(req, res)
+    <span class="code-comment">-- Each SSE client connection receives a unique ID</span>
+    <span class="code-keyword">local</span> sse_id = req.sse_id
+
+    <span class="code-comment">-- Example: send an initial welcome message</span>
+    server:<span class="code-type">sse_send</span>(sse_id, <span class="code-string">"Connected to SSE stream."</span>)
+
+    <span class="code-comment">-- Example: periodically push updates</span>
+    <span class="code-keyword">local</span> timer = server:<span class="code-type">setInterval</span>(<span class="code-keyword">function</span>(ctx)
+        server:<span class="code-type">sse_send</span>(sse_id, <span class="code-string">"Server time: "</span> .. os.date(<span class="code-string">"%H:%M:%S"</span>))
+    <span class="code-keyword">end</span>, 2000)
+
+    <span class="code-comment">-- Clean up when the client disconnects</span>
+    res:<span class="code-type">onClose</span>(<span class="code-keyword">function</span>()
+        server:<span class="code-type">clearInterval</span>(timer)
+        server:<span class="code-type">sse_send</span>(sse_id, <span class="code-string">"Connection closed."</span>)
+    <span class="code-keyword">end</span>)
+<span class="code-keyword">end</span>)
+</code></pre>
+                    </div>
+                    
+                </div>
+
+                
+                
+                <!-- Feature 4 -->
+                <div class="bg-white rounded-xl shadow-md p-6 border border-light-border feature-card">
+                    <h3 class="text-xl font-bold mb-4 text-warning-amber flex items-center">
+                        <i class="fas fa-file-alt mr-3"></i>File Operations
+                    </h3>
+                    <p class="text-light-text-secondary mb-4">
+                        Comprehensive file system operations including sync/async reads, writes, and streaming.
+                    </p>
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                 <pre class="text-sm overflow-x-auto"><code><span class="code-keyword">server:get</span>(<span class="code-string">"/file/write"</span>, <span class="code-keyword">function</span>(req, res, query)
+    <span class="code-keyword">local</span> file_path = <span class="code-string">"practice_log.txt"</span>
+    <span class="code-keyword">local</span> log_message = <span class="code-string">"Hello World"</span>
+    
+    <span class="code-comment">-- this is the write file line example</span>
+    self.server:<span class="code-type">write_file</span>(file_path, log_message)
+
+    res:<span class="code-type">writeStatus</span>(200):<span class="code-type">send</span>(<span class="code-string">"Log entry added."</span>)
+<span class="code-keyword">end</span>)</code></pre>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Getting Started Section -->
+        <section id="getting-started" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-laser-blue flex items-center justify-center text-white font-bold mr-4">1</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">Getting Started</h2>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-xl font-bold mb-4 text-laser-blue">Basic(Main.lua) Server Setup</h3>
+                <p class="text-light-text-secondary mb-6">
+                    Create a basic Dawn server with minimal configuration.
+                </p>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Basic Server Example</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-keyword">require</span>(<span class="code-string">"bootstrap"</span>)(<span class="code-string">"./"</span>) 
+<span class="code-keyword">local</span> DawnServer = <span class="code-keyword">require</span>(<span class="code-string">"dawn"</span>).dawn_server 
+<span class="code-keyword">local</span> server_config = <span class="code-keyword">require</span>(<span class="code-string">'config.server_config'</span>)
+<span class="code-keyword">local</span> routes = <span class="code-keyword">require</span>(<span class="code-string">'routes._index'</span>)
+
+<span class="code-comment">-- Create a new DawnServer instance</span>
+<span class="code-keyword">local</span> server = DawnServer:<span class="code-type">new</span>(server_config)
+
+<span class="code-comment">-- Register all routes</span>
+server.ROUTES_REGISTERED = routes
+
+routes:<span class="code-type">load</span>(server):<span class="code-type">registerAllRoutes</span>()
+
+<span class="code-comment">-- Start the server</span>
+server:<span class="code-type">start</span>()</code></pre>
+
+                </div>
+                
+                <div class="bg-blue-50 p-5 rounded-lg border border-blue-100">
+                    <h4 class="font-bold text-lg mb-3 text-laser-blue flex items-center">
+                        <i class="fas fa-lightbulb mr-2"></i> Pro Tip
+                    </h4>
+                    <p class="text-light-text-secondary">
+                        Use the development watcher to automatically restart your server when files change:
+                    </p>
+                    <div class="bg-gray-100 p-3 rounded mt-2">
+                        <code class="text-sm">config.dev_watcher_config = { interval = 1, paths = { "./**/*.lua" } }</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- API Reference Section -->
+        <section id="api-reference" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-build-green flex items-center justify-center text-white font-bold mr-4">2</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">API Reference</h2>
+            </div>
+            
+ <!-- Constructor -->
+<div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+  <h3 class="text-2xl font-bold mb-4 text-laser-blue">DawnServer:new(config)</h3>
+  <p class="text-light-text-secondary mb-4">
+    Creates a new Dawn server instance with the provided configuration table.  
+    All parameters are passed through <code>server_config</code>, which controls logging, ports, static directories, token handling, multipart uploads, and more.
+  </p>
+
+  <h4 class="text-lg font-bold mb-3 text-neural-charcoal">Parameters</h4>
+  <div class="bg-gray-50 p-4 rounded-lg mb-4">
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="border-b border-light-border">
+          <th class="text-left py-2 font-bold">Parameter</th>
+          <th class="text-left py-2 font-bold">Type</th>
+          <th class="text-left py-2 font-bold">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-light-border">
+          <td class="py-2 font-mono">config</td>
+          <td class="py-2">table</td>
+          <td class="py-2">Main configuration object for the server (see options below)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4 class="text-lg font-bold mb-3 text-neural-charcoal">Configuration Options</h4>
+  <div class="bg-gray-50 p-4 rounded-lg overflow-x-auto">
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="border-b border-light-border">
+          <th class="text-left py-2 font-bold">Option</th>
+          <th class="text-left py-2 font-bold">Type</th>
+          <th class="text-left py-2 font-bold">Default</th>
+          <th class="text-left py-2 font-bold">Mandatory</th>
+          <th class="text-left py-2 font-bold">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr class="border-b border-light-border">
+          <td class="py-2 font-mono">port</td>
+          <td class="py-2">number</td>
+          <td class="py-2">8080</td>
+          <td class="py-2 text-green-700 font-semibold">Yes</td>
+          <td class="py-2">Port for the HTTP server to listen on. Can be overridden via <code>env.PORT</code>.</td>
+        </tr>
+
+        <tr class="border-b border-light-border">
+          <td class="py-2 font-mono">level</td>
+          <td class="py-2">LogLevel</td>
+          <td class="py-2">WARN</td>
+          <td class="py-2 text-green-700 font-semibold">Optional</td>
+          <td class="py-2">Sets logging verbosity based on environment or defaults. Supports <code>DEBUG</code>, <code>INFO</code>, <code>WARN</code>, <code>ERROR</code>.</td>
+        </tr>
+
+        <tr class="border-b border-light-border">
+          <td class="py-2 font-mono">logger</td>
+          <td class="py-2">Logger</td>
+          <td class="py-2">nil</td>
+          <td class="py-2 text-green-700 font-semibold">Optional</td>
+          <td class="py-2">Custom logger instance. If nil, defaults to internal logging.</td>
+        </tr>
+
+        <tr class="border-b border-light-border">
+          <td class="py-2 font-mono">static_configs</td>
+          <td class="py-2">table[]</td>
+          <td class="py-2">[{"/static", "./public"}]</td>
+          <td class="py-2 text-green-700 font-semibold">Optional</td>
+          <td class="py-2">List of static file directories. Each entry includes:
+            <ul class="list-disc ml-6">
+              <li><code>route_prefix</code> (string): URL prefix (e.g. <code>/static</code>)</li>
+              <li><code>directory_path</code> (string): Path to serve files from (e.g. <code>./public</code>)</li>
+            </ul>
+          </td>
+        </tr>
+
+        <tr class="border-b border-light-border">
+          <td class="py-2 font-mono">dev_watcher_config</td>
+          <td class="py-2">table</td>
+          <td class="py-2">{interval=1.0, debounce_ms=1000, retry_ms=2000}</td>
+          <td class="py-2 text-green-700 font-semibold">Optional</td>
+          <td class="py-2">File watcher for live development reloads.
+            <ul class="list-disc ml-6">
+              <li><code>interval</code>: Scan interval (seconds)</li>
+              <li><code>debounce_ms</code>: Restart cooldown period (ms)</li>
+              <li><code>retry_ms</code>: Delay before retrying failed reloads (ms)</li>
+              <li><code>watch_dirs</code>: Table of directories to monitor (<code>components</code>, <code>views</code>, <code>static</code>)</li>
+            </ul>
+          </td>
+        </tr>
+
+        <tr class="border-b border-light-border">
+          <td class="py-2 font-mono">multipart_parser_options</td>
+          <td class="py-2">table</td>
+          <td class="py-2">see details</td>
+          <td class="py-2 text-green-700 font-semibold">Optional</td>
+          <td class="py-2">Options for handling multipart/form-data uploads:
+            <ul class="list-disc ml-6">
+              <li><code>debug</code>: Enable debug logging</li>
+              <li><code>max_memory_size</code>: Max memory allowed per part (default 512 KB)</li>
+              <li><code>decode_base64</code>: Auto-decode base64 parts</li>
+              <li><code>decode_gzip</code>: Auto-decompress gzip content</li>
+              <li><code>stream_to_disk</code>: Stream uploads directly to disk</li>
+              <li><code>auto_save_dir</code>: Directory for saved uploads</li>
+              <li><code>on_start_part</code> / <code>on_end_part</code>: Callback hooks</li>
+              <li><code>progress_callback</code>: Called with uploaded byte count</li>
+              <li><code>nested</code>: Parse nested form fields like <code>user[name]</code></li>
+            </ul>
+          </td>
+        </tr>
+
+        <tr class="border-b border-light-border">
+          <td class="py-2 font-mono">token_store</td>
+          <td class="py-2">table</td>
+          <td class="py-2">{store=require('dawn').token_store, cleanup_interval=3600}</td>
+          <td class="py-2 text-green-700 font-semibold">Optional</td>
+          <td class="py-2">Configuration for managing token persistence and cleanup frequency.</td>
+        </tr>
+
+        <tr class="border-b border-light-border">
+          <td class="py-2 font-mono">heartbeat_config</td>
+          <td class="py-2">table</td>
+          <td class="py-2">{interval=1000, timeout=1000}</td>
+          <td class="py-2 text-green-700 font-semibold">Optional</td>
+          <td class="py-2">Defines heartbeat timing for server health checks or WebSocket connections.</td>
+        </tr>
+
+        <tr class="border-b border-light-border">
+          <td class="py-2 font-mono">reactive_render_engine</td>
+          <td class="py-2">boolean</td>
+          <td class="py-2">true</td>
+          <td class="py-2 text-green-700 font-semibold">Optional</td>
+          <td class="py-2">Enable reactive DOM-based rendering engine for dynamic page updates.</td>
+        </tr>
+
+        <tr class="border-b border-light-border">
+          <td class="py-2 font-mono">state_management_options</td>
+          <td class="py-2">table</td>
+          <td class="py-2">{session_timeout=3600, cleanup_interval=600}</td>
+          <td class="py-2 text-green-700 font-semibold">Optional</td>
+          <td class="py-2">Configures server-side state and session management.
+            <ul class="list-disc ml-6">
+              <li><code>handlers</code>: Module for WebSocket or session handlers</li>
+              <li><code>session_timeout</code>: Expiry time (in seconds) for inactive sessions</li>
+              <li><code>cleanup_interval</code>: Periodic cleanup frequency</li>
+              <li><code>state.state_management</code>: Reference to core state manager module</li>
+              <li><code>env.REDIS_CONFIG</code>: Optional Redis config for distributed session persistence</li>
+            </ul>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>
+
+            
+            <!-- Routing Methods -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Routing Methods</h3>
+                <p class="text-light-text-secondary mb-4">
+                    Dawn Server supports all standard HTTP methods and WebSocket routes.
+                </p>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-lg font-bold mb-3 text-neural-charcoal">HTTP Methods</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <code class="bg-gray-100 px-2 py-1 rounded text-sm mr-2">get</code>
+                                <span>Handle GET requests</span>
+                            </li>
+                            <li class="flex items-start">
+                                <code class="bg-gray-100 px-2 py-1 rounded text-sm mr-2">post</code>
+                                <span>Handle POST requests</span>
+                            </li>
+                            <li class="flex items-start">
+                                <code class="bg-gray-100 px-2 py-1 rounded text-sm mr-2">put</code>
+                                <span>Handle PUT requests</span>
+                            </li>
+                            <li class="flex items-start">
+                                <code class="bg-gray-100 px-2 py-1 rounded text-sm mr-2">delete</code>
+                                <span>Handle DELETE requests</span>
+                            </li>
+                            <li class="flex items-start">
+                                <code class="bg-gray-100 px-2 py-1 rounded text-sm mr-2">patch</code>
+                                <span>Handle PATCH requests</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-bold mb-3 text-neural-charcoal">Special Methods</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <code class="bg-gray-100 px-2 py-1 rounded text-sm mr-2">ws</code>
+                                <span>Handle WebSocket connections</span>
+                            </li>
+                            <li class="flex items-start">
+                                <code class="bg-gray-100 px-2 py-1 rounded text-sm mr-2">use</code>
+                                <span>Add middleware</span>
+                            </li>
+                            <li class="flex items-start">
+                                <code class="bg-gray-100 px-2 py-1 rounded text-sm mr-2">scope</code>
+                                <span>Create route scopes</span>
+                            </li>
+                            <li class="flex items-start">
+                                <code class="bg-gray-100 px-2 py-1 rounded text-sm mr-2">serveStatic</code>
+                                <span>Serve static files</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mt-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Routing Example</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Basic routes</span>
+server:<span class="code-type">get</span>(<span class="code-string">"/users"</span>, listUsers)
+server:<span class="code-type">post</span>(<span class="code-string">"/users"</span>, createUser)
+server:<span class="code-type">get</span>(<span class="code-string">"/users/:id"</span>, getUser)
+server:<span class="code-type">put</span>(<span class="code-string">"/users/:id"</span>, updateUser)
+server:<span class="code-type">delete</span>(<span class="code-string">"/users/:id"</span>, deleteUser)
+
+<span class="code-comment">-- Route scoping</span>
+server:<span class="code-type">scope</span>(<span class="code-string">"/api/v1"</span>, <span class="code-keyword">function</span>(s)
+    s:<span class="code-type">get</span>(<span class="code-string">"/posts"</span>, listPosts)
+    s:<span class="code-type">post</span>(<span class="code-string">"/posts"</span>, createPost)
+    s:<span class="code-type">get</span>(<span class="code-string">"/posts/:id"</span>, getPost)
+<span class="code-keyword">end</span>)
+
+<span class="code-comment">-- WebSocket route</span>
+server:<span class="code-type">ws</span>(<span class="code-string">"/chat"</span>, <span class="code-keyword">function</span>(ws, event, message)
+    <span class="code-keyword">if</span> event == <span class="code-string">"message"</span> <span class="code-keyword">then</span>
+        <span class="code-comment">-- Handle message</span>
+    <span class="code-keyword">end</span>
+<span class="code-keyword">end</span>)</code></pre>
+                </div>
+            </div>
+            
+            <!-- File Operations -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">File Operations</h3>
+                <p class="text-light-text-secondary mb-4">
+                    Dawn Server provides comprehensive file system operations with both synchronous and asynchronous variants.
+                </p>
+                
+                <div class="bg-gray-50 p-4 rounded-lg mb-6">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-light-border">
+                                <th class="text-left py-2 font-bold">Method</th>
+                                <th class="text-left py-2 font-bold">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-light-border">
+                                <td class="py-2 font-mono">read_file(path)</td>
+                                <td class="py-2">Synchronously read file content</td>
+                            </tr>
+                            <tr class="border-b border-light-border">
+                                <td class="py-2 font-mono">write_file(path, data)</td>
+                                <td class="py-2">Synchronously write data to file</td>
+                            </tr>
+                            <tr class="border-b border-light-border">
+                                <td class="py-2 font-mono">async_read_file(path, callback)</td>
+                                <td class="py-2">Asynchronously read file</td>
+                            </tr>
+                            <tr class="border-b border-light-border">
+                                <td class="py-2 font-mono">async_write_file(path, data, callback)</td>
+                                <td class="py-2">Asynchronously write to file</td>
+                            </tr>
+                            <tr class="border-b border-light-border">
+                                <td class="py-2 font-mono">file_exists(path)</td>
+                                <td class="py-2">Check if file exists</td>
+                            </tr>
+                            <tr class="border-b border-light-border">
+                                <td class="py-2 font-mono">read_json(path, decode)</td>
+                                <td class="py-2">Read and parse JSON file</td>
+                            </tr>
+                            <tr class="border-b border-light-border">
+                                <td class="py-2 font-mono">write_json(path, tbl, encode)</td>
+                                <td class="py-2">Write table as JSON to file</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 font-mono">stream_read_file(path, chunk_size, callback)</td>
+                                <td class="py-2">Stream read file in chunks</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">File Operations Example</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Read configuration file</span>
+<span class="code-keyword">local</span> config, err = server:<span class="code-type">read_json</span>(<span class="code-string">"config.json"</span>)
+<span class="code-keyword">if</span> <span class="code-keyword">not</span> config <span class="code-keyword">then</span>
+    server.logger:<span class="code-type">log</span>(Logger.LogLevel.ERROR, <span class="code-string">"Failed to read config: "</span> .. err)
+<span class="code-keyword">end</span>
+
+<span class="code-comment">-- Async file write</span>
+server:<span class="code-type">async_write_file</span>(<span class="code-string">"logs/request.log"</span>, logData, <span class="code-keyword">function</span>(success, err)
+    <span class="code-keyword">if</span> <span class="code-keyword">not</span> success <span class="code-keyword">then</span>
+        server.logger:<span class="code-type">log</span>(Logger.LogLevel.ERROR, <span class="code-string">"Write failed: "</span> .. err)
+    <span class="code-keyword">end</span>
+<span class="code-keyword">end</span>)
+
+<span class="code-comment">-- Stream large file</span>
+server:<span class="code-type">stream_read_file</span>(<span class="code-string">"large_file.txt"</span>, 8192, <span class="code-keyword">function</span>(chunk, err)
+    <span class="code-keyword">if</span> err <span class="code-keyword">then</span>
+        <span class="code-comment">-- Handle error</span>
+    <span class="code-keyword">elseif</span> chunk <span class="code-keyword">then</span>
+        <span class="code-comment">-- Process chunk</span>
+    <span class="code-keyword">else</span>
+        <span class="code-comment">-- End of file</span>
+    <span class="code-keyword">end</span>
+<span class="code-keyword">end</span>)</code></pre>
+                </div>
+            </div>
+            
+            <!-- Reactive Components -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Reactive Components</h3>
+                <p class="text-light-text-secondary mb-4">
+                    Dawn Server includes support for reactive components that can update state and broadcast changes to connected clients.
+                </p>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Reactive Component Example</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Define a reactive component</span>
+<span class="code-keyword">local</span> CounterComponent = {
+    state = { count = 0 },
+    
+    setState = <span class="code-keyword">function</span>(self, newState)
+        self.state = newState
+        <span class="code-comment">-- Return patches for WebSocket clients</span>
+        <span class="code-keyword">return</span> { { op = <span class="code-string">"replace"</span>, path = <span class="code-string">"/count"</span>, value = newState.count } }
+    <span class="code-keyword">end</span>,
+    
+    patch = <span class="code-keyword">function</span>(self, ws, patchData)
+        <span class="code-comment">-- Handle WebSocket patch operations</span>
+        <span class="code-keyword">if</span> patchData.type == <span class="code-string">"increment"</span> <span class="code-keyword">then</span>
+            self:<span class="code-type">setState</span>({ count = self.state.count + 1 })
+        <span class="code-keyword">end</span>
+    <span class="code-keyword">end</span>,
+    
+    renderAppPage = <span class="code-keyword">function</span>(self)
+        <span class="code-comment">-- Render full HTML with current state</span>
+        <span class="code-keyword">return</span> string.format(<span class="code-string">'&lt;div&gt;Count: %d&lt;/div&gt;'</span>, self.state.count)
+    <span class="code-keyword">end</span>
+}
+
+<span class="code-comment">-- Register the component</span>
+server:<span class="code-type">register_reactive_component</span>(CounterComponent, <span class="code-string">"counter"</span>)
+
+<span class="code-comment">-- Route to serve the reactive component</span>
+server:<span class="code-type">get</span>(<span class="code-string">"/counter"</span>, <span class="code-keyword">function</span>(req, res)
+    <span class="code-keyword">local</span> counter = server:<span class="code-type">get_component</span>(<span class="code-string">"counter"</span>)
+    <span class="code-keyword">if</span> counter <span class="code-keyword">then</span>
+        res:<span class="code-type">writeHeader</span>(<span class="code-string">"Content-Type"</span>, <span class="code-string">"text/html"</span>)
+           :<span class="code-type">send</span>(counter:<span class="code-type">renderAppPage</span>())
+    <span class="code-keyword">else</span>
+        res:<span class="code-type">writeStatus</span>(500):<span class="code-type">send</span>(<span class="code-string">"Component not found"</span>)
+    <span class="code-keyword">end</span>
+<span class="code-keyword">end</span>)</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Examples Section -->
+        <section id="examples" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-query-purple flex items-center justify-center text-white font-bold mr-4">3</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">Complete Examples</h2>
+            </div>
+            
+            <!-- REST API Example -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">REST API Server</h3>
+                <p class="text-light-text-secondary mb-4">
+                    A complete REST API example with CRUD operations, middleware, and error handling.
+                </p>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">REST API Example</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-keyword">local</span> DawnServer = <span class="code-keyword">require</span>(<span class="code-string">"dawn_server"</span>)
+<span class="code-keyword">local</span> json = <span class="code-keyword">require</span>(<span class="code-string">"dkjson"</span>)
+
+<span class="code-comment">-- In-memory "database"</span>
+<span class="code-keyword">local</span> users = {
+    { id = 1, name = <span class="code-string">"John Doe"</span>, email = <span class="code-string">"john@example.com"</span> },
+    { id = 2, name = <span class="code-string">"Jane Smith"</span>, email = <span class="code-string">"jane@example.com"</span> }
+}
+
+<span class="code-comment">-- Create server</span>
+<span class="code-keyword">local</span> server = DawnServer:<span class="code-type">new</span>({
+    port = 3000,
+    level = <span class="code-keyword">require</span>(<span class="code-string">"utils.logger"</span>).LogLevel.INFO
+})
+
+<span class="code-comment">-- JSON middleware</span>
+server:<span class="code-type">use</span>(<span class="code-keyword">function</span>(req, res, next)
+    res.json = <span class="code-keyword">function</span>(data, status)
+        status = status <span class="code-keyword">or</span> 200
+        res:<span class="code-type">writeHeader</span>(<span class="code-string">"Content-Type"</span>, <span class="code-string">"application/json"</span>)
+           :<span class="code-type">writeStatus</span>(status)
+           :<span class="code-type">send</span>(json.encode(data))
+    <span class="code-keyword">end</span>
+    next()
+<span class="code-keyword">end</span>)
+
+<span class="code-comment">-- API routes</span>
+server:<span class="code-type">get</span>(<span class="code-string">"/api/users"</span>, <span class="code-keyword">function</span>(req, res)
+    res:<span class="code-type">json</span>(users)
+<span class="code-keyword">end</span>)
+
+server:<span class="code-type">get</span>(<span class="code-string">"/api/users/:id"</span>, <span class="code-keyword">function</span>(req, res)
+    <span class="code-keyword">local</span> userId = tonumber(req.params.id)
+    <span class="code-keyword">local</span> user = <span class="code-keyword">nil</span>
+    
+    <span class="code-keyword">for</span> _, u <span class="code-keyword">in</span> ipairs(users) <span class="code-keyword">do</span>
+        <span class="code-keyword">if</span> u.id == userId <span class="code-keyword">then</span>
+            user = u
+            <span class="code-keyword">break</span>
+        <span class="code-keyword">end</span>
+    <span class="code-keyword">end</span>
+    
+    <span class="code-keyword">if</span> user <span class="code-keyword">then</span>
+        res:<span class="code-type">json</span>(user)
+    <span class="code-keyword">else</span>
+        res:<span class="code-type">json</span>({ error = <span class="code-string">"User not found"</span> }, 404)
+    <span class="code-keyword">end</span>
+<span class="code-keyword">end</span>)
+
+server:<span class="code-type">post</span>(<span class="code-string">"/api/users"</span>, <span class="code-keyword">function</span>(req, res, body)
+    <span class="code-keyword">if</span> <span class="code-keyword">not</span> body <span class="code-keyword">or</span> <span class="code-keyword">not</span> body.name <span class="code-keyword">or</span> <span class="code-keyword">not</span> body.email <span class="code-keyword">then</span>
+        <span class="code-keyword">return</span> res:<span class="code-type">json</span>({ error = <span class="code-string">"Name and email are required"</span> }, 400)
+    <span class="code-keyword">end</span>
+    
+    <span class="code-keyword">local</span> newUser = {
+        id = #users + 1,
+        name = body.name,
+        email = body.email
+    }
+    
+    table.insert(users, newUser)
+    res:<span class="code-type">json</span>(newUser, 201)
+<span class="code-keyword">end</span>)
+
+<span class="code-comment">-- Error handler</span>
+server:<span class="code-type">on_error</span>(<span class="code-string">"route"</span>, <span class="code-keyword">function</span>(req, res, err)
+    server.logger:<span class="code-type">log</span>(Logger.LogLevel.ERROR, <span class="code-string">"Route error: "</span> .. tostring(err))
+    res:<span class="code-type">json</span>({ error = <span class="code-string">"Internal server error"</span> }, 500)
+<span class="code-keyword">end</span>)
+
+<span class="code-comment">-- Start server</span>
+server:<span class="code-type">start</span>()</code></pre>
+                </div>
+            </div>
+            
+            <!-- Real-time Chat Example -->
+            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Real-time Chat Application</h3>
+                <p class="text-light-text-secondary mb-4">
+                    A WebSocket-based real-time chat application with multiple rooms and user management.
+                </p>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Chat Application Example</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-keyword">local</span> DawnServer = <span class="code-keyword">require</span>(<span class="code-string">"dawn_server"</span>)
+<span class="code-keyword">local</span> json = <span class="code-keyword">require</span>(<span class="code-string">"dkjson"</span>)
+
+<span class="code-keyword">local</span> server = DawnServer:<span class="code-type">new</span>({ port = 3000 })
+
+<span class="code-comment">-- Chat rooms storage</span>
+<span class="code-keyword">local</span> chatRooms = {}
+
+<span class="code-comment">-- WebSocket chat handler</span>
+server:<span class="code-type">ws</span>(<span class="code-string">"/chat/:room"</span>, <span class="code-keyword">function</span>(ws, event, message, code, reason)
+    <span class="code-keyword">local</span> room = ws.room
+    <span class="code-keyword">local</span> userId = ws.userId
+    
+    <span class="code-keyword">if</span> event == <span class="code-string">"open"</span> <span class="code-keyword">then</span>
+        <span class="code-comment">-- Initialize room if needed</span>
+        <span class="code-keyword">if</span> <span class="code-keyword">not</span> chatRooms[room] <span class="code-keyword">then</span>
+            chatRooms[room] = { users = {}, messages = {} }
+        <span class="code-keyword">end</span>
+        
+        <span class="code-comment">-- Add user to room</span>
+        ws.userId = tostring(math.random(1000, 9999))
+        ws.room = room
+        chatRooms[room].users[ws.userId] = ws
+        
+        <span class="code-comment">-- Notify room about new user</span>
+        <span class="code-keyword">local</span> joinMsg = {
+            type = <span class="code-string">"user_joined"</span>,
+            userId = ws.userId,
+            room = room,
+            timestamp = os.time()
+        }
+        
+        server.dawn_sockets_handler:broadcast_to_room(room, json.encode(joinMsg))
+        
+    <span class="code-keyword">elseif</span> event == <span class="code-string">"message"</span> <span class="code-keyword">then</span>
+        <span class="code-comment">-- Handle chat message</span>
+        <span class="code-keyword">local</span> msgData = json.decode(message)
+        
+        <span class="code-keyword">if</span> msgData.type == <span class="code-string">"chat_message"</span> <span class="code-keyword">then</span>
+            <span class="code-keyword">local</span> chatMsg = {
+                type = <span class="code-string">"chat_message"</span>,
+                userId = ws.userId,
+                room = room,
+                message = msgData.message,
+                timestamp = os.time()
+            }
+            
+            <span class="code-comment">-- Store message</span>
+            table.insert(chatRooms[room].messages, chatMsg)
+            
+            <span class="code-comment">-- Broadcast to room</span>
+            server.dawn_sockets_handler:broadcast_to_room(room, json.encode(chatMsg))
+        <span class="code-keyword">end</span>
+        
+    <span class="code-keyword">elseif</span> event == <span class="code-string">"close"</span> <span class="code-keyword">then</span>
+        <span class="code-comment">-- Remove user from room</span>
+        <span class="code-keyword">if</span> chatRooms[room] <span class="code-keyword">and</span> chatRooms[room].users[ws.userId] <span class="code-keyword">then</span>
+            chatRooms[room].users[ws.userId] = <span class="code-keyword">nil</span>
+            
+            <span class="code-comment">-- Notify room about user leaving</span>
+            <span class="code-keyword">local</span> leaveMsg = {
+                type = <span class="code-string">"user_left"</span>,
+                userId = ws.userId,
+                room = room,
+                timestamp = os.time()
+            }
+            
+            server.dawn_sockets_handler:broadcast_to_room(room, json.encode(leaveMsg))
+        <span class="code-keyword">end</span>
+    <span class="code-keyword">end</span>
+<span class="code-keyword">end</span>)
+
+<span class="code-comment">-- HTTP route to get room messages</span>
+server:<span class="code-type">get</span>(<span class="code-string">"/api/rooms/:room/messages"</span>, <span class="code-keyword">function</span>(req, res)
+    <span class="code-keyword">local</span> room = req.params.room
+    <span class="code-keyword">if</span> chatRooms[room] <span class="code-keyword">then</span>
+        res:<span class="code-type">writeHeader</span>(<span class="code-string">"Content-Type"</span>, <span class="code-string">"application/json"</span>)
+           :<span class="code-type">send</span>(json.encode(chatRooms[room].messages))
+    <span class="code-keyword">else</span>
+        res:<span class="code-type">writeStatus</span>(404):<span class="code-type">send</span>(<span class="code-string">"Room not found"</span>)
+    <span class="code-keyword">end</span>
+<span class="code-keyword">end</span>)
+
+server:<span class="code-type">start</span>()</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="mt-12 pt-8 border-t border-light-border text-center text-light-text-secondary">
+            <p>Dawn Framework Core Module Documentation &copy; 2023</p>
+            <div class="flex justify-center space-x-4 mt-4">
+                <a href="#" class="text-laser-blue hover:underline">GitHub Repository</a>
+                <a href="#" class="text-laser-blue hover:underline">API Reference</a>
+                <a href="#" class="text-laser-blue hover:underline">Contribution Guide</a>
+                <a href="#" class="text-laser-blue hover:underline">License</a>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        // Copy code functionality
+        document.querySelectorAll('.code-block button').forEach(button => {
+            button.addEventListener('click', function() {
+                const codeBlock = this.parentElement.querySelector('pre code');
+                const textToCopy = codeBlock.textContent;
+                
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check mr-1"></i>Copied!';
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                    }, 2000);
+                });
+            });
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>

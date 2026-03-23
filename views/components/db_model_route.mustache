@@ -1,0 +1,866 @@
+    <style>
+        /* Custom styles for code blocks and other elements */
+        .code-block {
+            background: #0A0A0F;
+            border-left: 4px solid #0066FF;
+        }
+        
+        .light-theme .code-block {
+            background: #F7F9FC;
+            border-left: 4px solid #0066FF;
+            color: #2A2A3A;
+        }
+        
+        .code-keyword {
+            color: #0066FF;
+        }
+        
+        .code-string {
+            color: #00CC88;
+        }
+        
+        .code-comment {
+            color: #6A737D;
+        }
+        
+        .light-theme .code-comment {
+            color: #9AA5B5;
+        }
+        
+        .code-variable {
+            color: #8A2BE2;
+        }
+        
+        .code-type {
+            color: #FFB300;
+        }
+        
+        /* Custom scrollbar for code blocks */
+        .code-block::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .code-block::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+        
+        .code-block::-webkit-scrollbar-thumb {
+            background: rgba(0, 102, 255, 0.5);
+            border-radius: 4px;
+        }
+        
+        .code-block::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 102, 255, 0.7);
+        }
+        
+        /* Additional custom styles */
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00CC88, #8A2BE2);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .data-source-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .function-signature {
+            background: #F0F4F8;
+            border-left: 4px solid #0066FF;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.5rem;
+        }
+        
+        .param-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        .param-table th, .param-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #E0E5EC;
+        }
+        
+        .param-table th {
+            background-color: #F7F9FC;
+            font-weight: 600;
+        }
+        
+        .route-method {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+        
+        .method-get { background-color: #00CC88; color: white; }
+        .method-post { background-color: #0066FF; color: white; }
+        .method-put { background-color: #FFB300; color: white; }
+        .method-delete { background-color: #FF4444; color: white; }
+    </style>
+
+    <!-- Main Documentation Content -->
+    <main class="main-content-body max-w-6xl mx-auto px-6 py-8 light-theme">
+        <!-- Overview Section -->
+        <section id="overview" class="mb-16 animate-fadeIn">
+            <div class="bg-white rounded-xl shadow-lg p-8 border border-light-border">
+                <h1 class="text-4xl font-bold mb-6 text-neural-charcoal">Model Route Management</h1>
+                <p class="text-xl text-light-text-secondary mb-8">
+                    Comprehensive guide to using DawnModelRoute and ModelRoute modules for automatic REST API generation
+                    from ORM models in Dawn Framework applications.
+                </p>
+                
+                <div class="grid md:grid-cols-3 gap-6 mb-8">
+                    <div class="feature-card bg-blue-50 p-6 rounded-lg border border-blue-100">
+                        <div class="w-12 h-12 rounded-full bg-laser-blue flex items-center justify-center text-white mb-4">
+                            <i class="fas fa-route"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-laser-blue">Automatic Route Generation</h3>
+                        <p class="text-light-text-secondary">Automatically creates RESTful endpoints for ORM models</p>
+                    </div>
+                    
+                    <div class="feature-card bg-green-50 p-6 rounded-lg border border-green-100">
+                        <div class="w-12 h-12 rounded-full bg-build-green flex items-center justify-center text-white mb-4">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-build-green">CRUD Operations</h3>
+                        <p class="text-light-text-secondary">Full Create, Read, Update, Delete operations with proper HTTP methods</p>
+                    </div>
+                    
+                    <div class="feature-card bg-purple-50 p-6 rounded-lg border border-purple-100">
+                        <div class="w-12 h-12 rounded-full bg-query-purple flex items-center justify-center text-white mb-4">
+                            <i class="fas fa-sync-alt"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-query-purple">Sync & Async Support</h3>
+                        <p class="text-light-text-secondary">Support for both synchronous and asynchronous database operations</p>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold">Basic Setup</h3>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Load required modules</span>
+<span class="code-keyword">local</span> DawnModelRoute = <span class="code-keyword">require</span>(<span class="code-string">"path.to.dawn_model_route"</span>)
+<span class="code-keyword">local</span> User = <span class="code-keyword">require</span>(<span class="code-string">"models.user"</span>) <span class="code-comment">-- Your ORM model</span>
+<span class="code-keyword">local</span> DawnServer = <span class="code-keyword">require</span>(<span class="code-string">"dawn"</span>) <span class="code-comment">-- Dawn server instance</span>
+
+<span class="code-comment">-- Create model route</span>
+<span class="code-keyword">local</span> user_route = DawnModelRoute:<span class="code-type">new</span>(<span class="code-string">"users"</span>, User, DawnServer)
+
+<span class="code-comment">-- Initialize routes</span>
+user_route:<span class="code-type">initialize</span>()
+
+<span class="code-comment">-- Now you have automatic REST API endpoints:</span>
+<span class="code-comment">-- GET /api/users</span>
+<span class="code-comment">-- GET /api/users/:id</span>
+<span class="code-comment">-- POST /api/users</span>
+<span class="code-comment">-- PUT /api/users/:id</span>
+<span class="code-comment">-- DELETE /api/users/:id</span></code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- DawnModelRoute Section -->
+        <section id="dawn-model-route" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-laser-blue flex items-center justify-center text-white font-bold mr-4">1</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">DawnModelRoute</h2>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Route Registration & Management</h3>
+                <p class="text-light-text-secondary mb-6">
+                    DawnModelRoute acts as a wrapper that automatically registers RESTful routes for ORM models
+                    with the DawnServer, providing a clean API scoped under <code>/api/{model_name}</code>.
+                </p>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">new(model_name, Model, server)</h4>
+                    <p class="text-light-text-secondary mb-3">Creates a new DawnModelRoute instance for automatic route generation.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Required</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>model_name</td>
+                                <td>string</td>
+                                <td>The name of the model (e.g., "User", "Product") used in route paths</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>Model</td>
+                                <td>table</td>
+                                <td>The ORM model class (e.g., User, Product) to which the route is associated</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>server</td>
+                                <td>table</td>
+                                <td>The server instance (DawnServer) to which the route is associated</td>
+                                <td>Yes</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <p class="mt-3"><strong>Returns:</strong> table - A new DawnModelRoute instance</p>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">DawnModelRoute Creation Example</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Create routes for User model</span>
+<span class="code-keyword">local</span> DawnModelRoute = <span class="code-keyword">require</span>(<span class="code-string">"path.to.dawn_model_route"</span>)
+<span class="code-keyword">local</span> User = <span class="code-keyword">require</span>(<span class="code-string">"models.user"</span>)
+<span class="code-keyword">local</span> DawnServer = <span class="code-keyword">require</span>(<span class="code-string">"dawn"</span>)
+
+<span class="code-comment">-- Create the route instance</span>
+<span class="code-keyword">local</span> user_route = DawnModelRoute:<span class="code-type">new</span>(<span class="code-string">"users"</span>, User, DawnServer)
+
+<span class="code-comment">-- Initialize routes (registers them with the server)</span>
+user_route:<span class="code-type">initialize</span>()
+
+<span class="code-comment">-- Now the following routes are available:</span>
+<span class="code-comment">-- GET    /api/users</span>
+<span class="code-comment">-- GET    /api/users/:id</span>
+<span class="code-comment">-- POST   /api/users</span>
+<span class="code-comment">-- PUT    /api/users/:id</span>
+<span class="code-comment">-- DELETE /api/users/:id</span></code></pre>
+                </div>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">initialize()</h4>
+                    <p class="text-light-text-secondary mb-3">
+                        Initializes and registers all CRUD API routes for the model with the server.
+                        This method creates routes scoped under <code>/api/{model_name}</code>.
+                    </p>
+                    
+                    <p class="mt-3"><strong>Returns:</strong> None</p>
+                    <p class="mt-2"><strong>Side Effects:</strong> Registers routes with the DawnServer instance</p>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Generated Routes</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- After calling initialize(), these routes are registered:</span>
+
+<span class="code-comment">-- GET /api/{model_name}</span>
+<span class="code-comment">-- Retrieves all records with optional filtering and pagination</span>
+<span class="code-comment">-- Example: GET /api/users?page=1&limit=10&name=John</span>
+
+<span class="code-comment">-- GET /api/{model_name}/:id</span>
+<span class="code-comment">-- Retrieves a single record by ID</span>
+<span class="code-comment">-- Example: GET /api/users/123</span>
+
+<span class="code-comment">-- POST /api/{model_name}</span>
+<span class="code-comment">-- Creates a new record</span>
+<span class="code-comment">-- Example: POST /api/users with JSON body</span>
+
+<span class="code-comment">-- PUT /api/{model_name}/:id</span>
+<span class="code-comment">-- Updates an existing record by ID</span>
+<span class="code-comment">-- Example: PUT /api/users/123 with JSON body</span>
+
+<span class="code-comment">-- DELETE /api/{model_name}/:id</span>
+<span class="code-comment">-- Deletes a record by ID</span>
+<span class="code-comment">-- Example: DELETE /api/users/123</span></code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- ModelRoute Section -->
+        <section id="model-route" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-build-green flex items-center justify-center text-white font-bold mr-4">2</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">ModelRoute</h2>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">CRUD Handler Implementation</h3>
+                <p class="text-light-text-secondary mb-6">
+                    ModelRoute provides the actual implementation of CRUD operations for ORM models,
+                    handling request/response cycles, error handling, and database operations.
+                </p>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">new(model_class, logger)</h4>
+                    <p class="text-light-text-secondary mb-3">Creates a new ModelRoute instance for handling CRUD operations.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Required</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>model_class</td>
+                                <td>table</td>
+                                <td>The ORM Model class (e.g., User, Department)</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>logger</td>
+                                <td>table</td>
+                                <td>The logger instance from DawnServer</td>
+                                <td>Yes</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <p class="mt-3"><strong>Returns:</strong> table - A new ModelRoute instance</p>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">ModelRoute Creation Example</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Create ModelRoute directly (usually done by DawnModelRoute)</span>
+<span class="code-keyword">local</span> ModelRoute = <span class="code-keyword">require</span>(<span class="code-string">"orm.model_route"</span>)
+<span class="code-keyword">local</span> User = <span class="code-keyword">require</span>(<span class="code-string">"models.user"</span>)
+
+<span class="code-comment">-- Create ModelRoute instance</span>
+<span class="code-keyword">local</span> user_model_route = ModelRoute:<span class="code-type">new</span>(User, server.logger)
+
+<span class="code-comment">-- Now you can use the CRUD handlers directly</span>
+<span class="code-comment">-- user_model_route:get_all(req, res, query_params)</span>
+<span class="code-comment">-- user_model_route:get_by_id(req, res, query_params)</span>
+<span class="code-comment">-- user_model_route:create(req, res, body)</span>
+<span class="code-comment">-- user_model_route:update(req, res, body)</span>
+<span class="code-comment">-- user_model_route:delete(req, res, query_params)</span></code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- CRUD Operations Section -->
+        <section id="crud-operations" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-query-purple flex items-center justify-center text-white font-bold mr-4">3</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">CRUD Operations</h2>
+            </div>
+            
+            <!-- GET All Records -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">
+                    <span class="route-method method-get">GET</span>
+                    Retrieve All Records
+                </h3>
+                <p class="text-light-text-secondary mb-6">
+                    Handles GET requests to retrieve all instances of the model with support for
+                    pagination, filtering, and both synchronous/asynchronous operations.
+                </p>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">get_all(req, res, query_params)</h4>
+                    <p class="text-light-text-secondary mb-3">Route: <code>GET /api/{model_name}</code></p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>req</td>
+                                <td>table</td>
+                                <td>The request object</td>
+                            </tr>
+                            <tr>
+                                <td>res</td>
+                                <td>table</td>
+                                <td>The response object</td>
+                            </tr>
+                            <tr>
+                                <td>query_params</td>
+                                <td>table</td>
+                                <td>Query parameters from the URL</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <p class="mt-3"><strong>Supported Query Parameters:</strong></p>
+                    <ul class="list-disc ml-6 mt-2">
+                        <li><code>page</code> - Page number for pagination (default: 1)</li>
+                        <li><code>limit</code> - Number of records per page (default: depends on model)</li>
+                        <li><code>order_by</code> - Column to order by</li>
+                        <li><code>order_direction</code> - Order direction (ASC/DESC)</li>
+                        <li>Any model field name - For filtering (e.g., <code>?name=John</code>)</li>
+                    </ul>
+                    
+                    <p class="mt-3"><strong>Returns:</strong> JSON array of records or pagination object</p>
+                    <p class="mt-2"><strong>HTTP Status Codes:</strong> 200 (Success), 500 (Internal Server Error)</p>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">GET All Examples</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Get all users</span>
+<span class="code-comment">-- Request: GET /api/users</span>
+<span class="code-comment">-- Response: [{"id":1,"name":"John"},{"id":2,"name":"Jane"}]</span>
+
+<span class="code-comment">-- Get users with pagination</span>
+<span class="code-comment">-- Request: GET /api/users?page=1&limit=10</span>
+<span class="code-comment">-- Response: {"data":[{"id":1,"name":"John"},...],"pagination":{"page":1,"per_page":10,"total":100}}</span>
+
+<span class="code-comment">-- Get users with filtering</span>
+<span class="code-comment">-- Request: GET /api/users?name=John&is_active=true</span>
+<span class="code-comment">-- Response: [{"id":1,"name":"John","is_active":true}]</span>
+
+<span class="code-comment">-- Get users with ordering</span>
+<span class="code-comment">-- Request: GET /api/users?order_by=created_at&order_direction=DESC</span>
+<span class="code-comment">-- Response: [{"id":100,"name":"Newest"},{"id":99,"name":"Older"},...]</span></code></pre>
+                </div>
+            </div>
+            
+            <!-- GET Single Record -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">
+                    <span class="route-method method-get">GET</span>
+                    Retrieve Single Record
+                </h3>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">get_by_id(req, res, query_params)</h4>
+                    <p class="text-light-text-secondary mb-3">Route: <code>GET /api/{model_name}/:id</code></p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>req</td>
+                                <td>table</td>
+                                <td>The request object (req.params.id contains the ID)</td>
+                            </tr>
+                            <tr>
+                                <td>res</td>
+                                <td>table</td>
+                                <td>The response object</td>
+                            </tr>
+                            <tr>
+                                <td>query_params</td>
+                                <td>table</td>
+                                <td>Query parameters from the URL</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <p class="mt-3"><strong>Returns:</strong> JSON object of the record or error</p>
+                    <p class="mt-2"><strong>HTTP Status Codes:</strong> 200 (Success), 400 (Bad Request), 404 (Not Found), 500 (Internal Server Error)</p>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">GET Single Record Examples</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Get user by ID</span>
+<span class="code-comment">-- Request: GET /api/users/123</span>
+<span class="code-comment">-- Response: {"id":123,"name":"John","email":"john@example.com"}</span>
+
+<span class="code-comment">-- Non-existent user</span>
+<span class="code-comment">-- Request: GET /api/users/999</span>
+<span class="code-comment">-- Response: 404 - {"error":"Not Found","message":"users with ID 999 not found."}</span>
+
+<span class="code-comment">-- Invalid ID</span>
+<span class="code-comment">-- Request: GET /api/users/abc</span>
+<span class="code-comment">-- Response: 400 - {"error":"Bad Request","message":"Invalid ID provided."}</span></code></pre>
+                </div>
+            </div>
+            
+            <!-- POST Create Record -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">
+                    <span class="route-method method-post">POST</span>
+                    Create New Record
+                </h3>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">create(req, res, body)</h4>
+                    <p class="text-light-text-secondary mb-3">Route: <code>POST /api/{model_name}</code></p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>req</td>
+                                <td>table</td>
+                                <td>The request object</td>
+                            </tr>
+                            <tr>
+                                <td>res</td>
+                                <td>table</td>
+                                <td>The response object</td>
+                            </tr>
+                            <tr>
+                                <td>body</td>
+                                <td>table</td>
+                                <td>The parsed request body (JSON or form data)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <p class="mt-3"><strong>Returns:</strong> JSON object of the created record</p>
+                    <p class="mt-2"><strong>HTTP Status Codes:</strong> 201 (Created), 400 (Bad Request), 409 (Conflict), 500 (Internal Server Error)</p>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Create Record Examples</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Create a new user</span>
+<span class="code-comment">-- Request: POST /api/users</span>
+<span class="code-comment">-- Body: {"name":"John","email":"john@example.com","password":"secret"}</span>
+<span class="code-comment">-- Response: 201 - {"id":123,"name":"John","email":"john@example.com"}</span>
+
+<span class="code-comment">-- Duplicate unique field</span>
+<span class="code-comment">-- Request: POST /api/users</span>
+<span class="code-comment">-- Body: {"name":"John","email":"existing@example.com"}</span>
+<span class="code-comment">-- Response: 409 - {"error":"Internal Server Error","message":"A record with the provided unique data already exists."}</span>
+
+<span class="code-comment">-- Empty body</span>
+<span class="code-comment">-- Request: POST /api/users</span>
+<span class="code-comment">-- Body: {}</span>
+<span class="code-comment">-- Response: 400 - {"error":"Bad Request","message":"Request body must be a non-empty JSON object or form data."}</span></code></pre>
+                </div>
+            </div>
+            
+            <!-- PUT Update Record -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">
+                    <span class="route-method method-put">PUT</span>
+                    Update Existing Record
+                </h3>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">update(req, res, body)</h4>
+                    <p class="text-light-text-secondary mb-3">Route: <code>PUT /api/{model_name}/:id</code></p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>req</td>
+                                <td>table</td>
+                                <td>The request object (req.params.id contains the ID)</td>
+                            </tr>
+                            <tr>
+                                <td>res</td>
+                                <td>table</td>
+                                <td>The response object</td>
+                            </tr>
+                            <tr>
+                                <td>body</td>
+                                <td>table</td>
+                                <td>The parsed request body (JSON or form data)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <p class="mt-3"><strong>Returns:</strong> JSON object of the updated record</p>
+                    <p class="mt-2"><strong>HTTP Status Codes:</strong> 200 (Success), 400 (Bad Request), 404 (Not Found), 500 (Internal Server Error)</p>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Update Record Examples</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Update user</span>
+<span class="code-comment">-- Request: PUT /api/users/123</span>
+<span class="code-comment">-- Body: {"name":"John Updated","email":"john.updated@example.com"}</span>
+<span class="code-comment">-- Response: 200 - {"id":123,"name":"John Updated","email":"john.updated@example.com"}</span>
+
+<span class="code-comment">-- Update non-existent user</span>
+<span class="code-comment">-- Request: PUT /api/users/999</span>
+<span class="code-comment">-- Response: 404 - {"error":"Not Found","message":"users with ID 999 not found for update."}</span>
+
+<span class="code-comment">-- Invalid ID</span>
+<span class="code-comment">-- Request: PUT /api/users/abc</span>
+<span class="code-comment">-- Response: 400 - {"error":"Bad Request","message":"Invalid ID provided."}</span></code></pre>
+                </div>
+            </div>
+            
+            <!-- DELETE Record -->
+            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">
+                    <span class="route-method method-delete">DELETE</span>
+                    Delete Record
+                </h3>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">delete(req, res, query_params)</h4>
+                    <p class="text-light-text-secondary mb-3">Route: <code>DELETE /api/{model_name}/:id</code></p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>req</td>
+                                <td>table</td>
+                                <td>The request object (req.params.id contains the ID)</td>
+                            </tr>
+                            <tr>
+                                <td>res</td>
+                                <td>table</td>
+                                <td>The response object</td>
+                            </tr>
+                            <tr>
+                                <td>query_params</td>
+                                <td>table</td>
+                                <td>Query parameters from the URL</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <p class="mt-3"><strong>Returns:</strong> Empty response with status 204 or error</p>
+                    <p class="mt-2"><strong>HTTP Status Codes:</strong> 204 (No Content), 400 (Bad Request), 404 (Not Found), 500 (Internal Server Error)</p>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Delete Record Examples</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Delete user</span>
+<span class="code-comment">-- Request: DELETE /api/users/123</span>
+<span class="code-comment">-- Response: 204 - No Content</span>
+
+<span class="code-comment">-- Delete non-existent user</span>
+<span class="code-comment">-- Request: DELETE /api/users/999</span>
+<span class="code-comment">-- Response: 404 - {"error":"Not Found","message":"users with ID 999 not found for deletion."}</span>
+
+<span class="code-comment">-- Invalid ID</span>
+<span class="code-comment">-- Request: DELETE /api/users/abc</span>
+<span class="code-comment">-- Response: 400 - {"error":"Bad Request","message":"Invalid ID provided."}</span></code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Complete Example Section -->
+        <section id="complete-example" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-warning-amber flex items-center justify-center text-white font-bold mr-4">4</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">Complete Example</h2>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Full Implementation Example</h3>
+                <p class="text-light-text-secondary mb-6">
+                    A complete example showing how to set up automatic REST APIs for multiple models
+                    using DawnModelRoute and ModelRoute.
+                </p>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Complete Application Setup</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- app.lua - Main application file</span>
+
+<span class="code-comment">-- Load required modules</span>
+<span class="code-keyword">local</span> DawnServer = <span class="code-keyword">require</span>(<span class="code-string">"dawn"</span>)
+<span class="code-keyword">local</span> DawnModelRoute = <span class="code-keyword">require</span>(<span class="code-string">"path.to.dawn_model_route"</span>)
+
+<span class="code-comment">-- Load your ORM models</span>
+<span class="code-keyword">local</span> User = <span class="code-keyword">require</span>(<span class="code-string">"models.user"</span>)
+<span class="code-keyword">local</span> Product = <span class="code-keyword">require</span>(<span class="code-string">"models.product"</span>)
+<span class="code-keyword">local</span> Order = <span class="code-keyword">require</span>(<span class="code-string">"models.order"</span>)
+
+<span class="code-comment">-- Create DawnServer instance</span>
+<span class="code-keyword">local</span> server = DawnServer:<span class="code-type">new</span>({
+    port = 8080,
+    host = <span class="code-string">"0.0.0.0"</span>
+})
+
+<span class="code-comment">-- Create model routes</span>
+<span class="code-keyword">local</span> user_route = DawnModelRoute:<span class="code-type">new</span>(<span class="code-string">"users"</span>, User, server)
+<span class="code-keyword">local</span> product_route = DawnModelRoute:<span class="code-type">new</span>(<span class="code-string">"products"</span>, Product, server)
+<span class="code-keyword">local</span> order_route = DawnModelRoute:<span class="code-type">new</span>(<span class="code-string">"orders"</span>, Order, server)
+
+<span class="code-comment">-- Initialize all routes</span>
+user_route:<span class="code-type">initialize</span>()
+product_route:<span class="code-type">initialize</span>()
+order_route:<span class="code-type">initialize</span>()
+
+<span class="code-comment">-- Add custom routes if needed</span>
+server:<span class="code-type">get</span>(<span class="code-string">"/"</span>, <span class="code-keyword">function</span>(req, res)
+    res:<span class="code-type">send</span>(<span class="code-string">"Welcome to the API!"</span>)
+<span class="code-keyword">end</span>)
+
+<span class="code-comment">-- Start the server</span>
+server:<span class="code-type">start</span>()
+
+<span class="code-comment">-- Now you have automatic REST APIs for:</span>
+<span class="code-comment">-- Users:    /api/users</span>
+<span class="code-comment">-- Products: /api/products</span>
+<span class="code-comment">-- Orders:   /api/orders</span>
+
+<span class="code-comment">-- Example API usage:</span>
+<span class="code-comment">-- GET    /api/users           - Get all users</span>
+<span class="code-comment">-- GET    /api/users/123       - Get user with ID 123</span>
+<span class="code-comment">-- POST   /api/users           - Create new user</span>
+<span class="code-comment">-- PUT    /api/users/123       - Update user 123</span>
+<span class="code-comment">-- DELETE /api/users/123       - Delete user 123</span>
+
+<span class="code-comment">-- GET    /api/products?page=1&limit=10 - Get paginated products</span>
+<span class="code-comment">-- GET    /api/products?category=electronics - Filter products by category</span></code></pre>
+                </div>
+                
+                <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <h4 class="font-bold text-blue-800 mb-2">Key Features Demonstrated:</h4>
+                    <ul class="list-disc ml-6 text-blue-700">
+                        <li>Automatic REST API generation for multiple models</li>
+                        <li>Proper route scoping under <code>/api</code> prefix</li>
+                        <li>Support for pagination, filtering, and ordering</li>
+                        <li>Proper HTTP status codes and error handling</li>
+                        <li>Both synchronous and asynchronous operation support</li>
+                        <li>Integration with DawnServer's request/response cycle</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="mt-12 pt-8 border-t border-light-border text-center text-light-text-secondary">
+            <p>Dawn Framework Model Route Management &copy; 2023</p>
+            <div class="flex justify-center space-x-4 mt-4">
+                <a href="#" class="text-laser-blue hover:underline">Core Server Docs</a>
+                <a href="#" class="text-laser-blue hover:underline">API Reference</a>
+                <a href="#" class="text-laser-blue hover:underline">Examples Repository</a>
+                <a href="#" class="text-laser-blue hover:underline">Community</a>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        // Copy code functionality
+        document.querySelectorAll('.copy-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const codeBlock = this.closest('.code-block').querySelector('pre code');
+                const textToCopy = codeBlock.textContent;
+                
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check mr-1"></i>Copied!';
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                    }, 2000);
+                });
+            });
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>

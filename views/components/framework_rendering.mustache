@@ -1,0 +1,831 @@
+
+    <style>
+        /* Custom styles for code blocks and other elements */
+        .code-block {
+            background: #0A0A0F;
+            border-left: 4px solid #0066FF;
+        }
+        
+        .light-theme .code-block {
+            background: #F7F9FC;
+            border-left: 4px solid #0066FF;
+            color: #2A2A3A;
+        }
+        
+        .code-keyword {
+            color: #0066FF;
+        }
+        
+        .code-string {
+            color: #00CC88;
+        }
+        
+        .code-comment {
+            color: #6A737D;
+        }
+        
+        .light-theme .code-comment {
+            color: #9AA5B5;
+        }
+        
+        .code-variable {
+            color: #8A2BE2;
+        }
+        
+        .code-type {
+            color: #FFB300;
+        }
+        
+        /* Custom scrollbar for code blocks */
+        .code-block::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .code-block::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+        
+        .code-block::-webkit-scrollbar-thumb {
+            background: rgba(0, 102, 255, 0.5);
+            border-radius: 4px;
+        }
+        
+        .code-block::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 102, 255, 0.7);
+        }
+        
+        /* Additional custom styles */
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00CC88, #8A2BE2);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .data-source-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .function-signature {
+            background: #F0F4F8;
+            border-left: 4px solid #0066FF;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.5rem;
+        }
+        
+        .param-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        .param-table th, .param-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #E0E5EC;
+        }
+        
+        .param-table th {
+            background-color: #F7F9FC;
+            font-weight: 600;
+        }
+        
+        .method-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .badge-lustache {
+            background-color: #FFB300;
+            color: white;
+        }
+        
+        .badge-reactive {
+            background-color: #8A2BE2;
+            color: white;
+        }
+        
+        .badge-both {
+            background-color: #0066FF;
+            color: white;
+        }
+    </style>
+
+    <!-- Main Documentation Content -->
+    <main class="main-content-body max-w-6xl mx-auto px-6 py-8 light-theme">
+        <!-- Overview Section -->
+        <section id="overview" class="mb-16 animate-fadeIn">
+            <div class="bg-white rounded-xl shadow-lg p-8 border border-light-border">
+                <h1 class="text-4xl font-bold mb-6 text-neural-charcoal">Component Rendering Guide</h1>
+                <p class="text-xl text-light-text-secondary mb-8">
+                    Comprehensive guide to Dawn Framework's two rendering approaches: Lustache (Mustache) templates and LuaReactive components.
+                    Learn when to use each approach and how to leverage the FuncComponent system for building dynamic web applications.
+                </p>
+                
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                    <div class="feature-card bg-blue-50 p-6 rounded-lg border border-blue-100">
+                        <div class="w-12 h-12 rounded-full bg-laser-blue flex items-center justify-center text-white mb-4">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-laser-blue">Lustache Templates</h3>
+                        <p class="text-light-text-secondary">Server-side rendering with Mustache syntax for static and semi-dynamic content</p>
+                        <ul class="mt-3 text-sm text-light-text-secondary">
+                            <li class="mb-1"><i class="fas fa-check text-build-green mr-2"></i>Simple template syntax</li>
+                            <li class="mb-1"><i class="fas fa-check text-build-green mr-2"></i>Fast server-side rendering</li>
+                            <li class="mb-1"><i class="fas fa-check text-build-green mr-2"></i>Layout composition</li>
+                            <li class="mb-1"><i class="fas fa-check text-build-green mr-2"></i>Partial templates</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="feature-card bg-purple-50 p-6 rounded-lg border border-purple-100">
+                        <div class="w-12 h-12 rounded-full bg-query-purple flex items-center justify-center text-white mb-4">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-query-purple">LuaReactive Components</h3>
+                        <p class="text-light-text-secondary">Reactive components for highly dynamic, interactive user interfaces</p>
+                        <ul class="mt-3 text-sm text-light-text-secondary">
+                            <li class="mb-1"><i class="fas fa-check text-build-green mr-2"></i>Reactive state management</li>
+                            <li class="mb-1"><i class="fas fa-check text-build-green mr-2"></i>Real-time updates</li>
+                            <li class="mb-1"><i class="fas fa-check text-build-green mr-2"></i>Client-side interactivity</li>
+                            <li class="mb-1"><i class="fas fa-check text-build-green mr-2"></i>Virtual DOM diffing</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold">Choosing Your Approach</h3>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Use Lustache when:</span>
+<span class="code-comment">-- • Building content-heavy pages</span>
+<span class="code-comment">-- • Need SEO-friendly server-rendered content</span>
+<span class="code-comment">-- • Working with existing HTML templates</span>
+<span class="code-comment">-- • Simple data binding is sufficient</span>
+
+<span class="code-comment">-- Use LuaReactive when:</span>
+<span class="code-comment">-- • Building highly interactive UIs</span>
+<span class="code-comment">-- • Need real-time updates</span>
+<span class="code-comment">-- • Complex client-side state management</span>
+<span class="code-comment">-- • Dynamic user interfaces with frequent changes</span></code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lustache Section -->
+        <section id="lustache" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-laser-blue flex items-center justify-center text-white font-bold mr-4">1</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">Lustache Template Rendering</h2>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Template-Based Component System</h3>
+                <p class="text-light-text-secondary mb-6">
+                    Lustache provides a Mustache-compatible template engine for server-side rendering. 
+                    Components use a layout-based approach where you define a main template and compose it with child components.
+                </p>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">setView(viewName)</h4>
+                    <p class="text-light-text-secondary mb-3">Set the Mustache template to use for rendering this component.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>viewName</td>
+                                <td>string</td>
+                                <td>The name of the template file (without extension) located in ./views/</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <p class="mt-3"><strong>Returns:</strong> Self for method chaining</p>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Basic Lustache Component</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- MainComponent.lua</span>
+<span class="code-keyword">local</span> FuncComponent = <span class="code-keyword">require</span>(<span class="code-string">'layout.renderer.FuncComponent'</span>)
+<span class="code-keyword">local</span> navComponent = <span class="code-keyword">require</span>(<span class="code-string">'lib.components.navpage'</span>)
+<span class="code-keyword">local</span> footer = <span class="code-keyword">require</span>(<span class="code-string">'lib.components.footerpage'</span>)
+<span class="code-keyword">local</span> header = <span class="code-keyword">require</span>(<span class="code-string">'lib.components.headerpage'</span>)
+
+<span class="code-keyword">local</span> MainComponent = FuncComponent:<span class="code-type">extends</span>()
+
+<span class="code-comment">-- Set the main layout template</span>
+MainComponent:<span class="code-type">setView</span>(<span class="code-string">'layouts/default'</span>)
+
+<span class="code-keyword">function</span> MainComponent:<span class="code-type">startInit</span>()
+    <span class="code-comment">-- Initialize the component with data and children</span>
+    <span class="code-keyword">self</span>:<span class="code-type">init</span>(<span class="code-keyword">function</span> (children, props, style)
+        <span class="code-comment">-- Set template data</span>
+        props.layout_data = {
+            title = <span class="code-string">"Home - Dawnserver"</span>,
+            head_extra = <span class="code-string">'&lt;meta name="keywords" content="luajit, webserver, uwebsockets">'</span>,
+            current_year = os.date(<span class="code-string">"%Y"</span>)
+        }
+        
+        <span class="code-comment">-- Add child components to the layout</span>
+        children.header = header:<span class="code-type">build</span>()
+        children.nav = navComponent:<span class="code-type">build</span>()
+        children.body = children.body <span class="code-keyword">or</span> <span class="code-string">""</span>
+        <span class="code-comment">-- children.footer = footer:build()</span>
+    <span class="code-keyword">end</span>)
+<span class="code-keyword">end</span>
+
+<span class="code-keyword">function</span> MainComponent:<span class="code-type">render_layout</span>()
+    <span class="code-keyword">self</span>:<span class="code-type">startInit</span>()
+    <span class="code-keyword">local</span> output = <span class="code-keyword">self</span>:<span class="code-type">build</span>()
+    <span class="code-keyword">return</span> output
+<span class="code-keyword">end</span>
+
+<span class="code-keyword">return</span> MainComponent</code></pre>
+                </div>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">init(callback)</h4>
+                    <p class="text-light-text-secondary mb-3">Initialize the component with data, children, and styling.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>callback</td>
+                                <td>function</td>
+                                <td>Function that receives (children, props, style, htmlBuilder, clientState) parameters</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <p class="mt-3"><strong>Returns:</strong> Self for method chaining</p>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Layout Template Example</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">&lt;!-- views/layouts/default.mustache --&gt;</span>
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;{{layout_data.title}}&lt;/title&gt;
+    {{{layout_data.head_extra}}}
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id="app"&gt;
+        {{{header}}}
+        {{{nav}}}
+        &lt;main&gt;
+            {{{body}}}
+        &lt;/main&gt;
+        &lt;footer&gt;
+            &lt;p&gt;© {{layout_data.current_year}} Dawn Framework&lt;/p&gt;
+        &lt;/footer&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                </div>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">build()</h4>
+                    <p class="text-light-text-secondary mb-3">Render the component and its children into HTML.</p>
+                    
+                    <p class="mt-3"><strong>Returns:</strong> Rendered HTML string</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- LuaReactive Section -->
+        <section id="luareactive" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-query-purple flex items-center justify-center text-white font-bold mr-4">2</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">LuaReactive Component System</h2>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Reactive Virtual DOM Components</h3>
+                <p class="text-light-text-secondary mb-6">
+                    LuaReactive provides a reactive component system with virtual DOM diffing for highly interactive user interfaces.
+                    Components can maintain state, respond to user interactions, and update efficiently.
+                </p>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">setReactiveView()</h4>
+                    <p class="text-light-text-secondary mb-3">Configure the component to use LuaReactive rendering.</p>
+                    
+                    <p class="mt-3"><strong>Returns:</strong> Self for method chaining</p>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Basic LuaReactive Component</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- HomePage.lua</span>
+<span class="code-keyword">local</span> FunctionalComponent = <span class="code-keyword">require</span>(<span class="code-string">"layout.renderer.FuncComponent"</span>)
+<span class="code-keyword">local</span> HTML = <span class="code-keyword">require</span>(<span class="code-string">"layout.renderer.LuaHTMLReactive"</span>)
+
+<span class="code-keyword">local</span> HomePage = FunctionalComponent:<span class="code-type">extends</span>()
+<span class="code-comment">-- Enable reactive rendering</span>
+HomePage:<span class="code-type">setReactiveView</span>()
+
+<span class="code-comment">-- Define component methods for interactivity</span>
+HomePage.methods.sayHello = <span class="code-keyword">function</span>(<span class="code-keyword">self</span>, ws_id, args)
+    <span class="code-keyword">local</span> ops = HTML.client.callModuleFn(<span class="code-string">"window"</span>, <span class="code-string">"alert"</span>, {<span class="code-string">"Hello, World!"</span>})
+    <span class="code-keyword">self</span>:<span class="code-type">sendHTMLClientOperations</span>(ws_id, ops)
+<span class="code-keyword">end</span>
+
+<span class="code-keyword">function</span> HomePage:<span class="code-type">renderLayout</span>(state, props, children, H)
+    <span class="code-comment">-- Return virtual DOM using HTML builder functions</span>
+    <span class="code-keyword">return</span> 
+    H.e(<span class="code-string">"div"</span>, { id=props.routeId, class = <span class="code-string">"bg-[#FBFBFF] text-[#1A1A2E] font-sans"</span> }, {
+        <span class="code-comment">-- Header section</span>
+        H.e(<span class="code-string">"header"</span>, { class = <span class="code-string">"fixed top-0 left-0 right-0 z-50 py-6 bg-white/80 backdrop-blur-sm"</span> }, {
+            H.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"container mx-auto px-4"</span> }, {
+                H.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"flex justify-between items-center"</span> }, {
+                    H.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"flex items-center gap-3"</span> }, {
+                        H.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"w-10 h-10 bg-gradient-to-br from-[#0066FF] to-[#8A2BE2] rounded-lg flex items-center justify-center text-white font-bold"</span> }, <span class="code-string">"Q"</span>),
+                        H.e(<span class="code-string">"span"</span>, { class = <span class="code-string">"text-2xl font-bold text-[#1A1A2E]"</span> }, <span class="code-string">"QoLeng"</span>)
+                    })
+                })
+            })
+        })
+    })
+<span class="code-keyword">end</span>
+
+<span class="code-keyword">function</span> HomePage:<span class="code-type">startInit</span>()
+    <span class="code-keyword">self</span>:<span class="code-type">init</span>(<span class="code-keyword">function</span>(server, children, props, style, H)
+        <span class="code-keyword">return</span> <span class="code-keyword">function</span>(state, props, children, H)
+            <span class="code-keyword">return</span> <span class="code-keyword">self</span>:<span class="code-type">renderLayout</span>(state, props, children, H)
+        <span class="code-keyword">end</span>
+    <span class="code-keyword">end</span>)
+<span class="code-keyword">end</span>
+
+<span class="code-keyword">function</span> HomePage:<span class="code-type">load</span>()
+    <span class="code-keyword">self</span>:<span class="code-type">startInit</span>()
+<span class="code-keyword">end</span>
+
+<span class="code-keyword">return</span> HomePage</code></pre>
+                </div>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">HTML Builder Functions</h4>
+                    <p class="text-light-text-secondary mb-3">LuaReactive provides functions to create virtual DOM elements.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Function</th>
+                                <th>Parameters</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>H.e(tag, props, children)</td>
+                                <td>tag (string), props (table), children (array)</td>
+                                <td>Create a virtual DOM element</td>
+                            </tr>
+                            <tr>
+                                <td>H.merge(...)</td>
+                                <td>Multiple props tables</td>
+                                <td>Merge multiple props objects</td>
+                            </tr>
+                            <tr>
+                                <td>H.onClick(patch)</td>
+                                <td>patch (table)</td>
+                                <td>Create click handler that triggers a patch</td>
+                            </tr>
+                            <tr>
+                                <td>HTML.patch(component, ws_id, method, args)</td>
+                                <td>component (string), ws_id (string/nil), method (string), args (table)</td>
+                                <td>Create a patch operation to call component methods</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Interactive Button Example</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Creating an interactive button with LuaReactive</span>
+H.e(<span class="code-string">"button"</span>,
+    H.merge(
+        { class = <span class="code-string">"bg-[#0066FF] text-white px-8 py-4 rounded-lg font-semibold text-lg"</span> },
+        H.onClick(
+            HTML.patch(<span class="code-string">"modalManager"</span>, <span class="code-keyword">nil</span>, <span class="code-string">"showModal"</span>, {
+                modalType = <span class="code-string">"promptModal"</span>,
+                modalId = <span class="code-string">"getStartedModal"</span>,
+                props = {
+                    title = <span class="code-string">"Get Started with QoLeng"</span>,
+                    message = <span class="code-string">"Welcome to QoLeng! Let's get started."</span>,
+                    modalId = <span class="code-string">"getStartedModal"</span>
+                }
+            })
+        )
+    ),
+    {
+        H.e(<span class="code-string">"i"</span>, { class = <span class="code-string">"fas fa-bolt"</span> }),
+        <span class="code-string">"Get Started →"</span>
+    }
+)</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- FuncComponent Features Section -->
+        <section id="funccomponent" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-build-green flex items-center justify-center text-white font-bold mr-4">3</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">FuncComponent Features & API</h2>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Core Component System</h3>
+                <p class="text-light-text-secondary mb-6">
+                    FuncComponent provides the foundation for both rendering approaches with a rich set of features
+                    for state management, lifecycle handling, and component composition.
+                </p>
+                
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                    <div class="feature-card bg-blue-50 p-6 rounded-lg border border-blue-100">
+                        <h4 class="text-lg font-bold mb-3 text-laser-blue">Component Creation</h4>
+                        <ul class="text-sm text-light-text-secondary">
+                            <li class="mb-2"><span class="method-badge badge-both">extends()</span> Create a new component</li>
+                            <li class="mb-2"><span class="method-badge badge-both">setServer(server)</span> Attach server instance</li>
+                            <li class="mb-2"><span class="method-badge badge-both">setComponentKey(key)</span> Set unique identifier</li>
+                            <li class="mb-2"><span class="method-badge badge-both">enableHotReload(server)</span> Enable development hot reload</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="feature-card bg-green-50 p-6 rounded-lg border border-green-100">
+                        <h4 class="text-lg font-bold mb-3 text-build-green">State Management</h4>
+                        <ul class="text-sm text-light-text-secondary">
+                            <li class="mb-2"><span class="method-badge badge-both">setState(newState)</span> Update component state</li>
+                            <li class="mb-2"><span class="method-badge badge-both">getClientState(ws_id)</span> Get client-specific state</li>
+                            <li class="mb-2"><span class="method-badge badge-both">setClientState(ws_id, newState)</span> Update client state</li>
+                            <li class="mb-2"><span class="method-badge badge-both">pruneClientStates()</span> Clean up old client states</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="feature-card bg-purple-50 p-6 rounded-lg border border-purple-100">
+                        <h4 class="text-lg font-bold mb-3 text-query-purple">Component Composition</h4>
+                        <ul class="text-sm text-light-text-secondary">
+                            <li class="mb-2"><span class="method-badge badge-both">addChildComponent(key, component)</span> Add child component</li>
+                            <li class="mb-2"><span class="method-badge badge-both">getChildComponent(key)</span> Get child by key</li>
+                            <li class="mb-2"><span class="method-badge badge-both">registerChildMethods()</span> Expose child methods</li>
+                            <li class="mb-2"><span class="method-badge badge-both">callChildMethod()</span> Invoke child method</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="feature-card bg-amber-50 p-6 rounded-lg border border-amber-100">
+                        <h4 class="text-lg font-bold mb-3 text-warning-amber">Lifecycle & Events</h4>
+                        <ul class="text-sm text-light-text-secondary">
+                            <li class="mb-2"><span class="method-badge badge-both">onJoin(ws_id, client_token)</span> Handle client connection</li>
+                            <li class="mb-2"><span class="method-badge badge-both">beforeClose(ws_id)</span> Handle client disconnection</li>
+                            <li class="mb-2"><span class="method-badge badge-both">onClientReady(callback)</span> Client ready callback</li>
+                            <li class="mb-2"><span class="method-badge badge-both">rerender()</span> Force re-render (reactive only)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">State Management Methods</h4>
+                    <p class="text-light-text-secondary mb-3">FuncComponent provides comprehensive state management for both server and client states.</p>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">State Management Example</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Server state (shared across all clients)</span>
+<span class="code-keyword">self</span>:<span class="code-type">setState</span>({
+    userCount = 42,
+    serverTime = os.time()
+})
+
+<span class="code-comment">-- Client state (specific to each websocket connection)</span>
+<span class="code-keyword">self</span>:<span class="code-type">setClientState</span>(ws_id, {
+    theme = <span class="code-string">"dark"</span>,
+    preferences = {
+        notifications = true,
+        language = <span class="code-string">"en"</span>
+    }
+})
+
+<span class="code-comment">-- Access client state in render method</span>
+<span class="code-keyword">local</span> clientState = <span class="code-keyword">self</span>:<span class="code-type">getClientState</span>(ws_id)
+<span class="code-keyword">local</span> theme = clientState.theme <span class="code-keyword">or</span> <span class="code-string">"light"</span></code></pre>
+                </div>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">Component Communication</h4>
+                    <p class="text-light-text-secondary mb-3">Parent and child components can communicate through methods and state sharing.</p>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Parent-Child Communication</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Parent component adding a child</span>
+<span class="code-keyword">self</span>:<span class="code-type">addChildComponent</span>(<span class="code-string">"userPanel"</span>, userPanelComponent)
+
+<span class="code-comment">-- Child component accessing parent state</span>
+<span class="code-keyword">local</span> parentState = <span class="code-keyword">self</span>:<span class="code-type">getParentState</span>()
+
+<span class="code-comment">-- Parent calling child method</span>
+<span class="code-keyword">self</span>:<span class="code-type">callChildMethod</span>(<span class="code-string">"userPanel"</span>, <span class="code-string">"refreshData"</span>, ws_id, { force = true })
+
+<span class="code-comment">-- Child updating parent state</span>
+<span class="code-keyword">self</span>:<span class="code-type">updateParentState</span>({ notificationCount = 5 })
+
+<span class="code-comment">-- Child calling parent method</span>
+<span class="code-keyword">self</span>:<span class="code-type">callParentMethod</span>(<span class="code-string">"handleUserAction"</span>, ws_id, { action = <span class="code-string">"login"</span> })</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Examples Section -->
+        <section id="examples" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-warning-amber flex items-center justify-center text-white font-bold mr-4">4</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">Complete Examples</h2>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Real-World Implementation</h3>
+                <p class="text-light-text-secondary mb-6">
+                    These complete examples show how to implement common patterns using both rendering approaches.
+                </p>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Dashboard with Lustache</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Dashboard using Lustache templates</span>
+<span class="code-keyword">local</span> FuncComponent = <span class="code-keyword">require</span>(<span class="code-string">'layout.renderer.FuncComponent'</span>)
+<span class="code-keyword">local</span> Header = <span class="code-keyword">require</span>(<span class="code-string">'components.header'</span>)
+<span class="code-keyword">local</span> Sidebar = <span class="code-keyword">require</span>(<span class="code-string">'components.sidebar'</span>)
+<span class="code-keyword">local</span> StatsPanel = <span class="code-keyword">require</span>(<span class="code-string">'components.stats'</span>)
+
+<span class="code-keyword">local</span> Dashboard = FuncComponent:<span class="code-type">extends</span>()
+
+<span class="code-keyword">function</span> Dashboard:<span class="code-type">new</span>(config)
+    <span class="code-keyword">local</span> instance = {
+        config = config <span class="code-keyword">or</span> {}
+    }
+    <span class="code-keyword">return</span> <span class="code-keyword">self</span>.parent.<span class="code-type">new</span>(<span class="code-keyword">self</span>, instance)
+<span class="code-keyword">end</span>
+
+Dashboard:<span class="code-type">setView</span>(<span class="code-string">'layouts/dashboard'</span>)
+
+<span class="code-keyword">function</span> Dashboard:<span class="code-type">initComponent</span>()
+    <span class="code-keyword">self</span>:<span class="code-type">init</span>(<span class="code-keyword">function</span>(children, props, style)
+        <span class="code-comment">-- Set dashboard data</span>
+        props.dashboard = {
+            title = <span class="code-keyword">self</span>.config.title <span class="code-keyword">or</span> <span class="code-string">"Dashboard"</span>,
+            user = { name = <span class="code-string">"John Doe"</span>, role = <span class="code-string">"Admin"</span> },
+            stats = {
+                { label = <span class="code-string">"Users"</span>, value = 1243, change = +12 },
+                { label = <span class="code-string">"Revenue"</span>, value = <span class="code-string">"$42.5K"</span>, change = +8 },
+                { label = <span class="code-string">"Orders"</span>, value = 567, change = -3 }
+            }
+        }
+        
+        <span class="code-comment">-- Compose dashboard with components</span>
+        children.header = Header:<span class="code-type">new</span>({ user = props.dashboard.user }):<span class="code-type">build</span>()
+        children.sidebar = Sidebar:<span class="code-type">new</span>():<span class="code-type">build</span>()
+        children.stats = StatsPanel:<span class="code-type">new</span>({ stats = props.dashboard.stats }):<span class="code-type">build</span>()
+    <span class="code-keyword">end</span>)
+    
+    <span class="code-keyword">return</span> <span class="code-keyword">self</span>
+<span class="code-keyword">end</span>
+
+<span class="code-keyword">function</span> Dashboard:<span class="code-type">render</span>()
+    <span class="code-keyword">self</span>:<span class="code-type">initComponent</span>()
+    <span class="code-keyword">return</span> <span class="code-keyword">self</span>:<span class="code-type">build</span>()
+<span class="code-keyword">end</span>
+
+<span class="code-keyword">return</span> Dashboard</code></pre>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Interactive App with LuaReactive</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Todo App using LuaReactive</span>
+<span class="code-keyword">local</span> FunctionalComponent = <span class="code-keyword">require</span>(<span class="code-string">"layout.renderer.FuncComponent"</span>)
+<span class="code-keyword">local</span> HTML = <span class="code-keyword">require</span>(<span class="code-string">"layout.renderer.LuaHTMLReactive"</span>)
+
+<span class="code-keyword">local</span> TodoApp = FunctionalComponent:<span class="code-type">extends</span>()
+TodoApp:<span class="code-type">setReactiveView</span>()
+
+<span class="code-comment">-- Component methods for interactivity</span>
+TodoApp.methods.addTodo = <span class="code-keyword">function</span>(<span class="code-keyword">self</span>, ws_id, args)
+    <span class="code-keyword">local</span> newTodo = {
+        id = <span class="code-keyword">tostring</span>(os.time()),
+        text = args.text,
+        completed = false
+    }
+    
+    <span class="code-keyword">local</span> currentTodos = <span class="code-keyword">self</span>.state.todos <span class="code-keyword">or</span> {}
+    table.insert(currentTodos, newTodo)
+    
+    <span class="code-keyword">self</span>:<span class="code-type">setState</span>({ todos = currentTodos })
+<span class="code-keyword">end</span>
+
+TodoApp.methods.toggleTodo = <span class="code-keyword">function</span>(<span class="code-keyword">self</span>, ws_id, args)
+    <span class="code-keyword">local</span> todos = <span class="code-keyword">self</span>.state.todos <span class="code-keyword">or</span> {}
+    <span class="code-keyword">for</span> i, todo <span class="code-keyword">in</span> <span class="code-keyword">ipairs</span>(todos) <span class="code-keyword">do</span>
+        <span class="code-keyword">if</span> todo.id == args.id <span class="code-keyword">then</span>
+            todo.completed = <span class="code-keyword">not</span> todo.completed
+            <span class="code-keyword">break</span>
+        <span class="code-keyword">end</span>
+    <span class="code-keyword">end</span>
+    
+    <span class="code-keyword">self</span>:<span class="code-type">setState</span>({ todos = todos })
+<span class="code-keyword">end</span>
+
+<span class="code-keyword">function</span> TodoApp:<span class="code-type">renderLayout</span>(state, props, children, H)
+    <span class="code-keyword">local</span> todos = state.todos <span class="code-keyword">or</span> {}
+    
+    <span class="code-keyword">return</span> H.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"max-w-md mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg"</span> }, {
+        H.e(<span class="code-string">"h1"</span>, { class = <span class="code-string">"text-2xl font-bold mb-4"</span> }, <span class="code-string">"Todo App"</span>),
+        
+        <span class="code-comment">-- Add todo form</span>
+        H.e(<span class="code-string">"form"</span>, {
+            onSubmit = H.onSubmit(HTML.patch(<span class="code-keyword">self</span>.component_key, <span class="code-keyword">nil</span>, <span class="code-string">"addTodo"</span>, {}))
+        }, {
+            H.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"flex gap-2 mb-4"</span> }, {
+                H.e(<span class="code-string">"input"</span>, {
+                    type = <span class="code-string">"text"</span>,
+                    name = <span class="code-string">"text"</span>,
+                    placeholder = <span class="code-string">"Add a new todo..."</span>,
+                    class = <span class="code-string">"flex-1 p-2 border rounded"</span>,
+                    required = true
+                }),
+                H.e(<span class="code-string">"button"</span>, {
+                    type = <span class="code-string">"submit"</span>,
+                    class = <span class="code-string">"bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"</span>
+                }, <span class="code-string">"Add"</span>)
+            })
+        }),
+        
+        <span class="code-comment">-- Todo list</span>
+        H.e(<span class="code-string">"ul"</span>, { class = <span class="code-string">"space-y-2"</span> }, 
+            #todos > 0 <span class="code-keyword">and</span> H.map(todos, <span class="code-keyword">function</span>(todo)
+                <span class="code-keyword">return</span> H.e(<span class="code-string">"li"</span>, { 
+                    class = <span class="code-string">"flex items-center gap-2 p-2 border rounded"</span> 
+                }, {
+                    H.e(<span class="code-string">"input"</span>, {
+                        type = <span class="code-string">"checkbox"</span>,
+                        checked = todo.completed,
+                        onChange = H.onChange(HTML.patch(<span class="code-keyword">self</span>.component_key, <span class="code-keyword">nil</span>, <span class="code-string">"toggleTodo"</span>, { id = todo.id }))
+                    }),
+                    H.e(<span class="code-string">"span"</span>, { 
+                        class = todo.completed <span class="code-keyword">and</span> <span class="code-string">"line-through text-gray-500"</span> <span class="code-keyword">or</span> <span class="code-string">""</span>
+                    }, todo.text)
+                })
+            <span class="code-keyword">end</span>) <span class="code-keyword">or</span> {
+                H.e(<span class="code-string">"li"</span>, { class = <span class="code-string">"text-gray-500 text-center py-4"</span> }, <span class="code-string">"No todos yet. Add one above!"</span>)
+            }
+        )
+    })
+<span class="code-keyword">end</span>
+
+<span class="code-keyword">function</span> TodoApp:<span class="code-type">startInit</span>()
+    <span class="code-keyword">self</span>:<span class="code-type">init</span>(<span class="code-keyword">function</span>(server, children, props, style, H)
+        <span class="code-keyword">return</span> <span class="code-keyword">function</span>(state, props, children, H)
+            <span class="code-keyword">return</span> <span class="code-keyword">self</span>:<span class="code-type">renderLayout</span>(state, props, children, H)
+        <span class="code-keyword">end</span>
+    <span class="code-keyword">end</span>)
+<span class="code-keyword">end</span>
+
+<span class="code-keyword">return</span> TodoApp</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="mt-12 pt-8 border-t border-light-border text-center text-light-text-secondary">
+            <p>Dawn Framework Component Rendering &copy; 2023</p>
+            <div class="flex justify-center space-x-4 mt-4">
+                <a href="#" class="text-laser-blue hover:underline">API Reference</a>
+                <a href="#" class="text-laser-blue hover:underline">Tutorials</a>
+                <a href="#" class="text-laser-blue hover:underline">Examples Repository</a>
+                <a href="#" class="text-laser-blue hover:underline">Community</a>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        // Copy code functionality
+        document.querySelectorAll('.copy-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const codeBlock = this.closest('.code-block').querySelector('pre code');
+                const textToCopy = codeBlock.textContent;
+                
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check mr-1"></i>Copied!';
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                    }, 2000);
+                });
+            });
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>

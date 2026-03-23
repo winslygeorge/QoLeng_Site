@@ -1,0 +1,574 @@
+<!-- Header Component -->
+<style>
+    /* Header Theme Variables */
+    header {
+        --header-bg: #FFFFFF;
+        --header-text: #2A2A3A;
+        --header-text-secondary: #5A6578;
+        --header-border: #E0E5EC;
+        --header-dropdown-bg: #FFFFFF;
+        --header-dropdown-hover: #F0F7FF;
+        --header-icon-bg: #F3F4F6;
+        --header-icon-color: #6B7280;
+        --header-top-bar: linear-gradient(135deg, #0066FF, #8A2BE2);
+    }
+
+    body.dark-theme header {
+        --header-bg: #151520;
+        --header-text: #E0E5EC;
+        --header-text-secondary: #A0A5B5;
+        --header-border: #2A2A3A;
+        --header-dropdown-bg: #1F1F2E;
+        --header-dropdown-hover: rgba(0, 102, 255, 0.1);
+        --header-icon-bg: #2A2A3A;
+        --header-icon-color: #E0E5EC;
+        --header-top-bar: linear-gradient(135deg, #0066FF, #8A2BE2);
+    }
+
+    header {
+        background-color: var(--header-bg);
+        border-bottom: 1px solid var(--header-border);
+        transition: all 0.3s ease;
+    }
+
+    .nav-link {
+        color: var(--header-text);
+        transition: color 0.3s ease;
+        cursor: pointer;
+    }
+
+    .nav-link:hover {
+        color: #0066FF;
+    }
+
+    body.dark-theme .nav-link:hover {
+        color: #00CC88;
+    }
+
+    /* Dropdown Styles */
+    .dropdown {
+        position: relative;
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        margin-top: 0.5rem;
+        min-width: 220px;
+        background-color: var(--header-dropdown-bg);
+        border: 1px solid var(--header-border);
+        border-radius: 0.75rem;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 100;
+        overflow: hidden;
+    }
+
+    .dropdown-menu.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .dropdown-menu a {
+        display: block;
+        padding: 0.75rem 1rem;
+        color: var(--header-text);
+        text-decoration: none;
+        transition: all 0.2s ease;
+        font-size: 0.875rem;
+    }
+
+    .dropdown-menu a:hover {
+        background-color: var(--header-dropdown-hover);
+        color: #0066FF;
+        padding-left: 1.25rem;
+    }
+
+    body.dark-theme .dropdown-menu a:hover {
+        color: #00CC88;
+    }
+
+    .dropdown-toggle {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+    }
+
+    .dropdown-toggle i {
+        transition: transform 0.3s ease;
+    }
+
+    .dropdown.active .dropdown-toggle i {
+        transform: rotate(180deg);
+    }
+
+    .text-light-text-secondary {
+        color: var(--header-text-secondary);
+    }
+
+    .bg-white {
+        background-color: var(--header-bg);
+    }
+
+    .bg-gray-100 {
+        background-color: var(--header-icon-bg);
+    }
+
+    .text-gray-600 {
+        color: var(--header-icon-color);
+    }
+
+    .border-light-border {
+        border-color: var(--header-border);
+    }
+
+    .top-bar-gradient {
+        background: var(--header-top-bar);
+    }
+
+    .mobile-menu {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease;
+        background-color: var(--header-bg);
+    }
+
+    .mobile-menu.open {
+        max-height: 500px;
+    }
+
+    .mobile-menu a {
+        color: var(--header-text);
+        border-color: var(--header-border);
+    }
+
+    .mobile-menu a:hover {
+        background-color: var(--header-dropdown-hover);
+    }
+
+    /* Table Styles for Documentation */
+    .doc-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.5rem 0;
+        background-color: var(--bg-surface);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .doc-table thead {
+        background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));
+        color: white;
+    }
+
+    .doc-table th {
+        padding: 1rem;
+        text-align: left;
+        font-weight: 600;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .doc-table td {
+        padding: 1rem;
+        border-bottom: 1px solid var(--border-color);
+        color: var(--text-primary);
+        font-size: 0.875rem;
+    }
+
+    .doc-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .doc-table tbody tr:hover {
+        background-color: var(--sidebar-hover-bg);
+        transition: background-color 0.2s ease;
+    }
+
+    body.dark-theme .doc-table td {
+        color: var(--text-primary);
+    }
+
+    .doc-table code {
+        background-color: rgba(0, 102, 255, 0.1);
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-family: 'Fira Code', monospace;
+        font-size: 0.8125rem;
+        color: var(--laser-blue);
+    }
+
+    body.dark-theme .doc-table code {
+        background-color: rgba(0, 204, 136, 0.1);
+        color: var(--build-green);
+    }
+
+    /* Parameter Table Specific Styles */
+    .parameter-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.5rem 0;
+        background-color: var(--bg-surface);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .parameter-table th {
+        background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));
+        color: white;
+        padding: 1rem;
+        text-align: left;
+        font-weight: 600;
+    }
+
+    .parameter-table td {
+        padding: 1rem;
+        border-bottom: 1px solid var(--border-color);
+        color: var(--text-primary);
+    }
+
+    .parameter-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .parameter-table tr:hover {
+        background-color: var(--sidebar-hover-bg);
+    }
+
+    .parameter-table .required-badge {
+        display: inline-block;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        background-color: var(--build-green);
+        color: white;
+    }
+
+    .parameter-table .optional-badge {
+        display: inline-block;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        background-color: var(--warning-amber);
+        color: var(--neural-charcoal);
+    }
+</style>
+
+<header class="sticky top-0 z-1000 shadow-md">
+    <!-- Top Bar -->
+    <div class="top-bar-gradient text-white py-2 px-4 text-sm">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <span class="flex items-center">
+                    <i class="fas fa-rocket mr-1"></i>
+                    <span>v1.2.0 Now Available</span>
+                </span>
+                <span class="hidden md:inline">|</span>
+                <a href="#" class="hidden md:inline hover:underline">What's New</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="#" class="hover:underline">
+                    <i class="fab fa-github mr-1"></i> GitHub
+                </a>
+                <span class="hidden md:inline">|</span>
+                <a href="#" class="hidden md:inline hover:underline">
+                    <i class="fab fa-discord mr-1"></i> Community
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Navigation -->
+    <nav class="container mx-auto px-4 py-4">
+        <div class="flex justify-between items-center">
+            <!-- Logo -->
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-r from-laser-blue to-build-green flex items-center justify-center text-white font-bold">
+                    <i class="fas fa-sun"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold bg-gradient-to-r from-laser-blue to-build-green bg-clip-text text-transparent">Dawn</h1>
+                    <p class="text-xs" style="color: var(--header-text-secondary);">Web Framework</p>
+                </div>
+            </div>
+            
+            <!-- Desktop Navigation -->
+            <div class="hidden lg:flex items-center space-x-8">
+                <!-- Documentation Dropdown -->
+                <div class="dropdown">
+                    <div class="dropdown-toggle nav-link font-medium">
+                        Documentation
+                        <i class="fas fa-chevron-down text-xs"></i>
+                    </div>
+                    <div class="dropdown-menu">
+                        <a href="#">
+                            <i class="fas fa-book mr-2 text-laser-blue"></i>
+                            Getting Started
+                        </a>
+                        <a href="#">
+                            <i class="fas fa-code mr-2 text-build-green"></i>
+                            API Reference
+                        </a>
+                        <a href="#">
+                            <i class="fas fa-graduation-cap mr-2 text-query-purple"></i>
+                            Tutorials
+                        </a>
+                        <a href="#">
+                            <i class="fas fa-shield-alt mr-2 text-warning-amber"></i>
+                            Security Guide
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Examples Dropdown -->
+                <div class="dropdown">
+                    <div class="dropdown-toggle nav-link font-medium">
+                        Examples
+                        <i class="fas fa-chevron-down text-xs"></i>
+                    </div>
+                    <div class="dropdown-menu">
+                        <a href="#">
+                            <i class="fas fa-shopping-cart mr-2 text-laser-blue"></i>
+                            E-commerce App
+                        </a>
+                        <a href="#">
+                            <i class="fas fa-comments mr-2 text-build-green"></i>
+                            Real-time Chat
+                        </a>
+                        <a href="#">
+                            <i class="fas fa-chart-line mr-2 text-query-purple"></i>
+                            Analytics Dashboard
+                        </a>
+                        <a href="#">
+                            <i class="fas fa-blog mr-2 text-warning-amber"></i>
+                            Blog Platform
+                        </a>
+                    </div>
+                </div>
+                
+                <a href="#" class="nav-link font-medium">Blog</a>
+                
+                <!-- Resources Dropdown -->
+                <div class="dropdown">
+                    <div class="dropdown-toggle nav-link font-medium">
+                        Resources
+                        <i class="fas fa-chevron-down text-xs"></i>
+                    </div>
+                    <div class="dropdown-menu">
+                        <a href="#">
+                            <i class="fas fa-tools mr-2 text-laser-blue"></i>
+                            Developer Tools
+                        </a>
+                        <a href="#">
+                            <i class="fas fa-palette mr-2 text-build-green"></i>
+                            UI Components
+                        </a>
+                        <a href="#">
+                            <i class="fas fa-plug mr-2 text-query-purple"></i>
+                            Plugins & Extensions
+                        </a>
+                        <a href="#">
+                            <i class="fas fa-download mr-2 text-warning-amber"></i>
+                            Download
+                        </a>
+                    </div>
+                </div>
+                
+                <a href="#" class="nav-link font-medium">Community</a>
+            </div>
+            
+            <!-- CTA Buttons -->
+            <div class="hidden lg:flex items-center space-x-4">
+                <a href="#" class="px-4 py-2 font-medium rounded-lg transition-colors" style="color: #0066FF;" onmouseover="this.style.backgroundColor='var(--header-dropdown-hover)'" onmouseout="this.style.backgroundColor='transparent'">
+                    Sign In
+                </a>
+                <a href="#" class="px-4 py-2 bg-gradient-to-r from-laser-blue to-build-green text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5">
+                    Get Started
+                    <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+                
+                <!-- Theme Toggle -->
+                <button id="theme-toggle-header" class="w-10 h-10 rounded-full flex items-center justify-center transition-colors" style="background-color: var(--header-icon-bg); color: var(--header-icon-color);">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="lg:hidden w-10 h-10 rounded-lg flex items-center justify-center transition-colors" style="background-color: var(--header-icon-bg); color: var(--header-icon-color);">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Navigation -->
+        <div id="mobile-menu" class="mobile-menu lg:hidden mt-4 rounded-lg shadow-md border overflow-hidden" style="border-color: var(--header-border);">
+            <div class="py-2">
+                <a href="#" class="block px-4 py-3 border-b flex items-center transition-colors" style="border-color: var(--header-border);">
+                    <i class="fas fa-book mr-3 text-laser-blue"></i>
+                    Documentation
+                </a>
+                <a href="#" class="block px-4 py-3 border-b flex items-center transition-colors" style="border-color: var(--header-border);">
+                    <i class="fas fa-code mr-3 text-build-green"></i>
+                    Examples
+                </a>
+                <a href="#" class="block px-4 py-3 border-b flex items-center transition-colors" style="border-color: var(--header-border);">
+                    <i class="fas fa-newspaper mr-3 text-query-purple"></i>
+                    Blog
+                </a>
+                <a href="#" class="block px-4 py-3 border-b flex items-center transition-colors" style="border-color: var(--header-border);">
+                    <i class="fas fa-tools mr-3 text-warning-amber"></i>
+                    Resources
+                </a>
+                <a href="#" class="block px-4 py-3 border-b flex items-center transition-colors" style="border-color: var(--header-border);">
+                    <i class="fas fa-users mr-3 text-laser-blue"></i>
+                    Community
+                </a>
+                <div class="px-4 py-3 flex flex-col space-y-3">
+                    <a href="#" class="px-4 py-2 text-center font-medium rounded-lg transition-colors" style="color: #0066FF; border: 1px solid #0066FF;" onmouseover="this.style.backgroundColor='var(--header-dropdown-hover)'" onmouseout="this.style.backgroundColor='transparent'">
+                        Sign In
+                    </a>
+                    <a href="#" class="px-4 py-2 text-center bg-gradient-to-r from-laser-blue to-build-green text-white font-medium rounded-lg shadow-md">
+                        Get Started
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<script>
+    // Initialize dropdown toggles
+    function initDropdowns() {
+        const dropdowns = document.querySelectorAll('.dropdown');
+        
+        dropdowns.forEach(dropdown => {
+            const toggle = dropdown.querySelector('.dropdown-toggle');
+            const menu = dropdown.querySelector('.dropdown-menu');
+            
+            if (toggle && menu) {
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!dropdown.contains(event.target)) {
+                        dropdown.classList.remove('active');
+                        menu.classList.remove('active');
+                    }
+                });
+                
+                // Toggle dropdown on click
+                toggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    
+                    // Close all other dropdowns
+                    dropdowns.forEach(otherDropdown => {
+                        if (otherDropdown !== dropdown) {
+                            otherDropdown.classList.remove('active');
+                            const otherMenu = otherDropdown.querySelector('.dropdown-menu');
+                            if (otherMenu) otherMenu.classList.remove('active');
+                        }
+                    });
+                    
+                    // Toggle current dropdown
+                    dropdown.classList.toggle('active');
+                    menu.classList.toggle('active');
+                });
+                
+                // Optional: Close on hover (comment out if you prefer click)
+                // dropdown.addEventListener('mouseenter', function() {
+                //     dropdown.classList.add('active');
+                //     menu.classList.add('active');
+                // });
+                // 
+                // dropdown.addEventListener('mouseleave', function() {
+                //     dropdown.classList.remove('active');
+                //     menu.classList.remove('active');
+                // });
+            }
+        });
+    }
+    
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-button');
+    if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('open');
+            
+            const icon = this.querySelector('i');
+            if (mobileMenu.classList.contains('open')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+    }
+    
+    // Theme toggle functionality
+    function toggleTheme() {
+        const body = document.body;
+        const themeToggleIcon = document.querySelector('#theme-toggle-header i');
+        
+        if (body.classList.contains('dark-theme')) {
+            body.classList.remove('dark-theme');
+            if (themeToggleIcon) {
+                themeToggleIcon.classList.remove('fa-sun');
+                themeToggleIcon.classList.add('fa-moon');
+            }
+            localStorage.setItem('theme', 'light');
+        } else {
+            body.classList.add('dark-theme');
+            if (themeToggleIcon) {
+                themeToggleIcon.classList.remove('fa-moon');
+                themeToggleIcon.classList.add('fa-sun');
+            }
+            localStorage.setItem('theme', 'dark');
+        }
+        
+        // Dispatch event for any other components listening
+        window.dispatchEvent(new Event('themechange'));
+    }
+    
+    // Load saved theme
+    function loadTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        const body = document.body;
+        const themeToggleIcon = document.querySelector('#theme-toggle-header i');
+        
+        if (savedTheme === 'dark') {
+            body.classList.add('dark-theme');
+            if (themeToggleIcon) {
+                themeToggleIcon.classList.remove('fa-moon');
+                themeToggleIcon.classList.add('fa-sun');
+            }
+        } else {
+            body.classList.remove('dark-theme');
+            if (themeToggleIcon) {
+                themeToggleIcon.classList.remove('fa-sun');
+                themeToggleIcon.classList.add('fa-moon');
+            }
+        }
+    }
+    
+    // Add theme toggle event listener
+    const themeToggle = document.getElementById('theme-toggle-header');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', toggleTheme);
+    }
+    
+    // Initialize everything
+    document.addEventListener('DOMContentLoaded', function() {
+        loadTheme();
+        initDropdowns();
+    });
+</script>

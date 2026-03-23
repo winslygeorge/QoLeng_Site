@@ -1,0 +1,365 @@
+
+        /* Smooth scrolling for anchor links */
+        html {
+            scroll-behavior: smooth;
+        }
+     
+        /* Specific overrides for elements that should not have rounded corners (e.g., full-width sections) */
+        section, footer, nav {
+            border-radius: 0;
+        }
+
+
+        /* router.css */
+/* Route transition animations */
+.route-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.route-transition {
+    transition: all 0.3s ease;
+}
+
+.route-slide-in {
+    animation: slideIn 0.3s forwards;
+}
+
+.route-slide-out {
+    animation: slideOut 0.3s forwards;
+}
+
+.route-fade-in {
+    animation: fadeIn 0.3s forwards;
+}
+
+.route-fade-out {
+    animation: fadeOut 0.3s forwards;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+}
+
+@keyframes slideOut {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+/* Navigation styles */
+.app-nav {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.nav-list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 1rem;
+}
+
+.nav-link {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.15s ease;
+}
+
+.nav-link:hover {
+    background-color: #e9ecef;
+}
+
+        /* Enhanced Modal Styles */
+.modal-manager {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    /* backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px); */
+}
+
+.modal-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    max-width: 90%;
+    max-height: 90%;
+    overflow: auto;
+    position: relative;
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: none;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 1001;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close-btn:hover {
+    background: rgba(0, 0, 0, 0.2);
+    transform: scale(1.1);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .modal-wrapper {
+        padding: 1rem;
+    }
+    
+    .modal-content {
+        max-width: 95%;
+        max-height: 95%;
+        border-radius: 8px;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .modal-content {
+        background: #2d3748;
+        color: white;
+    }
+    
+    .modal-close-btn {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+    }
+    
+    .modal-close-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+}
+
+.modal-open { overflow: hidden; }
+            
+            .modal-backdrop {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                /* backdrop-filter: blur(5px); */
+            }
+            
+            .modal-wrapper {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                pointer-events: none;
+            }
+            
+            .modal-wrapper > * {
+                pointer-events: auto;
+            }
+            
+            .modal-close-btn {
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                width: 2rem;
+                height: 2rem;
+                border: none;
+                background: rgba(0, 0, 0, 0.1);
+                border-radius: 50%;
+                font-size: 1.5rem;
+                line-height: 1;
+                cursor: pointer;
+                z-index: 1001;
+                transition: background 0.2s;
+            }
+
+            .modal-content {
+                z-index:  2000;
+            }
+            
+            .modal-close-btn:hover {
+                background: rgba(0, 0, 0, 0.2);
+            }
+            
+            /* Animations */
+            .modal-fade-in {
+                animation: fadeIn 0.3s ease-out;
+            }
+            
+            .modal-fade-out {
+                animation: fadeOut 0.3s ease-in;
+            }
+            
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            
+            @keyframes fadeOut {
+                from { opacity: 1; }
+                to { opacity: 0; }
+            }
+            
+            .modal-slide-up {
+                animation: slideUp 0.3s ease-out;
+            }
+            
+            .modal-slide-down {
+                animation: slideDown 0.3s ease-in;
+            }
+            
+            @keyframes slideUp {
+                from { 
+                    transform: translateY(100%);
+                    opacity: 0;
+                }
+                to { 
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
+            
+            @keyframes slideDown {
+                from { 
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+                to { 
+                    transform: translateY(100%);
+                    opacity: 0;
+                }
+            }
+            
+            .modal-zoom-in {
+                animation: zoomIn 0.3s ease-out;
+            }
+            
+            .modal-zoom-out {
+                animation: zoomOut 0.3s ease-in;
+            }
+            
+            @keyframes zoomIn {
+                from { 
+                    transform: scale(0.7);
+                    opacity: 0;
+                }
+                to { 
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+            
+            @keyframes zoomOut {
+                from { 
+                    transform: scale(1);
+                    opacity: 1;
+                }
+                to { 
+                    transform: scale(0.7);
+                    opacity: 0;
+                }
+            }
+
+/* Enhanced Modal Styles for Dragging and Cascading */
+.modal-draggable {
+    user-select: none; /* Prevent text selection during drag */
+}
+
+.modal-draggable:active {
+    cursor: move;
+}
+
+.modal-header {
+    cursor: move;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
+}
+
+/* Ensure modal content doesn't get selected during drag */
+.modal-draggable * {
+    user-select: none;
+}
+
+.modal-draggable input,
+.modal-draggable textarea,
+.modal-draggable [contenteditable] {
+    user-select: text;
+}
+
+/* Shadow effect for better visual hierarchy */
+.modal-wrapper {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.2s ease;
+}
+
+.modal-wrapper:hover {
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+}
+
+/* Active modal has stronger shadow */
+.modal-wrapper.active {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}

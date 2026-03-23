@@ -1,0 +1,8 @@
+{
+  "students":[{
+      "id":7,
+      "mean_score":"500",
+      "name":"Edwina",
+      "age":"56"
+    }]
+}

@@ -1,0 +1,1896 @@
+
+    <style>
+        .code-block {
+            background: #0A0A0F;
+            border-left: 4px solid #0066FF;
+        }
+        
+        .light-theme .code-block {
+            background: #F7F9FC;
+            border-left: 4px solid #0066FF;
+            color: #2A2A3A;
+        }
+        
+        .code-keyword { color: #0066FF; }
+        .code-string { color: #00CC88; }
+        .code-comment { color: #6A737D; }
+        .light-theme .code-comment { color: #9AA5B5; }
+        .code-variable { color: #8A2BE2; }
+        .code-type { color: #FFB300; }
+        
+        .code-block::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .code-block::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+        
+        .code-block::-webkit-scrollbar-thumb {
+            background: rgba(0, 102, 255, 0.5);
+            border-radius: 4px;
+        }
+        
+        .code-block::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 102, 255, 0.7);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00CC88, #8A2BE2);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .function-signature {
+            background: #F0F4F8;
+            border-left: 4px solid #0066FF;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.5rem;
+        }
+        
+        .param-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        .param-table th, .param-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #E0E5EC;
+        }
+        
+        .param-table th {
+            background-color: #F7F9FC;
+            font-weight: 600;
+        }
+        
+        .method-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        .method-table th, .method-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border: 1px solid #E0E5EC;
+        }
+        
+        .method-table th {
+            background-color: #F7F9FC;
+            font-weight: 600;
+        }
+        
+        .widget-preview {
+            border: 2px dashed #E0E5EC;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            margin: 1rem 0;
+            background: #F8FAFC;
+        }
+    </style>
+
+    <main class="main-content-body max-w-7xl mx-auto px-6 py-8 light-theme">
+        <!-- Overview Section -->
+        <section id="overview" class="mb-16 animate-fadeIn">
+            <div class="bg-white rounded-xl shadow-lg p-8 border border-light-border">
+                <h1 class="text-4xl font-bold mb-6 text-neural-charcoal">HTML Custom Elements & Widgets</h1>
+                <p class="text-xl text-light-text-secondary mb-8">
+                    Comprehensive collection of pre-built UI components, form elements, layout widgets, and custom elements
+                    for building modern web applications with LuaHTMLReactive.
+                </p>
+                
+                <div class="grid md:grid-cols-4 gap-6 mb-8">
+                    <div class="feature-card bg-blue-50 p-6 rounded-lg border border-blue-100">
+                        <div class="w-12 h-12 rounded-full bg-laser-blue flex items-center justify-center text-white mb-4">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-laser-blue">Layout Widgets</h3>
+                        <p class="text-light-text-secondary">Containers, grids, flex layouts, and responsive components</p>
+                    </div>
+                    
+                    <div class="feature-card bg-green-50 p-6 rounded-lg border border-green-100">
+                        <div class="w-12 h-12 rounded-full bg-build-green flex items-center justify-center text-white mb-4">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-build-green">Form Widgets</h3>
+                        <p class="text-light-text-secondary">Input fields, buttons, selects, and form controls</p>
+                    </div>
+                    
+                    <div class="feature-card bg-purple-50 p-6 rounded-lg border border-purple-100">
+                        <div class="w-12 h-12 rounded-full bg-query-purple flex items-center justify-center text-white mb-4">
+                            <i class="fas fa-cube"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-query-purple">UI Components</h3>
+                        <p class="text-light-text-secondary">Modals, loaders, paginators, and interactive elements</p>
+                    </div>
+                    
+                    <div class="feature-card bg-amber-50 p-6 rounded-lg border border-amber-100">
+                        <div class="w-12 h-12 rounded-full bg-warning-amber flex items-center justify-center text-white mb-4">
+                            <i class="fas fa-file-upload"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-warning-amber">File Inputs</h3>
+                        <p class="text-light-text-secondary">Advanced file uploads with preview and streaming</p>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold">Quick Start Example</h3>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Import HTML module</span>
+<span class="code-keyword">local</span> HTML = <span class="code-keyword">require</span> <span class="code-string">"LuaHTMLReactive"</span>
+
+<span class="code-comment">-- Create a complete UI with custom widgets</span>
+<span class="code-keyword">local</span> appUI = HTML.Card({ class = <span class="code-string">"max-w-4xl mx-auto"</span> }, {
+    HTML.e(<span class="code-string">"h1"</span>, { class = <span class="code-string">"text-2xl font-bold mb-6"</span> }, <span class="code-string">"User Dashboard"</span>),
+    
+    HTML.Grid(2, <span class="code-string">"1rem"</span>, {
+        HTML.Card({}, {
+            HTML.e(<span class="code-string">"h2"</span>, { class = <span class="code-string">"text-lg font-semibold mb-4"</span> }, <span class="code-string">"User Profile"</span>),
+            HTML.Form({}, {
+                HTML.FormField(<span class="code-string">"Name"</span>, HTML.TextField(<span class="code-string">"name"</span>, <span class="code-string">"John Doe"</span>)),
+                HTML.FormField(<span class="code-string">"Email"</span>, HTML.TextField(<span class="code-string">"email"</span>, <span class="code-string">"john@example.com"</span>, <span class="code-string">"Enter email"</span>)),
+                HTML.FormField(<span class="code-string">"Avatar"</span>, HTML.ImageInput(<span class="code-string">"avatar"</span>, <span class="code-string">"avatar-preview"</span>)),
+                HTML.PrimaryButton(<span class="code-string">"Save Profile"</span>, { type = <span class="code-string">"submit"</span> })
+            })
+        }),
+        
+        HTML.Card({}, {
+            HTML.e(<span class="code-string">"h2"</span>, { class = <span class="code-string">"text-lg font-semibold mb-4"</span> }, <span class="code-string">"Actions"</span>),
+            HTML.Column({}, {
+                HTML.PrimaryButton(<span class="code-string">"New Project"</span>),
+                HTML.SecondaryButton(<span class="code-string">"View Reports"</span>),
+                HTML.DangerButton(<span class="code-string">"Delete Account"</span>)
+            })
+        })
+    }),
+    
+    <span class="code-comment">-- Image preview element</span>
+    HTML.e(<span class="code-string">"img"</span>, {
+        id = <span class="code-string">"avatar-preview"</span>,
+        class = <span class="code-string">"hidden mt-4 max-h-32 rounded"</span>
+    })
+})
+
+<span class="code-keyword">return</span> appUI</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Layout Widgets Section -->
+        <section id="layout-widgets" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-laser-blue flex items-center justify-center text-white font-bold mr-4">1</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">Layout Widgets</h2>
+            </div>
+
+            <!-- Card Widget -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Card Widget</h3>
+                <p class="text-light-text-secondary mb-6">
+                    Container component with built-in styling for content grouping and visual hierarchy.
+                </p>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">HTML.Card(attrs, children)</h4>
+                    <p class="text-light-text-secondary mb-3">Creates a card container with Tailwind styling.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Required</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>attrs</td>
+                                <td>table?</td>
+                                <td>Additional HTML attributes for the card</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>children</td>
+                                <td>VDOMNode|VDOMNode[]?</td>
+                                <td>Card content and child elements</td>
+                                <td>No</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <p class="mt-3"><strong>Returns:</strong> VDOMNode - A div element with card styling</p>
+                </div>
+
+                <div class="widget-preview">
+                    <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+                        <h3 class="text-lg font-semibold mb-2">Card Title</h3>
+                        <p class="text-gray-600">This is a card component with built-in styling. It provides a clean container for your content.</p>
+                        <div class="mt-4">
+                            <button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Action</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Card Examples</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Basic card</span>
+<span class="code-keyword">local</span> basicCard = HTML.Card({}, {
+    HTML.e(<span class="code-string">"h3"</span>, { class = <span class="code-string">"text-lg font-semibold"</span> }, <span class="code-string">"Basic Card"</span>),
+    HTML.e(<span class="code-string">"p"</span>, { class = <span class="code-string">"text-gray-600"</span> }, <span class="code-string">"This is a simple card component."</span>)
+})
+
+<span class="code-comment">-- Card with custom attributes and actions</span>
+<span class="code-keyword">local</span> interactiveCard = HTML.Card({
+    id = <span class="code-string">"user-card"</span>,
+    class = <span class="code-string">"max-w-sm"</span>,
+    onclick = HTML.on(<span class="code-string">"click"</span>, HTML.client.console(<span class="code-string">"log"</span>, <span class="code-string">"Card clicked"</span>))
+}, {
+    HTML.e(<span class="code-string">"img"</span>, {
+        src = <span class="code-string">"user-avatar.jpg"</span>,
+        class = <span class="code-string">"w-full h-32 object-cover rounded-t-lg"</span>,
+        alt = <span class="code-string">"User avatar"</span>
+    }),
+    HTML.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"p-4"</span> }, {
+        HTML.e(<span class="code-string">"h3"</span>, { class = <span class="code-string">"text-xl font-bold"</span> }, <span class="code-string">"John Doe"</span>),
+        HTML.e(<span class="code-string">"p"</span>, { class = <span class="code-string">"text-gray-600 mb-4"</span> }, <span class="code-string">"Software Developer"</span>),
+        HTML.Row({ class = <span class="code-string">"justify-between"</span> }, {
+            HTML.SecondaryButton(<span class="code-string">"Message"</span>),
+            HTML.PrimaryButton(<span class="code-string">"Follow"</span>)
+        })
+    })
+})
+
+<span class="code-comment">-- Nested cards in a grid</span>
+<span class="code-keyword">local</span> cardGrid = HTML.Grid(3, <span class="code-string">"1rem"</span>, {
+    HTML.Card({}, {
+        HTML.e(<span class="code-string">"h3"</span>, {}, <span class="code-string">"Feature 1"</span>),
+        HTML.e(<span class="code-string">"p"</span>, {}, <span class="code-string">"Description of feature 1"</span>)
+    }),
+    HTML.Card({}, {
+        HTML.e(<span class="code-string">"h3"</span>, {}, <span class="code-string">"Feature 2"</span>),
+        HTML.e(<span class="code-string">"p"</span>, {}, <span class="code-string">"Description of feature 2"</span>)
+    }),
+    HTML.Card({}, {
+        HTML.e(<span class="code-string">"h3"</span>, {}, <span class="code-string">"Feature 3"</span>),
+        HTML.e(<span class="code-string">"p"</span>, {}, <span class="code-string">"Description of feature 3"</span>)
+    })
+})</code></pre>
+                </div>
+            </div>
+
+            <!-- Grid Layout -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Grid Layout</h3>
+                <p class="text-light-text-secondary mb-6">
+                    CSS Grid container for creating responsive grid layouts.
+                </p>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">HTML.Grid(columns, gap, children)</h4>
+                    <p class="text-light-text-secondary mb-3">Creates a CSS Grid container.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Required</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>columns</td>
+                                <td>number?</td>
+                                <td>Number of columns (default: 2)</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>gap</td>
+                                <td>string?</td>
+                                <td>Gap between grid items (default: "1rem")</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>children</td>
+                                <td>VDOMNode|VDOMNode[]?</td>
+                                <td>Grid items and content</td>
+                                <td>No</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="widget-preview">
+                    <div class="grid gap-4" style="grid-template-columns: repeat(3, minmax(0, 1fr));">
+                        <div class="bg-blue-100 p-4 rounded text-center">Item 1</div>
+                        <div class="bg-green-100 p-4 rounded text-center">Item 2</div>
+                        <div class="bg-purple-100 p-4 rounded text-center">Item 3</div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Grid Examples</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Basic 2-column grid</span>
+<span class="code-keyword">local</span> basicGrid = HTML.Grid(2, <span class="code-string">"1rem"</span>, {
+    HTML.Card({}, { HTML.e(<span class="code-string">"p"</span>, {}, <span class="code-string">"Left Column"</span>) }),
+    HTML.Card({}, { HTML.e(<span class="code-string">"p"</span>, {}, <span class="code-string">"Right Column"</span>) })
+})
+
+<span class="code-comment">-- Responsive grid with multiple items</span>
+<span class="code-keyword">local</span> responsiveGrid = HTML.Grid(4, <span class="code-string">"0.5rem"</span>, {
+    HTML.Card({ class = <span class="code-string">"text-center"</span> }, { HTML.e(<span class="code-string">"p"</span>, {}, <span class="code-string">"Item 1"</span>) }),
+    HTML.Card({ class = <span class="code-string">"text-center"</span> }, { HTML.e(<span class="code-string">"p"</span>, {}, <span class="code-string">"Item 2"</span>) }),
+    HTML.Card({ class = <span class="code-string">"text-center"</span> }, { HTML.e(<span class="code-string">"p"</span>, {}, <span class="code-string">"Item 3"</span>) }),
+    HTML.Card({ class = <span class="code-string">"text-center"</span> }, { HTML.e(<span class="code-string">"p"</span>, {}, <span class="code-string">"Item 4"</span>) }),
+    HTML.Card({ class = <span class="code-string">"text-center"</span> }, { HTML.e(<span class="code-string">"p"</span>, {}, <span class="code-string">"Item 5"</span>) }),
+    HTML.Card({ class = <span class="code-string">"text-center"</span> }, { HTML.e(<span class="code-string">"p"</span>, {}, <span class="code-string">"Item 6"</span>) })
+})
+
+<span class="code-comment">-- Grid with dynamic content</span>
+<span class="code-keyword">local</span> items = { <span class="code-string">"Apple"</span>, <span class="code-string">"Banana"</span>, <span class="code-string">"Cherry"</span>, <span class="code-string">"Date"</span>, <span class="code-string">"Elderberry"</span> }
+<span class="code-keyword">local</span> dynamicGrid = HTML.Grid(3, <span class="code-string">"0.75rem"</span>, 
+    HTML.map(items, <span class="code-keyword">function</span>(item)
+        <span class="code-keyword">return</span> HTML.Card({}, {
+            HTML.e(<span class="code-string">"p"</span>, { class = <span class="code-string">"text-center font-medium"</span> }, item)
+        })
+    <span class="code-keyword">end</span>
+))</code></pre>
+                </div>
+            </div>
+
+            <!-- Flex Layouts -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Flex Layouts</h3>
+                <p class="text-light-text-secondary mb-6">
+                    Flexbox containers for horizontal and vertical layouts with proper spacing.
+                </p>
+
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">HTML.Row(attrs, children)</h4>
+                    <p class="text-light-text-secondary mb-3">Creates a horizontal flexbox container.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Required</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>attrs</td>
+                                <td>table?</td>
+                                <td>Additional HTML attributes</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>children</td>
+                                <td>VDOMNode|VDOMNode[]?</td>
+                                <td>Row content and child elements</td>
+                                <td>No</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">HTML.Column(attrs, children)</h4>
+                    <p class="text-light-text-secondary mb-3">Creates a vertical flexbox container.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Required</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>attrs</td>
+                                <td>table?</td>
+                                <td>Additional HTML attributes</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>children</td>
+                                <td>VDOMNode|VDOMNode[]?</td>
+                                <td>Column content and child elements</td>
+                                <td>No</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="widget-preview">
+                    <div class="flex flex-row items-center gap-4 mb-4">
+                        <div class="bg-blue-100 p-3 rounded">Row Item 1</div>
+                        <div class="bg-green-100 p-3 rounded">Row Item 2</div>
+                        <div class="bg-purple-100 p-3 rounded">Row Item 3</div>
+                    </div>
+                    <div class="flex flex-col gap-3">
+                        <div class="bg-blue-100 p-3 rounded">Column Item 1</div>
+                        <div class="bg-green-100 p-3 rounded">Column Item 2</div>
+                        <div class="bg-purple-100 p-3 rounded">Column Item 3</div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Flex Layout Examples</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Basic row and column layouts</span>
+<span class="code-keyword">local</span> buttonRow = HTML.Row({ class = <span class="code-string">"justify-end gap-2"</span> }, {
+    HTML.SecondaryButton(<span class="code-string">"Cancel"</span>),
+    HTML.PrimaryButton(<span class="code-string">"Save"</span>)
+})
+
+<span class="code-keyword">local</span> formColumn = HTML.Column({ class = <span class="code-string">"max-w-md"</span> }, {
+    HTML.FormField(<span class="code-string">"Username"</span>, HTML.TextField(<span class="code-string">"username"</span>)),
+    HTML.FormField(<span class="code-string">"Password"</span>, HTML.TextField(<span class="code-string">"password"</span>, <span class="code-string">""</span>, <span class="code-string">""</span>, { type = <span class="code-string">"password"</span> })),
+    buttonRow
+})
+
+<span class="code-comment">-- Complex layout with nested rows and columns</span>
+<span class="code-keyword">local</span> userProfile = HTML.Card({}, {
+    HTML.Row({ class = <span class="code-string">"items-start gap-6"</span> }, {
+        HTML.e(<span class="code-string">"img"</span>, {
+            src = <span class="code-string">"avatar.jpg"</span>,
+            class = <span class="code-string">"w-16 h-16 rounded-full"</span>,
+            alt = <span class="code-string">"Avatar"</span>
+        }),
+        HTML.Column({ class = <span class="code-string">"flex-1"</span> }, {
+            HTML.e(<span class="code-string">"h3"</span>, { class = <span class="code-string">"text-lg font-semibold"</span> }, <span class="code-string">"John Doe"</span>),
+            HTML.e(<span class="code-string">"p"</span>, { class = <span class="code-string">"text-gray-600"</span> }, <span class="code-string">"Software Developer"</span>),
+            HTML.Row({ class = <span class="code-string">"gap-2 mt-2"</span> }, {
+                HTML.e(<span class="code-string">"span"</span>, { class = <span class="code-string">"bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm"</span> }, <span class="code-string">"JavaScript"</span>),
+                HTML.e(<span class="code-string">"span"</span>, { class = <span class="code-string">"bg-green-100 text-green-800 px-2 py-1 rounded text-sm"</span> }, <span class="code-string">"Lua"</span>),
+                HTML.e(<span class="code-string">"span"</span>, { class = <span class="code-string">"bg-purple-100 text-purple-800 px-2 py-1 rounded text-sm"</span> }, <span class="code-string">"React"</span>)
+            })
+        })
+    })
+})
+
+<span class="code-comment">-- Responsive layout combining grid and flex</span>
+<span class="code-keyword">local</span> dashboard = HTML.Grid(2, <span class="code-string">"1.5rem"</span>, {
+    HTML.Column({}, {
+        HTML.Card({}, { HTML.e(<span class="code-string">"h3"</span>, {}, <span class="code-string">"Stats"</span>) }),
+        HTML.Card({}, { HTML.e(<span class="code-string">"h3"</span>, {}, <span class="code-string">"Activity"</span>) })
+    }),
+    HTML.Column({}, {
+        HTML.Card({}, { HTML.e(<span class="code-string">"h3"</span>, {}, <span class="code-string">"Recent"</span>) }),
+        HTML.Card({}, { HTML.e(<span class="code-string">"h3"</span>, {}, <span class="code-string">"Notifications"</span>) })
+    })
+})</code></pre>
+                </div>
+            </div>
+
+            <!-- List View -->
+            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">List View</h3>
+                <p class="text-light-text-secondary mb-6">
+                    Unstyled list container for creating custom list interfaces.
+                </p>
+
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">HTML.ListView(children, attrs)</h4>
+                    <p class="text-light-text-secondary mb-3">Creates an unstyled list container.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Required</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>children</td>
+                                <td>VDOMNode|VDOMNode[]?</td>
+                                <td>List items and content</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>attrs</td>
+                                <td>table?</td>
+                                <td>Additional HTML attributes</td>
+                                <td>No</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="widget-preview">
+                    <ul class="list-none p-0 m-0 space-y-2">
+                        <li class="bg-gray-100 p-3 rounded">List item 1</li>
+                        <li class="bg-gray-100 p-3 rounded">List item 2</li>
+                        <li class="bg-gray-100 p-3 rounded">List item 3</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">List View Examples</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Basic list</span>
+<span class="code-keyword">local</span> todoList = HTML.ListView({
+    HTML.e(<span class="code-string">"li"</span>, { class = <span class="code-string">"bg-white p-3 border rounded"</span> }, <span class="code-string">"Buy groceries"</span>),
+    HTML.e(<span class="code-string">"li"</span>, { class = <span class="code-string">"bg-white p-3 border rounded"</span> }, <span class="code-string">"Walk the dog"</span>),
+    HTML.e(<span class="code-string">"li"</span>, { class = <span class="code-string">"bg-white p-3 border rounded"</span> }, <span class="code-string">"Finish project"</span>)
+})
+
+<span class="code-comment">-- Interactive list with dynamic content</span>
+<span class="code-keyword">local</span> tasks = {
+    { id = 1, text = <span class="code-string">"Design homepage"</span>, completed = true },
+    { id = 2, text = <span class="code-string">"Write documentation"</span>, completed = false },
+    { id = 3, text = <span class="code-string">"Test application"</span>, completed = false }
+}
+
+<span class="code-keyword">local</span> interactiveList = HTML.ListView(
+    HTML.map(tasks, <span class="code-keyword">function</span>(task)
+        <span class="code-keyword">return</span> HTML.e(<span class="code-string">"li"</span>, {
+            class = <span class="code-string">"p-3 border rounded flex items-center gap-3 "</span> ..
+                   (task.completed <span class="code-keyword">and</span> <span class="code-string">"bg-green-50"</span> <span class="code-keyword">or</span> <span class="code-string">"bg-white"</span>)
+        }, {
+            HTML.e(<span class="code-string">"input"</span>, {
+                type = <span class="code-string">"checkbox"</span>,
+                checked = task.completed,
+                class = <span class="code-string">"h-4 w-4"</span>,
+                onchange = HTML.on(<span class="code-string">"change"</span>, HTML.handler(<span class="code-string">"toggleTask"</span>, task.id))
+            }),
+            HTML.e(<span class="code-string">"span"</span>, {
+                class = task.completed <span class="code-keyword">and</span> <span class="code-string">"line-through text-gray-500"</span> <span class="code-keyword">or</span> <span class="code-string">"text-gray-800"</span>
+            }, task.text),
+            HTML.e(<span class="code-string">"button"</span>, {
+                class = <span class="code-string">"ml-auto text-red-500 hover:text-red-700"</span>,
+                onclick = HTML.on(<span class="code-string">"click"</span>, HTML.handler(<span class="code-string">"deleteTask"</span>, task.id))
+            }, <span class="code-string">"Delete"</span>)
+        })
+    <span class="code-keyword">end</span>),
+    { class = <span class="code-string">"space-y-2"</span> }
+)
+
+<span class="code-comment">-- Nested list structure</span>
+<span class="code-keyword">local</span> categoryList = HTML.ListView({
+    HTML.e(<span class="code-string">"li"</span>, {}, {
+        HTML.e(<span class="code-string">"h4"</span>, { class = <span class="code-string">"font-semibold mb-2"</span> }, <span class="code-string">"Frontend"</span>),
+        HTML.ListView({
+            HTML.e(<span class="code-string">"li"</span>, { class = <span class="code-string">"ml-4"</span> }, <span class="code-string">"React"</span>),
+            HTML.e(<span class="code-string">"li"</span>, { class = <span class="code-string">"ml-4"</span> }, <span class="code-string">"Vue"</span>),
+            HTML.e(<span class="code-string">"li"</span>, { class = <span class="code-string">"ml-4"</span> }, <span class="code-string">"Angular"</span>)
+        }, { class = <span class="code-string">"space-y-1"</span> })
+    }),
+    HTML.e(<span class="code-string">"li"</span>, {}, {
+        HTML.e(<span class="code-string">"h4"</span>, { class = <span class="code-string">"font-semibold mb-2"</span> }, <span class="code-string">"Backend"</span>),
+        HTML.ListView({
+            HTML.e(<span class="code-string">"li"</span>, { class = <span class="code-string">"ml-4"</span> }, <span class="code-string">"Node.js"</span>),
+            HTML.e(<span class="code-string">"li"</span>, { class = <span class="code-string">"ml-4"</span> }, <span class="code-string">"Python"</span>),
+            HTML.e(<span class="code-string">"li"</span>, { class = <span class="code-string">"ml-4"</span> }, <span class="code-string">"Go"</span>)
+        }, { class = <span class="code-string">"space-y-1"</span> })
+    })
+}, { class = <span class="code-string">"space-y-4"</span> })</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Form Widgets Section -->
+        <section id="form-widgets" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-build-green flex items-center justify-center text-white font-bold mr-4">2</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">Form Widgets</h2>
+            </div>
+
+            <!-- Form Container -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Form Container</h3>
+                <p class="text-light-text-secondary mb-6">
+                    Structured form container with built-in spacing and styling.
+                </p>
+
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">HTML.Form(attrs, children)</h4>
+                    <p class="text-light-text-secondary mb-3">Creates a form element with Tailwind styling.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Required</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>attrs</td>
+                                <td>table?</td>
+                                <td>Form attributes and event handlers</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>children</td>
+                                <td>VDOMNode|VDOMNode[]?</td>
+                                <td>Form fields and content</td>
+                                <td>No</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">HTML.FormField(label, inputNode)</h4>
+                    <p class="text-light-text-secondary mb-3">Creates a labeled form field structure.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Required</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>label</td>
+                                <td>string</td>
+                                <td>Field label text</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>inputNode</td>
+                                <td>VDOMNode</td>
+                                <td>Input element or widget</td>
+                                <td>Yes</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="widget-preview">
+                    <form class="space-y-4">
+                        <div>
+                            <label class="text-sm font-medium text-gray-700 mb-1">Username</label>
+                            <input type="text" class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full" placeholder="Enter username">
+                        </div>
+                        <div>
+                            <label class="text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <input type="email" class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full" placeholder="user@example.com">
+                        </div>
+                        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Submit</button>
+                    </form>
+                </div>
+
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Form Examples</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Basic form with fields</span>
+<span class="code-keyword">local</span> loginForm = HTML.Form({
+    onsubmit = HTML.on(<span class="code-string">"submit"</span>, HTML.handler(<span class="code-string">"handleLogin"</span>))
+}, {
+    HTML.FormField(<span class="code-string">"Username"</span>, HTML.TextField(<span class="code-string">"username"</span>, <span class="code-string">""</span>, <span class="code-string">"Enter username"</span>)),
+    HTML.FormField(<span class="code-string">"Password"</span>, HTML.TextField(<span class="code-string">"password"</span>, <span class="code-string">""</span>, <span class="code-string">"Enter password"</span>, { type = <span class="code-string">"password"</span> })),
+    HTML.Checkbox(<span class="code-string">"remember"</span>, true, <span class="code-string">"Remember me"</span>),
+    HTML.PrimaryButton(<span class="code-string">"Login"</span>, { type = <span class="code-string">"submit"</span> })
+})
+
+<span class="code-comment">-- Complex registration form</span>
+<span class="code-keyword">local</span> registrationForm = HTML.Form({
+    id = <span class="code-string">"registration-form"</span>,
+    class = <span class="code-string">"max-w-md"</span>
+}, {
+    HTML.FormField(<span class="code-string">"Full Name"</span>, HTML.TextField(<span class="code-string">"fullName"</span>, <span class="code-string">""</span>, <span class="code-string">"John Doe"</span>)),
+    HTML.FormField(<span class="code-string">"Email Address"</span>, HTML.TextField(<span class="code-string">"email"</span>, <span class="code-string">""</span>, <span class="code-string">"user@example.com"</span>, { type = <span class="code-string">"email"</span> })),
+    HTML.FormField(<span class="code-string">"Phone Number"</span>, HTML.PhoneField(<span class="code-string">"phone"</span>, <span class="code-string">"+1"</span>)),
+    HTML.FormField(<span class="code-string">"Birth Date"</span>, HTML.DatePicker(<span class="code-string">"birthDate"</span>)),
+    HTML.FormField(<span class="code-string">"Country"</span>, HTML.Select(<span class="code-string">"country"</span>, {
+        <span class="code-string">"United States"</span>,
+        <span class="code-string">"Canada"</span>,
+        <span class="code-string">"United Kingdom"</span>,
+        <span class="code-string">"Australia"</span>
+    }, <span class="code-string">"United States"</span>)),
+    HTML.FormField(<span class="code-string">"Bio"</span>, HTML.TextArea(<span class="code-string">"bio"</span>, <span class="code-string">""</span>, <span class="code-string">"Tell us about yourself..."</span>)),
+    HTML.Row({ class = <span class="code-string">"justify-between mt-6"</span> }, {
+        HTML.SecondaryButton(<span class="code-string">"Cancel"</span>),
+        HTML.PrimaryButton(<span class="code-string">"Register"</span>, { type = <span class="code-string">"submit"</span> })
+    })
+})
+
+<span class="code-comment">-- Form with validation and error handling</span>
+<span class="code-keyword">local</span> validatedForm = HTML.createComponent(<span class="code-keyword">function</span>(state, props)
+    <span class="code-keyword">return</span> HTML.Form({
+        onsubmit = HTML.on(<span class="code-string">"submit"</span>, HTML.client.batch(
+            HTML.client.preventDefault(),
+            HTML.client.fetch(<span class="code-string">"/api/validate"</span>, {
+                method = <span class="code-string">"POST"</span>,
+                body = HTML.client.getFormData(<span class="code-string">"#validated-form"</span>)
+            }, <span class="code-string">"json"</span>,
+                HTML.handler(<span class="code-string">"handleValidationSuccess"</span>),
+                HTML.handler(<span class="code-string">"handleValidationError"</span>)
+            )
+        ))
+    }, {
+        HTML.FormField(<span class="code-string">"Email"</span>, HTML.TextField(<span class="code-string">"email"</span>, state.email, <span class="code-string">"Enter email"</span>, {
+            class = state.errors.email <span class="code-keyword">and</span> <span class="code-string">"border-red-500"</span> <span class="code-keyword">or</span> <span class="code-string">""</span>
+        })),
+        state.errors.email <span class="code-keyword">and</span> HTML.e(<span class="code-string">"p"</span>, { class = <span class="code-string">"text-red-500 text-sm"</span> }, state.errors.email),
+        HTML.PrimaryButton(<span class="code-string">"Validate"</span>, { type = <span class="code-string">"submit"</span> })
+    })
+<span class="code-keyword">end</span>, {
+    email = <span class="code-string">""</span>,
+    errors = {}
+})</code></pre>
+                </div>
+            </div>
+
+            <!-- Input Fields -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Input Fields</h3>
+                
+                <table class="method-table">
+                    <thead>
+                        <tr>
+                            <th>Widget</th>
+                            <th>Parameters</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>HTML.TextField(name, value, placeholder, attrs)</td>
+                            <td>name: string, value: string?, placeholder: string?, attrs: table?</td>
+                            <td>Text input field</td>
+                        </tr>
+                        <tr>
+                            <td>HTML.TextArea(name, value, placeholder, attrs)</td>
+                            <td>name: string, value: string?, placeholder: string?, attrs: table?</td>
+                            <td>Textarea input</td>
+                        </tr>
+                        <tr>
+                            <td>HTML.PhoneField(name, default_country, attrs)</td>
+                            <td>name: string, default_country: string?, attrs: table?</td>
+                            <td>Phone number with country code</td>
+                        </tr>
+                        <tr>
+                            <td>HTML.DatePicker(name, value, attrs)</td>
+                            <td>name: string, value: string?, attrs: table?</td>
+                            <td>Date input field</td>
+                        </tr>
+                        <tr>
+                            <td>HTML.Select(name, options, selected, attrs)</td>
+                            <td>name: string, options: table, selected: string?, attrs: table?</td>
+                            <td>Dropdown select</td>
+                        </tr>
+                        <tr>
+                            <td>HTML.Checkbox(name, checked, label, attrs)</td>
+                            <td>name: string, checked: boolean?, label: string?, attrs: table?</td>
+                            <td>Checkbox input</td>
+                        </tr>
+                        <tr>
+                            <td>HTML.Radio(name, value, checked, label, attrs)</td>
+                            <td>name: string, value: string, checked: boolean?, label: string?, attrs: table?</td>
+                            <td>Radio button</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="widget-preview">
+                    <div class="space-y-4">
+                        <div>
+                            <input type="text" placeholder="Text input" class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full">
+                        </div>
+                        <div>
+                            <textarea placeholder="Textarea" class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-[100px] w-full"></textarea>
+                        </div>
+                        <div class="flex gap-4">
+                            <select class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option>Option 1</option>
+                                <option>Option 2</option>
+                            </select>
+                            <input type="date" class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" class="h-4 w-4 text-blue-500 border-gray-300 rounded focus:ring-blue-500">
+                                <span>Checkbox</span>
+                            </label>
+                            <label class="flex items-center gap-2">
+                                <input type="radio" name="radio" class="h-4 w-4 text-blue-500 border-gray-300 focus:ring-blue-500">
+                                <span>Radio 1</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Input Field Examples</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Various input types</span>
+<span class="code-keyword">local</span> inputs = HTML.Column({ class = <span class="code-string">"space-y-4 max-w-md"</span> }, {
+    HTML.TextField(<span class="code-string">"username"</span>, <span class="code-string">""</span>, <span class="code-string">"Enter username"</span>),
+    HTML.TextField(<span class="code-string">"email"</span>, <span class="code-string">""</span>, <span class="code-string">"user@example.com"</span>, { type = <span class="code-string">"email"</span> }),
+    HTML.TextField(<span class="code-string">"password"</span>, <span class="code-string">""</span>, <span class="code-string">"Enter password"</span>, { type = <span class="code-string">"password"</span> }),
+    HTML.TextArea(<span class="code-string">"bio"</span>, <span class="code-string">""</span>, <span class="code-string">"Tell us about yourself..."</span>, { rows = 4 }),
+    HTML.PhoneField(<span class="code-string">"phone"</span>, <span class="code-string">"+1"</span>),
+    HTML.DatePicker(<span class="code-string">"birthday"</span>, <span class="code-string">"1990-01-01"</span>),
+    HTML.Select(<span class="code-string">"country"</span>, {
+        <span class="code-string">"United States"</span> = <span class="code-string">"us"</span>,
+        <span class="code-string">"Canada"</span> = <span class="code-string">"ca"</span>,
+        <span class="code-string">"United Kingdom"</span> = <span class="code-string">"uk"</span>,
+        <span class="code-string">"Australia"</span> = <span class="code-string">"au"</span>
+    }, <span class="code-string">"us"</span>),
+    HTML.Checkbox(<span class="code-string">"newsletter"</span>, true, <span class="code-string">"Subscribe to newsletter"</span>),
+    HTML.Row({ class = <span class="code-string">"space-x-4"</span> }, {
+        HTML.Radio(<span class="code-string">"gender"</span>, <span class="code-string">"male"</span>, true, <span class="code-string">"Male"</span>),
+        HTML.Radio(<span class="code-string">"gender"</span>, <span class="code-string">"female"</span>, false, <span class="code-string">"Female"</span>),
+        HTML.Radio(<span class="code-string">"gender"</span>, <span class="code-string">"other"</span>, false, <span class="code-string">"Other"</span>)
+    })
+})
+
+<span class="code-comment">-- Dynamic select with array options</span>
+<span class="code-keyword">local</span> categories = { <span class="code-string">"Electronics"</span>, <span class="code-string">"Clothing"</span>, <span class="code-string">"Books"</span>, <span class="code-string">"Home"</span> }
+<span class="code-keyword">local</span> dynamicSelect = HTML.Select(<span class="code-string">"category"</span>, categories, <span class="code-string">"Electronics"</span>)
+
+<span class="code-comment">-- Input with reactive binding</span>
+<span class="code-keyword">local</span> reactiveInput = HTML.createComponent(<span class="code-keyword">function</span>(state, props)
+    <span class="code-keyword">return</span> HTML.Column({}, {
+        HTML.TextField(<span class="code-string">"search"</span>, state.query, <span class="code-string">"Search..."</span>, {
+            oninput = HTML.on(<span class="code-string">"input"</span>, HTML.handler(<span class="code-string">"updateSearch"</span>))
+        }),
+        state.query <span class="code-keyword">and</span> state.query ~= <span class="code-string">""</span> <span class="code-keyword">and</span> 
+            HTML.e(<span class="code-string">"p"</span>, { class = <span class="code-string">"text-sm text-gray-600"</span> }, 
+                <span class="code-string">"Searching for: "</span> .. state.query)
+    })
+<span class="code-keyword">end</span>, { query = <span class="code-string">""</span> })</code></pre>
+                </div>
+            </div>
+
+            <!-- Button Widgets -->
+            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Button Widgets</h3>
+                
+                <table class="method-table">
+                    <thead>
+                        <tr>
+                            <th>Widget</th>
+                            <th>Parameters</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>HTML.Button(label, attrs)</td>
+                            <td>label: string|VDOMNode, attrs: table?</td>
+                            <td>Standard button</td>
+                        </tr>
+                        <tr>
+                            <td>HTML.PrimaryButton(label, attrs)</td>
+                            <td>label: string|VDOMNode, attrs: table?</td>
+                            <td>Primary action button</td>
+                        </tr>
+                        <tr>
+                            <td>HTML.SecondaryButton(label, attrs)</td>
+                            <td>label: string|VDOMNode, attrs: table?</td>
+                            <td>Secondary action button</td>
+                        </tr>
+                        <tr>
+                            <td>HTML.DangerButton(label, attrs)</td>
+                            <td>label: string|VDOMNode, attrs: table?</td>
+                            <td>Danger/destructive action button</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="widget-preview">
+                    <div class="flex gap-4 flex-wrap">
+                        <button class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">Default</button>
+                        <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md">Primary</button>
+                        <button class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium rounded-md">Secondary</button>
+                        <button class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-medium rounded-md">Danger</button>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Button Examples</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Basic button usage</span>
+<span class="code-keyword">local</span> actionButtons = HTML.Row({ class = <span class="code-string">"gap-2"</span> }, {
+    HTML.Button(<span class="code-string">"Default Button"</span>),
+    HTML.PrimaryButton(<span class="code-string">"Primary Action"</span>),
+    HTML.SecondaryButton(<span class="code-string">"Secondary Action"</span>),
+    HTML.DangerButton(<span class="code-string">"Danger Action"</span>)
+})
+
+<span class="code-comment">-- Buttons with icons and events</span>
+<span class="code-keyword">local</span> iconButtons = HTML.Row({ class = <span class="code-string">"gap-2"</span> }, {
+    HTML.PrimaryButton(HTML.fragment({
+        HTML.e(<span class="code-string">"i"</span>, { class = <span class="code-string">"fas fa-plus mr-2"</span> }),
+        <span class="code-string">"Add Item"</span>
+    }), {
+        onclick = HTML.on(<span class="code-string">"click"</span>, HTML.handler(<span class="code-string">"addItem"</span>))
+    }),
+    HTML.SecondaryButton(HTML.fragment({
+        HTML.e(<span class="code-string">"i"</span>, { class = <span class="code-string">"fas fa-edit mr-2"</span> }),
+        <span class="code-string">"Edit"</span>
+    }), {
+        onclick = HTML.on(<span class="code-string">"click"</span>, HTML.handler(<span class="code-string">"editItem"</span>))
+    }),
+    HTML.DangerButton(HTML.fragment({
+        HTML.e(<span class="code-string">"i"</span>, { class = <span class="code-string">"fas fa-trash mr-2"</span> }),
+        <span class="code-string">"Delete"</span>
+    }), {
+        onclick = HTML.on(<span class="code-string">"click"</span>, HTML.handler(<span class="code-string">"deleteItem"</span>))
+    })
+})
+
+<span class="code-comment">-- Form action buttons</span>
+<span class="code-keyword">local</span> formActions = HTML.Row({ class = <span class="code-string">"justify-end gap-3 mt-6"</span> }, {
+    HTML.SecondaryButton(<span class="code-string">"Cancel"</span>, {
+        onclick = HTML.on(<span class="code-string">"click"</span>, HTML.client.history.back())
+    }),
+    HTML.Button(<span class="code-string">"Reset"</span>, {
+        type = <span class="code-string">"reset"</span>,
+        class = <span class="code-string">"bg-gray-500 hover:bg-gray-600"</span>
+    }),
+    HTML.PrimaryButton(<span class="code-string">"Save Changes"</span>, {
+        type = <span class="code-string">"submit"</span>
+    })
+})
+
+<span class="code-comment">-- Loading state button</span>
+<span class="code-keyword">local</span> loadingButton = HTML.createComponent(<span class="code-keyword">function</span>(state, props)
+    <span class="code-keyword">return</span> HTML.PrimaryButton(
+        state.loading <span class="code-keyword">and</span> HTML.fragment({
+            HTML.Loader({ style = <span class="code-string">"width:16px;height:16px;margin-right:8px;"</span> }),
+            <span class="code-string">"Loading..."</span>
+        }) <span class="code-keyword">or</span> <span class="code-string">"Submit"</span>,
+        {
+            disabled = state.loading,
+            onclick = HTML.on(<span class="code-string">"click"</span>, HTML.handler(<span class="code-string">"handleSubmit"</span>))
+        }
+    )
+<span class="code-keyword">end</span>, { loading = false })</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- UI Widgets Section -->
+        <section id="ui-widgets" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-query-purple flex items-center justify-center text-white font-bold mr-4">3</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">UI Widgets</h2>
+            </div>
+
+            <!-- Modal Dialog -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Modal Dialog</h3>
+                <p class="text-light-text-secondary mb-6">
+                    Modal dialog component for overlays, confirmations, and focused interactions.
+                </p>
+
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">HTML.Dialog(title, body, actions, attrs)</h4>
+                    <p class="text-light-text-secondary mb-3">Creates a modal dialog box.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Required</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>title</td>
+                                <td>string|VDOMNode</td>
+                                <td>Dialog title content</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>body</td>
+                                <td>string|VDOMNode</td>
+                                <td>Main dialog content</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>actions</td>
+                                <td>VDOMNode[]?</td>
+                                <td>Action buttons array</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>attrs</td>
+                                <td>table?</td>
+                                <td>Additional dialog attributes</td>
+                                <td>No</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="widget-preview relative h-48">
+                    <div class=" bg-white p-6 rounded-lg shadow-xl z-50 max-w-md w-full border">
+                        <h2 class="text-xl font-semibold mb-4 text-gray-800">Dialog Title</h2>
+                        <div class="mb-6 text-gray-600">This is the dialog content area where you can put any content.</div>
+                        <div class="flex justify-end gap-3">
+                            <button class="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300">Cancel</button>
+                            <button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Confirm</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Dialog Examples</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Confirmation dialog</span>
+<span class="code-keyword">local</span> confirmDialog = HTML.Dialog(
+    <span class="code-string">"Confirm Deletion"</span>,
+    <span class="code-string">"Are you sure you want to delete this item? This action cannot be undone."</span>,
+    {
+        HTML.SecondaryButton(<span class="code-string">"Cancel"</span>, {
+            onclick = HTML.on(<span class="code-string">"click"</span>, HTML.client.hide(<span class="code-string">"#delete-dialog"</span>))
+        }),
+        HTML.DangerButton(<span class="code-string">"Delete"</span>, {
+            onclick = HTML.on(<span class="code-string">"click"</span>, HTML.handler(<span class="code-string">"confirmDelete"</span>))
+        })
+    },
+    { id = <span class="code-string">"delete-dialog"</span> }
+)
+
+<span class="code-comment">-- Form dialog</span>
+<span class="code-keyword">local</span> formDialog = HTML.Dialog(
+    <span class="code-string">"Add New User"</span>,
+    HTML.Form({}, {
+        HTML.FormField(<span class="code-string">"Name"</span>, HTML.TextField(<span class="code-string">"name"</span>)),
+        HTML.FormField(<span class="code-string">"Email"</span>, HTML.TextField(<span class="code-string">"email"</span>, <span class="code-string">""</span>, <span class="code-string">""</span>, { type = <span class="code-string">"email"</span> })),
+        HTML.FormField(<span class="code-string">"Role"</span>, HTML.Select(<span class="code-string">"role"</span>, {
+            <span class="code-string">"User"</span>,
+            <span class="code-string">"Admin"</span>,
+            <span class="code-string">"Moderator"</span>
+        }))
+    }),
+    {
+        HTML.SecondaryButton(<span class="code-string">"Cancel"</span>),
+        HTML.PrimaryButton(<span class="code-string">"Add User"</span>, { type = <span class="code-string">"submit"</span> })
+    },
+    { id = <span class="code-string">"user-dialog"</span>, class = <span class="code-string">"max-w-lg"</span> }
+)
+
+<span class="code-comment">-- Complex dialog with custom content</span>
+<span class="code-keyword">local</span> settingsDialog = HTML.Dialog(
+    HTML.fragment({
+        HTML.e(<span class="code-string">"i"</span>, { class = <span class="code-string">"fas fa-cog mr-2"</span> }),
+        <span class="code-string">"Settings"</span>
+    }),
+    HTML.Column({ class = <span class="code-string">"space-y-4"</span> }, {
+        HTML.e(<span class="code-string">"h3"</span>, { class = <span class="code-string">"font-semibold"</span> }, <span class="code-string">"Preferences"</span>),
+        HTML.Checkbox(<span class="code-string">"darkMode"</span>, true, <span class="code-string">"Dark Mode"</span>),
+        HTML.Checkbox(<span class="code-string">"notifications"</span>, true, <span class="code-string">"Enable Notifications"</span>),
+        HTML.Checkbox(<span class="code-string">"autoSave"</span>, false, <span class="code-string">"Auto Save"</span>),
+        HTML.FormField(<span class="code-string">"Language"</span>, HTML.Select(<span class="code-string">"language"</span>, {
+            <span class="code-string">"English"</span>,
+            <span class="code-string">"Spanish"</span>,
+            <span class="code-string">"French"</span>,
+            <span class="code-string">"German"</span>
+        }))
+    }),
+    {
+        HTML.SecondaryButton(<span class="code-string">"Reset"</span>),
+        HTML.PrimaryButton(<span class="code-string">"Save Settings"</span>)
+    },
+    { id = <span class="code-string">"settings-dialog"</span> }
+)</code></pre>
+                </div>
+            </div>
+
+            <!-- Snackbar Notification -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Snackbar Notification</h3>
+                <p class="text-light-text-secondary mb-6">
+                    Transient notification component for displaying temporary messages.
+                </p>
+
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">HTML.Snackbar(message, attrs)</h4>
+                    <p class="text-light-text-secondary mb-3">Creates a snackbar notification.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Required</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>message</td>
+                                <td>string|VDOMNode</td>
+                                <td>Notification message content</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>attrs</td>
+                                <td>table?</td>
+                                <td>Additional snackbar attributes</td>
+                                <td>No</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="widget-preview relative h-32">
+                    <div class="fixed bottom-4 left-4 bg-gray-800 text-white px-4 py-3 rounded-lg shadow-lg z-50">
+                        This is a snackbar notification
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Snackbar Examples</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Basic snackbar</span>
+<span class="code-keyword">local</span> simpleSnackbar = HTML.Snackbar(<span class="code-string">"Settings saved successfully!"</span>)
+
+<span class="code-comment">-- Snackbar with custom styling</span>
+<span class="code-keyword">local</span> styledSnackbar = HTML.Snackbar(
+    HTML.fragment({
+        HTML.e(<span class="code-string">"i"</span>, { class = <span class="code-string">"fas fa-check-circle mr-2"</span> }),
+        <span class="code-string">"Operation completed successfully"</span>
+    }), {
+        class = <span class="code-string">"bg-green-500 text-white"</span>,
+        style = <span class="code-string">"bottom: 1rem; right: 1rem; left: auto;"</span>
+    }
+)
+
+<span class="code-comment">-- Error snackbar</span>
+<span class="code-keyword">local</span> errorSnackbar = HTML.Snackbar(
+    HTML.fragment({
+        HTML.e(<span class="code-string">"i"</span>, { class = <span class="code-string">"fas fa-exclamation-triangle mr-2"</span> }),
+        <span class="code-string">"An error occurred while saving"</span>
+    }), {
+        class = <span class="code-string">"bg-red-500 text-white"</span>
+    }
+)
+
+<span class="code-comment">-- Snackbar with action button</span>
+<span class="code-keyword">local</span> actionSnackbar = HTML.Snackbar(
+    HTML.Row({ class = <span class="code-string">"items-center justify-between"</span> }, {
+        HTML.e(<span class="code-string">"span"</span>, {}, <span class="code-string">"File uploaded successfully"</span>),
+        HTML.Button(<span class="code-string">"View"</span>, {
+            class = <span class="code-string">"ml-4 text-blue-300 hover:text-white"</span>,
+            onclick = HTML.on(<span class="code-string">"click"</span>, HTML.handler(<span class="code-string">"viewFile"</span>))
+        })
+    }), {
+        class = <span class="code-string">"bg-blue-500 text-white"</span>
+    }
+)</code></pre>
+                </div>
+            </div>
+
+            <!-- Loader Component -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Loader Component</h3>
+                <p class="text-light-text-secondary mb-6">
+                    Spinning loader animation for indicating loading states.
+                </p>
+
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">HTML.Loader(style)</h4>
+                    <p class="text-light-text-secondary mb-3">Creates a spinning loader animation.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Required</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>style</td>
+                                <td>string?</td>
+                                <td>Custom CSS style for the loader</td>
+                                <td>No</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="widget-preview flex justify-center items-center h-32">
+                    <div class="animate-spin rounded-full border-4 border-gray-200 border-t-blue-500" style="width: 40px; height: 40px;"></div>
+                </div>
+
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Loader Examples</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Basic loader</span>
+<span class="code-keyword">local</span> basicLoader = HTML.Loader()
+
+<span class="code-comment">-- Custom sized loader</span>
+<span class="code-keyword">local</span> customLoader = HTML.Loader(<span class="code-string">"width: 60px; height: 60px; border-width: 6px;"</span>)
+
+<span class="code-comment">-- Loader with container</span>
+<span class="code-keyword">local</span> containedLoader = HTML.e(<span class="code-string">"div"</span>, { 
+    class = <span class="code-string">"flex justify-center items-center p-8"</span> 
+}, HTML.Loader())
+
+<span class="code-comment">-- Loading state component</span>
+<span class="code-keyword">local</span> loadingComponent = HTML.createComponent(<span class="code-keyword">function</span>(state, props)
+    <span class="code-keyword">return</span> state.loading <span class="code-keyword">and</span> 
+        HTML.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"text-center py-8"</span> }, {
+            HTML.Loader(<span class="code-string">"width: 40px; height: 40px;"</span>),
+            HTML.e(<span class="code-string">"p"</span>, { class = <span class="code-string">"mt-4 text-gray-600"</span> }, <span class="code-string">"Loading..."</span>)
+        }) <span class="code-keyword">or</span>
+        props.children
+<span class="code-keyword">end</span>)
+
+<span class="code-comment">-- Button with loading state</span>
+<span class="code-keyword">local</span> loadingButton = HTML.createComponent(<span class="code-keyword">function</span>(state, props)
+    <span class="code-keyword">return</span> HTML.PrimaryButton(
+        state.loading <span class="code-keyword">and</span> HTML.fragment({
+            HTML.Loader({ style = <span class="code-string">"width: 16px; height: 16px; margin-right: 8px;"</span> }),
+            <span class="code-string">"Processing..."</span>
+        }) <span class="code-keyword">or</span> props.label,
+        {
+            disabled = state.loading,
+            onclick = HTML.on(<span class="code-string">"click"</span>, <span class="code-keyword">function</span>()
+                <span class="code-keyword">return</span> state:setState({ loading = true })
+            <span class="code-keyword">end</span>)
+        }
+    )
+<span class="code-keyword">end</span>)</code></pre>
+                </div>
+            </div>
+
+            <!-- Paginator Component -->
+            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Paginator Component</h3>
+                <p class="text-light-text-secondary mb-6">
+                    Pagination component for navigating through multi-page content.
+                </p>
+
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">HTML.Paginator(current, total, onPageClick)</h4>
+                    <p class="text-light-text-secondary mb-3">Creates a pagination component.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Required</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>current</td>
+                                <td>number</td>
+                                <td>Current active page number</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>total</td>
+                                <td>number</td>
+                                <td>Total number of pages</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>onPageClick</td>
+                                <td>string?</td>
+                                <td>JavaScript function to call on page click</td>
+                                <td>No</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="widget-preview flex justify-center items-center h-20">
+                    <div class="flex gap-1">
+                        <button class="px-3 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">1</button>
+                        <button class="px-3 py-1 bg-blue-500 text-white font-medium rounded">2</button>
+                        <button class="px-3 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">3</button>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Paginator Examples</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Basic paginator</span>
+<span class="code-keyword">local</span> basicPaginator = HTML.Paginator(1, 5, <span class="code-string">"handlePageChange"</span>)
+
+<span class="code-comment">-- Paginator with component state</span>
+<span class="code-keyword">local</span> paginatedComponent = HTML.createComponent(<span class="code-keyword">function</span>(state, props)
+    <span class="code-keyword">return</span> HTML.Column({}, {
+        <span class="code-comment">-- Content based on current page</span>
+        HTML.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"min-h-64"</span> }, 
+            <span class="code-string">"Content for page "</span> .. state.currentPage
+        ),
+        
+        <span class="code-comment">-- Paginator</span>
+        HTML.Paginator(state.currentPage, state.totalPages, <span class="code-string">"handlePageChange"</span>)
+    })
+<span class="code-keyword">end</span>, {
+    currentPage = 1,
+    totalPages = 10
+})
+
+<span class="code-comment">-- Enhanced paginator with navigation</span>
+<span class="code-keyword">local</span> enhancedPaginator = HTML.createComponent(<span class="code-keyword">function</span>(state, props)
+    <span class="code-keyword">local</span> pages = {}
+    <span class="code-keyword">for</span> i = 1, state.totalPages <span class="code-keyword">do</span>
+        pages[i] = HTML.e(<span class="code-string">"button"</span>, {
+            class = i == state.currentPage <span class="code-keyword">and</span> 
+                   <span class="code-string">"px-3 py-1 bg-blue-500 text-white font-medium rounded"</span> <span class="code-keyword">or</span>
+                   <span class="code-string">"px-3 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200"</span>,
+            onclick = HTML.on(<span class="code-string">"click"</span>, HTML.handler(<span class="code-string">"changePage"</span>, i))
+        }, tostring(i))
+    <span class="code-keyword">end</span>
+    
+    <span class="code-keyword">return</span> HTML.Row({ class = <span class="code-string">"gap-1 items-center"</span> }, {
+        HTML.e(<span class="code-string">"button"</span>, {
+            class = <span class="code-string">"px-3 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 disabled:opacity-50"</span>,
+            disabled = state.currentPage == 1,
+            onclick = HTML.on(<span class="code-string">"click"</span>, HTML.handler(<span class="code-string">"changePage"</span>, state.currentPage - 1))
+        }, <span class="code-string">"Previous"</span>),
+        
+        HTML.fragment(pages),
+        
+        HTML.e(<span class="code-string">"button"</span>, {
+            class = <span class="code-string">"px-3 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 disabled:opacity-50"</span>,
+            disabled = state.currentPage == state.totalPages,
+            onclick = HTML.on(<span class="code-string">"click"</span>, HTML.handler(<span class="code-string">"changePage"</span>, state.currentPage + 1))
+        }, <span class="code-string">"Next"</span>)
+    })
+<span class="code-keyword">end</span>, {
+    currentPage = 1,
+    totalPages = 8
+})</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Custom Components Section -->
+        <section id="custom-components" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-warning-amber flex items-center justify-center text-white font-bold mr-4">4</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">Custom Components</h2>
+            </div>
+
+            <!-- Fluid Container -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Fluid Container</h3>
+                <p class="text-light-text-secondary mb-6">
+                    Advanced custom web component for creating fluid, animated containers with curved backgrounds.
+                </p>
+
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">HTML.FluidContainer(height, width, equation, svgPath, color, precision, curveType, overflow, children)</h4>
+                    <p class="text-light-text-secondary mb-3">Creates a fluid-container custom element.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Required</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>height</td>
+                                <td>string|number</td>
+                                <td>Container height in pixels</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>width</td>
+                                <td>string|number</td>
+                                <td>Container width in pixels</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>equation</td>
+                                <td>string?</td>
+                                <td>JavaScript equation for curve calculation</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>svgPath</td>
+                                <td>string?</td>
+                                <td>Raw SVG path string</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>color</td>
+                                <td>string?</td>
+                                <td>Fill color for the curve</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>precision</td>
+                                <td>number?</td>
+                                <td>Number of points for curve sampling</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>curveType</td>
+                                <td>string?</td>
+                                <td>Type of curve: "cartesian", "sin", "cos", "circle", "polar", "parametric"</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>overflow</td>
+                                <td>string?</td>
+                                <td>Content overflow: "hidden" or "visible"</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>children</td>
+                                <td>VDOMNode?</td>
+                                <td>Child content for the container</td>
+                                <td>No</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Fluid Container Examples</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Basic fluid container with sine wave</span>
+<span class="code-keyword">local</span> sineContainer = HTML.FluidContainer(
+    300, 600,
+    <span class="code-string">"Math.sin(x) * 20"</span>,
+    nil,
+    <span class="code-string">"#3498db"</span>,
+    30,
+    <span class="code-string">"sin"</span>,
+    <span class="code-string">"hidden"</span>,
+    HTML.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"p-6 text-white"</span> }, {
+        HTML.e(<span class="code-string">"h2"</span>, {}, <span class="code-string">"Fluid Container"</span>),
+        HTML.e(<span class="code-string">"p"</span>, {}, <span class="code-string">"This content is inside a fluid container with a sine wave background."</span>)
+    })
+)
+
+<span class="code-comment">-- Circular fluid container</span>
+<span class="code-keyword">local</span> circularContainer = HTML.FluidContainer(
+    400, 400,
+    nil,
+    <span class="code-string">"M0,200 Q200,0 400,200 Q200,400 0,200 Z"</span>,
+    <span class="code-string">"#9b59b6"</span>,
+    50,
+    <span class="code-string">"circle"</span>,
+    <span class="code-string">"hidden"</span>,
+    HTML.Column({ class = <span class="code-string">"items-center justify-center h-full text-white p-8"</span> }, {
+        HTML.e(<span class="code-string">"h1"</span>, { class = <span class="code-string">"text-3xl font-bold mb-4"</span> }, <span class="code-string">"Circular Design"</span>),
+        HTML.e(<span class="code-string">"p"</span>, { class = <span class="code-string">"text-center"</span> }, <span class="code-string">"This container uses a circular SVG path for its fluid background."</span>)
+    })
+)
+
+<span class="code-comment">-- Parametric curve with custom equation</span>
+<span class="code-keyword">local</span> parametricContainer = HTML.FluidContainer(
+    350, 800,
+    <span class="code-string">"Math.sin(x * 0.1) * 30 + Math.cos(x * 0.05) * 15"</span>,
+    nil,
+    <span class="code-string">"#e74c3c"</span>,
+    40,
+    <span class="code-string">"parametric"</span>,
+    <span class="code-string">"visible"</span>,
+    HTML.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"p-6"</span> }, {
+        HTML.e(<span class="code-string">"h3"</span>, { class = <span class="code-string">"text-xl font-semibold mb-2"</span> }, <span class="code-string">"Advanced Curve"</span>),
+        HTML.e(<span class="code-string">"p"</span>, { class = <span class="code-string">"text-gray-700"</span> }, <span class="code-string">"This uses a parametric equation for complex curve generation."</span>)
+    })
+)
+
+<span class="code-comment">-- Interactive fluid container</span>
+<span class="code-keyword">local</span> interactiveFluid = HTML.createComponent(<span class="code-keyword">function</span>(state, props)
+    <span class="code-keyword">return</span> HTML.FluidContainer(
+        state.height,
+        state.width,
+        state.equation,
+        nil,
+        state.color,
+        state.precision,
+        state.curveType,
+        <span class="code-string">"hidden"</span>,
+        HTML.Column({ class = <span class="code-string">"p-6 text-white"</span> }, {
+            HTML.e(<span class="code-string">"h2"</span>, {}, <span class="code-string">"Interactive Fluid Container"</span>),
+            HTML.e(<span class="code-string">"p"</span>, {}, <span class="code-string">"Current equation: "</span> .. state.equation),
+            HTML.Row({ class = <span class="code-string">"gap-2 mt-4"</span> }, {
+                HTML.Button(<span class="code-string">"Change Wave"</span>, {
+                    onclick = HTML.on(<span class="code-string">"click"</span>, HTML.handler(<span class="code-string">"changeWaveType"</span>))
+                }),
+                HTML.Button(<span class="code-string">"Random Color"</span>, {
+                    onclick = HTML.on(<span class="code-string">"click"</span>, HTML.handler(<span class="code-string">"randomizeColor"</span>))
+                })
+            })
+        })
+    )
+<span class="code-keyword">end</span>, {
+    height = 300,
+    width = 600,
+    equation = <span class="code-string">"Math.sin(x * 0.1) * 25"</span>,
+    color = <span class="code-string">"#3498db"</span>,
+    precision = 30,
+    curveType = <span class="code-string">"sin"</span>
+})</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- File Inputs Section -->
+        <section id="file-inputs" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-build-green flex items-center justify-center text-white font-bold mr-4">5</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">File Input Components</h2>
+            </div>
+
+            <!-- File Input Overview -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">File Input Components</h3>
+                <p class="text-light-text-secondary mb-6">
+                    Specialized file input components with preview capabilities, drag-and-drop support, 
+                    and streaming upload for large files.
+                </p>
+
+                <table class="method-table">
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Parameters</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>HTML.ImageInput(name, preview_id, attrs)</td>
+                            <td>name: string, preview_id: string?, attrs: table?</td>
+                            <td>Image file input with preview</td>
+                        </tr>
+                        <tr>
+                            <td>HTML.FileInput(name, preview_id, attrs)</td>
+                            <td>name: string, preview_id: string?, attrs: table?</td>
+                            <td>General file input with preview</td>
+                        </tr>
+                        <tr>
+                            <td>HTML.DragDropInput(name, preview_id, attrs)</td>
+                            <td>name: string, preview_id: string?, attrs: table?</td>
+                            <td>Drag & drop file input</td>
+                        </tr>
+                        <tr>
+                            <td>HTML.AudioInput(name, preview_id, attrs)</td>
+                            <td>name: string, preview_id: string?, attrs: table?</td>
+                            <td>Audio file input with preview</td>
+                        </tr>
+                        <tr>
+                            <td>HTML.VideoInput(name, preview_id, attrs)</td>
+                            <td>name: string, preview_id: string?, attrs: table?</td>
+                            <td>Video file input with preview</td>
+                        </tr>
+                        <tr>
+                            <td>HTML.StreamingFileInput(name, accept, ws_id, preview_id, progress_id, chunk_size, attrs)</td>
+                            <td>name: string, accept: string, ws_id: string, preview_id: string?, progress_id: string?, chunk_size: number?, attrs: table?</td>
+                            <td>Large file input with streaming upload</td>
+                        </tr>
+                        <tr>
+                            <td>HTML.FileField(label, input_node, error)</td>
+                            <td>label: string, input_node: VDOMNode, error: string?</td>
+                            <td>Form field wrapper for file inputs</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- File Input Examples -->
+            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">File Input Examples</h3>
+
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Complete File Upload Examples</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Complete media upload form</span>
+<span class="code-keyword">local</span> mediaUploadForm = HTML.Form({}, {
+    HTML.e(<span class="code-string">"h2"</span>, { class = <span class="code-string">"text-xl font-bold mb-6"</span> }, <span class="code-string">"Upload Media Files"</span>),
+    
+    HTML.FileField(
+        <span class="code-string">"Profile Picture"</span>,
+        HTML.ImageInput(<span class="code-string">"avatar"</span>, <span class="code-string">"avatar-preview"</span>, {
+            accept = <span class="code-string">"image/*"</span>,
+            required = true
+        }),
+        errors.avatar
+    ),
+    
+    HTML.FileField(
+        <span class="code-string">"Audio File"</span>,
+        HTML.AudioInput(<span class="code-string">"audio"</span>, <span class="code-string">"audio-preview"</span>, {
+            accept = <span class="code-string">"audio/*"</span>
+        }),
+        errors.audio
+    ),
+    
+    HTML.FileField(
+        <span class="code-string">"Video File"</span>,
+        HTML.VideoInput(<span class="code-string">"video"</span>, <span class="code-string">"video-preview"</span>, {
+            accept = <span class="code-string">"video/*"</span>
+        }),
+        errors.video
+    ),
+    
+    HTML.FileField(
+        <span class="code-string">"Documents (Drag & Drop)"</span>,
+        HTML.DragDropInput(<span class="code-string">"documents"</span>, <span class="code-string">"doc-preview"</span>, {
+            multiple = true,
+            accept = <span class="code-string">".pdf,.doc,.docx,.txt"</span>
+        }),
+        errors.documents
+    ),
+    
+    HTML.FileField(
+        <span class="code-string">"Large Video File (Streaming)"</span>,
+        HTML.StreamingFileInput(
+            <span class="code-string">"largeVideo"</span>,
+            <span class="code-string">"video/*"</span>,
+            <span class="code-string">"uploadSocket"</span>,
+            <span class="code-string">"large-video-preview"</span>,
+            <span class="code-string">"upload-progress"</span>,
+            512 * 1024,  <span class="code-comment">-- 512KB chunks</span>
+            {
+                class = <span class="code-string">"large-file-input"</span>,
+                multiple = false
+            }
+        ),
+        errors.largeVideo
+    ),
+    
+    <span class="code-comment">-- Preview elements</span>
+    HTML.e(<span class="code-string">"div"</span>, { id = <span class="code-string">"preview-area"</span>, class = <span class="code-string">"mt-6 space-y-4"</span> }, {
+        HTML.e(<span class="code-string">"img"</span>, {
+            id = <span class="code-string">"avatar-preview"</span>,
+            class = <span class="code-string">"hidden max-h-32 rounded border"</span>
+        }),
+        HTML.e(<span class="code-string">"audio"</span>, {
+            id = <span class="code-string">"audio-preview"</span>,
+            class = <span class="code-string">"hidden w-full"</span>,
+            controls = true
+        }),
+        HTML.e(<span class="code-string">"video"</span>, {
+            id = <span class="code-string">"video-preview"</span>,
+            class = <span class="code-string">"hidden max-w-md"</span>,
+            controls = true
+        }),
+        HTML.e(<span class="code-string">"div"</span>, {
+            id = <span class="code-string">"doc-preview"</span>,
+            class = <span class="code-string">"hidden p-4 border rounded"</span>
+        }),
+        HTML.e(<span class="code-string">"video"</span>, {
+            id = <span class="code-string">"large-video-preview"</span>,
+            class = <span class="code-string">"hidden max-w-md"</span>,
+            controls = true
+        }),
+        HTML.e(<span class="code-string">"progress"</span>, {
+            id = <span class="code-string">"upload-progress"</span>,
+            class = <span class="code-string">"hidden w-full"</span>,
+            max = 100,
+            value = 0
+        })
+    }),
+    
+    HTML.PrimaryButton(<span class="code-string">"Upload All Files"</span>, { 
+        type = <span class="code-string">"submit"</span>,
+        class = <span class="code-string">"mt-6"</span>
+    })
+})
+
+<span class="code-comment">-- Component for handling file uploads</span>
+<span class="code-keyword">local</span> FileUploadComponent = HTML.createComponent(<span class="code-keyword">function</span>(state, props)
+    <span class="code-keyword">return</span> HTML.Card({}, {
+        HTML.e(<span class="code-string">"h3"</span>, { class = <span class="code-string">"text-lg font-semibold mb-4"</span> }, <span class="code-string">"File Upload"</span>),
+        
+        HTML.FileField(
+            <span class="code-string">"Select Files"</span>,
+            HTML.DragDropInput(<span class="code-string">"files"</span>, <span class="code-string">"file-list"</span>, {
+                multiple = true,
+                class = <span class="code-string">"w-full"</span>
+            })
+        ),
+        
+        state.uploading <span class="code-keyword">and</span> HTML.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"mt-4"</span> }, {
+            HTML.e(<span class="code-string">"p"</span>, { class = <span class="code-string">"text-sm text-gray-600 mb-2"</span> }, <span class="code-string">"Uploading files..."</span>),
+            HTML.e(<span class="code-string">"progress"</span>, {
+                value = state.progress,
+                max = 100,
+                class = <span class="code-string">"w-full"</span>
+            }),
+            HTML.e(<span class="code-string">"p"</span>, { class = <span class="code-string">"text-xs text-gray-500 text-right"</span> }, 
+                state.progress .. <span class="code-string">"%"</span>)
+        }),
+        
+        state.uploadedFiles <span class="code-keyword">and</span> #state.uploadedFiles > 0 <span class="code-keyword">and</span> 
+            HTML.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"mt-4"</span> }, {
+                HTML.e(<span class="code-string">"h4"</span>, { class = <span class="code-string">"font-medium mb-2"</span> }, <span class="code-string">"Uploaded Files"</span>),
+                HTML.ListView(
+                    HTML.map(state.uploadedFiles, <span class="code-keyword">function</span>(file)
+                        <span class="code-keyword">return</span> HTML.e(<span class="code-string">"li"</span>, { 
+                            class = <span class="code-string">"flex items-center justify-between p-2 border rounded"</span> 
+                        }, {
+                            HTML.e(<span class="code-string">"span"</span>, {}, file.name),
+                            HTML.e(<span class="code-string">"span"</span>, { 
+                                class = <span class="code-string">"text-sm text-green-600"</span> 
+                            }, <span class="code-string">"Uploaded"</span>)
+                        })
+                    <span class="code-keyword">end</span>),
+                    { class = <span class="code-string">"space-y-2"</span> }
+                )
+            })
+    })
+<span class="code-keyword">end</span>, {
+    uploading = false,
+    progress = 0,
+    uploadedFiles = {}
+})</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="mt-12 pt-8 border-t border-light-border text-center text-light-text-secondary">
+            <p>Dawn Framework Custom Elements & Widgets &copy; 2023 - Complete Documentation</p>
+            <div class="flex justify-center space-x-4 mt-4">
+                <a href="#" class="text-laser-blue hover:underline">API Reference</a>
+                <a href="#" class="text-laser-blue hover:underline">Examples Gallery</a>
+                <a href="#" class="text-laser-blue hover:underline">GitHub</a>
+                <a href="#" class="text-laser-blue hover:underline">Community</a>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        // Copy code functionality
+        document.querySelectorAll('.copy-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const codeBlock = this.closest('.code-block').querySelector('pre code');
+                const textToCopy = codeBlock.textContent;
+                
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check mr-1"></i>Copied!';
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                    }, 2000);
+                });
+            });
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>

@@ -1,0 +1,881 @@
+<!-- Enhanced Documentation Sidebar -->
+<style>
+    /* Sidebar Container */
+    .doc-sidebar {
+        position: relative;
+        height: 100%;
+        background: linear-gradient(135deg, #FFFFFF 0%, #F8F9FA 100%);
+        border-right: 1px solid rgba(0, 102, 255, 0.15);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow-y: auto;
+        overflow-x: hidden;
+        position: relative;
+        z-index: 10;
+    }
+
+    /* Light Mode Variables */
+    .doc-sidebar {
+        --sidebar-text: #2A2A3A;
+        --sidebar-text-secondary: #5A6578;
+        --sidebar-icon: #0066FF;
+        --sidebar-border: #E0E5EC;
+        --sidebar-hover-bg: rgba(0, 102, 255, 0.05);
+        --sidebar-active-bg: linear-gradient(90deg, rgba(0, 102, 255, 0.1), transparent);
+        --sidebar-title-gradient: linear-gradient(135deg, #2A2A3A, #0066FF);
+    }
+
+    /* Dark Mode Override */
+    body.dark-theme .doc-sidebar {
+        background: linear-gradient(135deg, rgba(10, 10, 15, 0.98) 0%, rgba(21, 21, 32, 0.98) 100%);
+        border-right: 1px solid rgba(0, 102, 255, 0.2);
+        --sidebar-text: #E0E5EC;
+        --sidebar-text-secondary: #A0A5B5;
+        --sidebar-icon: #00CC88;
+        --sidebar-border: #2A2A3A;
+        --sidebar-hover-bg: rgba(0, 102, 255, 0.1);
+        --sidebar-active-bg: linear-gradient(90deg, rgba(0, 102, 255, 0.2), transparent);
+        --sidebar-title-gradient: linear-gradient(135deg, #FFFFFF, #0066FF);
+    }
+
+    /* Collapsed State */
+    .doc-sidebar.collapsed {
+        min-width: 80px !important;
+        max-width: 80px !important;
+        width: 80px !important;
+    }
+
+    .doc-sidebar.collapsed .doc-title span,
+    .doc-sidebar.collapsed .nav-section-title span,
+    .doc-sidebar.collapsed .nav-link span,
+    .doc-sidebar.collapsed .doc-title i:not(.collapse-icon),
+    .doc-sidebar.collapsed .nav-section-title i:not(.collapse-icon) {
+        display: none;
+    }
+
+    .doc-sidebar.collapsed .doc-title {
+        justify-content: center;
+        padding-bottom: 0;
+    }
+
+    .doc-sidebar.collapsed .doc-title::after {
+        display: none;
+    }
+
+    .doc-sidebar.collapsed .nav-section-title {
+        justify-content: center;
+        padding: 0.75rem;
+    }
+
+    .doc-sidebar.collapsed .nav-section-title i {
+        margin-right: 0;
+        font-size: 1.3rem;
+    }
+
+    .doc-sidebar.collapsed .nav-submenu {
+        display: none !important;
+    }
+
+    .doc-sidebar.collapsed .nav-section {
+        position: relative;
+    }
+
+    .doc-sidebar.collapsed .nav-section:hover .nav-submenu {
+        display: block !important;
+        position: fixed;
+        left: 80px;
+        background: var(--bg-surface, #FFFFFF);
+        border-radius: 12px;
+        padding: 0.75rem;
+        min-width: 220px;
+        margin-left: 0;
+        border-left: none;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        animation: slideInLeft 0.3s ease;
+        border: 1px solid var(--sidebar-border);
+    }
+
+    body.dark-theme .doc-sidebar.collapsed .nav-section:hover .nav-submenu {
+        background: linear-gradient(135deg, rgba(10, 10, 15, 0.98), rgba(21, 21, 32, 0.98));
+        backdrop-filter: blur(10px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .doc-sidebar.collapsed .nav-section:hover .nav-submenu::before {
+        content: '';
+        position: absolute;
+        left: -8px;
+        top: 20px;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 8px 8px 8px 0;
+        border-color: transparent var(--sidebar-icon) transparent transparent;
+    }
+
+    .doc-sidebar.collapsed .nav-section:hover .nav-section-title {
+        background: var(--sidebar-hover-bg);
+    }
+
+    /* Modern Gradient Background */
+    .doc-sidebar::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 0% 0%, rgba(0, 102, 255, 0.05), transparent 70%);
+        pointer-events: none;
+    }
+
+    body.dark-theme .doc-sidebar::before {
+        background: radial-gradient(circle at 0% 0%, rgba(0, 102, 255, 0.1), transparent 70%);
+    }
+
+    /* Scrollbar Styling */
+    .doc-sidebar::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .doc-sidebar::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 4px;
+    }
+
+    body.dark-theme .doc-sidebar::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .doc-sidebar::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, #0066FF, #8A2BE2);
+        border-radius: 4px;
+    }
+
+    /* Collapse Button */
+    .collapse-btn {
+        position: absolute;
+        top: 1.5rem;
+        right: -12px;
+        width: 24px;
+        height: 24px;
+        background: linear-gradient(135deg, #0066FF, #8A2BE2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 20;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border: 2px solid #FFFFFF;
+    }
+
+    body.dark-theme .collapse-btn {
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .collapse-btn i {
+        font-size: 0.8rem;
+        color: white;
+        transition: transform 0.3s ease;
+    }
+
+    .doc-sidebar.collapsed .collapse-btn i {
+        transform: rotate(180deg);
+    }
+
+    .collapse-btn:hover {
+        transform: scale(1.1);
+        box-shadow: 0 0 12px rgba(0, 102, 255, 0.5);
+    }
+
+    /* Title Styling */
+    .doc-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+        padding-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        position: relative;
+        background: var(--sidebar-title-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: -0.02em;
+    }
+
+    .doc-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 40px;
+        height: 3px;
+        background: linear-gradient(90deg, #0066FF, #00CC88);
+        border-radius: 3px;
+        transition: width 0.3s ease;
+    }
+
+    .doc-sidebar:not(.collapsed) .doc-title:hover::after {
+        width: 80px;
+    }
+
+    .doc-title i {
+        font-size: 1.5rem;
+        background: linear-gradient(135deg, #0066FF, #00CC88);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    /* Navigation Sections */
+    .nav-section {
+        margin-bottom: 1rem;
+        position: relative;
+    }
+
+    .nav-section-title {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: var(--sidebar-text);
+        padding: 0.75rem 1rem;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .nav-section-title::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, rgba(0, 102, 255, 0.1), transparent);
+        transform: translateX(-100%);
+        transition: transform 0.4s ease;
+    }
+
+    .nav-section-title:hover::before {
+        transform: translateX(0);
+    }
+
+    .nav-section-title:hover {
+        background: var(--sidebar-hover-bg);
+        transform: translateX(4px);
+        color: #0066FF;
+    }
+
+    body.dark-theme .nav-section-title:hover {
+        color: #00CC88;
+    }
+
+    .nav-section-title i {
+        font-size: 1.1rem;
+        width: 20px;
+        color: var(--sidebar-icon);
+        transition: transform 0.3s ease;
+    }
+
+    .nav-section-title .chevron-icon {
+        margin-left: auto;
+        font-size: 0.8rem;
+        transition: transform 0.3s ease;
+        color: var(--sidebar-text-secondary);
+    }
+
+    .nav-section.open .nav-section-title .chevron-icon {
+        transform: rotate(90deg);
+    }
+
+    /* Submenu Styling */
+    .nav-submenu {
+        margin-left: 2rem;
+        padding-left: 1rem;
+        border-left: 2px solid rgba(0, 102, 255, 0.2);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .nav-section.open .nav-submenu {
+        max-height: 500px;
+    }
+
+    .nav-item {
+        margin-bottom: 0.5rem;
+        position: relative;
+    }
+
+    .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.6rem 1rem;
+        border-radius: 10px;
+        color: var(--sidebar-text-secondary);
+        transition: all 0.3s ease;
+        text-decoration: none;
+        font-size: 0.875rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .nav-link::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, rgba(0, 102, 255, 0.08), transparent);
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+
+    .nav-link:hover::before {
+        transform: translateX(0);
+    }
+
+    .nav-link:hover {
+        color: var(--sidebar-icon);
+        transform: translateX(4px);
+    }
+
+    .nav-link.active {
+        background: var(--sidebar-active-bg);
+        color: var(--sidebar-icon);
+        font-weight: 500;
+        position: relative;
+    }
+
+    .nav-link.active::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 3px;
+        height: 70%;
+        background: linear-gradient(180deg, #0066FF, #00CC88);
+        border-radius: 0 3px 3px 0;
+        animation: glowPulse 2s infinite;
+    }
+
+    body.dark-theme .nav-link.active::after {
+        animation: glowPulseDark 2s infinite;
+    }
+
+    .nav-link i {
+        font-size: 0.9rem;
+        width: 20px;
+        color: var(--sidebar-icon);
+        transition: transform 0.3s ease;
+    }
+
+    .nav-link:hover i {
+        transform: scale(1.1);
+    }
+
+    /* Animations */
+    @keyframes slideInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes glowPulse {
+        0%, 100% {
+            opacity: 0.6;
+        }
+        50% {
+            opacity: 1;
+            box-shadow: 0 0 8px #0066FF;
+        }
+    }
+
+    @keyframes glowPulseDark {
+        0%, 100% {
+            opacity: 0.6;
+        }
+        50% {
+            opacity: 1;
+            box-shadow: 0 0 8px #00CC88;
+        }
+    }
+
+    /* Resize Handle (Hidden in new design) */
+    .resize-handle {
+        display: none;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+        .doc-sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 1000;
+            transform: translateX(0);
+        }
+
+        .doc-sidebar.collapsed {
+            transform: translateX(-100%);
+        }
+
+        .collapse-btn {
+            display: none;
+        }
+
+        .mobile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        .mobile-overlay.active {
+            display: block;
+        }
+    }
+</style>
+
+<aside class="doc-sidebar" id="docSidebar">
+    <div class="collapse-btn" id="collapseBtn" onclick="toggleSidebar()">
+        <i class="fas fa-chevron-left"></i>
+    </div>
+    
+    <h3 class="doc-title">
+        <i class="fas fa-book-open"></i>
+        <span>Documentation</span>
+    </h3>
+    
+    <nav class="doc-nav">
+        <!-- Getting Started Section -->
+        <div class="nav-section">
+            <div class="nav-section-title" onclick="toggleSection(this)">
+                <i class="fas fa-rocket"></i>
+                <span>Getting Started</span>
+                <i class="fas fa-chevron-right chevron-icon"></i>
+            </div>
+            <div class="nav-submenu">
+                <div class="nav-item">
+                    <a href="/web/setup" class="nav-link">
+                        <i class="fas fa-download"></i>
+                        <span>Setup & Installation</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="/web" class="nav-link">
+                        <i class="fas fa-play"></i>
+                        <span>Your First Dawn App</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="/web/server-state-management" class="nav-link">
+                        <i class="fas fa-server"></i>
+                        <span>Server State Management</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dawn Core Module Section -->
+        <div class="nav-section">
+            <div class="nav-section-title" onclick="toggleSection(this)">
+                <i class="fas fa-cube"></i>
+                <span>Dawn Core Module</span>
+                <i class="fas fa-chevron-right chevron-icon"></i>
+            </div>
+            <div class="nav-submenu">
+                <div class="nav-item">
+                    <a href="/web/core-server" class="nav-link">
+                        <i class="fas fa-server"></i>
+                        <span>Core Server Setup</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="/web/core-routing" class="nav-link">
+                        <i class="fas fa-route"></i>
+                        <span>Routing & Middleware</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="/web/core-advanced" class="nav-link">
+                        <i class="fas fa-star"></i>
+                        <span>Advanced Features</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="/web/core-sockets" class="nav-link">
+                        <i class="fas fa-plug"></i>
+                        <span>WebSocket Integration</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="/web/core-channel-handler" class="nav-link">
+                        <i class="fas fa-broadcast-tower"></i>
+                        <span>Channel Handler</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dawn DB Module Section -->
+        <div class="nav-section">
+            <div class="nav-section-title" onclick="toggleSection(this)">
+                <i class="fas fa-database"></i>
+                <span>Dawn DB Module</span>
+                <i class="fas fa-chevron-right chevron-icon"></i>
+            </div>
+            <div class="nav-submenu">
+                <div class="nav-item">
+                    <a href="/web/db-setup" class="nav-link">
+                        <i class="fas fa-wrench"></i>
+                        <span>Database Setup</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="/web/db-orm-model" class="nav-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>ORM Models</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="/web/db-orm-schema-conn" class="nav-link">
+                        <i class="fas fa-link"></i>
+                        <span>Schema & Connections</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="/web/db-orm-modelroutes" class="nav-link">
+                        <i class="fas fa-road"></i>
+                        <span>Model Routes</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="/web/db-query-builder" class="nav-link">
+                        <i class="fas fa-code-branch"></i>
+                        <span>Query Builder</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- LuaHTML Reactive Framework Section -->
+        <div class="nav-section">
+            <div class="nav-section-title" onclick="toggleSection(this)">
+                <i class="fas fa-code"></i>
+                <span>LuaHTML Reactive</span>
+                <i class="fas fa-chevron-right chevron-icon"></i>
+            </div>
+            <div class="nav-submenu">
+                <div class="nav-item">
+                    <a href="/web/framework-rendering" class="nav-link">
+                        <i class="fas fa-paint-brush"></i>
+                        <span>Framework Rendering</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="/web/framework-luareactive" class="nav-link">
+                        <i class="fas fa-play-circle"></i>
+                        <span>Getting Started</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="/web/framework-luareactive-clientops" class="nav-link">
+                        <i class="fas fa-mouse-pointer"></i>
+                        <span>Client Operations</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="/web/framework-luareactive-mainappentry" class="nav-link">
+                        <i class="fas fa-door-open"></i>
+                        <span>Main App Entry</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="/web/framework-luareactive-customEl" class="nav-link">
+                        <i class="fas fa-puzzle-piece"></i>
+                        <span>Custom Elements</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="/web/framework-luareactive-sparouting" class="nav-link">
+                        <i class="fas fa-map"></i>
+                        <span>SPA Routing</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="/web/framework-luareactive-sparouting-integration" class="nav-link">
+                        <i class="fas fa-link"></i>
+                        <span>Routing Integration</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- State Management Section -->
+        <div class="nav-section">
+            <div class="nav-section-title" onclick="toggleSection(this)">
+                <i class="fas fa-chart-line"></i>
+                <span>State Management</span>
+                <i class="fas fa-chevron-right chevron-icon"></i>
+            </div>
+            <div class="nav-submenu">
+                <div class="nav-item">
+                    <a href="/web/redis-state-management" class="nav-link">
+                        <i class="fas fa-redis"></i>
+                        <span>Redis State</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="/web/ui-reactor-state" class="nav-link">
+                        <i class="fas fa-atom"></i>
+                        <span>UI Reactor State</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- API Reference Section -->
+        <div class="nav-section">
+            <div class="nav-section-title" onclick="toggleSection(this)">
+                <i class="fas fa-terminal"></i>
+                <span>API Reference</span>
+                <i class="fas fa-chevron-right chevron-icon"></i>
+            </div>
+            <div class="nav-submenu">
+                <div class="nav-item">
+                    <a href="#core-api" class="nav-link">
+                        <i class="fas fa-cube"></i>
+                        <span>Core API</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#db-api" class="nav-link">
+                        <i class="fas fa-database"></i>
+                        <span>Database API</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#websocket-api" class="nav-link">
+                        <i class="fas fa-plug"></i>
+                        <span>WebSocket API</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</aside>
+
+<!-- Mobile Overlay -->
+<div class="mobile-overlay" id="mobileOverlay" onclick="closeMobileSidebar()"></div>
+
+<script>
+    // Toggle section submenu with animation
+    function toggleSection(element) {
+        const section = element.closest('.nav-section');
+        section.classList.toggle('open');
+        
+        // Save state to localStorage
+        const sectionTitle = element.querySelector('span')?.textContent || 'section';
+        localStorage.setItem(`section_${sectionTitle}`, section.classList.contains('open') ? 'open' : 'closed');
+    }
+    
+    // Toggle sidebar collapse
+    function toggleSidebar() {
+        const sidebar = document.getElementById('docSidebar');
+        sidebar.classList.toggle('collapsed');
+        
+        // Save state to localStorage
+        localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+    }
+    
+    // Close mobile sidebar
+    function closeMobileSidebar() {
+        const sidebar = document.getElementById('docSidebar');
+        const overlay = document.getElementById('mobileOverlay');
+        if (window.innerWidth <= 1024) {
+            sidebar.classList.add('collapsed');
+            overlay.classList.remove('active');
+        }
+    }
+    
+    // Load saved states
+    function loadSavedStates() {
+        // Load sidebar collapse state
+        const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+        const sidebar = document.getElementById('docSidebar');
+        if (isCollapsed && sidebar) {
+            sidebar.classList.add('collapsed');
+        }
+        
+        // Load section states
+        document.querySelectorAll('.nav-section').forEach(section => {
+            const titleDiv = section.querySelector('.nav-section-title');
+            const sectionTitle = titleDiv?.querySelector('span')?.textContent || '';
+            const savedState = localStorage.getItem(`section_${sectionTitle}`);
+            
+            if (savedState === 'open') {
+                section.classList.add('open');
+            } else if (savedState === 'closed') {
+                section.classList.remove('open');
+            } else {
+                // Default: first section open, others closed
+                const isFirstSection = section === document.querySelector('.nav-section');
+                if (isFirstSection) {
+                    section.classList.add('open');
+                }
+            }
+        });
+    }
+    
+    // Set active link based on current URL
+    function setActiveLink() {
+        const currentPath = window.location.pathname;
+        let activeFound = false;
+        
+        document.querySelectorAll('.nav-link').forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === currentPath || (href !== '#' && currentPath.startsWith(href) && href !== '/web')) {
+                link.classList.add('active');
+                activeFound = true;
+                
+                // Expand parent section
+                const parentSection = link.closest('.nav-section');
+                if (parentSection) {
+                    parentSection.classList.add('open');
+                }
+            }
+        });
+        
+        // If no active link found, highlight first item in first open section
+        if (!activeFound) {
+            const firstOpenSection = document.querySelector('.nav-section.open');
+            if (firstOpenSection) {
+                const firstLink = firstOpenSection.querySelector('.nav-link');
+                if (firstLink) {
+                    firstLink.classList.add('active');
+                }
+            }
+        }
+    }
+    
+    // Handle mobile menu
+    function initMobileMenu() {
+        if (window.innerWidth <= 1024) {
+            const sidebar = document.getElementById('docSidebar');
+            const overlay = document.getElementById('mobileOverlay');
+            
+            // Add menu toggle button to header if needed
+            const header = document.querySelector('header');
+            if (header && !document.querySelector('.mobile-menu-toggle')) {
+                const toggleBtn = document.createElement('button');
+                toggleBtn.className = 'mobile-menu-toggle';
+                toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                toggleBtn.style.cssText = `
+                    position: fixed;
+                    top: 1rem;
+                    left: 1rem;
+                    z-index: 1001;
+                    background: linear-gradient(135deg, #0066FF, #8A2BE2);
+                    border: none;
+                    border-radius: 8px;
+                    padding: 0.75rem;
+                    color: white;
+                    cursor: pointer;
+                    display: none;
+                `;
+                toggleBtn.onclick = () => {
+                    sidebar.classList.remove('collapsed');
+                    overlay.classList.add('active');
+                };
+                document.body.appendChild(toggleBtn);
+                toggleBtn.style.display = 'flex';
+            }
+        }
+    }
+    
+    // Sync theme with body class
+    function syncThemeWithBody() {
+        const sidebar = document.getElementById('docSidebar');
+        const body = document.body;
+        
+        if (body.classList.contains('dark-theme')) {
+            sidebar.classList.add('dark-theme');
+        } else {
+            sidebar.classList.remove('dark-theme');
+        }
+    }
+    
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        const sidebar = document.getElementById('docSidebar');
+        const overlay = document.getElementById('mobileOverlay');
+        
+        if (window.innerWidth > 1024) {
+            if (sidebar && overlay) {
+                sidebar.classList.remove('collapsed');
+                overlay.classList.remove('active');
+            }
+        } else {
+            initMobileMenu();
+        }
+    });
+    
+    // Initialize everything
+    document.addEventListener('DOMContentLoaded', function() {
+        loadSavedStates();
+        setActiveLink();
+        initMobileMenu();
+        syncThemeWithBody();
+        
+        // Watch for theme changes on body
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.attributeName === 'class') {
+                    syncThemeWithBody();
+                }
+            });
+        });
+        
+        observer.observe(document.body, { attributes: true });
+        
+        // Add click handlers to nav links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Close mobile sidebar on click
+                if (window.innerWidth <= 1024) {
+                    const sidebar = document.getElementById('docSidebar');
+                    const overlay = document.getElementById('mobileOverlay');
+                    sidebar.classList.add('collapsed');
+                    overlay.classList.remove('active');
+                }
+            });
+        });
+    });
+</script>

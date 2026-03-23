@@ -1,0 +1,808 @@
+    <style>
+        .code-block {
+            background: #0A0A0F;
+            border-left: 4px solid #0066FF;
+        }
+        .light-theme .code-block {
+            background: #F7F9FC;
+            border-left: 4px solid #0066FF;
+            color: #2A2A3A;
+        }
+        .code-keyword { color: #0066FF; }
+        .code-string { color: #00CC88; }
+        .code-comment { color: #6A737D; }
+        .code-variable { color: #8A2BE2; }
+        .code-type { color: #FFB300; }
+        .function-signature {
+            background: #F0F4F8;
+            border-left: 4px solid #0066FF;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.5rem;
+        }
+        .param-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        .param-table th, .param-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #E0E5EC;
+        }
+        .param-table th {
+            background-color: #F7F9FC;
+            font-weight: 600;
+        }
+    </style>
+
+    <main class="main-content-body max-w-6xl mx-auto px-6 py-8 light-theme">
+        <!-- Overview -->
+        <section class="mb-16">
+            <div class="bg-white rounded-xl shadow-lg p-8 border border-light-border">
+                <h1 class="text-4xl font-bold mb-6 text-neural-charcoal">WebSocket Channel Handler Guide</h1>
+                <p class="text-xl text-light-text-secondary mb-8">
+                    Complete guide to creating and managing WebSocket channel handlers in Dawn Framework.
+                    Learn how to build real-time features with proper architecture and best practices.
+                </p>
+            </div>
+        </section>
+
+        <!-- Handler Parameters -->
+        <section class="mb-16">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-laser-blue flex items-center justify-center text-white font-bold mr-4">1</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">Handler Method Parameters</h2>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Understanding Handler Parameters</h3>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">ws (WebSocket Object)</h4>
+                    <p class="text-light-text-secondary mb-3">The raw WebSocket connection object providing direct access to the client connection.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr><th>Access</th><th>Description</th><th>Example Usage</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>ws:send()</code></td>
+                                <td>Send direct messages to this connection</td>
+                                <td><code>ws:send('{"type":"direct"})</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>shared.sockets:safe_get_ws_id(ws)</code></td>
+                                <td>Get the unique WebSocket ID</td>
+                                <td>Identify connection for targeted messaging</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="bg-gray-800 text-gray-200 rounded-lg p-4 mt-4 code-block">
+                        <pre class="text-sm"><code><span class="code-comment">-- Get WebSocket ID for this connection</span>
+<span class="code-keyword">local</span> ws_id = shared.sockets:<span class="code-type">safe_get_ws_id</span>(ws)
+<span class="code-keyword">if</span> ws_id <span class="code-keyword">then</span>
+    shared.sockets:<span class="code-type">send_to_user</span>(ws_id, { type = <span class="code-string">"welcome"</span> })
+<span class="code-keyword">end</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">payload (Message Data)</h4>
+                    <p class="text-light-text-secondary mb-3">The data sent by the client in the WebSocket message.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr><th>Property</th><th>Type</th><th>Description</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Any custom data</td><td>Various</td><td>Client-defined message content</td></tr>
+                            <tr><td>client_message_id</td><td>string</td><td>Optional ID for message acknowledgement</td></tr>
+                            <tr><td>sender</td><td>string</td><td>User identification (if provided)</td></tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="bg-gray-800 text-gray-200 rounded-lg p-4 mt-4 code-block">
+                        <pre class="text-sm"><code><span class="code-comment">-- Access payload data</span>
+<span class="code-keyword">local</span> message_content = payload.body <span class="code-keyword">or</span> payload.content
+<span class="code-keyword">local</span> sender_name = payload.sender <span class="code-keyword">or</span> <span class="code-string">"Anonymous"</span>
+<span class="code-keyword">local</span> client_msg_id = payload.client_message_id</code></pre>
+                    </div>
+                </div>
+
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">state (Connection State)</h4>
+                    <p class="text-light-text-secondary mb-3">Per-connection state object storing session-specific data.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr><th>Property</th><th>Type</th><th>Description</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>user_id</td><td>string</td><td>Authenticated user identifier</td></tr>
+                            <tr><td>ws_id</td><td>string</td><td>WebSocket connection ID</td></tr>
+                            <tr><td>connected_at</td><td>number</td><td>Timestamp when connection was established</td></tr>
+                            <tr><td>last_message</td><td>number</td><td>Timestamp of last received message</td></tr>
+                            <tr><td>rooms</td><td>table</td><td>List of rooms this connection has joined</td></tr>
+                            <tr><td>pending_acks</td><td>table</td><td>Pending message acknowledgements</td></tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="bg-gray-800 text-gray-200 rounded-lg p-4 mt-4 code-block">
+                        <pre class="text-sm"><code><span class="code-comment">-- Access and modify connection state</span>
+<span class="code-keyword">local</span> user_id = state.user_id
+state.last_activity = os.time()
+
+<span class="code-comment">-- Check if user is authenticated</span>
+<span class="code-keyword">if</span> <span class="code-keyword">not</span> user_id <span class="code-keyword">then</span>
+    shared.sockets:<span class="code-type">send_to_user</span>(state.ws_id, { error = <span class="code-string">"Authentication required"</span> })
+    <span class="code-keyword">return</span>
+<span class="code-keyword">end</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">shared (Global Shared State)</h4>
+                    <p class="text-light-text-secondary mb-3">Global object accessible across the entire server application.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr><th>Property</th><th>Type</th><th>Description</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>sockets</td><td>DawnSockets</td><td>Access to all socket management functions</td></tr>
+                            <tr><td>sessions</td><td>table</td><td>User session storage</td></tr>
+                            <tr><td>players</td><td>table</td><td>Game/application player data</td></tr>
+                            <tr><td>metrics</td><td>table</td><td>Server performance metrics</td></tr>
+                            <tr><td>pending_acknowledgements</td><td>table</td><td>Global pending message acknowledgements</td></tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="bg-gray-800 text-gray-200 rounded-lg p-4 mt-4 code-block">
+                        <pre class="text-sm"><code><span class="code-comment">-- Access DawnSockets functionality</span>
+shared.sockets:<span class="code-type">broadcast_to_room</span>(topic, message)
+shared.sockets:<span class="code-type">send_to_user</span>(user_id, data)
+
+<span class="code-comment">-- Access global application state</span>
+shared.metrics.messages_processed = (shared.metrics.messages_processed <span class="code-keyword">or</span> 0) + 1</code></pre>
+                    </div>
+                </div>
+
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">topic (Channel/Room Name)</h4>
+                    <p class="text-light-text-secondary mb-3">The specific channel or room this handler is processing messages for.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr><th>Pattern</th><th>Example</th><th>Description</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Static</td><td><code>"chat:lobby"</code></td><td>Exact channel name matching</td></tr>
+                            <tr><td>Wildcard</td><td><code>"room:*"</code></td><td>Pattern matching for dynamic rooms</td></tr>
+                            <tr><td>Special</td><td><code>"binary"</code></td><td>Special handler for binary data</td></tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="bg-gray-800 text-gray-200 rounded-lg p-4 mt-4 code-block">
+                        <pre class="text-sm"><code><span class="code-comment">-- Use topic for context-aware processing</span>
+<span class="code-keyword">if</span> topic:<span class="code-type">match</span>(<span class="code-string">"^chat:"</span>) <span class="code-keyword">then</span>
+    <span class="code-comment">-- This is a chat room</span>
+    shared.sockets:<span class="code-type">broadcast_to_room</span>(topic, chat_message)
+<span class="code-keyword">elseif</span> topic:<span class="code-type">match</span>(<span class="code-string">"^game:"</span>) <span class="code-keyword">then</span>
+    <span class="code-comment">-- This is a game room</span>
+    process_game_action(topic, payload)
+<span class="code-keyword">end</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">state_management / presence</h4>
+                    <p class="text-light-text-secondary mb-3">Redis state management instance for persistent storage and presence tracking.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr><th>Category</th><th>Methods</th><th>Description</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Presence</td>
+                                <td><code>set_presence, get_all_presence, exist_in_presence, remove_presence</code></td>
+                                <td>User presence tracking in rooms</td>
+                            </tr>
+                            <tr>
+                                <td>Rooms</td>
+                                <td><code>room_exists, create_room, get_all_rooms</code></td>
+                                <td>Room management operations</td>
+                            </tr>
+                            <tr>
+                                <td>Users</td>
+                                <td><code>set_user_status, get_user_status, get_connected_users</code></td>
+                                <td>User status and connection management</td>
+                            </tr>
+                            <tr>
+                                <td>Messages</td>
+                                <td><code>queue_private_message, fetch_queued_messages</code></td>
+                                <td>Offline message handling</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="bg-gray-800 text-gray-200 rounded-lg p-4 mt-4 code-block">
+                        <pre class="text-sm"><code><span class="code-comment">-- Presence management examples</span>
+<span class="code-comment">-- Set user presence in a room</span>
+state_management:<span class="code-type">set_presence</span>(topic, state.ws_id, state.user_id, {
+    nickname = payload.nickname,
+    joined_at = os.time()
+})
+
+<span class="code-comment">-- Get all users in a room</span>
+<span class="code-keyword">local</span> room_users = state_management:<span class="code-type">get_all_presence</span>(topic)
+
+<span class="code-comment">-- Check if room exists, create if not</span>
+<span class="code-keyword">if</span> <span class="code-keyword">not</span> state_management:<span class="code-type">room_exists</span>(topic) <span class="code-keyword">then</span>
+    state_management:<span class="code-type">create_room</span>(topic)
+<span class="code-keyword">end</span></code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tutorial Steps -->
+        <section class="mb-16">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-build-green flex items-center justify-center text-white font-bold mr-4">2</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">Step-by-Step Tutorial</h2>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Step 1: Define WebSocket Route</h3>
+                <p class="text-light-text-secondary mb-4">Create or modify the WebSocket route endpoint in <code>routes/ws_routes.lua</code>:</p>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- routes/ws_routes.lua</span>
+<span class="code-keyword">local</span> json = <span class="code-keyword">require</span>(<span class="code-string">'dkjson'</span>)
+
+<span class="code-keyword">local</span> M = {}
+M.<span class="code-variable">__index</span> = M
+
+<span class="code-keyword">function</span> M:<span class="code-type">new</span>(server)
+    <span class="code-keyword">local</span> self = <span class="code-keyword">setmetatable</span>({}, M)
+    self.<span class="code-variable">server</span> = server
+    <span class="code-keyword">return</span> self
+<span class="code-keyword">end</span>
+
+<span class="code-keyword">function</span> M:<span class="code-type">routes</span>()
+    <span class="code-comment">-- Default WebSocket route (do not remove)</span>
+    self.<span class="code-variable">server</span>:<span class="code-type">ws</span>(<span class="code-string">"/ws"</span>, <span class="code-keyword">function</span>(req, res)
+        <span class="code-comment">-- Framework handles this automatically</span>
+    <span class="code-keyword">end</span>)
+
+    <span class="code-comment">-- Custom WebSocket routes for specific features</span>
+    self.<span class="code-variable">server</span>:<span class="code-type">ws</span>(<span class="code-string">"/ws/games"</span>, <span class="code-keyword">function</span>(req, res)
+        <span class="code-comment">-- Custom game WebSocket endpoint</span>
+    <span class="code-keyword">end</span>)
+
+    self.<span class="code-variable">server</span>:<span class="code-type">ws</span>(<span class="code-string">"/ws/notifications"</span>, <span class="code-keyword">function</span>(req, res)
+        <span class="code-comment">-- Notification-specific endpoint</span>
+    <span class="code-keyword">end</span>)
+<span class="code-keyword">end</span>
+
+<span class="code-keyword">return</span> M</code></pre>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Step 2: Create Channel Handler</h3>
+                <p class="text-light-text-secondary mb-4">Create a new channel handler file in <code>websockets/handlers/</code>:</p>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- websockets/handlers/game_channel.lua</span>
+<span class="code-keyword">local</span> cjson = <span class="code-keyword">require</span>(<span class="code-string">"dkjson"</span>)
+<span class="code-keyword">local</span> uuid = <span class="code-keyword">require</span>(<span class="code-string">"utils.uuid"</span>)
+
+<span class="code-keyword">local</span> game_handler = {}
+
+<span class="code-comment">-- Player joins a game room</span>
+<span class="code-keyword">function</span> game_handler:<span class="code-type">join</span>(ws, payload, state, shared, topic, state_management)
+    <span class="code-keyword">local</span> ws_id = shared.sockets:<span class="code-type">safe_get_ws_id</span>(ws)
+    <span class="code-keyword">if</span> <span class="code-keyword">not</span> ws_id <span class="code-keyword">then</span> <span class="code-keyword">return</span> <span class="code-keyword">end</span>
+
+    <span class="code-keyword">local</span> user_id = state.user_id
+    <span class="code-keyword">if</span> <span class="code-keyword">not</span> user_id <span class="code-keyword">then</span>
+        shared.sockets:<span class="code-type">send_to_user</span>(ws_id, {
+            type = <span class="code-string">"error"</span>,
+            topic = topic,
+            event = <span class="code-string">"join"</span>,
+            payload = { reason = <span class="code-string">"User not identified"</span> }
+        })
+        <span class="code-keyword">return</span>
+    <span class="code-keyword">end</span>
+
+    <span class="code-comment">-- Join the game room with player data</span>
+    shared.sockets:<span class="code-type">join_room</span>(topic, ws, {
+        user_id = user_id,
+        player_name = payload.player_name <span class="code-keyword">or</span> <span class="code-string">"Player_"</span> .. user_id:sub(1, 5),
+        team = payload.team,
+        joined_at = os.time()
+    })
+
+    <span class="code-comment">-- Notify room about new player</span>
+    shared.sockets:<span class="code-type">broadcast_to_room</span>(topic, {
+        type = <span class="code-string">"game_event"</span>,
+        topic = topic,
+        event = <span class="code-string">"player_joined"</span>,
+        payload = {
+            player_id = user_id,
+            player_name = payload.player_name,
+            team = payload.team,
+            timestamp = os.time()
+        }
+    })
+
+    <span class="code-comment">-- Send current game state to new player</span>
+    shared.sockets:<span class="code-type">send_to_user</span>(ws_id, {
+        type = <span class="code-string">"game_state"</span>,
+        topic = topic,
+        event = <span class="code-string">"initial_state"</span>,
+        payload = get_current_game_state(topic)
+    })
+<span class="code-keyword">end</span>
+
+<span class="code-comment">-- Handle player actions</span>
+<span class="code-keyword">function</span> game_handler:<span class="code-type">player_action</span>(ws, payload, state, shared, topic, state_management)
+    <span class="code-keyword">local</span> user_id = state.user_id
+    <span class="code-keyword">if</span> <span class="code-keyword">not</span> user_id <span class="code-keyword">then</span> <span class="code-keyword">return</span> <span class="code-keyword">end</span>
+
+    <span class="code-keyword">local</span> action = payload.action
+    <span class="code-keyword">local</span> data = payload.data
+
+    <span class="code-comment">-- Process game action</span>
+    <span class="code-keyword">local</span> result = process_game_action(topic, user_id, action, data)
+
+    <span class="code-comment">-- Broadcast action result to all players</span>
+    shared.sockets:<span class="code-type">broadcast_to_room</span>(topic, {
+        type = <span class="code-string">"game_event"</span>,
+        topic = topic,
+        event = <span class="code-string">"player_action"</span>,
+        payload = {
+            player_id = user_id,
+            action = action,
+            result = result,
+            timestamp = os.time()
+        }
+    })
+<span class="code-keyword">end</span>
+
+<span class="code-comment">-- Handle player leaving game</span>
+<span class="code-keyword">function</span> game_handler:<span class="code-type">leave</span>(ws, payload, state, shared, topic, state_management)
+    <span class="code-keyword">local</span> user_id = state.user_id
+    <span class="code-keyword">if</span> <span class="code-keyword">not</span> user_id <span class="code-keyword">then</span> <span class="code-keyword">return</span> <span class="code-keyword">end</span>
+
+    shared.sockets:<span class="code-type">leave_room</span>(topic, ws)
+
+    <span class="code-comment">-- Notify other players</span>
+    shared.sockets:<span class="code-type">broadcast_to_room</span>(topic, {
+        type = <span class="code-string">"game_event"</span>,
+        topic = topic,
+        event = <span class="code-string">"player_left"</span>,
+        payload = {
+            player_id = user_id,
+            timestamp = os.time()
+        }
+    })
+<span class="code-keyword">end</span>
+
+<span class="code-comment">-- Handle game chat messages</span>
+<span class="code-keyword">function</span> game_handler:<span class="code-type">chat</span>(ws, payload, state, shared, topic, state_management)
+    <span class="code-keyword">local</span> user_id = state.user_id
+    <span class="code-keyword">if</span> <span class="code-keyword">not</span> user_id <span class="code-keyword">then</span> <span class="code-keyword">return</span> <span class="code-keyword">end</span>
+
+    <span class="code-keyword">local</span> message = payload.message
+    <span class="code-keyword">if</span> message <span class="code-keyword">and</span> #message > 0 <span class="code-keyword">then</span>
+        shared.sockets:<span class="code-type">broadcast_to_room</span>(topic, {
+            type = <span class="code-string">"game_chat"</span>,
+            topic = topic,
+            event = <span class="code-string">"new_message"</span>,
+            payload = {
+                player_id = user_id,
+                message = message,
+                timestamp = os.time()
+            }
+        })
+    <span class="code-keyword">end</span>
+<span class="code-keyword">end</span>
+
+<span class="code-keyword">return</span> game_handler</code></pre>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Step 3: Register Handler</h3>
+                <p class="text-light-text-secondary mb-4">Add your handler to <code>websockets/handlers/_index.lua</code>:</p>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- websockets/handlers/_index.lua</span>
+<span class="code-keyword">local</span> room_management = <span class="code-keyword">require</span>(<span class="code-string">"websockets.handlers.room_channel"</span>)[1]
+<span class="code-keyword">local</span> room_handler = <span class="code-keyword">require</span>(<span class="code-string">"websockets.handlers.room_channel"</span>)[2]
+<span class="code-keyword">local</span> patch_handler = <span class="code-keyword">require</span>(<span class="code-string">"websockets.handlers.patch_channel"</span>):<span class="code-type">new</span>()
+
+<span class="code-comment">-- Main handlers table</span>
+<span class="code-keyword">local</span> handlers = {
+    channels = {
+        room_management = room_management,
+        [<span class="code-string">"patch"</span>] = patch_handler,
+        [<span class="code-string">"room:*"</span>] = room_handler,
+        [<span class="code-string">"binary"</span>] = <span class="code-keyword">require</span>(<span class="code-string">"websockets.handlers.binary_channel"</span>).binary_handler,
+        [<span class="code-string">"chat:lobby"</span>] = <span class="code-keyword">require</span>(<span class="code-string">"websockets.handlers.chat_channel"</span>),
+        [<span class="code-string">"dm"</span>] = <span class="code-keyword">require</span>(<span class="code-string">"websockets.handlers.private_channel"</span>),
+        
+        <span class="code-comment">-- Register your new game handler</span>
+        [<span class="code-string">"game:*"</span>] = <span class="code-keyword">require</span>(<span class="code-string">"websockets.handlers.game_channel"</span>),
+        [<span class="code-string">"game_actions"</span>] = <span class="code-keyword">require</span>(<span class="code-string">"websockets.handlers.game_channel"</span>),
+        
+        [<span class="code-string">"__default__"</span>] = <span class="code-keyword">require</span>(<span class="code-string">"websockets.handlers.default_channel"</span>)
+    }
+}
+
+<span class="code-keyword">return</span> handlers</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Frontend Examples -->
+        <section class="mb-16">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-query-purple flex items-center justify-center text-white font-bold mr-4">3</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">Frontend Usage Examples</h2>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Chat Handler Frontend</h3>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">&lt;!-- Simple Chat Interface --&gt;</span>
+&lt;div id=<span class="code-string">"chat-container"</span>&gt;
+    &lt;div id=<span class="code-string">"chat-log"</span>&gt;&lt;/div&gt;
+    &lt;input type=<span class="code-string">"text"</span> id=<span class="code-string">"message-input"</span> placeholder=<span class="code-string">"Type your message..."</span>&gt;
+    &lt;button onclick=<span class="code-string">"sendMessage()"</span>&gt;Send&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+    const userId = Math.random().toString(36).substring(2, 10);
+    const topic = "chat:lobby";
+    const ws = new WebSocket("ws://localhost:3003/ws");
+
+    const log = (msg) => {
+        document.getElementById("chat-log").innerHTML += `&lt;p&gt;${msg}&lt;/p&gt;`;
+    };
+
+    ws.onopen = () => {
+        log("Connected to chat");
+        
+        <span class="code-comment">// Join the chat room</span>
+        ws.send(JSON.stringify({
+            topic: topic,
+            event: "join",
+            payload: {
+                sender: "Guest_" + userId,
+                nickname: "Player_" + userId
+            }
+        }));
+    };
+
+    ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        
+        switch(data.event) {
+            case "new_message":
+                log(`&lt;strong&gt;${data.payload.sender_nickname}:&lt;/strong&gt; ${data.payload.body}`);
+                break;
+            case "system_message":
+                log(`&lt;em&gt;System: ${data.payload.message}&lt;/em&gt;`);
+                break;
+            case "user_joined":
+                log(`&lt;em&gt;${data.payload.nickname} joined the chat&lt;/em&gt;`);
+                break;
+            case "user_left":
+                log(`&lt;em&gt;${data.payload.nickname} left the chat&lt;/em&gt;`);
+                break;
+        }
+    };
+
+    function sendMessage() {
+        const message = document.getElementById("message-input").value;
+        if (!message) return;
+
+        ws.send(JSON.stringify({
+            topic: topic,
+            event: "message",
+            payload: {
+                body: message,
+                client_message_id: Math.random().toString(36).substring(2, 10)
+            }
+        }));
+
+        document.getElementById("message-input").value = "";
+    }
+
+    <span class="code-comment">// Typing indicators</span>
+    let typingTimer;
+    document.getElementById("message-input").addEventListener("input", () => {
+        ws.send(JSON.stringify({
+            topic: topic,
+            event: "typing",
+            payload: {}
+        }));
+
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(() => {
+            ws.send(JSON.stringify({
+                topic: topic,
+                event: "stopped_typing",
+                payload: {}
+            }));
+        }, 1000);
+    });
+&lt;/script&gt;</code></pre>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Game Handler Frontend</h3>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">&lt;!-- Game Interface --&gt;</span>
+&lt;div id=<span class="code-string">"game-container"</span>&gt;
+    &lt;div id=<span class="code-string">"players-list"</span>&gt;&lt;/div&gt;
+    &lt;div id=<span class="code-string">"game-board"</span>&gt;&lt;/div&gt;
+    &lt;div id=<span class="code-string">"game-chat"</span>&gt;&lt;/div&gt;
+    &lt;input type=<span class="code-string">"text"</span> id=<span class="code-string">"game-chat-input"</span> placeholder=<span class="code-string">"Game chat..."</span>&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+    const userId = Math.random().toString(36).substring(2, 10);
+    const gameId = "chess_match_001";
+    const ws = new WebSocket("ws://localhost:3003/ws");
+
+    const gameState = {
+        players: [],
+        board: [],
+        currentTurn: null
+    };
+
+    ws.onopen = () => {
+        console.log("Connected to game server");
+        
+        <span class="code-comment">// Join the game room</span>
+        ws.send(JSON.stringify({
+            topic: `game:${gameId}`,
+            event: "join",
+            payload: {
+                player_name: `Player_${userId}`,
+                team: Math.random() > 0.5 ? "white" : "black"
+            }
+        }));
+    };
+
+    ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        
+        switch(data.event) {
+            case "player_joined":
+                addPlayer(data.payload);
+                break;
+            case "player_left":
+                removePlayer(data.payload.player_id);
+                break;
+            case "player_action":
+                handleGameAction(data.payload);
+                break;
+            case "game_state":
+                updateGameState(data.payload);
+                break;
+            case "game_chat":
+                addChatMessage(data.payload);
+                break;
+        }
+    };
+
+    function addPlayer(player) {
+        gameState.players.push(player);
+        updatePlayersList();
+    }
+
+    function removePlayer(playerId) {
+        gameState.players = gameState.players.filter(p => p.player_id !== playerId);
+        updatePlayersList();
+    }
+
+    function handleGameAction(action) {
+        console.log("Game action:", action);
+        <span class="code-comment">// Update game UI based on action</span>
+        updateGameBoard(action);
+    }
+
+    function sendGameAction(action, data) {
+        ws.send(JSON.stringify({
+            topic: `game:${gameId}`,
+            event: "player_action",
+            payload: {
+                action: action,
+                data: data
+            }
+        }));
+    }
+
+    function sendChatMessage() {
+        const message = document.getElementById("game-chat-input").value;
+        if (!message) return;
+
+        ws.send(JSON.stringify({
+            topic: `game:${gameId}`,
+            event: "chat",
+            payload: {
+                message: message
+            }
+        }));
+
+        document.getElementById("game-chat-input").value = "";
+    }
+
+    <span class="code-comment">// Example game actions</span>
+    function movePiece(from, to) {
+        sendGameAction("move_piece", { from, to });
+    }
+
+    function attackPiece(attacker, target) {
+        sendGameAction("attack_piece", { attacker, target });
+    }
+
+    <span class="code-comment">// UI update functions</span>
+    function updatePlayersList() {
+        const list = document.getElementById("players-list");
+        list.innerHTML = gameState.players.map(player =&gt; 
+            `&lt;div&gt;${player.player_name} (${player.team})&lt;/div&gt;`
+        ).join("");
+    }
+
+    function addChatMessage(message) {
+        const chat = document.getElementById("game-chat");
+        chat.innerHTML += `&lt;div&gt;&lt;strong&gt;${message.player_id}:&lt;/strong&gt; ${message.message}&lt;/div&gt;`;
+    }
+&lt;/script&gt;</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Code Snippets -->
+        <section class="mb-16">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-warning-amber flex items-center justify-center text-white font-bold mr-4">4</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">Code Snippets & Templates</h2>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">VS Code Snippets</h3>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">// .vscode/lua.json</span>
+{
+  "Generic Channel Handler": {
+    "prefix": "dawn_ws-handler",
+    "description": "Generate a generic WebSocket channel handler module",
+    "body": [
+      "-- websockets/handlers/${1:channel_name}.lua",
+      "local cjson = require(\"dkjson\")",
+      "local uuid = require(\"utils.uuid\")",
+      "",
+      "local ${1}_handler = {}",
+      "",
+      "-- Handles join event",
+      "function ${1}_handler:join(ws, payload, state, shared, topic, state_management)",
+      "    local ws_id = shared.sockets:safe_get_ws_id(ws)",
+      "    if not ws_id then return end",
+      "",
+      "    local user_id = state.user_id",
+      "    if not user_id then",
+      "        shared.sockets:send_to_user(ws_id, {",
+      "            type = \"dawn_reply\",",
+      "            topic = topic,",
+      "            event = \"join\",",
+      "            payload = { status = \"error\", reason = \"User not identified.\" }",
+      "        })",
+      "        return",
+      "    end",
+      "",
+      "    shared.sockets:join_room(topic, ws, { user_id = user_id, user_name = user_id, joined_at = os.time() })",
+      "",
+      "    shared.sockets:send_to_user(ws_id, {",
+      "        type = \"dawn_reply\",",
+      "        topic = topic,",
+      "        event = \"join\",",
+      "        payload = { status = \"ok\", message = \"Joined successfully.\" }",
+      "    })",
+      "end",
+      "",
+      "-- Handles leave event",
+      "function ${1}_handler:leave(ws, payload, state, shared, topic, state_management)",
+      "    local ws_id = shared.sockets:safe_get_ws_id(ws)",
+      "    if not ws_id then return end",
+      "",
+      "    shared.sockets:leave_room(topic, ws)",
+      "    shared.sockets:send_to_user(ws_id, {",
+      "        type = \"dawn_reply\",",
+      "        topic = topic,",
+      "        event = \"leave\",",
+      "        payload = { status = \"ok\", message = \"Left successfully.\" }",
+      "    })",
+      "end",
+      "",
+      "-- Handles messages",
+      "function ${1}_handler:message(ws, payload, state, shared, topic, state_management)",
+      "    local user_id = state.user_id",
+      "    if not user_id then return end",
+      "",
+      "    if not payload or not payload.content then",
+      "        shared.sockets:send_to_user(ws, {",
+      "            type = \"dawn_reply\",",
+      "            topic = topic,",
+      "            event = \"message\",",
+      "            payload = { status = \"error\", reason = \"Message content required.\" }",
+      "        })",
+      "        return",
+      "    end",
+      "",
+      "    shared.sockets:broadcast_to_room(topic, {",
+      "        id = uuid.v4(),",
+      "        type = \"room_message\",",
+      "        topic = topic,",
+      "        event = \"new_message\",",
+      "        payload = {",
+      "            sender_id = user_id,",
+      "            sender_name = user_id,",
+      "            content = payload.content,",
+      "            timestamp = os.time(),",
+      "        }",
+      "    })",
+      "end",
+      "",
+      "return ${1}_handler"
+    ]
+  },
+  "Generic Handler Methods": {
+    "prefix": "dawn_ws-handler-methods",
+    "description": "Generate generic WebSocket handler method templates",
+    "body": [
+      "-- Handles ${2:event_name} event",
+      "function ${1:Handler}:${2}(ws, payload, state, shared, topic, state_management)",
+      "    $0",
+      "end"
+    ]
+  }
+}</code></pre>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Copy code functionality
+        document.querySelectorAll('.code-block').forEach(block => {
+            const button = document.createElement('button');
+            button.className = 'bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn absolute top-2 right-2';
+            button.innerHTML = '<i class="fas fa-copy mr-1"></i>Copy';
+            block.style.position = 'relative';
+            block.appendChild(button);
+            
+            button.addEventListener('click', function() {
+                const code = this.parentElement.querySelector('pre code').textContent;
+                navigator.clipboard.writeText(code).then(() => {
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check mr-1"></i>Copied!';
+                    setTimeout(() => { this.innerHTML = originalText; }, 2000);
+                });
+            });
+        });
+    </script>

@@ -1,0 +1,856 @@
+    <style>
+        /* Custom styles for code blocks and other elements */
+        .code-block {
+            background: #0A0A0F;
+            border-left: 4px solid #0066FF;
+        }
+        
+        .light-theme .code-block {
+            background: #F7F9FC;
+            border-left: 4px solid #0066FF;
+            color: #2A2A3A;
+        }
+        
+        .code-keyword {
+            color: #0066FF;
+        }
+        
+        .code-string {
+            color: #00CC88;
+        }
+        
+        .code-comment {
+            color: #6A737D;
+        }
+        
+        .light-theme .code-comment {
+            color: #9AA5B5;
+        }
+        
+        .code-variable {
+            color: #8A2BE2;
+        }
+        
+        .code-type {
+            color: #FFB300;
+        }
+        
+        /* Custom scrollbar for code blocks */
+        .code-block::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .code-block::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+        
+        .code-block::-webkit-scrollbar-thumb {
+            background: rgba(0, 102, 255, 0.5);
+            border-radius: 4px;
+        }
+        
+        .code-block::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 102, 255, 0.7);
+        }
+        
+        /* Additional custom styles */
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00CC88, #8A2BE2);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .method-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+
+    <!-- Main Documentation Content -->
+    <main class="main-content-body max-w-6xl mx-auto px-6 py-8 light-theme">
+        <!-- Overview Section -->
+        <section id="overview" class="mb-16 animate-fadeIn">
+            <div class="bg-white rounded-xl shadow-lg p-8 border border-light-border">
+                <h1 class="text-4xl font-bold mb-6 text-neural-charcoal">Dawn Framework Advanced Features</h1>
+                <p class="text-xl text-light-text-secondary mb-8">
+                    Explore the powerful additional features of Dawn Framework including timers, HTTP client capabilities, 
+                    and comprehensive file operations for building robust web applications.
+                </p>
+                
+                <div class="grid md:grid-cols-3 gap-6 mb-8">
+                    <div class="feature-card bg-blue-50 p-6 rounded-lg border border-blue-100">
+                        <div class="w-12 h-12 rounded-full bg-laser-blue flex items-center justify-center text-white mb-4">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-laser-blue">Timer Management</h3>
+                        <p class="text-light-text-secondary">SetInterval, setTimeout, and clearTimer for scheduling tasks</p>
+                    </div>
+                    
+                    <div class="feature-card bg-green-50 p-6 rounded-lg border border-green-100">
+                        <div class="w-12 h-12 rounded-full bg-build-green flex items-center justify-center text-white mb-4">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-build-green">HTTP Client</h3>
+                        <p class="text-light-text-secondary">Make external HTTP requests with full method support</p>
+                    </div>
+                    
+                    <div class="feature-card bg-purple-50 p-6 rounded-lg border border-purple-100">
+                        <div class="w-12 h-12 rounded-full bg-query-purple flex items-center justify-center text-white mb-4">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-query-purple">File Operations</h3>
+                        <p class="text-light-text-secondary">Sync/async file operations with streaming support</p>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold">Quick Feature Overview</h3>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Timer example</span>
+<span class="code-keyword">local</span> timer = server:<span class="code-type">setInterval</span>(<span class="code-keyword">function</span>()
+    print(<span class="code-string">"Running every 5 seconds"</span>)
+<span class="code-keyword">end</span>, 5000)
+
+<span class="code-comment">-- HTTP request example</span>
+server:<span class="code-type">http_get</span>(<span class="code-string">"https://api.example.com/data"</span>, <span class="code-keyword">function</span>(res)
+    print(<span class="code-string">"Response:"</span>, res.body)
+<span class="code-keyword">end</span>)
+
+<span class="code-comment">-- File operation example</span>
+<span class="code-keyword">local</span> content, err = server:<span class="code-type">read_file</span>(<span class="code-string">"config.json"</span>)
+<span class="code-keyword">if</span> <span class="code-keyword">not</span> err <span class="code-keyword">then</span>
+    print(<span class="code-string">"File content:"</span>, content)
+<span class="code-keyword">end</span></code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Timer Management Section -->
+        <section id="timers" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-laser-blue flex items-center justify-center text-white font-bold mr-4">1</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">Timer Management</h2>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Timer Functions Overview</h3>
+                <p class="text-light-text-secondary mb-6">
+                    Dawn Framework provides comprehensive timer functionality for scheduling tasks, 
+                    running periodic operations, and managing background processes.
+                </p>
+                
+                <div class="grid md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                        <span class="method-badge bg-laser-blue text-white">setInterval</span>
+                        <p class="text-sm text-light-text-secondary mt-2">Execute a function repeatedly at specified intervals</p>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-lg border border-green-100">
+                        <span class="method-badge bg-build-green text-white">setTimeout</span>
+                        <p class="text-sm text-light-text-secondary mt-2">Execute a function once after a delay</p>
+                    </div>
+                    <div class="bg-purple-50 p-4 rounded-lg border border-purple-100">
+                        <span class="method-badge bg-query-purple text-white">clearTimer</span>
+                        <p class="text-sm text-light-text-secondary mt-2">Cancel a scheduled timer</p>
+                    </div>
+                </div>
+                
+                <h4 class="text-xl font-bold mb-4 text-build-green">setInterval - Periodic Execution</h4>
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">setInterval Example</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Create a periodic task that runs every 6 seconds</span>
+<span class="code-keyword">local</span> timer = server:<span class="code-type">setInterval</span>(<span class="code-keyword">function</span>()
+    <span class="code-comment">-- Place your periodic task code here</span>
+    print(<span class="code-string">"Periodic task executed at:"</span>, os.date(<span class="code-string">"%H:%M:%S"</span>))
+<span class="code-keyword">end</span>, 6000)  <span class="code-comment">-- 6000 milliseconds = 6 seconds</span>
+
+print(<span class="code-string">"Starting timer with ID:"</span>, timer)
+
+<span class="code-comment">-- The timer ID can be used to stop the interval later</span>
+<span class="code-comment">-- server:clearTimer(timer)</span></code></pre>
+                </div>
+                
+                <h4 class="text-xl font-bold mb-4 text-query-purple">setTimeout - Delayed Execution</h4>
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">setTimeout Example</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Schedule a one-time task after 30 seconds</span>
+server:<span class="code-type">setTimeout</span>(<span class="code-keyword">function</span>()
+    <span class="code-comment">-- Code to execute after the timeout</span>
+    print(<span class="code-string">"Timeout executed after 30 seconds"</span>)
+
+    <span class="code-comment">-- Optionally, clear the interval if needed</span>
+    server:<span class="code-type">clearTimer</span>(timer)
+<span class="code-keyword">end</span>, 30000)  <span class="code-comment">-- 30000 milliseconds = 30 seconds</span></code></pre>
+                </div>
+                
+                <h4 class="text-xl font-bold mb-4 text-warning-amber">clearTimer - Canceling Timers</h4>
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">clearTimer Example</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Start a periodic task</span>
+<span class="code-keyword">local</span> cleanupTimer = server:<span class="code-type">setInterval</span>(<span class="code-keyword">function</span>()
+    print(<span class="code-string">"Cleaning up temporary files..."</span>)
+    <span class="code-comment">-- Cleanup logic here</span>
+<span class="code-keyword">end</span>, 60000)  <span class="code-comment">-- Run every minute</span>
+
+<span class="code-comment">-- Stop the timer after 5 minutes</span>
+server:<span class="code-type">setTimeout</span>(<span class="code-keyword">function</span>()
+    server:<span class="code-type">clearTimer</span>(cleanupTimer)
+    print(<span class="code-string">"Cleanup timer stopped"</span>)
+<span class="code-keyword">end</span>, 300000)  <span class="code-comment">-- 5 minutes = 300000 milliseconds</span></code></pre>
+                </div>
+            </div>
+            
+            <!-- Practical Timer Examples -->
+            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Practical Timer Use Cases</h3>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Real-world Timer Scenarios</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Health check monitoring</span>
+<span class="code-keyword">local</span> healthTimer = server:<span class="code-type">setInterval</span>(<span class="code-keyword">function</span>()
+    <span class="code-comment">-- Check database connection</span>
+    <span class="code-keyword">local</span> dbOk = checkDatabaseHealth()
+    
+    <span class="code-comment">-- Check external service</span>
+    server:<span class="code-type">http_get</span>(<span class="code-string">"https://api.external.com/health"</span>, <span class="code-keyword">function</span>(res)
+        <span class="code-keyword">if</span> res.status ~= 200 <span class="code-keyword">then</span>
+            print(<span class="code-string">"External service unhealthy!"</span>)
+        <span class="code-keyword">end</span>
+    <span class="code-keyword">end</span>)
+    
+    print(<span class="code-string">"Health check completed at:"</span>, os.date(<span class="code-string">"%H:%M:%S"</span>))
+<span class="code-keyword">end</span>, 30000)  <span class="code-comment">-- Check every 30 seconds</span>
+
+<span class="code-comment">-- Cache warming</span>
+<span class="code-keyword">local</span> cacheTimer = server:<span class="code-type">setInterval</span>(<span class="code-keyword">function</span>()
+    <span class="code-comment">-- Preload frequently accessed data</span>
+    warmCache(<span class="code-string">"popular_products"</span>)
+    warmCache(<span class="code-string">"user_sessions"</span>)
+<span class="code-keyword">end</span>, 600000)  <span class="code-comment">-- Warm cache every 10 minutes</span>
+
+<span class="code-comment">-- Delayed task execution</span>
+server:<span class="code-type">post</span>(<span class="code-string">"/process"</span>, <span class="code-keyword">function</span>(req, res, body)
+    <span class="code-comment">-- Schedule background processing</span>
+    server:<span class="code-type">setTimeout</span>(<span class="code-keyword">function</span>()
+        processBackgroundTask(body.data)
+    <span class="code-keyword">end</span>, 5000)  <span class="code-comment">-- Process after 5 seconds</span>
+    
+    res:<span class="code-type">writeStatus</span>(202):<span class="code-type">send</span>(<span class="code-string">'{"status": "processing"}'</span>)
+<span class="code-keyword">end</span>)</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- HTTP Client Section -->
+        <section id="http-client" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-build-green flex items-center justify-center text-white font-bold mr-4">2</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">HTTP Client</h2>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">HTTP Request Methods</h3>
+                <p class="text-light-text-secondary mb-6">
+                    Dawn Framework provides a comprehensive HTTP client for making external API calls with support for all HTTP methods, 
+                    custom headers, and asynchronous callbacks.
+                </p>
+                
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                    <div>
+                        <h4 class="text-lg font-bold mb-3 text-neural-charcoal">Convenience Methods</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <code class="bg-gray-100 px-2 py-1 rounded text-sm mr-2">http_get</code>
+                                <span>Make GET requests</span>
+                            </li>
+                            <li class="flex items-start">
+                                <code class="bg-gray-100 px-2 py-1 rounded text-sm mr-2">http_post</code>
+                                <span>Make POST requests</span>
+                            </li>
+                            <li class="flex items-start">
+                                <code class="bg-gray-100 px-2 py-1 rounded text-sm mr-2">http_put</code>
+                                <span>Make PUT requests</span>
+                            </li>
+                            <li class="flex items-start">
+                                <code class="bg-gray-100 px-2 py-1 rounded text-sm mr-2">http_patch</code>
+                                <span>Make PATCH requests</span>
+                            </li>
+                            <li class="flex items-start">
+                                <code class="bg-gray-100 px-2 py-1 rounded text-sm mr-2">http_delete</code>
+                                <span>Make DELETE requests</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-bold mb-3 text-neural-charcoal">Advanced Methods</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <code class="bg-gray-100 px-2 py-1 rounded text-sm mr-2">http_head</code>
+                                <span>Make HEAD requests</span>
+                            </li>
+                            <li class="flex items-start">
+                                <code class="bg-gray-100 px-2 py-1 rounded text-sm mr-2">http_options</code>
+                                <span>Make OPTIONS requests</span>
+                            </li>
+                            <li class="flex items-start">
+                                <code class="bg-gray-100 px-2 py-1 rounded text-sm mr-2">http_request</code>
+                                <span>Generic request with custom method</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h4 class="text-xl font-bold mb-4 text-build-green">Response Object Structure</h4>
+                <div class="bg-blue-50 p-4 rounded-lg border border-blue-100 mb-6">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-blue-200">
+                                <th class="text-left py-2 font-bold text-laser-blue">Property</th>
+                                <th class="text-left py-2 font-bold text-laser-blue">Type</th>
+                                <th class="text-left py-2 font-bold text-laser-blue">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-blue-100">
+                                <td class="py-2 font-mono">status</td>
+                                <td class="py-2">number</td>
+                                <td class="py-2">HTTP status code (200, 404, 500, etc.)</td>
+                            </tr>
+                            <tr class="border-b border-blue-100">
+                                <td class="py-2 font-mono">body</td>
+                                <td class="py-2">string</td>
+                                <td class="py-2">Response body content</td>
+                            </tr>
+                            <tr class="border-b border-blue-100">
+                                <td class="py-2 font-mono">headers</td>
+                                <td class="py-2">table</td>
+                                <td class="py-2">Response headers as key-value pairs</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 font-mono">error</td>
+                                <td class="py-2">string/nil</td>
+                                <td class="py-2">Error message if request failed</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h4 class="text-xl font-bold mb-4 text-laser-blue">GET Request Examples</h4>
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Basic GET Request</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Simple GET request</span>
+server:<span class="code-type">http_get</span>(<span class="code-string">"https://randomuser.me/api/"</span>, <span class="code-keyword">function</span>(res)
+    <span class="code-keyword">if</span> res.error <span class="code-keyword">then</span>
+        print(<span class="code-string">"GET failed:"</span>, res.error)
+        <span class="code-keyword">return</span>
+    <span class="code-keyword">end</span>
+
+    print(<span class="code-string">"Status:"</span>, res.status)
+    print(<span class="code-string">"Body:"</span>, res.body)
+    print(<span class="code-string">"Content-Type:"</span>, res.headers[<span class="code-string">"content-type"</span>])
+<span class="code-keyword">end</span>)
+
+<span class="code-comment">-- GET request with custom headers</span>
+server:<span class="code-type">http_get</span>(<span class="code-string">"https://api.example.com/profile"</span>, <span class="code-keyword">function</span>(res)
+    print(<span class="code-string">"Status:"</span>, res.status)
+    print(<span class="code-string">"Body:"</span>, res.body)
+<span class="code-keyword">end</span>, {
+    [<span class="code-string">"Authorization"</span>] = <span class="code-string">"Bearer 12345"</span>,
+    [<span class="code-string">"X-Client"</span>] = <span class="code-string">"DawnServer"</span>
+})</code></pre>
+                </div>
+                
+                <h4 class="text-xl font-bold mb-4 text-query-purple">POST, PUT, PATCH Requests</h4>
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Data Modification Requests</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- POST request with JSON body</span>
+<span class="code-keyword">local</span> body = <span class="code-string">'{"name": "Winslow", "age": 26}'</span>
+
+server:<span class="code-type">http_post</span>(<span class="code-string">"https://api.example.com/users"</span>, body, <span class="code-keyword">function</span>(res)
+    <span class="code-keyword">if</span> res.error <span class="code-keyword">then</span>
+        print(<span class="code-string">"POST error:"</span>, res.error)
+        <span class="code-keyword">return</span>
+    <span class="code-keyword">end</span>
+
+    print(<span class="code-string">"Created user:"</span>, res.body)
+<span class="code-keyword">end</span>, {
+    [<span class="code-string">"Content-Type"</span>] = <span class="code-string">"application/json"</span>
+})
+
+<span class="code-comment">-- PUT request (full update)</span>
+<span class="code-keyword">local</span> body = <span class="code-string">'{"name": "Winslow Updated"}'</span>
+
+server:<span class="code-type">http_put</span>(<span class="code-string">"https://api.example.com/users/10"</span>, body, <span class="code-keyword">function</span>(res)
+    print(<span class="code-string">"PUT status:"</span>, res.status)
+    print(<span class="code-string">"Response:"</span>, res.body)
+<span class="code-keyword">end</span>, {
+    [<span class="code-string">"Content-Type"</span>] = <span class="code-string">"application/json"</span>
+})
+
+<span class="code-comment">-- PATCH request (partial update)</span>
+<span class="code-keyword">local</span> body = <span class="code-string">'{"email": "new@mail.com"}'</span>
+
+server:<span class="code-type">http_patch</span>(<span class="code-string">"https://api.example.com/users/10"</span>, body, <span class="code-keyword">function</span>(res)
+    print(<span class="code-string">"PATCH response:"</span>, res.body)
+<span class="code-keyword">end</span>, {
+    [<span class="code-string">"Content-Type"</span>] = <span class="code-string">"application/json"</span>
+})</code></pre>
+                </div>
+                
+                <h4 class="text-xl font-bold mb-4 text-warning-amber">Other HTTP Methods</h4>
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">HEAD, DELETE, OPTIONS & Custom Requests</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- DELETE request</span>
+server:<span class="code-type">http_delete</span>(<span class="code-string">"https://api.example.com/users/10"</span>, <span class="code-keyword">function</span>(res)
+    print(<span class="code-string">"DELETE status:"</span>, res.status)
+    print(<span class="code-string">"Response:"</span>, res.body)
+<span class="code-keyword">end</span>)
+
+<span class="code-comment">-- HEAD request (headers only)</span>
+server:<span class="code-type">http_head</span>(<span class="code-string">"https://example.com"</span>, <span class="code-keyword">function</span>(res)
+    print(<span class="code-string">"HEAD status:"</span>, res.status)
+    print(<span class="code-string">"Server header:"</span>, res.headers[<span class="code-string">"server"</span>])
+<span class="code-keyword">end</span>)
+
+<span class="code-comment">-- OPTIONS request (CORS preflight)</span>
+server:<span class="code-type">http_options</span>(<span class="code-string">"https://api.example.com/resource"</span>, <span class="code-keyword">function</span>(res)
+    print(<span class="code-string">"Allowed Methods:"</span>, res.headers[<span class="code-string">"allow"</span>])
+<span class="code-keyword">end</span>)
+
+<span class="code-comment">-- Custom HTTP method with http_request</span>
+server:<span class="code-type">http_request</span>(
+    <span class="code-string">"https://api.example.com/custom"</span>,
+    <span class="code-string">"POST"</span>,
+    <span class="code-string">"hello=world"</span>,
+    {
+        [<span class="code-string">"Content-Type"</span>] = <span class="code-string">"application/x-www-form-urlencoded"</span>,
+        [<span class="code-string">"X-Test"</span>] = <span class="code-string">"123"</span>
+    },
+    <span class="code-keyword">function</span>(res)
+        <span class="code-keyword">if</span> res.error <span class="code-keyword">then</span>
+            print(<span class="code-string">"Error:"</span>, res.error)
+            <span class="code-keyword">return</span>
+        <span class="code-keyword">end</span>
+
+        print(<span class="code-string">"Status:"</span>, res.status)
+        print(<span class="code-string">"Body:"</span>, res.body)
+    <span class="code-keyword">end</span>
+)</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- File Operations Section -->
+        <section id="file-ops" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-query-purple flex items-center justify-center text-white font-bold mr-4">3</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">File Operations</h2>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Comprehensive File Handling</h3>
+                <p class="text-light-text-secondary mb-6">
+                    Dawn Framework provides extensive file operation capabilities including synchronous and asynchronous reads/writes, 
+                    JSON handling, streaming, and background file processing.
+                </p>
+                
+                <div class="grid md:grid-cols-2 gap-8 mb-8">
+                    <div>
+                        <h4 class="text-lg font-bold mb-3 text-neural-charcoal">Synchronous Operations</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <code class="bg-gray-100 px-2 py-1 rounded text-sm mr-2">read_file</code>
+                                <span>Read file content</span>
+                            </li>
+                            <li class="flex items-start">
+                                <code class="bg-gray-100 px-2 py-1 rounded text-sm mr-2">write_file</code>
+                                <span>Write content to file</span>
+                            </li>
+                            <li class="flex items-start">
+                                <code class="bg-gray-100 px-2 py-1 rounded text-sm mr-2">file_exists</code>
+                                <span>Check if file exists</span>
+                            </li>
+                            <li class="flex items-start">
+                                <code class="bg-gray-100 px-2 py-1 rounded text-sm mr-2">read_json</code>
+                                <span>Read and parse JSON file</span>
+                            </li>
+                            <li class="flex items-start">
+                                <code class="bg-gray-100 px-2 py-1 rounded text-sm mr-2">write_json</code>
+                                <span>Write table as JSON to file</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-bold mb-3 text-neural-charcoal">Asynchronous & Streaming</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <code class="bg-gray-100 px-2 py-1 rounded text-sm mr-2">async_read_file</code>
+                                <span>Async file read</span>
+                            </li>
+                            <li class="flex items-start">
+                                <code class="bg-gray-100 px-2 py-1 rounded text-sm mr-2">async_write_file</code>
+                                <span>Async file write</span>
+                            </li>
+                            <li class="flex items-start">
+                                <code class="bg-gray-100 px-2 py-1 rounded text-sm mr-2">stream_read_file</code>
+                                <span>Stream read in chunks</span>
+                            </li>
+                            <li class="flex items-start">
+                                <code class="bg-gray-100 px-2 py-1 rounded text-sm mr-2">stream_write_file</span>
+                                <span>Stream write/append</span>
+                            </li>
+                            <li class="flex items-start">
+                                <code class="bg-gray-100 px-2 py-1 rounded text-sm mr-2">async</code>
+                                <span>Run function in background</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h4 class="text-xl font-bold mb-4 text-build-green">Synchronous File Operations</h4>
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Basic Sync File Operations</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Write a file synchronously</span>
+<span class="code-keyword">local</span> ok, err = server:<span class="code-type">write_file</span>(<span class="code-string">"hello.txt"</span>, <span class="code-string">"Hello Dawn Server!"</span>)
+<span class="code-keyword">if</span> <span class="code-keyword">not</span> ok <span class="code-keyword">then</span>
+    print(<span class="code-string">"Write error:"</span>, err)
+<span class="code-keyword">else</span>
+    print(<span class="code-string">"File written successfully."</span>)
+<span class="code-keyword">end</span>
+
+<span class="code-comment">-- Read a file synchronously</span>
+<span class="code-keyword">local</span> content, err = server:<span class="code-type">read_file</span>(<span class="code-string">"hello.txt"</span>)
+<span class="code-keyword">if</span> <span class="code-keyword">not</span> content <span class="code-keyword">then</span>
+    print(<span class="code-string">"Read error:"</span>, err)
+<span class="code-keyword">else</span>
+    print(<span class="code-string">"File content:"</span>, content)
+<span class="code-keyword">end</span>
+
+<span class="code-comment">-- Check if file exists</span>
+<span class="code-keyword">if</span> server:<span class="code-type">file_exists</span>(<span class="code-string">"hello.txt"</span>) <span class="code-keyword">then</span>
+    print(<span class="code-string">"hello.txt exists"</span>)
+<span class="code-keyword">else</span>
+    print(<span class="code-string">"hello.txt missing"</span>)
+<span class="code-keyword">end</span></code></pre>
+                </div>
+                
+                <h4 class="text-xl font-bold mb-4 text-query-purple">JSON File Operations</h4>
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">JSON Read/Write Operations</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Write JSON data to file</span>
+<span class="code-keyword">local</span> user = { name = <span class="code-string">"Winslow"</span>, age = <span class="code-number">26</span> }
+
+<span class="code-keyword">local</span> ok, err = server:<span class="code-type">write_json</span>(<span class="code-string">"user.json"</span>, user)
+<span class="code-keyword">if</span> <span class="code-keyword">not</span> ok <span class="code-keyword">then</span>
+    print(<span class="code-string">"JSON write error:"</span>, err)
+<span class="code-keyword">else</span>
+    print(<span class="code-string">"JSON write successful!"</span>)
+<span class="code-keyword">end</span>
+
+<span class="code-comment">-- Read and parse JSON file</span>
+<span class="code-keyword">local</span> data, err = server:<span class="code-type">read_json</span>(<span class="code-string">"user.json"</span>)
+<span class="code-keyword">if</span> <span class="code-keyword">not</span> data <span class="code-keyword">then</span>
+    print(<span class="code-string">"JSON read error:"</span>, err)
+<span class="code-keyword">else</span>
+    print(<span class="code-string">"User name:"</span>, data.name)
+    print(<span class="code-string">"User age:"</span>, data.age)
+<span class="code-keyword">end</span></code></pre>
+                </div>
+                
+                <h4 class="text-xl font-bold mb-4 text-warning-amber">Asynchronous File Operations</h4>
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Async File Operations</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Async file write</span>
+server:<span class="code-type">async_write_file</span>(<span class="code-string">"async.txt"</span>, <span class="code-string">"Async content example"</span>, <span class="code-keyword">function</span>(success, err)
+    <span class="code-keyword">if</span> <span class="code-keyword">not</span> success <span class="code-keyword">then</span>
+        print(<span class="code-string">"Async write error:"</span>, err)
+    <span class="code-keyword">else</span>
+        print(<span class="code-string">"Async write OK!"</span>)
+    <span class="code-keyword">end</span>
+<span class="code-keyword">end</span>)
+
+<span class="code-comment">-- Async file read</span>
+server:<span class="code-type">async_read_file</span>(<span class="code-string">"async.txt"</span>, <span class="code-keyword">function</span>(content, err)
+    <span class="code-keyword">if</span> <span class="code-keyword">not</span> content <span class="code-keyword">then</span>
+        print(<span class="code-string">"Async read error:"</span>, err)
+    <span class="code-keyword">else</span>
+        print(<span class="code-string">"Async file content:"</span>, content)
+    <span class="code-keyword">end</span>
+<span class="code-keyword">end</span>)
+
+<span class="code-comment">-- Run a function in background (async task)</span>
+server:<span class="code-type">async</span>(<span class="code-keyword">function</span>(a, b)
+    print(<span class="code-string">"Running in background:"</span>, a + b)
+<span class="code-keyword">end</span>, <span class="code-number">5</span>, <span class="code-number">7</span>)
+
+<span class="code-comment">-- Async JSON operations</span>
+server:<span class="code-type">async</span>(<span class="code-keyword">function</span>()
+    <span class="code-keyword">local</span> data = { id = <span class="code-number">1</span>, lang = <span class="code-string">"LuaJIT"</span> }
+    server:<span class="code-type">write_json</span>(<span class="code-string">"async_user.json"</span>, data)
+    print(<span class="code-string">"JSON written in async context!"</span>)
+<span class="code-keyword">end</span>)</code></pre>
+                </div>
+                
+                <h4 class="text-xl font-bold mb-4 text-laser-blue">Streaming File Operations</h4>
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Stream Read/Write Operations</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Stream read (useful for large files)</span>
+server:<span class="code-type">stream_read_file</span>(<span class="code-string">"bigfile.log"</span>, <span class="code-number">1024</span>, <span class="code-keyword">function</span>(chunk, err)
+    <span class="code-keyword">if</span> err <span class="code-keyword">then</span>
+        print(<span class="code-string">"Stream read error:"</span>, err)
+        <span class="code-keyword">return</span>
+    <span class="code-keyword">end</span>
+
+    <span class="code-keyword">if</span> <span class="code-keyword">not</span> chunk <span class="code-keyword">then</span>
+        print(<span class="code-string">"Stream ended."</span>)
+        <span class="code-keyword">return</span>
+    <span class="code-keyword">end</span>
+
+    print(<span class="code-string">"Chunk:"</span>, chunk)
+<span class="code-keyword">end</span>)
+
+<span class="code-comment">-- Stream write (append mode - for logs or chunked uploads)</span>
+server:<span class="code-type">stream_write_file</span>(<span class="code-string">"log.txt"</span>, <span class="code-string">"Log entry 1\n"</span>)
+server:<span class="code-type">stream_write_file</span>(<span class="code-string">"log.txt"</span>, <span class="code-string">"Log entry 2\n"</span>)
+print(<span class="code-string">"Chunked writes complete."</span>)
+
+<span class="code-comment">-- Combined example — copy a file using stream read/write</span>
+server:<span class="code-type">stream_read_file</span>(<span class="code-string">"source.txt"</span>, <span class="code-number">2048</span>, <span class="code-keyword">function</span>(chunk, err)
+    <span class="code-keyword">if</span> err <span class="code-keyword">then</span>
+        print(<span class="code-string">"Copy error:"</span>, err)
+        <span class="code-keyword">return</span>
+    <span class="code-keyword">end</span>
+
+    <span class="code-keyword">if</span> <span class="code-keyword">not</span> chunk <span class="code-keyword">then</span>
+        print(<span class="code-string">"Copy finished."</span>)
+        <span class="code-keyword">return</span>
+    <span class="code-keyword">end</span>
+
+    server:<span class="code-type">stream_write_file</span>(<span class="code-string">"copy.txt"</span>, chunk)
+<span class="code-keyword">end</span>)</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Examples Section -->
+        <section id="examples" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-warning-amber flex items-center justify-center text-white font-bold mr-4">4</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">Practical Examples</h2>
+            </div>
+            
+            <!-- Combined Example -->
+            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Complete Integration Example</h3>
+                <p class="text-light-text-secondary mb-6">
+                    A real-world example combining timers, HTTP requests, and file operations for a data synchronization service.
+                </p>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Data Sync Service</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Data synchronization service</span>
+<span class="code-keyword">local</span> syncTimer = server:<span class="code-type">setInterval</span>(<span class="code-keyword">function</span>()
+    print(<span class="code-string">"Starting data sync at:"</span>, os.date(<span class="code-string">"%H:%M:%S"</span>))
+    
+    <span class="code-comment">-- Fetch data from external API</span>
+    server:<span class="code-type">http_get</span>(<span class="code-string">"https://api.weather.com/current"</span>, <span class="code-keyword">function</span>(res)
+        <span class="code-keyword">if</span> res.error <span class="code-keyword">then</span>
+            print(<span class="code-string">"Weather API error:"</span>, res.error)
+            <span class="code-keyword">return</span>
+        <span class="code-keyword">end</span>
+        
+        <span class="code-comment">-- Parse and process the data</span>
+        <span class="code-keyword">local</span> weatherData = json.decode(res.body)
+        
+        <span class="code-comment">-- Save to local file</span>
+        server:<span class="code-type">async_write_file</span>(<span class="code-string">"weather_cache.json"</span>, res.body, <span class="code-keyword">function</span>(success, err)
+            <span class="code-keyword">if</span> success <span class="code-keyword">then</span>
+                print(<span class="code-string">"Weather data cached successfully"</span>)
+                
+                <span class="code-comment">-- Log the sync operation</span>
+                <span class="code-keyword">local</span> logEntry = string.format(
+                    <span class="code-string">"[%s] Sync completed - Temperature: %s°C\n"</span>,
+                    os.date(<span class="code-string">"%Y-%m-%d %H:%M:%S"</span>),
+                    weatherData.temperature <span class="code-keyword">or</span> <span class="code-string">"N/A"</span>
+                )
+                
+                server:<span class="code-type">stream_write_file</span>(<span class="code-string">"sync_log.txt"</span>, logEntry)
+            <span class="code-keyword">else</span>
+                print(<span class="code-string">"Failed to cache weather data:"</span>, err)
+            <span class="code-keyword">end</span>
+        <span class="code-keyword">end</span>)
+    <span class="code-keyword">end</span>)
+<span class="code-keyword">end</span>, 300000)  <span class="code-comment">-- Sync every 5 minutes</span>
+
+<span class="code-comment">-- API endpoint to get cached weather data</span>
+server:<span class="code-type">get</span>(<span class="code-string">"/api/weather"</span>, <span class="code-keyword">function</span>(req, res)
+    server:<span class="code-type">async_read_file</span>(<span class="code-string">"weather_cache.json"</span>, <span class="code-keyword">function</span>(content, err)
+        <span class="code-keyword">if</span> <span class="code-keyword">not</span> content <span class="code-keyword">then</span>
+            <span class="code-comment">-- If cache is missing, fetch fresh data</span>
+            server:<span class="code-type">http_get</span>(<span class="code-string">"https://api.weather.com/current"</span>, <span class="code-keyword">function</span>(apiRes)
+                <span class="code-keyword">if</span> apiRes.error <span class="code-keyword">then</span>
+                    res:<span class="code-type">writeStatus</span>(<span class="code-number">503</span>):<span class="code-type">send</span>(<span class="code-string">'{"error": "Service unavailable"}'</span>)
+                    <span class="code-keyword">return</span>
+                <span class="code-keyword">end</span>
+                
+                res:<span class="code-type">writeHeader</span>(<span class="code-string">"Content-Type"</span>, <span class="code-string">"application/json"</span>)
+                   :<span class="code-type">writeStatus</span>(<span class="code-number">200</span>)
+                   :<span class="code-type">send</span>(apiRes.body)
+            <span class="code-keyword">end</span>)
+        <span class="code-keyword">else</span>
+            res:<span class="code-type">writeHeader</span>(<span class="code-string">"Content-Type"</span>, <span class="code-string">"application/json"</span>)
+               :<span class="code-type">writeStatus</span>(<span class="code-number">200</span>)
+               :<span class="code-type">send</span>(content)
+        <span class="code-keyword">end</span>
+    <span class="code-keyword">end</span>)
+<span class="code-keyword">end</span>)
+
+<span class="code-comment">-- Clean up old logs every hour</span>
+server:<span class="code-type">setInterval</span>(<span class="code-keyword">function</span>()
+    server:<span class="code-type">async</span>(<span class="code-keyword">function</span>()
+        <span class="code-comment">-- Implementation for log rotation/cleanup</span>
+        rotateLogs(<span class="code-string">"sync_log.txt"</span>)
+    <span class="code-keyword">end</span>)
+<span class="code-keyword">end</span>, 3600000)  <span class="code-comment">-- Every hour</span></code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="mt-12 pt-8 border-t border-light-border text-center text-light-text-secondary">
+            <p>Dawn Framework Advanced Features Guide &copy; 2023</p>
+            <div class="flex justify-center space-x-4 mt-4">
+                <a href="#" class="text-laser-blue hover:underline">Core Server Docs</a>
+                <a href="#" class="text-laser-blue hover:underline">Routing Guide</a>
+                <a href="#" class="text-laser-blue hover:underline">API Reference</a>
+                <a href="#" class="text-laser-blue hover:underline">Community</a>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        // Copy code functionality
+        document.querySelectorAll('.copy-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const codeBlock = this.closest('.code-block').querySelector('pre code');
+                const textToCopy = codeBlock.textContent;
+                
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check mr-1"></i>Copied!';
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                    }, 2000);
+                });
+            });
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>

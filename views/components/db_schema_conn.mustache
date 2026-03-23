@@ -1,0 +1,1084 @@
+    <style>
+        /* Custom styles for code blocks and other elements */
+        .code-block {
+            background: #0A0A0F;
+            border-left: 4px solid #0066FF;
+        }
+        
+        .light-theme .code-block {
+            background: #F7F9FC;
+            border-left: 4px solid #0066FF;
+            color: #2A2A3A;
+        }
+        
+        .code-keyword {
+            color: #0066FF;
+        }
+        
+        .code-string {
+            color: #00CC88;
+        }
+        
+        .code-comment {
+            color: #6A737D;
+        }
+        
+        .light-theme .code-comment {
+            color: #9AA5B5;
+        }
+        
+        .code-variable {
+            color: #8A2BE2;
+        }
+        
+        .code-type {
+            color: #FFB300;
+        }
+        
+        /* Custom scrollbar for code blocks */
+        .code-block::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .code-block::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+        
+        .code-block::-webkit-scrollbar-thumb {
+            background: rgba(0, 102, 255, 0.5);
+            border-radius: 4px;
+        }
+        
+        .code-block::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 102, 255, 0.7);
+        }
+        
+        /* Additional custom styles */
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00CC88, #8A2BE2);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .data-source-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .function-signature {
+            background: #F0F4F8;
+            border-left: 4px solid #0066FF;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.5rem;
+        }
+        
+        .param-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        .param-table th, .param-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #E0E5EC;
+        }
+        
+        .param-table th {
+            background-color: #F7F9FC;
+            font-weight: 600;
+        }
+    </style>
+
+    <!-- Main Documentation Content -->
+    <main class="main-content-body max-w-6xl mx-auto px-6 py-8 light-theme">
+        <!-- Overview Section -->
+        <section id="overview" class="mb-16 animate-fadeIn">
+            <div class="bg-white rounded-xl shadow-lg p-8 border border-light-border">
+                <h1 class="text-4xl font-bold mb-6 text-neural-charcoal">Schema & Connection Management</h1>
+                <p class="text-xl text-light-text-secondary mb-8">
+                    Comprehensive guide to using the Schema Manager and Connection Manager modules in Dawn Framework applications.
+                    This documentation covers all functions, parameters, and return values for managing database connections and schema operations.
+                </p>
+                
+                <div class="grid md:grid-cols-3 gap-6 mb-8">
+                    <div class="feature-card bg-blue-50 p-6 rounded-lg border border-blue-100">
+                        <div class="w-12 h-12 rounded-full bg-laser-blue flex items-center justify-center text-white mb-4">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-laser-blue">Connection Management</h3>
+                        <p class="text-light-text-secondary">Unified interface for synchronous and asynchronous database connections</p>
+                    </div>
+                    
+                    <div class="feature-card bg-green-50 p-6 rounded-lg border border-green-100">
+                        <div class="w-12 h-12 rounded-full bg-build-green flex items-center justify-center text-white mb-4">
+                            <i class="fas fa-table"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-build-green">Schema Operations</h3>
+                        <p class="text-light-text-secondary">DDL generation, table creation, and schema migrations</p>
+                    </div>
+                    
+                    <div class="feature-card bg-purple-50 p-6 rounded-lg border border-purple-100">
+                        <div class="w-12 h-12 rounded-full bg-query-purple flex items-center justify-center text-white mb-4">
+                            <i class="fas fa-sync-alt"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-query-purple">Automatic Migrations</h3>
+                        <p class="text-light-text-secondary">Schema comparison and automatic ALTER TABLE generation</p>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold">Basic Setup</h3>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Load the required modules</span>
+<span class="code-keyword">local</span> ConnectionManager = <span class="code-keyword">require</span>(<span class="code-string">"orm.connection_manager"</span>)
+<span class="code-keyword">local</span> SchemaManager = <span class="code-keyword">require</span>(<span class="code-string">"orm.schema_manager"</span>)
+
+<span class="code-comment">-- Configure database connection</span>
+<span class="code-keyword">local</span> config = <span class="code-keyword">require</span>(<span class="code-string">"orm.config"</span>)
+config.default_conninfo = <span class="code-string">"postgresql://user:password@localhost:5432/mydb"</span>
+config.default_mode = <span class="code-string">"sync"</span> <span class="code-comment">-- or "async"</span>
+
+<span class="code-comment">-- Now you can use all the connection and schema management functions</span></code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Connection Manager Section -->
+        <section id="connection-manager" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-laser-blue flex items-center justify-center text-white font-bold mr-4">1</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">Connection Manager</h2>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Database Connection Management</h3>
+                <p class="text-light-text-secondary mb-6">
+                    The Connection Manager provides a unified interface for acquiring and releasing database connections,
+                    supporting both synchronous and asynchronous modes with appropriate drivers.
+                </p>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">get_connection(mode, conninfo)</h4>
+                    <p class="text-light-text-secondary mb-3">Acquires a database connection based on the specified mode and connection info.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Default</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>mode</td>
+                                <td>string</td>
+                                <td>The desired connection mode ("sync" or "async")</td>
+                                <td>config.default_mode</td>
+                            </tr>
+                            <tr>
+                                <td>conninfo</td>
+                                <td>string</td>
+                                <td>The connection string to use</td>
+                                <td>config.default_conninfo</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <p class="mt-3"><strong>Returns:</strong> A connection object (for sync) or a future/promise (for async)</p>
+                    <p class="mt-2"><strong>Raises:</strong> Error if the specified mode is not supported or connection fails</p>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Get Connection Examples</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Get a synchronous connection</span>
+<span class="code-keyword">local</span> sync_conn = ConnectionManager.<span class="code-type">get_connection</span>(<span class="code-string">"sync"</span>, <span class="code-string">"postgresql://user:pass@localhost:5432/db"</span>)
+
+<span class="code-comment">-- Get an asynchronous connection</span>
+<span class="code-keyword">local</span> async_conn = ConnectionManager.<span class="code-type">get_connection</span>(<span class="code-string">"async"</span>, <span class="code-string">"postgresql://user:pass@localhost:5432/db"</span>)
+
+<span class="code-comment">-- Use default configuration</span>
+<span class="code-keyword">local</span> default_conn = ConnectionManager.<span class="code-type">get_connection</span>()</code></pre>
+                </div>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">release_connection(mode, conn)</h4>
+                    <p class="text-light-text-secondary mb-3">Releases a database connection back to its respective driver's pool.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Default</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>mode</td>
+                                <td>string</td>
+                                <td>The mode under which the connection was acquired ("sync" or "async")</td>
+                                <td>config.default_mode</td>
+                            </tr>
+                            <tr>
+                                <td>conn</td>
+                                <td>mixed</td>
+                                <td>The connection object to release</td>
+                                <td>Required</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <p class="mt-3"><strong>Returns:</strong> None</p>
+                    <p class="mt-2"><strong>Raises:</strong> Error if the specified mode is not supported or connection is invalid</p>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Release Connection Examples</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Release a synchronous connection</span>
+ConnectionManager.<span class="code-type">release_connection</span>(<span class="code-string">"sync"</span>, sync_conn)
+
+<span class="code-comment">-- Release an asynchronous connection</span>
+ConnectionManager.<span class="code-type">release_connection</span>(<span class="code-string">"async"</span>, async_conn)
+
+<span class="code-comment">-- Release with default mode</span>
+ConnectionManager.<span class="code-type">release_connection</span>(<span class="code-keyword">nil</span>, default_conn)</code></pre>
+                </div>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">execute_query(mode, conn, sql, args)</h4>
+                    <p class="text-light-text-secondary mb-3">Executes a SQL query using the appropriate driver for the given mode.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Default</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>mode</td>
+                                <td>string</td>
+                                <td>The connection mode ("sync" or "async")</td>
+                                <td>config.default_mode</td>
+                            </tr>
+                            <tr>
+                                <td>conn</td>
+                                <td>mixed</td>
+                                <td>The database connection object</td>
+                                <td>Required</td>
+                            </tr>
+                            <tr>
+                                <td>sql</td>
+                                <td>string</td>
+                                <td>The SQL query string to execute</td>
+                                <td>Required</td>
+                            </tr>
+                            <tr>
+                                <td>args</td>
+                                <td>table</td>
+                                <td>Arguments for prepared statements or driver-specific options</td>
+                                <td>Optional</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <p class="mt-3"><strong>Returns:</strong> Table (for sync mode) or Promise (for async mode)</p>
+                    <p class="mt-2"><strong>Raises:</strong> Error if the specified mode is not supported or query execution fails</p>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Execute Query Examples</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Execute a synchronous query</span>
+<span class="code-keyword">local</span> result = ConnectionManager.<span class="code-type">execute_query</span>(<span class="code-string">"sync"</span>, sync_conn, <span class="code-string">"SELECT * FROM users"</span>)
+
+<span class="code-comment">-- Execute an asynchronous query</span>
+<span class="code-keyword">local</span> promise = ConnectionManager.<span class="code-type">execute_query</span>(<span class="code-string">"async"</span>, async_conn, <span class="code-string">"SELECT * FROM users"</span>)
+
+<span class="code-comment">-- Execute with parameters</span>
+<span class="code-keyword">local</span> user_result = ConnectionManager.<span class="code-type">execute_query</span>(
+    <span class="code-string">"sync"</span>, 
+    sync_conn, 
+    <span class="code-string">"SELECT * FROM users WHERE id = $1"</span>, 
+    {<span class="code-string">"user123"</span>}
+)
+
+<span class="code-comment">-- Handle async result with callback</span>
+ConnectionManager.<span class="code-type">execute_query</span>(
+    <span class="code-string">"async"</span>, 
+    async_conn, 
+    <span class="code-string">"SELECT * FROM users"</span>,
+    <span class="code-keyword">function</span>(err, result)
+        <span class="code-keyword">if</span> err <span class="code-keyword">then</span>
+            print(<span class="code-string">"Query failed: "</span> .. <span class="code-keyword">tostring</span>(err))
+        <span class="code-keyword">else</span>
+            print(<span class="code-string">"Query successful, rows: "</span> .. #result)
+        <span class="code-keyword">end</span>
+    <span class="code-keyword">end</span>
+)</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Schema Manager Section -->
+        <section id="schema-manager" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-build-green flex items-center justify-center text-white font-bold mr-4">2</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">Schema Manager</h2>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">DDL Generation & Table Operations</h3>
+                <p class="text-light-text-secondary mb-6">
+                    The Schema Manager is responsible for generating Data Definition Language (DDL) SQL statements
+                    based on ORM model definitions and for managing schema migrations.
+                </p>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">create_table_sql(Model)</h4>
+                    <p class="text-light-text-secondary mb-3">Generates the CREATE TABLE SQL statement for a given model.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Model</td>
+                                <td>table</td>
+                                <td>The ORM model class with _table_name, _fields, _primary_key, etc.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <p class="mt-3"><strong>Returns:</strong> 
+                      <ul class="list-disc ml-6 mt-2">
+                        <li>create_table_sql (string) - The CREATE TABLE SQL statement</li>
+                        <li>index_sqls (table) - Array of CREATE INDEX SQL statements</li>
+                      </ul>
+                    </p>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Create Table SQL Example</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Define a model</span>
+<span class="code-keyword">local</span> User = {
+    _table_name = <span class="code-string">"users"</span>,
+    _primary_key = <span class="code-string">"id"</span>,
+    _fields = {
+        id = { type = <span class="code-string">"integer"</span>, primary_key = true },
+        name = { type = <span class="code-string">"string"</span>, not_null = true },
+        email = { type = <span class="code-string">"string"</span>, unique = true },
+        created_at = { type = <span class="code-string">"timestamp"</span>, default = <span class="code-string">"CURRENT_TIMESTAMP"</span> }
+    },
+    _indexes = {
+        { <span class="code-string">"email"</span> },
+        { columns = { <span class="code-string">"name"</span>, <span class="code-string">"created_at"</span> } }
+    }
+}
+
+<span class="code-comment">-- Generate CREATE TABLE SQL</span>
+<span class="code-keyword">local</span> create_sql, index_sqls = SchemaManager.<span class="code-type">create_table_sql</span>(User)
+
+print(<span class="code-string">"CREATE TABLE SQL:"</span>)
+print(create_sql)
+
+<span class="code-keyword">for</span> i, index_sql <span class="code-keyword">in</span> <span class="code-keyword">ipairs</span>(index_sqls) <span class="code-keyword">do</span>
+    print(<span class="code-string">"INDEX SQL "</span> .. i .. <span class="code-string">":"</span>)
+    print(index_sql)
+<span class="code-keyword">end</span></code></pre>
+                </div>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">create_table(Model, mode)</h4>
+                    <p class="text-light-text-secondary mb-3">Creates a table for the given model in the database.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Default</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Model</td>
+                                <td>table</td>
+                                <td>The ORM model class</td>
+                                <td>Required</td>
+                            </tr>
+                            <tr>
+                                <td>mode</td>
+                                <td>string</td>
+                                <td>The connection mode ("sync" or "async")</td>
+                                <td>Model._connection_mode or config.default_mode</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <p class="mt-3"><strong>Returns:</strong> None</p>
+                    <p class="mt-2"><strong>Raises:</strong> Error if table creation fails</p>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Create Table Example</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Create table synchronously</span>
+SchemaManager.<span class="code-type">create_table</span>(User, <span class="code-string">"sync"</span>)
+
+<span class="code-comment">-- Create table asynchronously</span>
+SchemaManager.<span class="code-type">create_table</span>(User, <span class="code-string">"async"</span>)
+
+<span class="code-comment">-- Create table with model's default mode</span>
+User._connection_mode = <span class="code-string">"async"</span>
+SchemaManager.<span class="code-type">create_table</span>(User)</code></pre>
+                </div>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">drop_table_sql(table_name, cascade)</h4>
+                    <p class="text-light-text-secondary mb-3">Generates the DROP TABLE SQL statement for a given table name.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Default</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>table_name</td>
+                                <td>string</td>
+                                <td>The name of the table to drop</td>
+                                <td>Required</td>
+                            </tr>
+                            <tr>
+                                <td>cascade</td>
+                                <td>boolean</td>
+                                <td>If true, adds CASCADE to the DROP TABLE statement</td>
+                                <td>false</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <p class="mt-3"><strong>Returns:</strong> string - The generated DROP TABLE SQL</p>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Drop Table SQL Examples</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Generate simple DROP TABLE</span>
+<span class="code-keyword">local</span> drop_sql = SchemaManager.<span class="code-type">drop_table_sql</span>(<span class="code-string">"users"</span>)
+<span class="code-comment">-- Returns: "DROP TABLE IF EXISTS users;"</span>
+
+<span class="code-comment">-- Generate DROP TABLE with CASCADE</span>
+<span class="code-keyword">local</span> drop_cascade_sql = SchemaManager.<span class="code-type">drop_table_sql</span>(<span class="code-string">"users"</span>, true)
+<span class="code-comment">-- Returns: "DROP TABLE IF EXISTS users CASCADE;"</span></code></pre>
+                </div>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">drop_table(table_name, cascade, mode, conn_info)</h4>
+                    <p class="text-light-text-secondary mb-3">Drops a table from the database.</p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Default</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>table_name</td>
+                                <td>string</td>
+                                <td>The name of the table to drop</td>
+                                <td>Required</td>
+                            </tr>
+                            <tr>
+                                <td>cascade</td>
+                                <td>boolean</td>
+                                <td>If true, adds CASCADE to the DROP TABLE statement</td>
+                                <td>false</td>
+                            </tr>
+                            <tr>
+                                <td>mode</td>
+                                <td>string</td>
+                                <td>The connection mode ("sync" or "async")</td>
+                                <td>"sync"</td>
+                            </tr>
+                            <tr>
+                                <td>conn_info</td>
+                                <td>string</td>
+                                <td>Connection string for the database</td>
+                                <td>config.default_conninfo</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <p class="mt-3"><strong>Returns:</strong> None</p>
+                    <p class="mt-2"><strong>Raises:</strong> Error if table dropping fails</p>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Drop Table Examples</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Drop table without cascade</span>
+SchemaManager.<span class="code-type">drop_table</span>(<span class="code-string">"old_users"</span>)
+
+<span class="code-comment">-- Drop table with cascade</span>
+SchemaManager.<span class="code-type">drop_table</span>(<span class="code-string">"users"</span>, true)
+
+<span class="code-comment">-- Drop table asynchronously</span>
+SchemaManager.<span class="code-type">drop_table</span>(<span class="code-string">"users"</span>, false, <span class="code-string">"async"</span>)
+
+<span class="code-comment">-- Drop table with custom connection</span>
+SchemaManager.<span class="code-type">drop_table</span>(
+    <span class="code-string">"users"</span>, 
+    false, 
+    <span class="code-string">"sync"</span>, 
+    <span class="code-string">"postgresql://user:pass@localhost:5432/otherdb"</span>
+)</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Type Mapping Section -->
+        <section id="type-mapping" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-query-purple flex items-center justify-center text-white font-bold mr-4">3</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">Type Mapping & Default Values</h2>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">ORM to PostgreSQL Type Mapping</h3>
+                <p class="text-light-text-secondary mb-6">
+                    The Schema Manager automatically maps ORM field types to appropriate PostgreSQL data types.
+                    Understanding this mapping is essential for proper schema generation.
+                </p>
+                
+                <div class="overflow-x-auto">
+                    <table class="param-table w-full">
+                        <thead>
+                            <tr>
+                                <th>ORM Field Type</th>
+                                <th>PostgreSQL Type</th>
+                                <th>Description</th>
+                                <th>Special Handling</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>integer</td>
+                                <td>INTEGER or SERIAL</td>
+                                <td>Integer numbers</td>
+                                <td>Becomes SERIAL if primary key</td>
+                            </tr>
+                            <tr>
+                                <td>string</td>
+                                <td>VARCHAR(255)</td>
+                                <td>Short text strings</td>
+                                <td>Default length 255 characters</td>
+                            </tr>
+                            <tr>
+                                <td>text</td>
+                                <td>TEXT</td>
+                                <td>Long text content</td>
+                                <td>Unlimited length</td>
+                            </tr>
+                            <tr>
+                                <td>timestamp</td>
+                                <td>TIMESTAMP</td>
+                                <td>Date and time values</td>
+                                <td>No timezone information</td>
+                            </tr>
+                            <tr>
+                                <td>boolean</td>
+                                <td>BOOLEAN</td>
+                                <td>True/false values</td>
+                                <td>Stored as TRUE/FALSE</td>
+                            </tr>
+                            <tr>
+                                <td>float</td>
+                                <td>DOUBLE PRECISION</td>
+                                <td>Floating-point numbers</td>
+                                <td>High precision decimal values</td>
+                            </tr>
+                            <tr>
+                                <td>Other/Unknown</td>
+                                <td>VARCHAR(255)</td>
+                                <td>Fallback type</td>
+                                <td>Default if type not mapped</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mt-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Type Mapping Example</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Model with various field types</span>
+<span class="code-keyword">local</span> Product = {
+    _table_name = <span class="code-string">"products"</span>,
+    _primary_key = <span class="code-string">"id"</span>,
+    _fields = {
+        id = { type = <span class="code-string">"integer"</span>, primary_key = true }, <span class="code-comment">-- Maps to SERIAL</span>
+        name = { type = <span class="code-string">"string"</span>, not_null = true }, <span class="code-comment">-- Maps to VARCHAR(255)</span>
+        description = { type = <span class="code-string">"text"</span> }, <span class="code-comment">-- Maps to TEXT</span>
+        price = { type = <span class="code-string">"float"</span> }, <span class="code-comment">-- Maps to DOUBLE PRECISION</span>
+        is_available = { type = <span class="code-string">"boolean"</span>, default = true }, <span class="code-comment">-- Maps to BOOLEAN</span>
+        created_at = { type = <span class="code-string">"timestamp"</span>, default = <span class="code-string">"CURRENT_TIMESTAMP"</span> }, <span class="code-comment">-- Maps to TIMESTAMP</span>
+        custom_type = { type = <span class="code-string">"custom"</span> } <span class="code-comment">-- Maps to VARCHAR(255) (fallback)</span>
+    }
+}
+
+<span class="code-comment">-- Generated SQL will use appropriate PostgreSQL types</span>
+<span class="code-keyword">local</span> sql, indexes = SchemaManager.<span class="code-type">create_table_sql</span>(Product)
+print(sql)</code></pre>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Default Value Formatting</h3>
+                <p class="text-light-text-secondary mb-6">
+                    The Schema Manager intelligently formats default values for SQL, ensuring SQL functions
+                    like CURRENT_TIMESTAMP are not quoted while string values are properly escaped.
+                </p>
+                
+                <div class="overflow-x-auto">
+                    <table class="param-table w-full">
+                        <thead>
+                            <tr>
+                                <th>Default Value Type</th>
+                                <th>SQL Format</th>
+                                <th>Examples</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>SQL Functions</td>
+                                <td>Unquoted</td>
+                                <td>CURRENT_TIMESTAMP, NOW(), NULL, TRUE, FALSE</td>
+                                <td>Case-insensitive matching</td>
+                            </tr>
+                            <tr>
+                                <td>String</td>
+                                <td>Quoted and escaped</td>
+                                <td>'John''s Value'</td>
+                                <td>Single quotes are escaped</td>
+                            </tr>
+                            <tr>
+                                <td>Number</td>
+                                <td>Unquoted</td>
+                                <td>42, 3.14</td>
+                                <td>Direct numeric representation</td>
+                            </tr>
+                            <tr>
+                                <td>Boolean</td>
+                                <td>Unquoted</td>
+                                <td>true, false</td>
+                                <td>Lowercase true/false</td>
+                            </tr>
+                            <tr>
+                                <td>nil</td>
+                                <td>NULL</td>
+                                <td>NULL</td>
+                                <td>SQL NULL keyword</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mt-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Default Value Examples</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Model with various default values</span>
+<span class="code-keyword">local</span> Example = {
+    _table_name = <span class="code-string">"examples"</span>,
+    _fields = {
+        id = { type = <span class="code-string">"integer"</span>, primary_key = true },
+        <span class="code-comment">-- SQL function defaults (unquoted)</span>
+        created = { type = <span class="code-string">"timestamp"</span>, default = <span class="code-string">"CURRENT_TIMESTAMP"</span> },
+        updated = { type = <span class="code-string">"timestamp"</span>, default = <span class="code-string">"NOW()"</span> },
+        active = { type = <span class="code-string">"boolean"</span>, default = true },
+        
+        <span class="code-comment">-- String defaults (quoted and escaped)</span>
+        name = { type = <span class="code-string">"string"</span>, default = <span class="code-string">"John's Example"</span> }, <span class="code-comment">-- Becomes 'John''s Example'</span>
+        
+        <span class="code-comment">-- Numeric defaults (unquoted)</span>
+        count = { type = <span class="code-string">"integer"</span>, default = 0 },
+        ratio = { type = <span class="code-string">"float"</span>, default = 1.5 },
+        
+        <span class="code-comment">-- NULL default</span>
+        optional_field = { type = <span class="code-string">"string"</span>, default = <span class="code-keyword">nil</span> } <span class="code-comment">-- Becomes NULL</span>
+    }
+}
+
+<span class="code-comment">-- The generated SQL will properly format all default values</span>
+<span class="code-keyword">local</span> sql = SchemaManager.<span class="code-type">create_table_sql</span>(Example)
+print(sql)</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Migrations Section -->
+        <section id="migrations" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-warning-amber flex items-center justify-center text-white font-bold mr-4">4</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">Schema Migrations</h2>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Automatic Schema Migration</h3>
+                <p class="text-light-text-secondary mb-6">
+                    The Schema Manager can automatically detect schema differences and generate appropriate
+                    ALTER TABLE statements to migrate existing tables to match model definitions.
+                </p>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">apply_migrations(Model, mode)</h4>
+                    <p class="text-light-text-secondary mb-3">
+                        Applies schema migrations for a given model. Checks if the table exists. If not, it creates it.
+                        If the table exists, it attempts to apply necessary ALTER TABLE statements by comparing
+                        the model definition with the current database schema.
+                    </p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Default</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Model</td>
+                                <td>table</td>
+                                <td>The ORM model class</td>
+                                <td>Required</td>
+                            </tr>
+                            <tr>
+                                <td>mode</td>
+                                <td>string</td>
+                                <td>The connection mode ("sync" or "async")</td>
+                                <td>Model._connection_mode or config.default_mode</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <p class="mt-3"><strong>Returns:</strong> None</p>
+                    <p class="mt-2"><strong>Raises:</strong> Error if schema migration fails</p>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Apply Migrations Example</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Define your model</span>
+<span class="code-keyword">local</span> User = {
+    _table_name = <span class="code-string">"users"</span>,
+    _primary_key = <span class="code-string">"id"</span>,
+    _fields = {
+        id = { type = <span class="code-string">"integer"</span>, primary_key = true },
+        name = { type = <span class="code-string">"string"</span>, not_null = true },
+        email = { type = <span class="code-string">"string"</span>, unique = true },
+        age = { type = <span class="code-string">"integer"</span> },
+        created_at = { type = <span class="code-string">"timestamp"</span>, default = <span class="code-string">"CURRENT_TIMESTAMP"</span> }
+    }
+}
+
+<span class="code-comment">-- Apply migrations (creates table if doesn't exist, alters if needed)</span>
+SchemaManager.<span class="code-type">apply_migrations</span>(User, <span class="code-string">"sync"</span>)
+
+<span class="code-comment">-- If the table doesn't exist, it will be created</span>
+<span class="code-comment">-- If the table exists but schema differs, ALTER TABLE statements will be generated and executed</span></code></pre>
+                </div>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">alter_table_sql(Model, current_schema_info)</h4>
+                    <p class="text-light-text-secondary mb-3">
+                        Generates ALTER TABLE SQL statements for schema updates by comparing the desired
+                        model schema with the current database schema.
+                    </p>
+                    
+                    <table class="param-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Model</td>
+                                <td>table</td>
+                                <td>The ORM model class</td>
+                            </tr>
+                            <tr>
+                                <td>current_schema_info</td>
+                                <td>table</td>
+                                <td>A table representing the current database schema (from fetch_current_schema)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <p class="mt-3"><strong>Returns:</strong> table - A list of SQL statements to execute for migration</p>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Schema Comparison & ALTER TABLE Generation</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- The migration process automatically handles:</span>
+
+<span class="code-comment">-- 1. New columns (ADD COLUMN)</span>
+<span class="code-comment">-- If a field exists in the model but not in the database</span>
+<span class="code-comment">-- Generates: ALTER TABLE table_name ADD COLUMN column_name type constraints;</span>
+
+<span class="code-comment">-- 2. Column type changes (ALTER COLUMN TYPE)</span>
+<span class="code-comment">-- If a column's type differs between model and database</span>
+<span class="code-comment">-- Generates: ALTER TABLE table_name ALTER COLUMN column_name TYPE new_type;</span>
+
+<span class="code-comment">-- 3. Nullability changes (SET/DROP NOT NULL)</span>
+<span class="code-comment">-- If a column's nullability differs</span>
+<span class="code-comment">-- Generates: ALTER TABLE table_name ALTER COLUMN column_name SET NOT NULL;</span>
+<span class="code-comment">-- or: ALTER TABLE table_name ALTER COLUMN column_name DROP NOT NULL;</span>
+
+<span class="code-comment">-- 4. Default value changes (SET/DROP DEFAULT)</span>
+<span class="code-comment">-- If a column's default value differs</span>
+<span class="code-comment">-- Generates: ALTER TABLE table_name ALTER COLUMN column_name SET DEFAULT value;</span>
+<span class="code-comment">-- or: ALTER TABLE table_name ALTER COLUMN column_name DROP DEFAULT;</span>
+
+<span class="code-comment">-- 5. Dropped columns (DROP COLUMN) - with careful handling</span>
+<span class="code-comment">-- If a column exists in database but not in model (with warnings)</span>
+<span class="code-comment">-- Generates: ALTER TABLE table_name DROP COLUMN column_name;</span>
+
+<span class="code-comment">-- Example of generated ALTER TABLE statements:</span>
+<span class="code-comment">-- ALTER TABLE users ADD COLUMN phone VARCHAR(255);</span>
+<span class="code-comment">-- ALTER TABLE users ALTER COLUMN email TYPE VARCHAR(500);</span>
+<span class="code-comment">-- ALTER TABLE users ALTER COLUMN age SET NOT NULL;</span>
+<span class="code-comment">-- ALTER TABLE users ALTER COLUMN created_at SET DEFAULT CURRENT_TIMESTAMP;</span></code></pre>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Complete Workflow Example</h3>
+                <p class="text-light-text-secondary mb-6">
+                    Putting it all together - a complete example of using both Connection Manager and Schema Manager
+                    to manage database connections and schema operations.
+                </p>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Complete Example</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Load required modules</span>
+<span class="code-keyword">local</span> ConnectionManager = <span class="code-keyword">require</span>(<span class="code-string">"orm.connection_manager"</span>)
+<span class="code-keyword">local</span> SchemaManager = <span class="code-keyword">require</span>(<span class="code-string">"orm.schema_manager"</span>)
+<span class="code-keyword">local</span> config = <span class="code-keyword">require</span>(<span class="code-string">"orm.config"</span>)
+
+<span class="code-comment">-- Configure database connection</span>
+config.default_conninfo = <span class="code-string">"postgresql://user:password@localhost:5432/myapp"</span>
+config.default_mode = <span class="code-string">"sync"</span>
+
+<span class="code-comment">-- Define a model</span>
+<span class="code-keyword">local</span> User = {
+    _table_name = <span class="code-string">"users"</span>,
+    _primary_key = <span class="code-string">"id"</span>,
+    _connection_mode = <span class="code-string">"sync"</span>,
+    _fields = {
+        id = { type = <span class="code-string">"integer"</span>, primary_key = true },
+        username = { type = <span class="code-string">"string"</span>, not_null = true, unique = true },
+        email = { type = <span class="code-string">"string"</span>, not_null = true },
+        password_hash = { type = <span class="code-string">"string"</span>, not_null = true },
+        is_active = { type = <span class="code-string">"boolean"</span>, default = true },
+        created_at = { type = <span class="code-string">"timestamp"</span>, default = <span class="code-string">"CURRENT_TIMESTAMP"</span> },
+        updated_at = { type = <span class="code-string">"timestamp"</span>, default = <span class="code-string">"CURRENT_TIMESTAMP"</span> }
+    },
+    _indexes = {
+        { <span class="code-string">"username"</span> },
+        { <span class="code-string">"email"</span> },
+        { columns = { <span class="code-string">"is_active"</span>, <span class="code-string">"created_at"</span> } }
+    }
+}
+
+<span class="code-comment">-- Apply migrations to ensure table exists and schema is correct</span>
+SchemaManager.<span class="code-type">apply_migrations</span>(User)
+
+<span class="code-comment">-- Get a connection for custom queries</span>
+<span class="code-keyword">local</span> conn = ConnectionManager.<span class="code-type">get_connection</span>(<span class="code-string">"sync"</span>)
+
+<span class="code-comment">-- Execute a custom query</span>
+<span class="code-keyword">local</span> users = ConnectionManager.<span class="code-type">execute_query</span>(
+    <span class="code-string">"sync"</span>,
+    conn,
+    <span class="code-string">"SELECT * FROM users WHERE is_active = $1"</span>,
+    {true}
+)
+
+<span class="code-comment">-- Process results</span>
+<span class="code-keyword">for</span> i, user <span class="code-keyword">in</span> <span class="code-keyword">ipairs</span>(users) <span class="code-keyword">do</span>
+    print(<span class="code-string">"User: "</span> .. user.username .. <span class="code-string">" ("</span> .. user.email .. <span class="code-string">")"</span>)
+<span class="code-keyword">end</span>
+
+<span class="code-comment">-- Release the connection</span>
+ConnectionManager.<span class="code-type">release_connection</span>(<span class="code-string">"sync"</span>, conn)
+
+<span class="code-comment">-- Later, if we need to modify the schema, just update the model and re-run migrations</span>
+User._fields.phone = { type = <span class="code-string">"string"</span> }  <span class="code-comment">-- Add new field</span>
+User._fields.email.unique = false  <span class="code-comment">-- Modify existing field</span>
+
+<span class="code-comment">-- Re-apply migrations to update schema</span>
+SchemaManager.<span class="code-type">apply_migrations</span>(User)
+
+print(<span class="code-string">"Schema updated successfully!"</span>)</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="mt-12 pt-8 border-t border-light-border text-center text-light-text-secondary">
+            <p>Dawn Framework Schema & Connection Management &copy; 2023</p>
+            <div class="flex justify-center space-x-4 mt-4">
+                <a href="#" class="text-laser-blue hover:underline">Core Server Docs</a>
+                <a href="#" class="text-laser-blue hover:underline">API Reference</a>
+                <a href="#" class="text-laser-blue hover:underline">Examples Repository</a>
+                <a href="#" class="text-laser-blue hover:underline">Community</a>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        // Copy code functionality
+        document.querySelectorAll('.copy-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const codeBlock = this.closest('.code-block').querySelector('pre code');
+                const textToCopy = codeBlock.textContent;
+                
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check mr-1"></i>Copied!';
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                    }, 2000);
+                });
+            });
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>

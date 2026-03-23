@@ -1,0 +1,855 @@
+
+    <style>
+        /* Custom styles for code blocks and other elements */
+        .code-block {
+            background: #0A0A0F;
+            border-left: 4px solid #0066FF;
+        }
+        
+        .light-theme .code-block {
+            background: #F7F9FC;
+            border-left: 4px solid #0066FF;
+            color: #2A2A3A;
+        }
+        
+        .code-keyword {
+            color: #0066FF;
+        }
+        
+        .code-string {
+            color: #00CC88;
+        }
+        
+        .code-comment {
+            color: #6A737D;
+        }
+        
+        .light-theme .code-comment {
+            color: #9AA5B5;
+        }
+        
+        .code-variable {
+            color: #8A2BE2;
+        }
+        
+        .code-type {
+            color: #FFB300;
+        }
+        
+        /* Custom scrollbar for code blocks */
+        .code-block::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .code-block::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+        
+        .code-block::-webkit-scrollbar-thumb {
+            background: rgba(0, 102, 255, 0.5);
+            border-radius: 4px;
+        }
+        
+        .code-block::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 102, 255, 0.7);
+        }
+        
+        /* Additional custom styles */
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00CC88, #8A2BE2);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .data-source-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .function-signature {
+            background: #F0F4F8;
+            border-left: 4px solid #0066FF;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.5rem;
+        }
+        
+        .param-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        .param-table th, .param-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #E0E5EC;
+        }
+        
+        .param-table th {
+            background-color: #F7F9FC;
+            font-weight: 600;
+        }
+
+        .architecture-diagram {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            padding: 2rem;
+            color: white;
+            margin: 2rem 0;
+        }
+        
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: #0066FF;
+            color: white;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 12px;
+        }
+    </style>
+
+    <!-- Main Documentation Content -->
+    <main class="main-content-body max-w-6xl mx-auto px-6 py-8 light-theme">
+        <!-- Overview Section -->
+        <section id="overview" class="mb-16 animate-fadeIn">
+            <div class="bg-white rounded-xl shadow-lg p-8 border border-light-border">
+                <h1 class="text-4xl font-bold mb-6 text-neural-charcoal">SPA Integration Guide</h1>
+                <p class="text-xl text-light-text-secondary mb-8">
+                    Complete guide to integrating Route Manager and Modal Manager in your Dawn Framework applications.
+                    Learn how WebApp.lua orchestrates the entire SPA architecture and how components work together.
+                </p>
+                
+                <div class="grid md:grid-cols-3 gap-6 mb-8">
+                    <div class="feature-card bg-blue-50 p-6 rounded-lg border border-blue-100">
+                        <div class="w-12 h-12 rounded-full bg-laser-blue flex items-center justify-center text-white mb-4">
+                            <i class="fas fa-sitemap"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-laser-blue">Architecture</h3>
+                        <p class="text-light-text-secondary">Understand how components interact in the SPA ecosystem</p>
+                    </div>
+                    
+                    <div class="feature-card bg-green-50 p-6 rounded-lg border border-green-100">
+                        <div class="w-12 h-12 rounded-full bg-build-green flex items-center justify-center text-white mb-4">
+                            <i class="fas fa-puzzle-piece"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-build-green">Integration</h3>
+                        <p class="text-light-text-secondary">Learn how WebApp.lua orchestrates the entire application</p>
+                    </div>
+                    
+                    <div class="feature-card bg-purple-50 p-6 rounded-lg border border-purple-100">
+                        <div class="w-12 h-12 rounded-full bg-query-purple flex items-center justify-center text-white mb-4">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-query-purple">Implementation</h3>
+                        <p class="text-light-text-secondary">Step-by-step implementation guide for developers</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Architecture Section -->
+        <section id="architecture" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-laser-blue flex items-center justify-center text-white font-bold mr-4">1</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">SPA Architecture Overview</h2>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Component Interaction Diagram</h3>
+                <p class="text-light-text-secondary mb-6">
+                    The Dawn Framework SPA architecture follows a hierarchical component structure where WebApp.lua acts as the root container,
+                    managing both Route Manager and Modal Manager as child components.
+                </p>
+                
+                <div class="architecture-diagram">
+                    <div class="text-center mb-6">
+                        <h4 class="text-2xl font-bold text-white mb-4">SPA Component Hierarchy</h4>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                        <div class="bg-white/20 p-4 rounded-lg">
+                            <div class="font-bold text-lg mb-2">WebApp.lua</div>
+                            <div class="text-sm opacity-90">Root Container</div>
+                            <div class="mt-2 text-xs">• Manages application state<br>• Orchestrates child components<br>• Handles client lifecycle</div>
+                        </div>
+                        <div class="bg-white/20 p-4 rounded-lg">
+                            <div class="font-bold text-lg mb-2">Route Manager</div>
+                            <div class="text-sm opacity-90">Navigation Controller</div>
+                            <div class="mt-2 text-xs">• Handles routing logic<br>• Manages page components<br>• Browser history integration</div>
+                        </div>
+                        <div class="bg-white/20 p-4 rounded-lg">
+                            <div class="font-bold text-lg mb-2">Modal Manager</div>
+                            <div class="text-sm opacity-90">Overlay Controller</div>
+                            <div class="mt-2 text-xs">• Manages modal dialogs<br>• Handles modal stacking<br>• Animation coordination</div>
+                        </div>
+                    </div>
+                    <div class="mt-6 text-center">
+                        <div class="text-sm opacity-80">Page Components (Home.lua, etc.) → Route Manager → WebApp.lua</div>
+                        <div class="text-sm opacity-80 mt-2">Modal Components → Modal Manager → WebApp.lua</div>
+                    </div>
+                </div>
+                
+                <div class="function-signature mt-8">
+                    <h4 class="font-bold text-lg mb-2">Data Flow & Communication</h4>
+                    <p class="text-light-text-secondary mb-3">
+                        Components communicate through a well-defined hierarchy using method calls and state management.
+                    </p>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">Communication Patterns</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- 1. WebApp → RouteManager (Direct method call)</span>
+MainAppPage.methods.navigateTo = <span class="code-keyword">function</span>(self, ws_id, args)
+    <span class="code-keyword">local</span> routeManager = self:getChildComponent(<span class="code-string">"routeManager"</span>)
+    routeManager.methods.navigateTo(routeManager, ws_id, args)
+<span class="code-keyword">end</span>
+
+<span class="code-comment">-- 2. WebApp → ModalManager (Using callChildMethod)</span>
+MainAppPage.methods.showPrompt = <span class="code-keyword">function</span>(self, ws_id, args)
+    self:callChildMethod(<span class="code-string">"modalManager"</span>, <span class="code-string">"showModal"</span>, ws_id, args)
+<span class="code-keyword">end</span>
+
+<span class="code-comment">-- 3. Page Component → RouteManager (HTML.patch)</span>
+HTML.e(<span class="code-string">"button"</span>, 
+    HTML.onClick(
+        HTML.patch(<span class="code-string">"routeManager"</span>, <span class="code-keyword">nil</span>, <span class="code-string">"navigateTo"</span>, {
+            routeName = <span class="code-string">"home"</span>
+        })
+    ), 
+    <span class="code-string">"Go Home"</span>
+)
+
+<span class="code-comment">-- 4. Page Component → ModalManager (HTML.patch)</span>
+HTML.e(<span class="code-string">"button"</span>, 
+    HTML.onClick(
+        HTML.patch(<span class="code-string">"modalManager"</span>, <span class="code-keyword">nil</span>, <span class="code-string">"showModal"</span>, {
+            modalType = <span class="code-string">"promptModal"</span>,
+            modalId = <span class="code-string">"example_modal"</span>
+        })
+    ), 
+    <span class="code-string">"Show Modal"</span>
+)</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- WebApp Integration Section -->
+        <section id="webapp-integration" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-build-green flex items-center justify-center text-white font-bold mr-4">2</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">WebApp.lua - The Application Root</h2>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Complete WebApp.lua Breakdown</h3>
+                <p class="text-light-text-secondary mb-6">
+                    WebApp.lua serves as the root component that initializes and coordinates all other components in the SPA.
+                    It's responsible for setting up the application structure, managing child components, and handling global state.
+                </p>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">Initialization & Setup Process</h4>
+                    <p class="text-light-text-secondary mb-3">
+                        WebApp.lua follows a specific initialization sequence to ensure all components are properly set up.
+                    </p>
+                </div>
+                
+                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold">WebApp.lua Complete Implementation</h4>
+                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- WebApp.lua - Main Application Root</span>
+<span class="code-keyword">local</span> FunctionalComponent = <span class="code-keyword">require</span>(<span class="code-string">"layout.renderer.FuncComponent"</span>)
+<span class="code-keyword">local</span> HTML = <span class="code-keyword">require</span>(<span class="code-string">"layout.renderer.LuaHTMLReactive"</span>)
+<span class="code-keyword">local</span> cjson = <span class="code-keyword">require</span>(<span class="code-string">"dkjson"</span>)
+
+<span class="code-comment">-- Import pages and components</span>
+<span class="code-keyword">local</span> HomePage = <span class="code-keyword">require</span>(<span class="code-string">"lib.components.home"</span>)
+<span class="code-keyword">local</span> RouteManager = <span class="code-keyword">require</span>(<span class="code-string">"system.RouteManager"</span>)
+
+<span class="code-keyword">local</span> MainAppPage = FunctionalComponent:extends()
+MainAppPage:setReactiveView()
+
+<span class="code-comment">-- Global route state management</span>
+MainAppPage.routeUrl = <span class="code-string">""</span>
+
+<span class="code-comment">-- Method to update current route URL</span>
+<span class="code-keyword">function</span> MainAppPage:setRouteToNavigateTo(url)
+    MainAppPage.routeUrl = url
+    RouteManager.setCurrentBrowserRouteUrl(url)
+<span class="code-keyword">end</span>
+
+<span class="code-comment">-- ===== ROUTE REGISTRATION =====</span>
+RouteManager.registerRoute(<span class="code-string">"home"</span>, HomePage, {
+    path = <span class="code-string">"/app"</span>,
+    title = <span class="code-string">"Home"</span>,
+    defaultRoute = true
+})
+
+<span class="code-comment">-- ===== MAIN RENDER FUNCTION =====</span>
+<span class="code-keyword">function</span> MainAppPage:renderLayout(state, props, children, H, client_state)
+    <span class="code-keyword">local</span> parentKey = self:getParentKey()
+    <span class="code-keyword">local</span> componentKey = self:getComponentKey()
+
+    <span class="code-keyword">return</span> HTML.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"app-container"</span> }, {
+        <span class="code-comment">-- Route Manager renders active pages</span>
+        HTML.Component(<span class="code-string">"routeManager"</span>, {}),
+        
+        <span class="code-comment">-- Modal Manager renders active modals</span>
+        HTML.Component(<span class="code-string">'modalManager'</span>, {})
+    })
+<span class="code-keyword">end</span>
+
+<span class="code-comment">-- ===== COMPONENT INITIALIZATION =====</span>
+<span class="code-keyword">local</span> <span class="code-keyword">function</span> startInit()
+    MainAppPage:init(<span class="code-keyword">function</span>(server, children, props, style, HTMLReactive, collected_js_scripts, client_state)
+        
+        <span class="code-comment">-- ===== NAVIGATION METHODS =====</span>
+        MainAppPage.methods.navigateTo = <span class="code-keyword">function</span>(self, ws_id, args)
+            <span class="code-keyword">local</span> routeManager = self:getChildComponent(<span class="code-string">"routeManager"</span>)
+            <span class="code-keyword">if</span> routeManager <span class="code-keyword">then</span>
+                routeManager.methods.navigateTo(routeManager, ws_id, args)
+            <span class="code-keyword">end</span>
+        <span class="code-keyword">end</span>
+
+        MainAppPage.methods.navigateBack = <span class="code-keyword">function</span>(self, ws_id, args)
+            <span class="code-keyword">local</span> routeManager = self:getChildComponent(<span class="code-string">"routeManager"</span>)
+            <span class="code-keyword">if</span> routeManager <span class="code-keyword">then</span>
+                routeManager.methods.navigateBack(routeManager, ws_id, args)
+            <span class="code-keyword">end</span>
+        <span class="code-keyword">end</span>
+
+        MainAppPage.methods.navigateToCurrent = <span class="code-keyword">function</span>(self, ws_id, args)
+            <span class="code-keyword">local</span> routeManager = self:getChildComponent(<span class="code-string">"routeManager"</span>)
+            <span class="code-keyword">if</span> routeManager <span class="code-keyword">then</span>
+                routeManager.methods.navigateToCurrent(routeManager, ws_id, args)
+            <span class="code-keyword">end</span>
+        <span class="code-keyword">end</span>
+
+        <span class="code-comment">-- ===== MODAL MANAGEMENT METHODS =====</span>
+        MainAppPage.methods.showPrompt = <span class="code-keyword">function</span>(self, ws_id, args)
+            self:callChildMethod(<span class="code-string">"modalManager"</span>, <span class="code-string">"showModal"</span>, ws_id, args)
+        <span class="code-keyword">end</span>
+
+        MainAppPage.methods.hidePrompt = <span class="code-keyword">function</span>(self, ws_id, args)
+            <span class="code-keyword">local</span> modalId = args.modalId <span class="code-keyword">or</span> <span class="code-keyword">nil</span>
+            self:callChildMethod(<span class="code-string">"modalManager"</span>, <span class="code-string">"hideModal"</span>, ws_id, {modalId = modalId})
+        <span class="code-keyword">end</span>
+
+        <span class="code-keyword">return</span> <span class="code-keyword">function</span>(state, props, children, H, client_state)
+            <span class="code-keyword">return</span> MainAppPage:renderLayout(state, props, children, H)
+        <span class="code-keyword">end</span>
+    <span class="code-keyword">end</span>)
+<span class="code-keyword">end</span>
+
+<span class="code-comment">-- ===== CLIENT READY HANDLER =====</span>
+MainAppPage:onClientReady(<span class="code-keyword">function</span> (self, parent_ws_id, parent_client_toke)
+    <span class="code-keyword">local</span> clientState = self:getRedisClientState(parent_client_toke, <span class="code-string">"modalManager"</span>)
+    self:setClientState(parent_ws_id, { 
+        activeModals = {},
+        modalConfigs = {},
+        modalPositions = {},
+        modalZIndices = {}
+    }, <span class="code-string">"modalManager"</span>)
+<span class="code-keyword">end</span>)
+
+<span class="code-comment">-- ===== FINAL APPLICATION RENDER =====</span>
+<span class="code-keyword">function</span> MainAppPage:render_layout()
+    <span class="code-comment">-- Set component key for identification</span>
+    self:setComponentKey(<span class="code-string">'mainAppPage'</span>)
+    self:loadStateFromRedis()
+    startInit()
+
+    <span class="code-comment">-- Add RouteManager as child component</span>
+    self:addChildComponent(<span class="code-string">"routeManager"</span>, RouteManager)
+    RouteManager:load()
+
+    <span class="code-comment">-- Add ModalManager as child component</span>
+    <span class="code-keyword">local</span> modalManager = <span class="code-keyword">require</span>(<span class="code-string">"system.ModalManager"</span>)
+    self:addChildComponent(<span class="code-string">'modalManager'</span>, modalManager)
+    modalManager:load()
+
+    <span class="code-comment">-- Render final HTML with application structure</span>
+    <span class="code-keyword">local</span> final_html_vdom = self:renderAppPage({
+        title = <span class="code-string">"Qoleng - Build Bold. Run Fast. Scale Wild."</span>,
+        state = self.state,
+        head_extra = HTML.fragment({
+            HTML.e(<span class="code-string">"style"</span>, {}, [[
+                .gradient-text {
+                    background: linear-gradient(135deg, #0066FF, #00CC88, #8A2BE2);
+                    background-size: 200% 200%;
+                    animation: gradient 8s ease infinite;
+                    -webkit-background-clip: text;
+                    background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+            ]]),
+            HTML.e(<span class="code-string">"script"</span>, {}, string.format(
+                <span class="code-string">"window.__DEFAULT_COMPONENT_KEY__ = %q;"</span>, 
+                self.component_key <span class="code-keyword">or</span> <span class="code-string">""</span>
+            ))
+        }),
+        body_attrs = { class = <span class="code-string">"antialiased bg-[#FFFFFF]"</span> }
+    })
+    
+    <span class="code-keyword">return</span> self.HTMLReactive.render(final_html_vdom)
+<span class="code-keyword">end</span>
+
+<span class="code-keyword">return</span> MainAppPage</code></pre>
+                </div>
+                
+                <div class="function-signature">
+                    <h4 class="font-bold text-lg mb-2">Key Responsibilities of WebApp.lua</h4>
+                    <p class="text-light-text-secondary mb-3">
+                        Understanding what WebApp.lua manages helps in proper application architecture.
+                    </p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-4 mt-4">
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <h5 class="font-bold text-laser-blue mb-2">Component Management</h5>
+                        <ul class="text-sm text-light-text-secondary list-disc pl-5">
+                            <li>Initializes RouteManager and ModalManager</li>
+                            <li>Sets up parent-child relationships</li>
+                            <li>Manages component lifecycle</li>
+                            <li>Handles component communication</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-green-50 p-4 rounded-lg">
+                        <h5 class="font-bold text-build-green mb-2">State Management</h5>
+                        <ul class="text-sm text-light-text-secondary list-disc pl-5">
+                            <li>Maintains global application state</li>
+                            <li>Integrates with Redis for persistence</li>
+                            <li>Manages client-specific state</li>
+                            <li>Handles state synchronization</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-purple-50 p-4 rounded-lg">
+                        <h5 class="font-bold text-query-purple mb-2">Navigation Coordination</h5>
+                        <ul class="text-sm text-light-text-secondary list-disc pl-5">
+                            <li>Provides navigation wrapper methods</li>
+                            <li>Manages current route state</li>
+                            <li>Handles browser URL synchronization</li>
+                            <li>Coordinates with RouteManager</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-amber-50 p-4 rounded-lg">
+                        <h5 class="font-bold text-warning-amber mb-2">Modal Coordination</h5>
+                        <ul class="text-sm text-light-text-secondary list-disc pl-5">
+                            <li>Provides modal management methods</li>
+                            <li>Handles modal state initialization</li>
+                            <li>Coordinates with ModalManager</li>
+                            <li>Manages modal lifecycle</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step-by-Step Section -->
+        <section id="step-by-step" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-query-purple flex items-center justify-center text-white font-bold mr-4">3</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">Step-by-Step Implementation Guide</h2>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
+                <h3 class="text-2xl font-bold mb-6 text-laser-blue">Developer Implementation Guide</h3>
+                
+                <div class="space-y-8">
+                    <!-- Step 1 -->
+                    <div class="border-l-4 border-laser-blue pl-6 py-2">
+                        <div class="flex items-center mb-3">
+                            <span class="step-number">1</span>
+                            <h4 class="text-xl font-bold text-neural-charcoal">Create WebApp.lua Root Component</h4>
+                        </div>
+                        <p class="text-light-text-secondary mb-4">
+                            Start by creating the main application container that will orchestrate all other components.
+                        </p>
+                        <div class="bg-gray-800 text-gray-200 rounded-lg p-4 code-block">
+                            <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Basic WebApp.lua structure</span>
+<span class="code-keyword">local</span> FunctionalComponent = <span class="code-keyword">require</span>(<span class="code-string">"layout.renderer.FuncComponent"</span>)
+<span class="code-keyword">local</span> HTML = <span class="code-keyword">require</span>(<span class="code-string">"layout.renderer.LuaHTMLReactive"</span>)
+
+<span class="code-keyword">local</span> MainAppPage = FunctionalComponent:extends()
+MainAppPage:setReactiveView()
+
+<span class="code-keyword">function</span> MainAppPage:renderLayout(state, props, children, H)
+    <span class="code-keyword">return</span> HTML.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"app-container"</span> }, {
+        HTML.Component(<span class="code-string">"routeManager"</span>, {}),
+        HTML.Component(<span class="code-string">"modalManager"</span>, {})
+    })
+<span class="code-keyword">end</span></code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="border-l-4 border-build-green pl-6 py-2">
+                        <div class="flex items-center mb-3">
+                            <span class="step-number">2</span>
+                            <h4 class="text-xl font-bold text-neural-charcoal">Set Up Route Manager</h4>
+                        </div>
+                        <p class="text-light-text-secondary mb-4">
+                            Configure routes and register page components with the Route Manager.
+                        </p>
+                        <div class="bg-gray-800 text-gray-200 rounded-lg p-4 code-block">
+                            <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- In WebApp.lua initialization</span>
+<span class="code-keyword">local</span> RouteManager = <span class="code-keyword">require</span>(<span class="code-string">"system.RouteManager"</span>)
+<span class="code-keyword">local</span> HomePage = <span class="code-keyword">require</span>(<span class="code-string">"lib.components.home"</span>)
+<span class="code-keyword">local</span> AboutPage = <span class="code-keyword">require</span>(<span class="code-string">"lib.components.about"</span>)
+
+<span class="code-comment">-- Register routes</span>
+RouteManager.registerRoute(<span class="code-string">"home"</span>, HomePage, {
+    path = <span class="code-string">"/"</span>,
+    defaultRoute = true
+})
+
+RouteManager.registerRoute(<span class="code-string">"about"</span>, AboutPage, {
+    path = <span class="code-string">"/about"</span>
+})
+
+<span class="code-comment">-- Add as child component</span>
+self:addChildComponent(<span class="code-string">"routeManager"</span>, RouteManager)
+RouteManager:load()</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="border-l-4 border-query-purple pl-6 py-2">
+                        <div class="flex items-center mb-3">
+                            <span class="step-number">3</span>
+                            <h4 class="text-xl font-bold text-neural-charcoal">Set Up Modal Manager</h4>
+                        </div>
+                        <p class="text-light-text-secondary mb-4">
+                            Configure modal types and register modal components.
+                        </p>
+                        <div class="bg-gray-800 text-gray-200 rounded-lg p-4 code-block">
+                            <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- In WebApp.lua initialization</span>
+<span class="code-keyword">local</span> ModalManager = <span class="code-keyword">require</span>(<span class="code-string">"system.ModalManager"</span>)
+<span class="code-keyword">local</span> PromptModal = <span class="code-keyword">require</span>(<span class="code-string">"components.modals.prompt"</span>)
+<span class="code-keyword">local</span> ConfirmModal = <span class="code-keyword">require</span>(<span class="code-string">"components.modals.confirm"</span>)
+
+<span class="code-comment">-- Register modal types</span>
+ModalManager.registerModalType(<span class="code-string">"promptModal"</span>, PromptModal)
+ModalManager.registerModalType(<span class="code-string">"confirmModal"</span>, ConfirmModal)
+
+<span class="code-comment">-- Add as child component</span>
+self:addChildComponent(<span class="code-string">"modalManager"</span>, ModalManager)
+ModalManager:load()</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="border-l-4 border-warning-amber pl-6 py-2">
+                        <div class="flex items-center mb-3">
+                            <span class="step-number">4</span>
+                            <h4 class="text-xl font-bold text-neural-charcoal">Create Page Components (Home.lua)</h4>
+                        </div>
+                        <p class="text-light-text-secondary mb-4">
+                            Implement individual page components that will be rendered by the Route Manager.
+                        </p>
+                        <div class="bg-gray-800 text-gray-200 rounded-lg p-4 code-block">
+                            <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Home.lua - Example page component</span>
+<span class="code-keyword">local</span> FunctionalComponent = <span class="code-keyword">require</span>(<span class="code-string">"layout.renderer.FuncComponent"</span>)
+<span class="code-keyword">local</span> HTML = <span class="code-keyword">require</span>(<span class="code-string">"layout.renderer.LuaHTMLReactive"</span>)
+
+<span class="code-keyword">local</span> HomePage = FunctionalComponent:extends()
+HomePage:setReactiveView()
+
+<span class="code-keyword">function</span> HomePage:renderLayout(state, props, children, H)
+    <span class="code-keyword">local</span> routeId = props.routeId <span class="code-comment">-- Provided by RouteManager</span>
+    <span class="code-keyword">local</span> queryParams = props.queryParams <span class="code-comment">-- URL query parameters</span>
+    <span class="code-keyword">local</span> routeParams = props.routeParams <span class="code-comment">-- Route path parameters</span>
+    
+    <span class="code-keyword">return</span> HTML.e(<span class="code-string">"div"</span>, { 
+        id = routeId, 
+        class = <span class="code-string">"home-page bg-white p-6"</span> 
+    }, {
+        HTML.e(<span class="code-string">"h1"</span>, { class = <span class="code-string">"text-3xl font-bold"</span> }, <span class="code-string">"Welcome Home"</span>),
+        
+        <span class="code-comment">-- Navigation example</span>
+        HTML.e(<span class="code-string">"button"</span>, 
+            HTML.merge({ class = <span class="code-string">"btn btn-primary"</span> }, 
+                HTML.onClick(
+                    HTML.patch(<span class="code-string">"routeManager"</span>, <span class="code-keyword">nil</span>, <span class="code-string">"navigateTo"</span>, {
+                        routeName = <span class="code-string">"about"</span>,
+                        params = { source = <span class="code-string">"home_page"</span> }
+                    })
+                )
+            ), 
+            <span class="code-string">"Go to About"</span>
+        ),
+        
+        <span class="code-comment">-- Modal example</span>
+        HTML.e(<span class="code-string">"button"</span>, 
+            HTML.merge({ class = <span class="code-string">"btn btn-secondary"</span> }, 
+                HTML.onClick(
+                    HTML.patch(<span class="code-string">"modalManager"</span>, <span class="code-keyword">nil</span>, <span class="code-string">"showModal"</span>, {
+                        modalType = <span class="code-string">"promptModal"</span>,
+                        modalId = <span class="code-string">"welcome_modal"</span>,
+                        props = {
+                            title = <span class="code-string">"Welcome!"</span>,
+                            message = <span class="code-string">"This is a modal from the home page."</span>
+                        }
+                    })
+                )
+            ), 
+            <span class="code-string">"Show Welcome Modal"</span>
+        )
+    })
+<span class="code-keyword">end</span>
+
+<span class="code-keyword">return</span> HomePage</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div class="border-l-4 border-laser-blue pl-6 py-2">
+                        <div class="flex items-center mb-3">
+                            <span class="step-number">5</span>
+                            <h4 class="text-xl font-bold text-neural-charcoal">Add Navigation Methods</h4>
+                        </div>
+                        <p class="text-light-text-secondary mb-4">
+                            Implement navigation wrapper methods in WebApp.lua for easier component access.
+                        </p>
+                        <div class="bg-gray-800 text-gray-200 rounded-lg p-4 code-block">
+                            <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- In WebApp.lua startInit() function</span>
+MainAppPage.methods.navigateTo = <span class="code-keyword">function</span>(self, ws_id, args)
+    <span class="code-keyword">local</span> routeManager = self:getChildComponent(<span class="code-string">"routeManager"</span>)
+    <span class="code-keyword">if</span> routeManager <span class="code-keyword">then</span>
+        routeManager.methods.navigateTo(routeManager, ws_id, args)
+    <span class="code-keyword">end</span>
+<span class="code-keyword">end</span>
+
+MainAppPage.methods.showModal = <span class="code-keyword">function</span>(self, ws_id, args)
+    self:callChildMethod(<span class="code-string">"modalManager"</span>, <span class="code-string">"showModal"</span>, ws_id, args)
+<span class="code-keyword">end</span>
+
+MainAppPage.methods.hideModal = <span class="code-keyword">function</span>(self, ws_id, args)
+    self:callChildMethod(<span class="code-string">"modalManager"</span>, <span class="code-string">"hideModal"</span>, ws_id, args)
+<span class="code-keyword">end</span></code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Step 6 -->
+                    <div class="border-l-4 border-build-green pl-6 py-2">
+                        <div class="flex items-center mb-3">
+                            <span class="step-number">6</span>
+                            <h4 class="text-xl font-bold text-neural-charcoal">Initialize Client State</h4>
+                        </div>
+                        <p class="text-light-text-secondary mb-4">
+                            Set up initial client state and handle client-ready events.
+                        </p>
+                        <div class="bg-gray-800 text-gray-200 rounded-lg p-4 code-block">
+                            <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- In WebApp.lua</span>
+MainAppPage:onClientReady(<span class="code-keyword">function</span> (self, parent_ws_id, parent_client_toke)
+    <span class="code-comment">-- Initialize modal state</span>
+    self:setClientState(parent_ws_id, { 
+        activeModals = {},
+        modalConfigs = {},
+        modalPositions = {},
+        modalZIndices = {}
+    }, <span class="code-string">"modalManager"</span>)
+    
+    <span class="code-comment">-- Initialize browser navigation</span>
+    <span class="code-keyword">local</span> routeManager = self:getChildComponent(<span class="code-string">"routeManager"</span>)
+    <span class="code-keyword">if</span> routeManager <span class="code-keyword">then</span>
+        routeManager.methods.initializeBrowserNavigation(routeManager, parent_ws_id, {})
+    <span class="code-keyword">end</span>
+<span class="code-keyword">end</span>)</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Advanced Patterns Section -->
+        <section id="advanced-patterns" class="mb-16 animate-fadeIn">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-warning-amber flex items-center justify-center text-white font-bold mr-4">4</div>
+                <h2 class="text-3xl font-bold text-neural-charcoal">Advanced Integration Patterns</h2>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
+                <h3 class="text-2xl font-bold mb-6 text-laser-blue">Real-World Implementation Scenarios</h3>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-blue-50 p-6 rounded-lg">
+                        <h4 class="font-bold text-lg mb-3 text-laser-blue">Route-Based Modals</h4>
+                        <p class="text-light-text-secondary mb-4">
+                            Use URL parameters to control modal state for shareable links and deep linking.
+                        </p>
+                        <div class="bg-gray-800 text-gray-200 rounded p-4 text-sm">
+                            <pre><code><span class="code-comment">-- Check for modal parameter on route navigation</span>
+<span class="code-keyword">function</span> HomePage:renderLayout(state, props, children, H)
+    <span class="code-keyword">local</span> queryParams = props.queryParams <span class="code-keyword">or</span> {}
+    
+    <span class="code-comment">-- Auto-show modal if specified in URL</span>
+    <span class="code-keyword">if</span> queryParams.modal == <span class="code-string">"welcome"</span> <span class="code-keyword">then</span>
+        <span class="code-comment">-- Show welcome modal automatically</span>
+    <span class="code-keyword">end</span>
+    
+    <span class="code-keyword">return</span> <span class="code-comment">-- component JSX</span>
+<span class="code-keyword">end</span></code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-green-50 p-6 rounded-lg">
+                        <h4 class="font-bold text-lg mb-3 text-build-green">State Persistence Across Navigation</h4>
+                        <p class="text-light-text-secondary mb-4">
+                            Preserve component state when navigating between routes.
+                        </p>
+                        <div class="bg-gray-800 text-gray-200 rounded p-4 text-sm">
+                            <pre><code><span class="code-comment">-- Configure route to preserve state</span>
+RouteManager.registerRoute(<span class="code-string">"complexForm"</span>, ComplexFormPage, {
+    path = <span class="code-string">"/form"</span>,
+    config = {
+        preserveState = true,
+        animation = <span class="code-string">"fade"</span>
+    }
+})</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-purple-50 p-6 rounded-lg">
+                        <h4 class="font-bold text-lg mb-3 text-query-purple">Modal Communication with Parent</h4>
+                        <p class="text-light-text-secondary mb-4">
+                            Modals communicating back to their parent components.
+                        </p>
+                        <div class="bg-gray-800 text-gray-200 rounded p-4 text-sm">
+                            <pre><code><span class="code-comment">-- Modal with callback to parent</span>
+MainAppPage.methods.showUserForm = <span class="code-keyword">function</span>(self, ws_id, userData)
+    self:callChildMethod(<span class="code-string">"modalManager"</span>, <span class="code-string">"showModal"</span>, ws_id, {
+        modalType = <span class="code-string">"userForm"</span>,
+        props = {
+            userData = userData,
+            onSave = <span class="code-keyword">function</span>(updatedUser)
+                <span class="code-comment">-- Update parent component state</span>
+                self:updateUser(ws_id, updatedUser)
+            <span class="code-keyword">end</span>
+        }
+    })
+<span class="code-keyword">end</span></code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-amber-50 p-6 rounded-lg">
+                        <h4 class="font-bold text-lg mb-3 text-warning-amber">Dynamic Route Registration</h4>
+                        <p class="text-light-text-secondary mb-4">
+                            Register routes dynamically based on application state or user permissions.
+                        </p>
+                        <div class="bg-gray-800 text-gray-200 rounded p-4 text-sm">
+                            <pre><code><span class="code-comment">-- Dynamic route registration based on user role</span>
+<span class="code-keyword">function</span> MainAppPage:registerRoutesBasedOnRole(userRole)
+    <span class="code-keyword">if</span> userRole == <span class="code-string">"admin"</span> <span class="code-keyword">then</span>
+        RouteManager.registerRoute(<span class="code-string">"admin"</span>, AdminPage, {
+            path = <span class="code-string">"/admin"</span>
+        })
+    <span class="code-keyword">end</span>
+<span class="code-keyword">end</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 p-6 bg-gray-50 rounded-lg">
+                    <h4 class="font-bold text-lg mb-3 text-neural-charcoal">Best Practices Summary</h4>
+                    <ul class="list-disc pl-5 text-light-text-secondary space-y-2">
+                        <li><strong>Keep WebApp.lua Lean:</strong> Delegate specific functionality to RouteManager and ModalManager</li>
+                        <li><strong>Use Proper Component Keys:</strong> Ensure unique keys for all child components</li>
+                        <li><strong>Handle Client State Properly:</strong> Initialize state in onClientReady handler</li>
+                        <li><strong>Follow Communication Patterns:</strong> Use HTML.patch for cross-component communication</li>
+                        <li><strong>Implement Error Boundaries:</strong> Handle missing routes or components gracefully</li>
+                        <li><strong>Optimize Performance:</strong> Use preserveState strategically for complex components</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="mt-12 pt-8 border-t border-light-border text-center text-light-text-secondary">
+            <p>Dawn Framework SPA Integration Guide &copy; 2023</p>
+            <div class="flex justify-center space-x-4 mt-4">
+                <a href="#" class="text-laser-blue hover:underline">Core Server Docs</a>
+                <a href="#" class="text-laser-blue hover:underline">API Reference</a>
+                <a href="#" class="text-laser-blue hover:underline">Examples Repository</a>
+                <a href="#" class="text-laser-blue hover:underline">Community</a>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        // Copy code functionality
+        document.querySelectorAll('.copy-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const codeBlock = this.closest('.code-block').querySelector('pre code');
+                const textToCopy = codeBlock.textContent;
+                
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check mr-1"></i>Copied!';
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                    }, 2000);
+                });
+            });
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
