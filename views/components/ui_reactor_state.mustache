@@ -1,6 +1,66 @@
-
 <style>
-    /* Custom styles for UI-Reactor documentation */
+    /* Custom styles for UI-Reactor documentation - Integrated with theme system */
+    
+    /* Theme-aware variables */
+    .main-content-body {
+        --doc-bg: #FFFFFF;
+        --doc-text: #2A2A3A;
+        --doc-text-secondary: #5A6578;
+        --doc-border: #E0E5EC;
+        --doc-card-bg: #FFFFFF;
+        --doc-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        --doc-code-bg: #1E1E2E;
+        --doc-code-text: #E0E5EC;
+        --doc-code-comment: #6A737D;
+        --doc-code-keyword: #00CC88;
+        --doc-code-string: #8A2BE2;
+        --doc-code-function: #0066FF;
+        --doc-code-number: #FFB300;
+        --doc-toc-bg: #F9FAFB;
+        --doc-badge-ui: #10B981;
+        --doc-badge-server: #3B82F6;
+        --doc-badge-client: #8B5CF6;
+        --doc-info-bg: #DBEAFE;
+        --doc-info-border: #3B82F6;
+        --doc-warning-bg: #FEF3C7;
+        --doc-warning-border: #F59E0B;
+        --doc-success-bg: #D1FAE5;
+        --doc-success-border: #10B981;
+    }
+    
+    body.dark-theme .main-content-body {
+        --doc-bg: #151520;
+        --doc-text: #E0E5EC;
+        --doc-text-secondary: #A0A5B5;
+        --doc-border: #2A2A3A;
+        --doc-card-bg: #1F1F2E;
+        --doc-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        --doc-code-bg: #0A0A0F;
+        --doc-code-text: #E0E5EC;
+        --doc-code-comment: #6A737D;
+        --doc-code-keyword: #00CC88;
+        --doc-code-string: #8A2BE2;
+        --doc-code-function: #0066FF;
+        --doc-code-number: #FFB300;
+        --doc-toc-bg: #1A1A2A;
+        --doc-badge-ui: #059669;
+        --doc-badge-server: #2563EB;
+        --doc-badge-client: #7C3AED;
+        --doc-info-bg: #1E3A8A;
+        --doc-info-border: #3B82F6;
+        --doc-warning-bg: #78350F;
+        --doc-warning-border: #F59E0B;
+        --doc-success-bg: #064E3B;
+        --doc-success-border: #10B981;
+    }
+    
+    .main-content-body {
+        background-color: var(--doc-bg);
+        color: var(--doc-text);
+        transition: all 0.3s ease;
+    }
+    
+    /* State Badges */
     .state-badge {
         display: inline-block;
         padding: 0.25rem 0.75rem;
@@ -11,192 +71,407 @@
     }
     
     .badge-ui-reactor {
-        background: #10B981;
+        background: var(--doc-badge-ui);
         color: white;
     }
     
     .badge-server {
-        background: #3B82F6;
+        background: var(--doc-badge-server);
         color: white;
     }
     
     .badge-client {
-        background: #8B5CF6;
+        background: var(--doc-badge-client);
         color: white;
     }
     
-    .comparison-table {
+    /* Tables */
+    .api-table, .comparison-table {
         width: 100%;
         border-collapse: collapse;
         margin: 1rem 0;
+        background-color: var(--doc-card-bg);
+        border-radius: 12px;
+        overflow: hidden;
     }
     
+    .api-table th,
+    .api-table td,
     .comparison-table th,
     .comparison-table td {
-        padding: 0.75rem;
+        padding: 0.75rem 1rem;
         text-align: left;
-        border-bottom: 1px solid #E5E7EB;
+        border-bottom: 1px solid var(--doc-border);
+        color: var(--doc-text);
     }
     
+    .api-table th,
     .comparison-table th {
-        background: #F3F4F6;
+        background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));
+        color: white;
         font-weight: 600;
     }
     
+    .api-table tr:last-child td,
+    .comparison-table tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .api-table tr:hover,
+    .comparison-table tr:hover {
+        background-color: rgba(0, 102, 255, 0.05);
+    }
+    
+    body.dark-theme .api-table tr:hover,
+    body.dark-theme .comparison-table tr:hover {
+        background-color: rgba(0, 204, 136, 0.05);
+    }
+    
+    .api-table code,
+    .comparison-table code {
+        background-color: rgba(0, 102, 255, 0.1);
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-family: 'Fira Code', monospace;
+        font-size: 0.8125rem;
+        color: var(--laser-blue);
+    }
+    
+    body.dark-theme .api-table code {
+        background-color: rgba(0, 204, 136, 0.1);
+        color: var(--build-green);
+    }
+    
+    /* Redesigned Code Blocks */
     .code-block {
-        background: #fcfcff;
-        border-radius: 8px;
-        padding: 1rem;
-        margin: 1rem 0;
-        overflow-x: auto;
+        background: var(--doc-code-bg);
+        border-radius: 12px;
+        margin: 1.5rem 0;
+        overflow: hidden;
         position: relative;
+        border: 1px solid var(--doc-border);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .code-block:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+    
+    .code-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(138, 43, 226, 0.1));
+        border-bottom: 1px solid var(--doc-border);
+    }
+    
+    .code-language {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--doc-text-secondary);
+    }
+    
+    .copy-btn {
+        background: rgba(0, 102, 255, 0.2);
+        color: var(--doc-text);
+        border: none;
+        padding: 0.25rem 0.75rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .copy-btn:hover {
+        background: rgba(0, 102, 255, 0.4);
+        transform: scale(1.05);
+    }
+    
+    .copy-btn i {
+        font-size: 0.75rem;
     }
     
     .code-block pre {
         margin: 0;
+        padding: 1.5rem;
         overflow-x: auto;
+        font-family: 'Fira Code', 'Courier New', monospace;
+        font-size: 0.875rem;
+        line-height: 1.6;
     }
     
+    .code-block code {
+        font-family: 'Fira Code', 'Courier New', monospace;
+        color: var(--doc-code-text);
+    }
+    
+    /* Syntax highlighting */
+    .code-block code .keyword {
+        color: var(--doc-code-keyword);
+        font-weight: 500;
+    }
+    
+    .code-block code .string {
+        color: var(--doc-code-string);
+    }
+    
+    .code-block code .function {
+        color: var(--doc-code-function);
+    }
+    
+    .code-block code .number {
+        color: var(--doc-code-number);
+    }
+    
+    .code-block code .comment {
+        color: var(--doc-code-comment);
+        font-style: italic;
+    }
+    
+    .code-block code .operator {
+        color: var(--doc-code-keyword);
+    }
+    
+    .code-block code .class-name {
+        color: var(--doc-code-function);
+        font-weight: 500;
+    }
+    
+    /* Feature Cards */
     .feature-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 1rem;
-        margin: 1rem 0;
+        gap: 1.5rem;
+        margin: 1.5rem 0;
     }
     
     .feature-card {
-        background: white;
-        border-radius: 12px;
+        background: var(--doc-card-bg);
+        border-radius: 16px;
         padding: 1.5rem;
-        border: 1px solid #E5E7EB;
+        border: 1px solid var(--doc-border);
         transition: all 0.3s ease;
+        box-shadow: var(--doc-card-shadow);
     }
     
     .feature-card:hover {
-        border-color: #10B981;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transform: translateY(-4px);
+        border-color: var(--laser-blue);
+        box-shadow: 0 10px 25px -5px rgba(0, 102, 255, 0.2);
     }
     
-    .info-box {
-        background: #DBEAFE;
-        border-left: 4px solid #3B82F6;
-        padding: 1rem;
-        margin: 1rem 0;
-        border-radius: 8px;
-    }
-    
-    .warning-box {
-        background: #FEF3C7;
-        border-left: 4px solid #F59E0B;
-        padding: 1rem;
-        margin: 1rem 0;
-        border-radius: 8px;
-    }
-    
-    .success-box {
-        background: #D1FAE5;
-        border-left: 4px solid #10B981;
-        padding: 1rem;
-        margin: 1rem 0;
-        border-radius: 8px;
-    }
-    
-    .api-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 1rem 0;
-    }
-    
-    .api-table th,
-    .api-table td {
-        padding: 0.75rem;
-        text-align: left;
-        border-bottom: 1px solid #E5E7EB;
-    }
-    
-    .api-table th {
-        background: #F3F4F6;
+    .feature-card h3 {
+        color: var(--doc-text);
+        margin-bottom: 0.75rem;
+        font-size: 1.125rem;
         font-weight: 600;
     }
     
-    .api-table code {
-        background: #F3F4F6;
-        padding: 0.2rem 0.4rem;
-        border-radius: 4px;
+    .feature-card p {
+        color: var(--doc-text-secondary);
         font-size: 0.875rem;
+        line-height: 1.5;
     }
     
-    ::-webkit-scrollbar {
-        width: 10px;
-        height: 10px;
+    /* Info/Warning/Success Boxes */
+    .info-box, .warning-box, .success-box {
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 12px;
+        border-left: 4px solid;
+        transition: all 0.3s ease;
     }
     
-    ::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 10px;
+    .info-box {
+        background: var(--doc-info-bg);
+        border-left-color: var(--doc-info-border);
     }
     
-    ::-webkit-scrollbar-thumb {
-        background: #888;
-        border-radius: 10px;
+    .warning-box {
+        background: var(--doc-warning-bg);
+        border-left-color: var(--doc-warning-border);
     }
     
-    html {
-        scroll-behavior: smooth;
+    .success-box {
+        background: var(--doc-success-bg);
+        border-left-color: var(--doc-success-border);
     }
     
+    .info-box strong,
+    .warning-box strong,
+    .success-box strong {
+        color: var(--doc-text);
+    }
+    
+    /* Table of Contents */
+    .toc-container {
+        background: var(--doc-toc-bg);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border: 1px solid var(--doc-border);
+    }
+    
+    .toc-container h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        color: var(--doc-text);
+    }
+    
+    .toc-container a {
+        color: var(--laser-blue);
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+    
+    .toc-container a:hover {
+        color: var(--build-green);
+        text-decoration: underline;
+    }
+    
+    body.dark-theme .toc-container a {
+        color: var(--build-green);
+    }
+    
+    body.dark-theme .toc-container a:hover {
+        color: var(--laser-blue);
+    }
+    
+    /* Section Headers */
     .doc-section {
         scroll-margin-top: 80px;
     }
     
-    .copy-btn {
-        position: absolute;
-        top: 0.5rem;
-        right: 0.5rem;
-        background: #10B981;
+    .section-number {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--laser-blue), var(--build-green));
+        display: flex;
+        align-items: center;
+        justify-content: center;
         color: white;
-        border: none;
-        padding: 0.25rem 0.75rem;
-        border-radius: 4px;
-        font-size: 0.75rem;
-        cursor: pointer;
-        transition: background 0.2s;
+        font-weight: bold;
+        margin-right: 1rem;
     }
     
-    .copy-btn:hover {
-        background: #059669;
+    .section-title {
+        font-size: 1.875rem;
+        font-weight: 700;
+        color: var(--doc-text);
+    }
+    
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: var(--doc-border);
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--build-green);
+    }
+    
+    /* Back to Top Button */
+    .back-to-top {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--laser-blue), var(--build-green));
+        color: white;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+    }
+    
+    .back-to-top.visible {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .back-to-top:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .feature-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+        }
+        
+        .code-block pre {
+            font-size: 0.75rem;
+            padding: 1rem;
+        }
     }
 </style>
 
-<main class="main-content-body max-w-6xl mx-auto px-6 py-8 light-theme">
+<main class="main-content-body max-w-6xl mx-auto px-6 py-8">
     <!-- Header -->
     <div class="mb-12 text-center">
-        <h1 class="text-4xl font-bold mb-4">UI-Reactor State Management</h1>
-        <p class="text-xl text-gray-600">Complete guide to client-side reactive state management in Dawn Framework</p>
+        <h1 class="text-4xl font-bold mb-4" style="background: linear-gradient(135deg, var(--laser-blue), var(--build-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+            UI-Reactor State Management
+        </h1>
+        <p class="text-xl" style="color: var(--doc-text-secondary);">
+            Complete guide to client-side reactive state management in Dawn Framework
+        </p>
         <div class="mt-4 flex justify-center gap-2 flex-wrap">
-            <span class="state-badge badge-ui-reactor">UI-Reactor State</span>
-            <span class="state-badge badge-server">Server State</span>
-            <span class="state-badge badge-client">Client State</span>
+            <span class="state-badge badge-ui-reactor"><i class="fas fa-atom mr-1"></i> UI-Reactor State</span>
+            <span class="state-badge badge-server"><i class="fas fa-server mr-1"></i> Server State</span>
+            <span class="state-badge badge-client"><i class="fas fa-laptop mr-1"></i> Client State</span>
         </div>
     </div>
 
     <!-- Table of Contents -->
-    <div class="bg-gray-50 rounded-xl p-6 mb-12">
-        <h2 class="text-2xl font-bold mb-4">Table of Contents</h2>
+    <div class="toc-container">
+        <h2 class="text-2xl font-bold mb-4">📑 Table of Contents</h2>
         <div class="grid md:grid-cols-2 gap-4">
             <ul class="space-y-2">
-                <li><a href="#overview" class="text-blue-600 hover:underline">1. UI-Reactor Overview</a></li>
-                <li><a href="#core-api" class="text-blue-600 hover:underline">2. Core API Reference</a></li>
-                <li><a href="#ui-bindings" class="text-blue-600 hover:underline">3. UI Binding System</a></li>
-                <li><a href="#loop-system" class="text-blue-600 hover:underline">4. Loop & Collection System</a></li>
-                <li><a href="#persistence" class="text-blue-600 hover:underline">5. State Persistence</a></li>
+                <li><a href="#overview" class="hover:underline">1. UI-Reactor Overview</a></li>
+                <li><a href="#core-api" class="hover:underline">2. Core API Reference</a></li>
+                <li><a href="#ui-bindings" class="hover:underline">3. UI Binding System</a></li>
+                <li><a href="#loop-system" class="hover:underline">4. Loop & Collection System</a></li>
+                <li><a href="#persistence" class="hover:underline">5. State Persistence</a></li>
             </ul>
             <ul class="space-y-2">
-                <li><a href="#middleware" class="text-blue-600 hover:underline">6. Middleware & DevTools</a></li>
-                <li><a href="#mustache-usage" class="text-blue-600 hover:underline">7. Usage in Mustache</a></li>
-                <li><a href="#fcomp-usage" class="text-blue-600 hover:underline">8. Usage in Components</a></li>
-                <li><a href="#advanced" class="text-blue-600 hover:underline">9. Advanced Patterns</a></li>
-                <li><a href="#best-practices" class="text-blue-600 hover:underline">10. Best Practices</a></li>
+                <li><a href="#middleware" class="hover:underline">6. Middleware & DevTools</a></li>
+                <li><a href="#mustache-usage" class="hover:underline">7. Usage in Mustache</a></li>
+                <li><a href="#fcomp-usage" class="hover:underline">8. Usage in Components</a></li>
+                <li><a href="#advanced" class="hover:underline">9. Advanced Patterns</a></li>
+                <li><a href="#best-practices" class="hover:underline">10. Best Practices</a></li>
             </ul>
         </div>
     </div>
@@ -204,39 +479,39 @@
     <!-- Section 1: Overview -->
     <section id="overview" class="doc-section mb-16">
         <div class="flex items-center mb-6">
-            <div class="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white font-bold mr-4">1</div>
-            <h2 class="text-3xl font-bold">UI-Reactor Overview</h2>
+            <div class="section-number">1</div>
+            <h2 class="section-title">UI-Reactor Overview</h2>
         </div>
         
-        <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-            <p class="text-gray-700 mb-4">
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <p class="mb-4" style="color: var(--doc-text);">
                 <strong>UI-Reactor State</strong> is a sophisticated client-side state management system built on the reducer pattern with reactive DOM bindings. It provides:
             </p>
             
             <div class="feature-grid">
                 <div class="feature-card">
-                    <h3 class="font-bold text-lg mb-2">⚡ Zero-Latency Updates</h3>
-                    <p class="text-sm text-gray-600">All state updates happen instantly in the browser without network round-trips.</p>
+                    <h3>⚡ Zero-Latency Updates</h3>
+                    <p>All state updates happen instantly in the browser without network round-trips.</p>
                 </div>
                 <div class="feature-card">
-                    <h3 class="font-bold text-lg mb-2">🔗 Reactive DOM Bindings</h3>
-                    <p class="text-sm text-gray-600">Automatic DOM synchronization using <code>ui-*</code> attributes.</p>
+                    <h3>🔗 Reactive DOM Bindings</h3>
+                    <p>Automatic DOM synchronization using <code>ui-*</code> attributes.</p>
                 </div>
                 <div class="feature-card">
-                    <h3 class="font-bold text-lg mb-2">💾 Persistence Layer</h3>
-                    <p class="text-sm text-gray-600">Built-in localStorage/sessionStorage with compression and TTL support.</p>
+                    <h3>💾 Persistence Layer</h3>
+                    <p>Built-in localStorage/sessionStorage with compression and TTL support.</p>
                 </div>
                 <div class="feature-card">
-                    <h3 class="font-bold text-lg mb-2">🔄 Loops & Collections</h3>
-                    <p class="text-sm text-gray-600">Declarative list rendering with pagination, alternating styles, and templates.</p>
+                    <h3>🔄 Loops & Collections</h3>
+                    <p>Declarative list rendering with pagination, alternating styles, and templates.</p>
                 </div>
                 <div class="feature-card">
-                    <h3 class="font-bold text-lg mb-2">🔧 Middleware Support</h3>
-                    <p class="text-sm text-gray-600">Intercept actions for logging, validation, async operations.</p>
+                    <h3>🔧 Middleware Support</h3>
+                    <p>Intercept actions for logging, validation, async operations.</p>
                 </div>
                 <div class="feature-card">
-                    <h3 class="font-bold text-lg mb-2">🐛 DevTools Integration</h3>
-                    <p class="text-sm text-gray-600">Action logging, state history, undo/redo capabilities.</p>
+                    <h3>🐛 DevTools Integration</h3>
+                    <p>Action logging, state history, undo/redo capabilities.</p>
                 </div>
             </div>
             
@@ -249,11 +524,11 @@
     <!-- Section 2: Core API Reference -->
     <section id="core-api" class="doc-section mb-16">
         <div class="flex items-center mb-6">
-            <div class="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white font-bold mr-4">2</div>
-            <h2 class="text-3xl font-bold">Core API Reference</h2>
+            <div class="section-number">2</div>
+            <h2 class="section-title">Core API Reference</h2>
         </div>
         
-        <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
             <h3 class="text-xl font-bold mb-4">Store Initialization & Management</h3>
             
             <table class="api-table">
@@ -291,121 +566,57 @@
                         <td>Hydrate store with server-side state</td>
                         <td><code>hydrateStore({ tasks: serverTasks })</code></td>
                     </tr>
-                    <tr>
-                        <td><code>unsubscribeAll()</code></td>
-                        <td>Remove all subscribers</td>
-                        <td><code>unsubscribeAll()</code></td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <h3 class="text-xl font-bold mt-6 mb-4">Event System</h3>
-            
-            <table class="api-table">
-                <thead>
-                    <tr><th>Function</th><th>Description</th><th>Example</th></tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>on(event, callback)</code></td>
-                        <td>Subscribe to store events</td>
-                        <td><code>on("persist:done", (key) => console.log("Saved:", key))</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>emit(event, data)</code></td>
-                        <td>Emit events (internal use)</td>
-                        <td><code>emit("persist:expired", "userPrefs")</code></td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <h3 class="text-xl font-bold mt-6 mb-4">DevTools & History</h3>
-            
-            <table class="api-table">
-                <thead>
-                    <tr><th>Function</th><th>Description</th><th>Example</th></tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>enableDevTools(options)</code></td>
-                        <td>Enable development tools with logging and history</td>
-                        <td><code>enableDevTools({ log: true, history: true, max: 50 })</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>getStateHistory()</code></td>
-                        <td>Get history of state changes</td>
-                        <td><code>const history = getStateHistory()</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>undoState()</code></td>
-                        <td>Undo last state change</td>
-                        <td><code>undoState()</code></td>
-                    </tr>
                 </tbody>
             </table>
             
             <div class="code-block">
-                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                <pre><code class="language-javascript">// Complete store initialization example
-import { 
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-js"></i> JavaScript - Store Initialization</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="keyword">import</span> { 
     initializeStore, 
     registerReducer, 
     dispatch, 
     getState, 
     subscribe,
-    enableDevTools,
-    on
-} from '/static/assets/js/clientStore.js';
+    enableDevTools
+} <span class="keyword">from</span> <span class="string">'/static/assets/js/clientStore.js'</span>;
 
-// Enable dev tools
-enableDevTools({ log: true, history: true, max: 50 });
+<span class="comment">// Enable dev tools for debugging</span>
+enableDevTools({ log: <span class="keyword">true</span>, history: <span class="keyword">true</span>, max: <span class="number">50</span> });
 
-// Initial state
-const initialState = {
+<span class="comment">// Initial state</span>
+<span class="keyword">const</span> initialState = {
     tasks: [],
-    filter: "all",
-    searchQuery: "",
-    __page: { tasks: 1 },
-    __perPage: { tasks: 5 }
+    filter: <span class="string">"all"</span>,
+    searchQuery: <span class="string">""</span>,
+    __page: { tasks: <span class="number">1</span> },
+    __perPage: { tasks: <span class="number">5</span> }
 };
 
-// Initialize store
+<span class="comment">// Initialize store</span>
 initializeStore(initialState);
 
-// Register reducers
-registerReducer("ADD_TASK", (state, action) => {
-    return {
+<span class="comment">// Register reducers</span>
+registerReducer(<span class="string">"ADD_TASK"</span>, (state, action) => {
+    <span class="keyword">return</span> {
         ...state,
         tasks: [...state.tasks, {
             id: Date.now(),
             title: action.title,
-            completed: false
+            completed: <span class="keyword">false</span>
         }]
     };
 });
 
-registerReducer("SET_FILTER", (state, action) => {
-    return {
-        ...state,
-        filter: action.filter,
-        __page: { ...state.__page, tasks: 1 }
-    };
+<span class="comment">// Subscribe to changes</span>
+<span class="keyword">const</span> unsubscribe = subscribe((state) => {
+    console.log(<span class="string">"State updated:"</span>, state);
 });
 
-// Subscribe to changes
-const unsubscribe = subscribe((state) => {
-    console.log("State updated:", state);
-    // Update DOM bindings automatically
-});
-
-// Listen for persistence events
-on("persist:done", (key) => {
-    console.log(`State slice "${key}" persisted`);
-});
-
-// Dispatch actions
-dispatch({ type: "ADD_TASK", title: "Learn UI-Reactor" });
-dispatch({ type: "SET_FILTER", filter: "active" });</code></pre>
+<span class="comment">// Dispatch actions</span>
+dispatch({ type: <span class="string">"ADD_TASK"</span>, title: <span class="string">"Learn UI-Reactor"</span> });</code></pre>
             </div>
         </div>
     </section>
@@ -413,141 +624,46 @@ dispatch({ type: "SET_FILTER", filter: "active" });</code></pre>
     <!-- Section 3: UI Binding System -->
     <section id="ui-bindings" class="doc-section mb-16">
         <div class="flex items-center mb-6">
-            <div class="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white font-bold mr-4">3</div>
-            <h2 class="text-3xl font-bold">UI Binding System</h2>
+            <div class="section-number">3</div>
+            <h2 class="section-title">UI Binding System</h2>
         </div>
         
-        <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-            <p class="text-gray-700 mb-4">
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <p class="mb-4" style="color: var(--doc-text);">
                 The UI binding system uses declarative HTML attributes to connect DOM elements to the store state.
             </p>
             
-            <h3 class="text-xl font-bold mt-6 mb-3">Binding Attributes Reference</h3>
-            
-            <table class="api-table">
-                <thead>
-                    <tr><th>Attribute</th><th>Description</th><th>Example</th></tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>ui-bind</code></td>
-                        <td>Bind text content to state key</td>
-                        <td><code>&lt;span ui-bind="user.name"&gt;&lt;/span&gt;</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>ui-html</code></td>
-                        <td>Bind HTML content (dangerous!)</td>
-                        <td><code>&lt;div ui-html="richContent"&gt;&lt;/div&gt;</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>ui-show</code> / <code>ui-if</code></td>
-                        <td>Toggle visibility based on boolean</td>
-                        <td><code>&lt;div ui-show="isVisible"&gt;Content&lt;/div&gt;</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>ui-else</code></td>
-                        <td>Show when condition is false</td>
-                        <td><code>&lt;div ui-else="isVisible"&gt;Fallback&lt;/div&gt;</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>ui-class</code></td>
-                        <td>Toggle class based on state</td>
-                        <td><code>&lt;div ui-class="active:isActive"&gt;&lt;/div&gt;</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>ui-style</code></td>
-                        <td>Set inline style from state</td>
-                        <td><code>&lt;div ui-style="color:themeColor"&gt;&lt;/div&gt;</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>ui-model</code></td>
-                        <td>Two-way binding for inputs</td>
-                        <td><code>&lt;input ui-model="formData.name"&gt;</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>ui-model.lazy</code></td>
-                        <td>Two-way binding on blur event</td>
-                        <td><code>&lt;input ui-model.lazy="formData.email"&gt;</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>ui-on</code></td>
-                        <td>Event handler with action dispatch</td>
-                        <td><code>&lt;button ui-on="click:ADD_TASK"&gt;Add&lt;/button&gt;</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>ui-attr-*</code></td>
-                        <td>Set arbitrary attribute from state</td>
-                        <td><code>&lt;a ui-attr-href="dynamicUrl"&gt;Link&lt;/a&gt;</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>ui-form</code></td>
-                        <td>Handle form submission</td>
-                        <td><code>&lt;form ui-form="SUBMIT_FORM"&gt;...&lt;/form&gt;</code></td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <h3 class="text-xl font-bold mt-6 mb-3">Complete Binding Example</h3>
-            
             <div class="code-block">
-                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                <pre><code class="language-html">&lt;!-- User Profile Component with UI Bindings --&gt;
-&lt;div class="user-profile"&gt;
-    &lt;!-- Text binding --&gt;
-    &lt;h1 ui-bind="user.name"&gt;Loading...&lt;/h1&gt;
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-html5"></i> HTML - Complete Binding Example</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">&lt;!-- User Profile Component with UI Bindings --&gt;</span>
+<span class="keyword">&lt;div</span> <span class="function">class</span>=<span class="string">"user-profile"</span><span class="keyword">&gt;</span>
+    <span class="comment">&lt;!-- Text binding --&gt;</span>
+    <span class="keyword">&lt;h1</span> <span class="function">ui-bind</span>=<span class="string">"user.name"</span><span class="keyword">&gt;</span>Loading...<span class="keyword">&lt;/h1&gt;</span>
     
-    &lt;!-- Conditional visibility --&gt;
-    &lt;div ui-show="user.isAdmin" class="admin-badge"&gt;
+    <span class="comment">&lt;!-- Conditional visibility --&gt;</span>
+    <span class="keyword">&lt;div</span> <span class="function">ui-show</span>=<span class="string">"user.isAdmin"</span> <span class="function">class</span>=<span class="string">"admin-badge"</span><span class="keyword">&gt;</span>
         Administrator
-    &lt;/div&gt;
+    <span class="keyword">&lt;/div&gt;</span>
     
-    &lt;!-- Two-way binding with input --&gt;
-    &lt;div class="form-group"&gt;
-        &lt;label&gt;Email:&lt;/label&gt;
-        &lt;input type="email" ui-model="formData.email"&gt;
-    &lt;/div&gt;
+    <span class="comment">&lt;!-- Two-way binding with input --&gt;</span>
+    <span class="keyword">&lt;div</span> <span class="function">class</span>=<span class="string">"form-group"</span><span class="keyword">&gt;</span>
+        <span class="keyword">&lt;label&gt;</span>Email:<span class="keyword">&lt;/label&gt;</span>
+        <span class="keyword">&lt;input</span> <span class="function">type</span>=<span class="string">"email"</span> <span class="function">ui-model</span>=<span class="string">"formData.email"</span><span class="keyword">&gt;</span>
+    <span class="keyword">&lt;/div&gt;</span>
     
-    &lt;div class="form-group"&gt;
-        &lt;label&gt;Bio:&lt;/label&gt;
-        &lt;textarea ui-model.lazy="formData.bio"&gt;&lt;/textarea&gt;
-    &lt;/div&gt;
-    
-    &lt;!-- Class toggling --&gt;
-    &lt;button ui-class="btn-primary:formData.isValid" 
-            ui-class="btn-disabled:!formData.isValid"
-            ui-on="click:SAVE_PROFILE"&gt;
+    <span class="comment">&lt;!-- Class toggling --&gt;</span>
+    <span class="keyword">&lt;button</span> 
+        <span class="function">ui-class</span>=<span class="string">"btn-primary:formData.isValid"</span>
+        <span class="function">ui-on</span>=<span class="string">"click:SAVE_PROFILE"</span><span class="keyword">&gt;</span>
         Save Changes
-    &lt;/button&gt;
+    <span class="keyword">&lt;/button&gt;</span>
     
-    &lt;!-- Dynamic attribute --&gt;
-    &lt;a ui-attr-href="dynamicLink" 
-       ui-attr-target="linkTarget"
-       ui-bind="linkText"&gt;
-    &lt;/a&gt;
-    
-    &lt;!-- HTML content (careful with XSS) --&gt;
-    &lt;div ui-html="user.bioHtml"&gt;&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;script&gt;
-// Reducers for the bindings
-registerReducer("SAVE_PROFILE", (state, action) => {
-    // Save logic here
-    return {
-        ...state,
-        user: { ...state.user, ...state.formData },
-        formData: { email: "", bio: "" }
-    };
-});
-
-registerReducer("__SET_MODEL", (state, action) => {
-    // Built-in reducer for two-way binding
-    return {
-        ...state,
-        [action.key]: action.value
-    };
-});
-&lt;/script&gt;</code></pre>
+    <span class="comment">&lt;!-- Dynamic attribute --&gt;</span>
+    <span class="keyword">&lt;a</span> <span class="function">ui-attr-href</span>=<span class="string">"dynamicLink"</span> <span class="function">ui-bind</span>=<span class="string">"linkText"</span><span class="keyword">&gt;&lt;/a&gt;</span>
+<span class="keyword">&lt;/div&gt;</span></code></pre>
             </div>
         </div>
     </section>
@@ -555,132 +671,43 @@ registerReducer("__SET_MODEL", (state, action) => {
     <!-- Section 4: Loop & Collection System -->
     <section id="loop-system" class="doc-section mb-16">
         <div class="flex items-center mb-6">
-            <div class="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white font-bold mr-4">4</div>
-            <h2 class="text-3xl font-bold">Loop & Collection System</h2>
+            <div class="section-number">4</div>
+            <h2 class="section-title">Loop & Collection System</h2>
         </div>
         
-        <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-            <p class="text-gray-700 mb-4">
-                The loop system provides declarative list rendering with built-in pagination, alternating styles, and item binding.
-            </p>
-            
-            <h3 class="text-xl font-bold mt-6 mb-3">Loop Attributes Reference</h3>
-            
-            <table class="api-table">
-                <thead>
-                    <tr><th>Attribute</th><th>Description</th><th>Example</th></tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>ui-loop</code></td>
-                        <td>Define loop with item variable and collection</td>
-                        <td><code>&lt;div ui-loop="user in users"&gt;{{user.name}}&lt;/div&gt;</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>ui-loop-style</code></td>
-                        <td>Apply alternating styles (odd/even/every-N)</td>
-                        <td><code>ui-loop-style="odd:background:#f5f5f5;even:background:#fff"</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>ui-loop-skip</code></td>
-                        <td>Skip items based on rule (odd/even/every-N)</td>
-                        <td><code>ui-loop-skip="every-2"</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>ui-loop-empty</code></td>
-                        <td>Show when collection is empty</td>
-                        <td><code>&lt;div ui-loop-empty="users"&gt;No users found&lt;/div&gt;</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>ui-page-next</code></td>
-                        <td>Navigate to next page for collection</td>
-                        <td><code>&lt;button ui-page-next="users"&gt;Next&lt;/button&gt;</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>ui-page-prev</code></td>
-                        <td>Navigate to previous page for collection</td>
-                        <td><code>&lt;button ui-page-prev="users"&gt;Prev&lt;/button&gt;</code></td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <h3 class="text-xl font-bold mt-6 mb-3">Complete Loop Example</h3>
-            
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
             <div class="code-block">
-                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                <pre><code class="language-html">&lt;!-- User List with Pagination and Alternating Styles --&gt;
-&lt;div class="user-list"&gt;
-    &lt;!-- Loop template (hidden by default, used for rendering) --&gt;
-    &lt;div ui-loop="user in users" 
-         ui-loop-style="odd:background:#f9f9f9;even:background:#fff"
-         style="display: none;"&gt;
-        &lt;div class="user-item" data-user-id="{{user.id}}"&gt;
-            &lt;span ui-bind="user.name"&gt;&lt;/span&gt;
-            &lt;span ui-bind="user.email"&gt;&lt;/span&gt;
-            &lt;span class="status" ui-class="active:user.active"&gt;
-                {{#user.active}}Active{{/user.active}}
-                {{^user.active}}Inactive{{/user.active}}
-            &lt;/span&gt;
-            &lt;button ui-on="click:DELETE_USER({{user.id}})"&gt;
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-html5"></i> HTML - Loop with Pagination</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">&lt;!-- User List with Pagination and Alternating Styles --&gt;</span>
+<span class="keyword">&lt;div</span> <span class="function">class</span>=<span class="string">"user-list"</span><span class="keyword">&gt;</span>
+    <span class="comment">&lt;!-- Loop template --&gt;</span>
+    <span class="keyword">&lt;div</span> 
+        <span class="function">ui-loop</span>=<span class="string">"user in users"</span> 
+        <span class="function">ui-loop-style</span>=<span class="string">"odd:background:#f9f9f9;even:background:#fff"</span>
+        <span class="function">style</span>=<span class="string">"display: none;"</span><span class="keyword">&gt;</span>
+        <span class="keyword">&lt;div</span> <span class="function">class</span>=<span class="string">"user-item"</span> <span class="function">data-user-id</span>=<span class="string">"{{user.id}}"</span><span class="keyword">&gt;</span>
+            <span class="keyword">&lt;span</span> <span class="function">ui-bind</span>=<span class="string">"user.name"</span><span class="keyword">&gt;&lt;/span&gt;</span>
+            <span class="keyword">&lt;button</span> <span class="function">ui-on</span>=<span class="string">"click:DELETE_USER({{user.id}})"</span><span class="keyword">&gt;</span>
                 Delete
-            &lt;/button&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
+            <span class="keyword">&lt;/button&gt;</span>
+        <span class="keyword">&lt;/div&gt;</span>
+    <span class="keyword">&lt;/div&gt;</span>
     
-    &lt;!-- Empty state --&gt;
-    &lt;div ui-loop-empty="users" class="empty-state"&gt;
-        No users found. Add your first user!
-    &lt;/div&gt;
+    <span class="comment">&lt;!-- Empty state --&gt;</span>
+    <span class="keyword">&lt;div</span> <span class="function">ui-loop-empty</span>=<span class="string">"users"</span> <span class="function">class</span>=<span class="string">"empty-state"</span><span class="keyword">&gt;</span>
+        No users found.
+    <span class="keyword">&lt;/div&gt;</span>
     
-    &lt;!-- Pagination controls --&gt;
-    &lt;div class="pagination"&gt;
-        &lt;button ui-page-prev="users"&gt;Previous&lt;/button&gt;
-        &lt;span&gt;Page &lt;span ui-bind="__page.users"&gt;1&lt;/span&gt;&lt;/span&gt;
-        &lt;button ui-page-next="users"&gt;Next&lt;/button&gt;
-    &lt;/div&gt;
-    
-    &lt;!-- Page info --&gt;
-    &lt;div class="page-info"&gt;
-        Showing &lt;span ui-bind="usersPerPage"&gt;0&lt;/span&gt; of &lt;span ui-bind="users.length"&gt;0&lt;/span&gt; users
-    &lt;/div&gt;
-&lt;/div&gt;
-
-&lt;script&gt;
-// Initial state with pagination support
-const initialState = {
-    users: [
-        { id: 1, name: "John Doe", email: "john@example.com", active: true },
-        { id: 2, name: "Jane Smith", email: "jane@example.com", active: false },
-        { id: 3, name: "Bob Johnson", email: "bob@example.com", active: true },
-        { id: 4, name: "Alice Brown", email: "alice@example.com", active: true },
-        { id: 5, name: "Charlie Wilson", email: "charlie@example.com", active: false }
-    ],
-    __page: { users: 1 },
-    __perPage: { users: 2 }
-};
-
-initializeStore(initialState);
-
-// Calculate items per page (computed)
-registerReducer("CALCULATE_PERPAGE", (state) => {
-    return {
-        ...state,
-        usersPerPage: Math.min(state.__perPage.users, state.users.length)
-    };
-});
-
-// Delete user reducer
-registerReducer("DELETE_USER", (state, action) => {
-    const userId = action.args?.[0] || action.userId;
-    return {
-        ...state,
-        users: state.users.filter(u => u.id !== userId),
-        __page: { ...state.__page, users: 1 }
-    };
-});
-
-// Initial calculation
-dispatch({ type: "CALCULATE_PERPAGE" });</code></pre>
+    <span class="comment">&lt;!-- Pagination controls --&gt;</span>
+    <span class="keyword">&lt;div</span> <span class="function">class</span>=<span class="string">"pagination"</span><span class="keyword">&gt;</span>
+        <span class="keyword">&lt;button</span> <span class="function">ui-page-prev</span>=<span class="string">"users"</span><span class="keyword">&gt;</span>Previous<span class="keyword">&lt;/button&gt;</span>
+        <span class="keyword">&lt;span&gt;</span>Page <span class="keyword">&lt;span</span> <span class="function">ui-bind</span>=<span class="string">"__page.users"</span><span class="keyword">&gt;</span>1<span class="keyword">&lt;/span&gt;&lt;/span&gt;</span>
+        <span class="keyword">&lt;button</span> <span class="function">ui-page-next</span>=<span class="string">"users"</span><span class="keyword">&gt;</span>Next<span class="keyword">&lt;/button&gt;</span>
+    <span class="keyword">&lt;/div&gt;</span>
+<span class="keyword">&lt;/div&gt;</span></code></pre>
             </div>
             
             <div class="success-box mt-4">
@@ -692,151 +719,56 @@ dispatch({ type: "CALCULATE_PERPAGE" });</code></pre>
     <!-- Section 5: State Persistence -->
     <section id="persistence" class="doc-section mb-16">
         <div class="flex items-center mb-6">
-            <div class="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white font-bold mr-4">5</div>
-            <h2 class="text-3xl font-bold">State Persistence</h2>
+            <div class="section-number">5</div>
+            <h2 class="section-title">State Persistence</h2>
         </div>
         
-        <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-            <p class="text-gray-700 mb-4">
-                The persistence layer automatically saves state slices to localStorage, sessionStorage, or cookies with optional compression and TTL.
-            </p>
-            
-            <h3 class="text-xl font-bold mt-6 mb-3">Persistence API</h3>
-            
-            <table class="api-table">
-                <thead>
-                    <tr><th>Function</th><th>Description</th><th>Example</th></tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>enablePersistenceSlice(key, options)</code></td>
-                        <td>Enable automatic persistence for a state slice</td>
-                        <td><code>enablePersistenceSlice("userPrefs", { ttlSeconds: 3600, compressed: true })</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>setCompressionLib(lib)</code></td>
-                        <td>Set compression library (e.g., pako)</td>
-                        <td><code>setCompressionLib(pako)</code></td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <h3 class="text-xl font-bold mt-6 mb-3">Persistence Options</h3>
-            
-            <table class="api-table">
-                <thead>
-                    <tr><th>Option</th><th>Type</th><th>Description</th><th>Default</th></tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>ttlSeconds</code></td>
-                        <td>number</td>
-                        <td>Time-to-live in seconds (null = no expiry)</td>
-                        <td><code>null</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>compressed</code></td>
-                        <td>boolean</td>
-                        <td>Enable compression using pako library</td>
-                        <td><code>false</code></td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <h3 class="text-xl font-bold mt-6 mb-3">Persistence Example</h3>
-            
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
             <div class="code-block">
-                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                <pre><code class="language-javascript">// Store with persistence configuration
-import { 
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-js"></i> JavaScript - Persistence Configuration</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="keyword">import</span> { 
     initializeStore, 
-    registerReducer, 
     enablePersistenceSlice,
     setCompressionLib,
     on 
-} from '/static/assets/js/clientStore.js';
+} <span class="keyword">from</span> <span class="string">'/static/assets/js/clientStore.js'</span>;
 
-// Optional: Enable compression for large data
-import pako from 'pako';
+<span class="comment">// Optional: Enable compression for large data</span>
+<span class="keyword">import</span> pako <span class="keyword">from</span> <span class="string">'pako'</span>;
 setCompressionLib(pako);
 
-const initialState = {
-    // User preferences - persist with compression
+<span class="keyword">const</span> initialState = {
+    <span class="comment">// User preferences - persist with compression</span>
     userPrefs: {
-        theme: "dark",
-        fontSize: "medium",
-        sidebarCollapsed: false,
-        notifications: true
+        theme: <span class="string">"dark"</span>,
+        fontSize: <span class="string">"medium"</span>,
+        sidebarCollapsed: <span class="keyword">false</span>
     },
     
-    // Form drafts - persist with 7-day TTL
-    formDrafts: {
-        contactForm: "",
-        signupForm: {}
-    },
+    <span class="comment">// Shopping cart - persist compressed</span>
+    cart: { items: [], total: <span class="number">0</span> },
     
-    // Shopping cart - persist compressed
-    cart: {
-        items: [],
-        total: 0
-    },
-    
-    // Temporary UI state - don't persist
-    ui: {
-        modalOpen: false,
-        activeTab: "home"
-    }
+    <span class="comment">// Temporary UI state - don't persist</span>
+    ui: { modalOpen: <span class="keyword">false</span>, activeTab: <span class="string">"home"</span> }
 };
 
 initializeStore(initialState);
 
-// Enable persistence for specific slices
-enablePersistenceSlice("userPrefs", { compressed: true });
-enablePersistenceSlice("formDrafts", { ttlSeconds: 7 * 24 * 3600 }); // 7 days
-enablePersistenceSlice("cart", { compressed: true, ttlSeconds: 86400 }); // 24 hours
+<span class="comment">// Enable persistence for specific slices</span>
+enablePersistenceSlice(<span class="string">"userPrefs"</span>, { compressed: <span class="keyword">true</span> });
+enablePersistenceSlice(<span class="string">"cart"</span>, { compressed: <span class="keyword">true</span>, ttlSeconds: <span class="number">86400</span> });
 
-// Listen for persistence events
-on("persist:done", (key) => {
-    console.log(`✅ ${key} saved to storage`);
+<span class="comment">// Listen for persistence events</span>
+on(<span class="string">"persist:done"</span>, (key) => {
+    console.log(<span class="string">`✅ ${key} saved to storage`</span>);
 });
 
-on("persist:hydrated", (key) => {
-    console.log(`💧 ${key} loaded from storage`);
-});
-
-on("persist:expired", (key) => {
-    console.log(`⏰ ${key} expired and cleared`);
-});
-
-on("persist:failed", ({ key, error }) => {
-    console.warn(`❌ Failed to persist ${key}:`, error);
-});
-
-// Update preferences (auto-persists)
-registerReducer("UPDATE_THEME", (state, action) => {
-    return {
-        ...state,
-        userPrefs: { ...state.userPrefs, theme: action.theme }
-    };
-});
-
-registerReducer("ADD_TO_CART", (state, action) => {
-    const newItem = action.item;
-    const items = [...state.cart.items, newItem];
-    const total = items.reduce((sum, item) => sum + item.price, 0);
-    
-    return {
-        ...state,
-        cart: { items, total }
-    };
-});
-
-dispatch({ type: "UPDATE_THEME", theme: "light" });
-dispatch({ type: "ADD_TO_CART", item: { id: 1, name: "Book", price: 29.99 } });</code></pre>
-            </div>
-            
-            <div class="info-box">
-                <strong>💡 Storage Priority:</strong> The system tries localStorage first, falls back to sessionStorage, then cookies. Each slice is stored separately for granular control.
+on(<span class="string">"persist:hydrated"</span>, (key) => {
+    console.log(<span class="string">`💧 ${key} loaded from storage`</span>);
+});</code></pre>
             </div>
         </div>
     </section>
@@ -844,119 +776,46 @@ dispatch({ type: "ADD_TO_CART", item: { id: 1, name: "Book", price: 29.99 } });<
     <!-- Section 6: Middleware & DevTools -->
     <section id="middleware" class="doc-section mb-16">
         <div class="flex items-center mb-6">
-            <div class="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white font-bold mr-4">6</div>
-            <h2 class="text-3xl font-bold">Middleware & DevTools</h2>
+            <div class="section-number">6</div>
+            <h2 class="section-title">Middleware & DevTools</h2>
         </div>
         
-        <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-            <h3 class="text-xl font-bold mt-6 mb-3">Middleware System</h3>
-            
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
             <div class="code-block">
-                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                <pre><code class="language-javascript">import { useMiddleware, dispatch, enableDevTools } from '/static/assets/js/clientStore.js';
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-js"></i> JavaScript - Middleware Examples</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="keyword">import</span> { useMiddleware, dispatch, enableDevTools } <span class="keyword">from</span> <span class="string">'/static/assets/js/clientStore.js'</span>;
 
-// Enable dev tools
-enableDevTools({ log: true, history: true, max: 50 });
+<span class="comment">// Enable dev tools</span>
+enableDevTools({ log: <span class="keyword">true</span>, history: <span class="keyword">true</span>, max: <span class="number">50</span> });
 
-// Logger middleware
+<span class="comment">// Logger middleware</span>
 useMiddleware((action, state, dispatch, getState) => {
-    console.log(`[Action] ${action.type}`, action);
-    console.log(`[State Before]`, state);
-    
-    // Continue with action
-    return true;
+    console.log(<span class="string">`[Action] ${action.type}`</span>, action);
+    console.log(<span class="string">`[State Before]`</span>, state);
+    <span class="keyword">return</span> <span class="keyword">true</span>;
 });
 
-// Async middleware for API calls
-useMiddleware(async (action, state, dispatch, getState) => {
-    if (action.type === "FETCH_USERS") {
-        // Dispatch loading state
-        dispatch({ type: "SET_LOADING", loading: true });
+<span class="comment">// Async middleware for API calls</span>
+useMiddleware(<span class="keyword">async</span> (action, state, dispatch, getState) => {
+    <span class="keyword">if</span> (action.type === <span class="string">"FETCH_USERS"</span>) {
+        dispatch({ type: <span class="string">"SET_LOADING"</span>, loading: <span class="keyword">true</span> });
         
-        try {
-            const response = await fetch('/api/users');
-            const users = await response.json();
-            dispatch({ type: "USERS_LOADED", users });
-        } catch (error) {
-            dispatch({ type: "FETCH_ERROR", error: error.message });
+        <span class="keyword">try</span> {
+            <span class="keyword">const</span> response = <span class="keyword">await</span> fetch(<span class="string">'/api/users'</span>);
+            <span class="keyword">const</span> users = <span class="keyword">await</span> response.json();
+            dispatch({ type: <span class="string">"USERS_LOADED"</span>, users });
+        } <span class="keyword">catch</span> (error) {
+            dispatch({ type: <span class="string">"FETCH_ERROR"</span>, error: error.message });
+        } <span class="keyword">finally</span> {
+            dispatch({ type: <span class="string">"SET_LOADING"</span>, loading: <span class="keyword">false</span> });
         }
         
-        // Prevent original action from continuing
-        return false;
+        <span class="keyword">return</span> <span class="keyword">false</span>; <span class="comment">// Block original action</span>
     }
-    
-    return true;
-});
-
-// Validation middleware
-useMiddleware((action, state, dispatch, getState) => {
-    if (action.type === "SAVE_FORM") {
-        if (!action.data.name || action.data.name.trim() === "") {
-            console.warn("Validation failed: name required");
-            dispatch({ type: "VALIDATION_ERROR", field: "name", message: "Name is required" });
-            return false; // Block the action
-        }
-    }
-    return true;
-});
-
-// Analytics middleware
-useMiddleware((action, state, dispatch, getState) => {
-    if (action.type === "ADD_TO_CART") {
-        // Track cart additions
-        console.log("📊 Analytics: Item added to cart", action.item);
-        // Send to analytics service
-        if (window.gtag) {
-            window.gtag('event', 'add_to_cart', {
-                items: [action.item]
-            });
-        }
-    }
-    return true;
-});</code></pre>
-            </div>
-            
-            <h3 class="text-xl font-bold mt-6 mb-3">Undo/Redo with History</h3>
-            
-            <div class="code-block">
-                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                <pre><code class="language-javascript">import { 
-    enableDevTools, 
-    getStateHistory, 
-    undoState,
-    registerReducer,
-    dispatch 
-} from '/static/assets/js/clientStore.js';
-
-// Enable history tracking
-enableDevTools({ log: true, history: true, max: 100 });
-
-// Custom undo/redo actions
-registerReducer("UNDO", (state, action) => {
-    // The store's built-in undoState handles the actual state change
-    undoState();
-    return getState(); // Return the restored state
-});
-
-registerReducer("REDO", (state, action) => {
-    // Implement redo by navigating history forward
-    // (You'd need to store future states separately)
-    const history = getStateHistory();
-    // ... custom redo logic
-    return state;
-});
-
-// View history in dev tools
-const history = getStateHistory();
-console.log("State history:", history);
-
-// UI buttons for undo/redo
-document.querySelector('#undo-btn')?.addEventListener('click', () => {
-    dispatch({ type: "UNDO" });
-});
-
-document.querySelector('#redo-btn')?.addEventListener('click', () => {
-    dispatch({ type: "REDO" });
+    <span class="keyword">return</span> <span class="keyword">true</span>;
 });</code></pre>
             </div>
         </div>
@@ -965,151 +824,50 @@ document.querySelector('#redo-btn')?.addEventListener('click', () => {
     <!-- Section 7: Usage in Mustache Templates -->
     <section id="mustache-usage" class="doc-section mb-16">
         <div class="flex items-center mb-6">
-            <div class="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white font-bold mr-4">7</div>
-            <h2 class="text-3xl font-bold">Usage in Mustache Templates</h2>
+            <div class="section-number">7</div>
+            <h2 class="section-title">Usage in Mustache Templates</h2>
         </div>
         
-        <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-            <p class="text-gray-700 mb-4">
-                UI-Reactor integrates seamlessly with Mustache templates using the binding attributes.
-            </p>
-            
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
             <div class="code-block">
-                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                <pre><code class="language-html">&lt;!-- Mustache Template with UI-Reactor Bindings --&gt;
-&lt;div class="task-manager"&gt;
-    &lt;h1 ui-bind="pageTitle"&gt;{{pageTitle}}&lt;/h1&gt;
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-html5"></i> HTML/Mustache - Complete Example</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">&lt;!-- Task Manager with UI-Reactor Bindings --&gt;</span>
+<span class="keyword">&lt;div</span> <span class="function">class</span>=<span class="string">"task-manager"</span><span class="keyword">&gt;</span>
+    <span class="comment">&lt;!-- Search input with two-way binding --&gt;</span>
+    <span class="keyword">&lt;input</span> <span class="function">type</span>=<span class="string">"text"</span> 
+           <span class="function">ui-model</span>=<span class="string">"searchQuery"</span>
+           <span class="function">placeholder</span>=<span class="string">"Search tasks..."</span><span class="keyword">&gt;</span>
     
-    &lt;!-- Search input with two-way binding --&gt;
-    &lt;input type="text" 
-           ui-model="searchQuery"
-           placeholder="Search tasks..." 
-           class="search-input"&gt;
-    
-    &lt;!-- Filter buttons --&gt;
-    &lt;div class="filters"&gt;
-        &lt;button ui-class="active:filter === 'all'"
-                ui-on="click:SET_FILTER(all)"&gt;
+    <span class="comment">&lt;!-- Filter buttons --&gt;</span>
+    <span class="keyword">&lt;div</span> <span class="function">class</span>=<span class="string">"filters"</span><span class="keyword">&gt;</span>
+        <span class="keyword">&lt;button</span> <span class="function">ui-class</span>=<span class="string">"active:filter === 'all'"</span>
+                <span class="function">ui-on</span>=<span class="string">"click:SET_FILTER(all)"</span><span class="keyword">&gt;</span>
             All
-        &lt;/button&gt;
-        &lt;button ui-class="active:filter === 'active'"
-                ui-on="click:SET_FILTER(active)"&gt;
+        <span class="keyword">&lt;/button&gt;</span>
+        <span class="keyword">&lt;button</span> <span class="function">ui-class</span>=<span class="string">"active:filter === 'active'"</span>
+                <span class="function">ui-on</span>=<span class="string">"click:SET_FILTER(active)"</span><span class="keyword">&gt;</span>
             Active
-        &lt;/button&gt;
-        &lt;button ui-class="active:filter === 'completed'"
-                ui-on="click:SET_FILTER(completed)"&gt;
-            Completed
-        &lt;/button&gt;
-    &lt;/div&gt;
+        <span class="keyword">&lt;/button&gt;</span>
+    <span class="keyword">&lt;/div&gt;</span>
     
-    &lt;!-- Task list with loop --&gt;
-    &lt;div ui-loop="task in filteredTasks" 
-         ui-loop-style="odd:background:#fafafa;even:background:#fff"&gt;
-        &lt;div class="task-item" data-task-id="{{task.id}}"&gt;
-            &lt;input type="checkbox" 
-                   ui-model="task.completed"
-                   ui-on="change:TOGGLE_TASK({{task.id}})"&gt;
-            &lt;span ui-class="completed:task.completed" 
-                  ui-bind="task.title"&gt;{{task.title}}&lt;/span&gt;
-            &lt;button ui-on="click:DELETE_TASK({{task.id}})"&gt;
-                Delete
-            &lt;/button&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
+    <span class="comment">&lt;!-- Task list with loop --&gt;</span>
+    <span class="keyword">&lt;div</span> <span class="function">ui-loop</span>=<span class="string">"task in filteredTasks"</span><span class="keyword">&gt;</span>
+        <span class="keyword">&lt;div</span> <span class="function">class</span>=<span class="string">"task-item"</span><span class="keyword">&gt;</span>
+            <span class="keyword">&lt;input</span> <span class="function">type</span>=<span class="string">"checkbox"</span> 
+                   <span class="function">ui-model</span>=<span class="string">"task.completed"</span><span class="keyword">&gt;</span>
+            <span class="keyword">&lt;span</span> <span class="function">ui-class</span>=<span class="string">"completed:task.completed"</span>
+                  <span class="function">ui-bind</span>=<span class="string">"task.title"</span><span class="keyword">&gt;&lt;/span&gt;</span>
+        <span class="keyword">&lt;/div&gt;</span>
+    <span class="keyword">&lt;/div&gt;</span>
     
-    &lt;!-- Empty state --&gt;
-    &lt;div ui-loop-empty="filteredTasks" class="empty-state"&gt;
-        No tasks found. Create your first task!
-    &lt;/div&gt;
-    
-    &lt;!-- Add task form --&gt;
-    &lt;form ui-form="ADD_TASK"&gt;
-        &lt;input type="text" 
-               ui-model="newTaskTitle"
-               placeholder="Enter new task..."&gt;
-        &lt;button type="submit"&gt;Add Task&lt;/button&gt;
-    &lt;/form&gt;
-    
-    &lt;!-- Stats --&gt;
-    &lt;div class="stats"&gt;
-        &lt;span&gt;Total: &lt;strong ui-bind="tasks.length"&gt;0&lt;/strong&gt;&lt;/span&gt;
-        &lt;span&gt;Active: &lt;strong ui-bind="activeCount"&gt;0&lt;/strong&gt;&lt;/span&gt;
-        &lt;span&gt;Completed: &lt;strong ui-bind="completedCount"&gt;0&lt;/strong&gt;&lt;/span&gt;
-    &lt;/div&gt;
-&lt;/div&gt;
-
-&lt;script&gt;
-// Store initialization in the page
-window.dispatch = dispatch;
-window.getState = getState;
-
-// Register reducers
-registerReducer("SET_FILTER", (state, action) => {
-    const filter = action.args?.[0] || action.filter;
-    return { ...state, filter };
-});
-
-registerReducer("ADD_TASK", (state, action) => {
-    if (!state.newTaskTitle?.trim()) return state;
-    
-    const newTask = {
-        id: Date.now(),
-        title: state.newTaskTitle,
-        completed: false
-    };
-    
-    return {
-        ...state,
-        tasks: [...state.tasks, newTask],
-        newTaskTitle: "",
-        filteredTasks: filterTasks([...state.tasks, newTask], state.filter, state.searchQuery)
-    };
-});
-
-registerReducer("TOGGLE_TASK", (state, action) => {
-    const taskId = action.args?.[0] || action.taskId;
-    const tasks = state.tasks.map(task =>
-        task.id === taskId ? { ...task, completed: !task.completed } : task
-    );
-    
-    return {
-        ...state,
-        tasks,
-        filteredTasks: filterTasks(tasks, state.filter, state.searchQuery)
-    };
-});
-
-// Computed values
-registerReducer("UPDATE_COMPUTED", (state) => {
-    return {
-        ...state,
-        activeCount: state.tasks.filter(t => !t.completed).length,
-        completedCount: state.tasks.filter(t => t.completed).length
-    };
-});
-
-function filterTasks(tasks, filter, searchQuery) {
-    let filtered = tasks;
-    
-    if (filter === "active") {
-        filtered = tasks.filter(t => !t.completed);
-    } else if (filter === "completed") {
-        filtered = tasks.filter(t => t.completed);
-    }
-    
-    if (searchQuery) {
-        const query = searchQuery.toLowerCase();
-        filtered = filtered.filter(t => t.title.toLowerCase().includes(query));
-    }
-    
-    return filtered;
-}
-
-// Subscribe to update computed values
-subscribe(() => {
-    dispatch({ type: "UPDATE_COMPUTED" });
-});
-&lt;/script&gt;</code></pre>
+    <span class="comment">&lt;!-- Empty state --&gt;</span>
+    <span class="keyword">&lt;div</span> <span class="function">ui-loop-empty</span>=<span class="string">"filteredTasks"</span><span class="keyword">&gt;</span>
+        No tasks found.
+    <span class="keyword">&lt;/div&gt;</span>
+<span class="keyword">&lt;/div&gt;</span></code></pre>
             </div>
         </div>
     </section>
@@ -1117,246 +875,66 @@ subscribe(() => {
     <!-- Section 8: Usage in Functional Components -->
     <section id="fcomp-usage" class="doc-section mb-16">
         <div class="flex items-center mb-6">
-            <div class="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white font-bold mr-4">8</div>
-            <h2 class="text-3xl font-bold">Usage in Functional Components</h2>
+            <div class="section-number">8</div>
+            <h2 class="section-title">Usage in Functional Components</h2>
         </div>
         
-        <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-            <p class="text-gray-700 mb-4">
-                UI-Reactor can be used alongside Functional Components for hybrid applications where server state needs to sync with client state.
-            </p>
-            
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
             <div class="code-block">
-                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                <pre><code class="language-lua">-- HybridComponent.lua - UI-Reactor + Server State
-local FunctionalComponent = require("layout.renderer.FuncComponent")
-local HTML = require("layout.renderer.LuaHTMLReactive")
-local cjson = require("dkjson")
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Hybrid Component</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- HybridComponent.lua - UI-Reactor + Server State</span>
+<span class="keyword">local</span> FunctionalComponent = <span class="function">require</span>(<span class="string">"layout.renderer.FuncComponent"</span>)
+<span class="keyword">local</span> HTML = <span class="function">require</span>(<span class="string">"layout.renderer.LuaHTMLReactive"</span>)
+<span class="keyword">local</span> cjson = <span class="function">require</span>(<span class="string">"dkjson"</span>)
 
-local HybridComponent = FunctionalComponent:extends()
+<span class="keyword">local</span> HybridComponent = FunctionalComponent:extends()
 HybridComponent:setReactiveView()
 
--- Server state (persisted to Redis)
+<span class="comment">-- Server state (persisted to Redis)</span>
 HybridComponent.state = {
     tasks = {},
-    nextId = 1
+    nextId = <span class="number">1</span>
 }
 
--- Client ready: initialize UI-Reactor store
-HybridComponent:onClientReady(function(self, ws_id, client_token)
-    -- Load server tasks into UI-Reactor
-    local tasksJson = cjson.encode(self.state.tasks)
+<span class="comment">-- Client ready: initialize UI-Reactor store</span>
+HybridComponent:onClientReady(<span class="keyword">function</span>(self, ws_id, client_token)
+    <span class="keyword">local</span> tasksJson = cjson.encode(self.state.tasks)
     
     self:sendHTMLClientOperations(ws_id, {
         {
-            _op = "jsFunction",
-            name = "__hydrateStore__",
-            params = {"tasks"},
-            body = [[
+            _op = <span class="string">"jsFunction"</span>,
+            name = <span class="string">"__hydrateStore__"</span>,
+            params = {<span class="string">"tasks"</span>},
+            body = <span class="string">[[
                 if (window.hydrateStore) {
                     window.hydrateStore({ tasks: tasks });
                 }
-            ]]
+            ]]</span>
         },
         {
-            _op = "call",
-            fn = "__hydrateStore__",
+            _op = <span class="string">"call"</span>,
+            fn = <span class="string">"__hydrateStore__"</span>,
             args = { tasksJson }
         }
     })
-end)
+<span class="keyword">end</span>)
 
--- Method to sync client changes to server
-HybridComponent.methods.syncTasks = function(self, ws_id, args)
-    local tasks = args.tasks
+<span class="comment">-- Method to sync client changes to server</span>
+HybridComponent.methods.syncTasks = <span class="keyword">function</span>(self, ws_id, args)
+    <span class="keyword">local</span> tasks = args.tasks
     
     self:setState({
         tasks = tasks,
-        nextId = #tasks + 1
+        nextId = #tasks + <span class="number">1</span>
     })
     
-    print("Synced", #tasks, "tasks to server")
-end
+    print(<span class="string">"Synced"</span>, #tasks, <span class="string">"tasks to server"</span>)
+<span class="keyword">end</span>
 
--- Method to get current server state
-HybridComponent.methods.getServerTasks = function(self, ws_id, args)
-    return self.state.tasks
-end
-
--- Render component with UI-Reactor bindings
-function HybridComponent:renderLayout(state, props, children, H, client_state)
-    return H.e("div", { id = props.routeId, class = "p-6 max-w-4xl mx-auto" }, {
-        -- UI-Reactor powered task manager
-        H.e("div", { class = "mb-8" }, {
-            H.e("h2", { class = "text-2xl font-bold mb-4" }, "Hybrid Task Manager"),
-            
-            -- Add task form
-            H.e("div", { class = "flex gap-2 mb-4" }, {
-                H.e("input", {
-                    type = "text",
-                    class = "flex-grow p-2 border rounded",
-                    placeholder = "New task...",
-                    ["ui-model"] = "newTaskTitle"
-                }),
-                H.e("button", {
-                    class = "px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700",
-                    ["ui-on"] = "click:ADD_TASK"
-                }, "Add Task")
-            }),
-            
-            -- Task list with loop
-            H.e("div", { ["ui-loop"] = "task in tasks" }, {
-                H.e("div", { class = "flex items-center gap-2 p-2 border rounded mb-2" }, {
-                    H.e("input", {
-                        type = "checkbox",
-                        ["ui-model"] = "task.completed",
-                        ["ui-on"] = "change:TOGGLE_TASK"
-                    }),
-                    H.e("span", { 
-                        ["ui-bind"] = "task.title",
-                        ["ui-class"] = "line-through:task.completed"
-                    }),
-                    H.e("button", {
-                        class = "text-red-600 hover:text-red-800 ml-auto",
-                        ["ui-on"] = "click:DELETE_TASK"
-                    }, "Delete")
-                })
-            }),
-            
-            -- Sync button
-            H.e("button", {
-                class = "mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700",
-                ["ui-on"] = "click:SYNC_TO_SERVER"
-            }, "Sync to Server"),
-            
-            -- Server state indicator
-            H.e("div", { class = "mt-4 text-sm text-gray-500" }, {
-                "Server tasks: ",
-                H.e("strong", { ["ui-bind"] = "serverTaskCount" }, "0")
-            })
-        }),
-        
-        -- UI-Reactor initialization script
-        H.e("script", { type = "module" }, [[
-            import { 
-                initializeStore, 
-                registerReducer, 
-                dispatch, 
-                getState, 
-                subscribe,
-                hydrateStore
-            } from '/static/assets/js/clientStore.js';
-            
-            import { bindStateToDOM, initializeBindings } from '/static/assets/js/domBindings.js';
-            
-            // Initialize store
-            const initialState = {
-                tasks: [],
-                newTaskTitle: "",
-                serverTaskCount: 0
-            };
-            
-            initializeStore(initialState);
-            
-            // Make available globally
-            window.dispatch = dispatch;
-            window.getState = getState;
-            window.hydrateStore = hydrateStore;
-            
-            // Reducers
-            registerReducer("ADD_TASK", (state) => {
-                if (!state.newTaskTitle?.trim()) return state;
-                
-                const newTask = {
-                    id: Date.now(),
-                    title: state.newTaskTitle,
-                    completed: false
-                };
-                
-                return {
-                    ...state,
-                    tasks: [...state.tasks, newTask],
-                    newTaskTitle: ""
-                };
-            });
-            
-            registerReducer("TOGGLE_TASK", (state, action) => {
-                const target = action.event?.target;
-                const taskEl = target?.closest('[data-task-id]');
-                const taskId = taskEl?.getAttribute('data-task-id');
-                
-                if (taskId) {
-                    return {
-                        ...state,
-                        tasks: state.tasks.map(task =>
-                            task.id == taskId 
-                                ? { ...task, completed: !task.completed }
-                                : task
-                        )
-                    };
-                }
-                return state;
-            });
-            
-            registerReducer("DELETE_TASK", (state, action) => {
-                const target = action.event?.target;
-                const taskEl = target?.closest('[data-task-id]');
-                const taskId = taskEl?.getAttribute('data-task-id');
-                
-                if (taskId) {
-                    return {
-                        ...state,
-                        tasks: state.tasks.filter(task => task.id != taskId)
-                    };
-                }
-                return state;
-            });
-            
-            registerReducer("SYNC_TO_SERVER", (state) => {
-                const tasks = state.tasks;
-                
-                // Send to server via WebSocket
-                if (window.__dawn_socket) {
-                    window.__dawn_socket.send(JSON.stringify({
-                        type: "patch",
-                        component: "hybridComponent",
-                        method: "syncTasks",
-                        args: { tasks: tasks }
-                    }));
-                }
-                
-                return {
-                    ...state,
-                    serverTaskCount: tasks.length
-                };
-            });
-            
-            // Subscribe to DOM updates
-            subscribe((state) => {
-                bindStateToDOM(state, dispatch);
-            });
-            
-            // Initialize bindings
-            initializeBindings(dispatch);
-            
-            console.log("✅ UI-Reactor hybrid store initialized");
-        ]])
-    })
-end
-
--- Component initialization
-function HybridComponent:load()
-    self:setComponentKey("hybridComponent")
-    self:loadStateFromRedis()
-    
-    self:init(function(server, children, props, style, H)
-        return function(state, props, children, H, clientState)
-            return self:renderLayout(state, props, children, H, clientState)
-        end
-    end)
-end
-
-return HybridComponent</code></pre>
+<span class="keyword">return</span> HybridComponent</code></pre>
             </div>
         </div>
     </section>
@@ -1364,181 +942,79 @@ return HybridComponent</code></pre>
     <!-- Section 9: Advanced Patterns -->
     <section id="advanced" class="doc-section mb-16">
         <div class="flex items-center mb-6">
-            <div class="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white font-bold mr-4">9</div>
-            <h2 class="text-3xl font-bold">Advanced Patterns</h2>
+            <div class="section-number">9</div>
+            <h2 class="section-title">Advanced Patterns</h2>
         </div>
         
-        <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-            <h3 class="text-xl font-bold mt-6 mb-3">Pattern 1: Async Reducers with Loading States</h3>
-            
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <h3 class="text-xl font-bold mb-3">Pattern 1: Async Reducers with Loading States</h3>
             <div class="code-block">
-                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                <pre><code class="language-javascript">// Async reducer with loading state
-registerReducer("FETCH_USERS", async (state, action) => {
-    // Set loading state
-    dispatch({ type: "SET_LOADING", loading: true });
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-js"></i> JavaScript - Async Reducer</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">// Async reducer with loading state</span>
+registerReducer(<span class="string">"FETCH_USERS"</span>, <span class="keyword">async</span> (state, action) => {
+    dispatch({ type: <span class="string">"SET_LOADING"</span>, loading: <span class="keyword">true</span> });
     
-    try {
-        const response = await fetch('/api/users');
-        const users = await response.json();
-        
-        // Update state with results
-        dispatch({ type: "USERS_LOADED", users });
-    } catch (error) {
-        dispatch({ type: "FETCH_ERROR", error: error.message });
-    } finally {
-        dispatch({ type: "SET_LOADING", loading: false });
+    <span class="keyword">try</span> {
+        <span class="keyword">const</span> response = <span class="keyword">await</span> fetch(<span class="string">'/api/users'</span>);
+        <span class="keyword">const</span> users = <span class="keyword">await</span> response.json();
+        dispatch({ type: <span class="string">"USERS_LOADED"</span>, users });
+    } <span class="keyword">catch</span> (error) {
+        dispatch({ type: <span class="string">"FETCH_ERROR"</span>, error: error.message });
+    } <span class="keyword">finally</span> {
+        dispatch({ type: <span class="string">"SET_LOADING"</span>, loading: <span class="keyword">false</span> });
     }
     
-    // Return unchanged state (async handled via separate dispatches)
-    return state;
-});
-
-// Loading indicator in UI
-// &lt;div ui-show="loading"&gt;Loading users...&lt;/div&gt;</code></pre>
-            </div>
-            
-            <h3 class="text-xl font-bold mt-6 mb-3">Pattern 2: Computed Values with Selectors</h3>
-            
-            <div class="code-block">
-                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                <pre><code class="language-javascript">// Selector pattern for computed values
-const selectors = {
-    filteredTasks: (state) => {
-        let tasks = state.tasks;
-        
-        if (state.filter === "active") {
-            tasks = tasks.filter(t => !t.completed);
-        } else if (state.filter === "completed") {
-            tasks = tasks.filter(t => t.completed);
-        }
-        
-        if (state.searchQuery) {
-            const query = state.searchQuery.toLowerCase();
-            tasks = tasks.filter(t => t.title.toLowerCase().includes(query));
-        }
-        
-        return tasks;
-    },
-    
-    taskStats: (state) => ({
-        total: state.tasks.length,
-        active: state.tasks.filter(t => !t.completed).length,
-        completed: state.tasks.filter(t => t.completed).length
-    }),
-    
-    paginatedTasks: (state) => {
-        const filtered = selectors.filteredTasks(state);
-        const page = state.__page.tasks || 1;
-        const perPage = state.__perPage.tasks || 10;
-        const start = (page - 1) * perPage;
-        
-        return filtered.slice(start, start + perPage);
-    }
-};
-
-// Update computed values when state changes
-subscribe((state) => {
-    const filtered = selectors.filteredTasks(state);
-    const stats = selectors.taskStats(state);
-    const paginated = selectors.paginatedTasks(state);
-    
-    dispatch({ 
-        type: "UPDATE_COMPUTED", 
-        filtered, 
-        stats, 
-        paginated 
-    });
+    <span class="keyword">return</span> state;
 });</code></pre>
             </div>
             
-            <h3 class="text-xl font-bold mt-6 mb-3">Pattern 3: Optimistic Updates</h3>
-            
+            <h3 class="text-xl font-bold mt-6 mb-3">Pattern 2: Optimistic Updates</h3>
             <div class="code-block">
-                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                <pre><code class="language-javascript">// Optimistic update with rollback
-let lastTaskId = null;
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-js"></i> JavaScript - Optimistic Update</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">// Optimistic update with rollback</span>
+<span class="keyword">let</span> lastTaskId = <span class="keyword">null</span>;
 
-registerReducer("OPTIMISTIC_ADD_TASK", (state, action) => {
-    const { title } = action;
-    const tempId = Date.now();
+registerReducer(<span class="string">"OPTIMISTIC_ADD_TASK"</span>, (state, action) => {
+    <span class="keyword">const</span> { title } = action;
+    <span class="keyword">const</span> tempId = Date.now();
     lastTaskId = tempId;
     
-    const optimisticTask = {
+    <span class="keyword">const</span> optimisticTask = {
         id: tempId,
         title: title,
-        completed: false,
-        syncing: true  // Mark as syncing
+        completed: <span class="keyword">false</span>,
+        syncing: <span class="keyword">true</span>
     };
     
-    // Optimistically update UI
-    const newState = {
+    <span class="comment">// Optimistically update UI</span>
+    <span class="keyword">const</span> newState = {
         ...state,
         tasks: [...state.tasks, optimisticTask]
     };
     
-    // Attempt server sync
-    fetch('/api/tasks', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+    <span class="comment">// Attempt server sync</span>
+    fetch(<span class="string">'/api/tasks'</span>, {
+        method: <span class="string">'POST'</span>,
+        headers: { <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span> },
         body: JSON.stringify({ title })
     })
     .then(res => res.json())
     .then(serverTask => {
-        // Replace temp task with server task
-        dispatch({ 
-            type: "REPLACE_TASK", 
-            tempId: tempId, 
-            task: serverTask 
-        });
+        dispatch({ type: <span class="string">"REPLACE_TASK"</span>, tempId, task: serverTask });
     })
     .catch(error => {
-        // Rollback on error
-        dispatch({ 
-            type: "REMOVE_TASK", 
-            id: tempId 
-        });
-        dispatch({ 
-            type: "SHOW_ERROR", 
-            message: "Failed to save task" 
-        });
+        <span class="comment">// Rollback on error</span>
+        dispatch({ type: <span class="string">"REMOVE_TASK"</span>, id: tempId });
     });
     
-    return newState;
+    <span class="keyword">return</span> newState;
 });</code></pre>
-            </div>
-            
-            <h3 class="text-xl font-bold mt-6 mb-3">Pattern 4: Derived State with Subscriptions</h3>
-            
-            <div class="code-block">
-                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                <pre><code class="language-javascript">// Derived state with automatic updates
-const derivedState = {
-    activeTasks: [],
-    completedTasks: [],
-    taskGroups: {}
-};
-
-// Subscribe to calculate derived state
-subscribe((state) => {
-    derivedState.activeTasks = state.tasks.filter(t => !t.completed);
-    derivedState.completedTasks = state.tasks.filter(t => t.completed);
-    
-    derivedState.taskGroups = state.tasks.reduce((groups, task) => {
-        const group = task.group || "ungrouped";
-        if (!groups[group]) groups[group] = [];
-        groups[group].push(task);
-        return groups;
-    }, {});
-    
-    // Update UI with derived values
-    document.querySelectorAll('[data-derived="activeCount"]').forEach(el => {
-        el.textContent = derivedState.activeTasks.length;
-    });
-});
-
-// Use derived state in components
-// &lt;span data-derived="activeCount"&gt;0&lt;/span&gt;</code></pre>
             </div>
         </div>
     </section>
@@ -1546,14 +1022,14 @@ subscribe((state) => {
     <!-- Section 10: Best Practices -->
     <section id="best-practices" class="doc-section mb-16">
         <div class="flex items-center mb-6">
-            <div class="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white font-bold mr-4">10</div>
-            <h2 class="text-3xl font-bold">Best Practices</h2>
+            <div class="section-number">10</div>
+            <h2 class="section-title">Best Practices</h2>
         </div>
         
-        <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-            <div class="grid md:grid-cols-2 gap-6">
-                <div class="p-4 bg-green-50 rounded-lg">
-                    <h3 class="font-bold text-green-800 mb-2">✅ DO</h3>
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="grid md:grid-cols-2 gap-6 mb-6">
+                <div class="success-box">
+                    <h3 class="font-bold mb-2">✅ DO</h3>
                     <ul class="list-disc pl-5 text-sm space-y-1">
                         <li>Use UI-Reactor for all UI state that doesn't need persistence</li>
                         <li>Keep reducers pure and predictable</li>
@@ -1562,89 +1038,67 @@ subscribe((state) => {
                         <li>Use middleware for logging, analytics, and async operations</li>
                         <li>Leverage computed selectors for derived data</li>
                         <li>Enable dev tools in development for debugging</li>
-                        <li>Use compression for large state slices</li>
-                        <li>Set appropriate TTL for persisted data</li>
                     </ul>
                 </div>
                 
-                <div class="p-4 bg-red-50 rounded-lg">
-                    <h3 class="font-bold text-red-800 mb-2">❌ DON'T</h3>
+                <div class="warning-box">
+                    <h3 class="font-bold mb-2">❌ DON'T</h3>
                     <ul class="list-disc pl-5 text-sm space-y-1">
                         <li>Don't mutate state directly - always use reducers</li>
                         <li>Don't store sensitive data (no encryption)</li>
                         <li>Don't store large binary data (use IndexedDB)</li>
                         <li>Don't put complex business logic in reducers</li>
                         <li>Don't forget to unsubscribe on component unmount</li>
-                        <li>Don't rely on UI-Reactor for critical server-side validation</li>
                         <li>Don't store circular references (JSON.stringify will fail)</li>
-                        <li>Don't over-persist - use TTL for temporary data</li>
                     </ul>
                 </div>
             </div>
             
-            <h3 class="text-xl font-bold mt-8 mb-3">Performance Tips</h3>
-            
             <div class="code-block">
-                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                <pre><code class="language-javascript">// 1. Batch updates when possible
-dispatch({ type: "BATCH_UPDATE", updates: { a: 1, b: 2, c: 3 } });
+                <div class="code-header">
+                    <span class="code-language"><i class="fas fa-bolt"></i> Performance Tips</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">// 1. Batch updates when possible</span>
+dispatch({ type: <span class="string">"BATCH_UPDATE"</span>, updates: { a: <span class="number">1</span>, b: <span class="number">2</span>, c: <span class="number">3</span> } });
 
-registerReducer("BATCH_UPDATE", (state, action) => {
-    return { ...state, ...action.updates };
-});
-
-// 2. Use shallow equality for change detection
-registerReducer("UPDATE_ITEM", (state, action) => {
-    const items = state.items.map(item => {
-        if (item.id === action.id) {
-            return { ...item, ...action.updates };
+<span class="comment">// 2. Use shallow equality for change detection</span>
+registerReducer(<span class="string">"UPDATE_ITEM"</span>, (state, action) => {
+    <span class="keyword">const</span> items = state.items.map(item => {
+        <span class="keyword">if</span> (item.id === action.id) {
+            <span class="keyword">return</span> { ...item, ...action.updates };
         }
-        return item;
+        <span class="keyword">return</span> item;
     });
     
-    // Only create new array if actually changed
-    if (JSON.stringify(state.items) === JSON.stringify(items)) {
-        return state; // No change, prevent re-render
+    <span class="comment">// Only create new array if actually changed</span>
+    <span class="keyword">if</span> (JSON.stringify(state.items) === JSON.stringify(items)) {
+        <span class="keyword">return</span> state;
     }
     
-    return { ...state, items };
+    <span class="keyword">return</span> { ...state, items };
 });
 
-// 3. Debounce high-frequency updates
-let searchTimeout;
-registerReducer("SEARCH", (state, action) => {
+<span class="comment">// 3. Debounce high-frequency updates</span>
+<span class="keyword">let</span> searchTimeout;
+registerReducer(<span class="string">"SEARCH"</span>, (state, action) => {
     clearTimeout(searchTimeout);
     searchTimeout = setTimeout(() => {
-        dispatch({ type: "PERFORM_SEARCH", query: action.query });
-    }, 300);
-    return state;
-});
-
-// 4. Use lazy binding for expensive inputs
-// &lt;input ui-model.lazy="searchQuery"&gt;  // Only updates on blur
-
-// 5. Limit loop items with pagination
-// &lt;div ui-loop="item in items"&gt;...&lt;/div&gt;
-// Use __page and __perPage for pagination
-
-// 6. Compress large persisted slices
-enablePersistenceSlice("largeData", { compressed: true });
-
-// 7. Clean up subscriptions on page unload
-window.addEventListener('beforeunload', () => {
-    unsubscribeAll();
+        dispatch({ type: <span class="string">"PERFORM_SEARCH"</span>, query: action.query });
+    }, <span class="number">300</span>);
+    <span class="keyword">return</span> state;
 });</code></pre>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="mt-12 pt-8 border-t border-gray-200 text-center text-gray-500">
+    <footer class="mt-12 pt-8 border-t text-center" style="border-color: var(--doc-border); color: var(--doc-text-secondary);">
         <p>Dawn Framework - UI-Reactor State Management Guide v2.0</p>
         <div class="flex justify-center space-x-4 mt-4">
-            <a href="#" class="text-blue-600 hover:underline">API Reference</a>
-            <a href="#" class="text-blue-600 hover:underline">Examples Repository</a>
-            <a href="#" class="text-blue-600 hover:underline">Community Support</a>
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">API Reference</a>
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">Examples Repository</a>
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">Community Support</a>
         </div>
     </footer>
 </main>
@@ -1657,28 +1111,25 @@ function copyCode(button) {
     const text = code.textContent;
     
     navigator.clipboard.writeText(text).then(() => {
-        const originalText = button.textContent;
-        button.textContent = 'Copied!';
+        const originalHTML = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check"></i> Copied!';
         setTimeout(() => {
-            button.textContent = originalText;
+            button.innerHTML = originalHTML;
         }, 2000);
     });
 }
 
 // Back to Top button
 const backToTop = document.createElement('button');
-backToTop.innerHTML = '↑';
-backToTop.className = 'fixed bottom-8 right-8 bg-green-600 text-white w-12 h-12 rounded-full shadow-lg hover:bg-green-700 transition-all duration-300 opacity-0 invisible';
-backToTop.style.zIndex = '1000';
+backToTop.innerHTML = '<i class="fas fa-arrow-up"></i>';
+backToTop.className = 'back-to-top';
 document.body.appendChild(backToTop);
 
 window.addEventListener('scroll', () => {
     if (window.scrollY > 300) {
-        backToTop.classList.remove('opacity-0', 'invisible');
-        backToTop.classList.add('opacity-100', 'visible');
+        backToTop.classList.add('visible');
     } else {
-        backToTop.classList.add('opacity-0', 'invisible');
-        backToTop.classList.remove('opacity-100', 'visible');
+        backToTop.classList.remove('visible');
     }
 });
 
@@ -1699,4 +1150,16 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
+
+// Observe theme changes for code blocks
+const observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+        if (mutation.attributeName === 'class') {
+            // Theme changed, code blocks will auto-update via CSS variables
+            console.log('Theme updated');
+        }
+    });
+});
+
+observer.observe(document.body, { attributes: true });
 </script>

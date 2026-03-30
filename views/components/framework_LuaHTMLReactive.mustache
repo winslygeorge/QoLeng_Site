@@ -1,2531 +1,755 @@
-    <style>
-        .code-block {
-            background: #0A0A0F;
-            border-left: 4px solid #0066FF;
+<style>
+    /* LuaHTMLReactive - Integrated Theme System */
+    
+    /* Theme Variables */
+    .main-content-body {
+        --doc-bg: #FFFFFF;
+        --doc-text: #2A2A3A;
+        --doc-text-secondary: #5A6578;
+        --doc-border: #E0E5EC;
+        --doc-card-bg: #FFFFFF;
+        --doc-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        --doc-code-bg: #1E1E2E;
+        --doc-code-text: #E0E5EC;
+        --doc-code-comment: #6A737D;
+        --doc-code-keyword: #00CC88;
+        --doc-code-string: #8A2BE2;
+        --doc-code-function: #0066FF;
+        --doc-code-number: #FFB300;
+        --doc-code-variable: #8A2BE2;
+        --doc-code-type: #FFB300;
+        --doc-table-header-bg: #F7F9FC;
+        --doc-table-border: #E0E5EC;
+        --doc-signature-bg: #F0F4F8;
+        --doc-badge-blue: #DBEAFE;
+        --doc-badge-green: #D1FAE5;
+        --doc-badge-purple: #EDE9FE;
+        --doc-badge-amber: #FEF3C7;
+    }
+    
+    body.dark-theme .main-content-body {
+        --doc-bg: #151520;
+        --doc-text: #E0E5EC;
+        --doc-text-secondary: #A0A5B5;
+        --doc-border: #2A2A3A;
+        --doc-card-bg: #1F1F2E;
+        --doc-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        --doc-code-bg: #0A0A0F;
+        --doc-code-text: #E0E5EC;
+        --doc-code-comment: #6A737D;
+        --doc-code-keyword: #00CC88;
+        --doc-code-string: #8A2BE2;
+        --doc-code-function: #0066FF;
+        --doc-code-number: #FFB300;
+        --doc-code-variable: #8A2BE2;
+        --doc-code-type: #FFB300;
+        --doc-table-header-bg: #2A2A3A;
+        --doc-table-border: #2A2A3A;
+        --doc-signature-bg: #2A2A3A;
+        --doc-badge-blue: #1E3A8A;
+        --doc-badge-green: #064E3B;
+        --doc-badge-purple: #4C1D95;
+        --doc-badge-amber: #78350F;
+    }
+    
+    .main-content-body {
+        background-color: var(--doc-bg);
+        color: var(--doc-text);
+        transition: all 0.3s ease;
+    }
+    
+    /* Feature Cards */
+    .feature-card {
+        background: var(--doc-card-bg);
+        border-radius: 16px;
+        padding: 1.5rem;
+        border: 1px solid var(--doc-border);
+        transition: all 0.3s ease;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--laser-blue);
+        box-shadow: 0 10px 25px -5px rgba(0, 102, 255, 0.2);
+    }
+    
+    /* Code Blocks */
+    .code-block {
+        background: var(--doc-code-bg);
+        border-radius: 12px;
+        margin: 1.5rem 0;
+        overflow: hidden;
+        position: relative;
+        border: 1px solid var(--doc-border);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .code-block:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .code-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(138, 43, 226, 0.1));
+        border-bottom: 1px solid var(--doc-border);
+    }
+    
+    .code-language {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--doc-text-secondary);
+    }
+    
+    .copy-btn {
+        background: rgba(0, 102, 255, 0.2);
+        color: var(--doc-text);
+        border: none;
+        padding: 0.25rem 0.75rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .copy-btn:hover {
+        background: rgba(0, 102, 255, 0.4);
+        transform: scale(1.05);
+    }
+    
+    .code-block pre {
+        margin: 0;
+        padding: 1.5rem;
+        overflow-x: auto;
+        font-family: 'Fira Code', 'Courier New', monospace;
+        font-size: 0.875rem;
+        line-height: 1.6;
+    }
+    
+    .code-block code {
+        font-family: 'Fira Code', 'Courier New', monospace;
+        color: var(--doc-code-text);
+    }
+    
+    /* Syntax Highlighting */
+    .code-block code .keyword {
+        color: var(--doc-code-keyword);
+        font-weight: 500;
+    }
+    
+    .code-block code .string {
+        color: var(--doc-code-string);
+    }
+    
+    .code-block code .function {
+        color: var(--doc-code-function);
+    }
+    
+    .code-block code .number {
+        color: var(--doc-code-number);
+    }
+    
+    .code-block code .comment {
+        color: var(--doc-code-comment);
+        font-style: italic;
+    }
+    
+    .code-block code .variable {
+        color: var(--doc-code-variable);
+    }
+    
+    .code-block code .type {
+        color: var(--doc-code-type);
+    }
+    
+    /* Section Numbers */
+    .section-number {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--laser-blue), var(--build-green));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        margin-right: 1rem;
+    }
+    
+    /* Function Signatures */
+    .function-signature {
+        background: var(--doc-signature-bg);
+        border-left: 4px solid var(--laser-blue);
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+    
+    /* Parameter Tables */
+    .param-table, .method-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0;
+        background-color: var(--doc-card-bg);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    .param-table th, .param-table td,
+    .method-table th, .method-table td {
+        padding: 0.75rem 1rem;
+        text-align: left;
+        border-bottom: 1px solid var(--doc-border);
+        color: var(--doc-text);
+    }
+    
+    .param-table th, .method-table th {
+        background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));
+        color: white;
+        font-weight: 600;
+    }
+    
+    .param-table tr:last-child td,
+    .method-table tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .param-table tr:hover,
+    .method-table tr:hover {
+        background-color: rgba(0, 102, 255, 0.05);
+    }
+    
+    body.dark-theme .param-table tr:hover,
+    body.dark-theme .method-table tr:hover {
+        background-color: rgba(0, 204, 136, 0.05);
+    }
+    
+    .param-table code, .method-table code {
+        background-color: rgba(0, 102, 255, 0.1);
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-family: 'Fira Code', monospace;
+        font-size: 0.8125rem;
+        color: var(--laser-blue);
+    }
+    
+    body.dark-theme .param-table code,
+    body.dark-theme .method-table code {
+        background-color: rgba(0, 204, 136, 0.1);
+        color: var(--build-green);
+    }
+    
+    /* Back to Top Button */
+    .back-to-top {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--laser-blue), var(--build-green));
+        color: white;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+    }
+    
+    .back-to-top.visible {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .back-to-top:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
         }
-        
-        .light-theme .code-block {
-            background: #F7F9FC;
-            border-left: 4px solid #0066FF;
-            color: #2A2A3A;
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
-        
-        .code-keyword { color: #0066FF; }
-        .code-string { color: #00CC88; }
-        .code-comment { color: #6A737D; }
-        .light-theme .code-comment { color: #9AA5B5; }
-        .code-variable { color: #8A2BE2; }
-        .code-type { color: #FFB300; }
-        
-        .code-block::-webkit-scrollbar {
-            height: 8px;
-        }
-        
-        .code-block::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 4px;
-        }
-        
-        .code-block::-webkit-scrollbar-thumb {
-            background: rgba(0, 102, 255, 0.5);
-            border-radius: 4px;
-        }
-        
-        .code-block::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 102, 255, 0.7);
-        }
-        
-        .nav-link {
-            position: relative;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #00CC88, #8A2BE2);
-            transition: width 0.3s ease;
-        }
-        
-        .nav-link:hover::after {
-            width: 100%;
-        }
-        
+    }
+    
+    .animate-fadeIn {
+        animation: fadeIn 0.6s ease-out;
+    }
+    
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: var(--doc-border);
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));
+        border-radius: 10px;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
         .feature-card {
-            transition: all 0.3s ease;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        }
-        
-        .function-signature {
-            background: #F0F4F8;
-            border-left: 4px solid #0066FF;
             padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 0.5rem;
         }
         
-        .param-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0;
+        .section-number {
+            width: 2rem;
+            height: 2rem;
+            font-size: 0.875rem;
         }
         
-        .param-table th, .param-table td {
-            padding: 0.75rem;
-            text-align: left;
-            border-bottom: 1px solid #E0E5EC;
+        .code-block pre {
+            font-size: 0.75rem;
+            padding: 1rem;
         }
         
-        .param-table th {
-            background-color: #F7F9FC;
-            font-weight: 600;
-        }
-        
-        .method-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0;
-        }
-        
+        .param-table th, .param-table td,
         .method-table th, .method-table td {
-            padding: 0.75rem;
-            text-align: left;
-            border: 1px solid #E0E5EC;
+            padding: 0.5rem;
         }
-        
-        .method-table th {
-            background-color: #F7F9FC;
-            font-weight: 600;
-        }
-    </style>
-    
-    <main class="main-content-body max-w-7xl mx-auto px-6 py-8 light-theme">
-        <!-- Overview Section -->
-        <section id="overview" class="mb-16 animate-fadeIn">
-            <div class="bg-white rounded-xl shadow-lg p-8 border border-light-border">
-                <h1 class="text-4xl font-bold mb-6 text-neural-charcoal">LuaHTMLReactive</h1>
-                <p class="text-xl text-light-text-secondary mb-8">
-                    Complete reactive HTML builder with SSR, client operations, components, forms, layouts, and validation.
-                    This documentation covers every function, parameter, and feature available in the LuaHTMLReactive module.
-                </p>
-                
-                <div class="grid md:grid-cols-4 gap-6 mb-8">
-                    <div class="feature-card bg-blue-50 p-6 rounded-lg border border-blue-100">
-                        <div class="w-12 h-12 rounded-full bg-laser-blue flex items-center justify-center text-white mb-4">
-                            <i class="fas fa-code"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 text-laser-blue">VDOM System</h3>
-                        <p class="text-light-text-secondary">Virtual DOM creation, diffing, patching, and reactive bindings</p>
+    }
+</style>
+
+<main class="main-content-body max-w-7xl mx-auto px-6 py-8">
+    <!-- Overview Section -->
+    <section id="overview" class="mb-16 animate-fadeIn">
+        <div class="rounded-xl p-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <h1 class="text-4xl font-bold mb-6" style="background: linear-gradient(135deg, var(--laser-blue), var(--build-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                LuaHTMLReactive
+            </h1>
+            <p class="text-xl mb-8" style="color: var(--doc-text-secondary);">
+                Complete reactive HTML builder with SSR, client operations, components, forms, layouts, and validation.
+                This documentation covers every function, parameter, and feature available in the LuaHTMLReactive module.
+            </p>
+            
+            <div class="grid md:grid-cols-4 gap-6 mb-8">
+                <div class="feature-card">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center text-white mb-4" style="background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));">
+                        <i class="fas fa-code"></i>
                     </div>
-                    
-                    <div class="feature-card bg-green-50 p-6 rounded-lg border border-green-100">
-                        <div class="w-12 h-12 rounded-full bg-build-green flex items-center justify-center text-white mb-4">
-                            <i class="fas fa-desktop"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 text-build-green">Client Operations</h3>
-                        <p class="text-light-text-secondary">Rich DSL for DOM, storage, fetch, timers, and more</p>
-                    </div>
-                    
-                    <div class="feature-card bg-purple-50 p-6 rounded-lg border border-purple-100">
-                        <div class="w-12 h-12 rounded-full bg-query-purple flex items-center justify-center text-white mb-4">
-                            <i class="fas fa-cube"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 text-query-purple">Components</h3>
-                        <p class="text-light-text-secondary">Stateful components with reactive updates and lifecycle</p>
-                    </div>
-                    
-                    <div class="feature-card bg-amber-50 p-6 rounded-lg border border-amber-100">
-                        <div class="w-12 h-12 rounded-full bg-warning-amber flex items-center justify-center text-white mb-4">
-                            <i class="fas fa-file-alt"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 text-warning-amber">Forms & Layouts</h3>
-                        <p class="text-light-text-secondary">Schema validation, auto-forms, layouts, and slots</p>
-                    </div>
+                    <h3 class="text-xl font-bold mb-2" style="color: var(--doc-text);">VDOM System</h3>
+                    <p style="color: var(--doc-text-secondary);">Virtual DOM creation, diffing, patching, and reactive bindings</p>
                 </div>
                 
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-bold">Complete Setup Example</h3>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
+                <div class="feature-card">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center text-white mb-4" style="background: linear-gradient(135deg, var(--build-green), var(--query-purple));">
+                        <i class="fas fa-desktop"></i>
                     </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Import the module</span>
-<span class="code-keyword">local</span> HTML = <span class="code-keyword">require</span> <span class="code-string">"LuaHTMLReactive"</span>
+                    <h3 class="text-xl font-bold mb-2" style="color: var(--doc-text);">Client Operations</h3>
+                    <p style="color: var(--doc-text-secondary);">Rich DSL for DOM, storage, fetch, timers, and more</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center text-white mb-4" style="background: linear-gradient(135deg, var(--query-purple), var(--warning-amber));">
+                        <i class="fas fa-cube"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2" style="color: var(--doc-text);">Components</h3>
+                    <p style="color: var(--doc-text-secondary);">Stateful components with reactive updates and lifecycle</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center text-white mb-4" style="background: linear-gradient(135deg, var(--warning-amber), var(--laser-blue));">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2" style="color: var(--doc-text);">Forms & Layouts</h3>
+                    <p style="color: var(--doc-text-secondary);">Schema validation, auto-forms, layouts, and slots</p>
+                </div>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Complete Setup Example</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="keyword">local</span> HTML = <span class="keyword">require</span> <span class="string">"LuaHTMLReactive"</span>
 
-<span class="code-comment">-- Create a complete application</span>
-<span class="code-keyword">local</span> app = HTML.App({
-    title = <span class="code-string">"My Reactive App"</span>,
+<span class="keyword">local</span> app = HTML.App({
+    title = <span class="string">"My Reactive App"</span>,
     state = {
-        user = { name = <span class="code-string">"John"</span>, age = 30 },
-        items = { <span class="code-string">"Item 1"</span>, <span class="code-string">"Item 2"</span>, <span class="code-string">"Item 3"</span> }
+        user = { name = <span class="string">"John"</span>, age = <span class="number">30</span> },
+        items = { <span class="string">"Item 1"</span>, <span class="string">"Item 2"</span>, <span class="string">"Item 3"</span> }
     },
-    children = HTML.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"app"</span> }, {
-        HTML.e(<span class="code-string">"h1"</span>, {}, <span class="code-string">"Welcome to LuaHTMLReactive"</span>),
-        HTML.Component(<span class="code-string">"userProfile"</span>, { userId = <span class="code-string">"123"</span> })
+    children = HTML.e(<span class="string">"div"</span>, { class = <span class="string">"app"</span> }, {
+        HTML.e(<span class="string">"h1"</span>, {}, <span class="string">"Welcome to LuaHTMLReactive"</span>),
+        HTML.Component(<span class="string">"userProfile"</span>, { userId = <span class="string">"123"</span> })
     })
 })
 
-<span class="code-comment">-- Render to HTML string for SSR</span>
-<span class="code-keyword">local</span> htmlOutput = HTML.render(app)
-<span class="code-keyword">return</span> htmlOutput</code></pre>
-                </div>
+<span class="keyword">local</span> htmlOutput = HTML.render(app)
+<span class="keyword">return</span> htmlOutput</code></pre>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- VDOM System Section -->
-        <section id="vdom" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-laser-blue flex items-center justify-center text-white font-bold mr-4">1</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">VDOM System</h2>
+    <!-- VDOM System Section -->
+    <section id="vdom" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">1</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">VDOM System</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 mb-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">HTML.e(tag, attrs, children)</h4>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">Creates a Virtual DOM node representing an HTML element.</p>
+                
+                <table class="param-table">
+                    <thead><tr><th>Parameter</th><th>Type</th><th>Description</th><th>Required</th> </thead>
+                    <tbody>
+                        <tr><td class="font-mono">tag</td><td>string</td><td>HTML tag name</td><td>Yes</td> </tr>
+                        <tr><td class="font-mono">attrs</td><td>table?</td><td>HTML attributes {key = value}</td><td>No</td> </tr>
+                        <tr><td class="font-mono">children</td><td>string|number|VDOMNode|VDOMNode[]?</td><td>Text content or child VDOM nodes</td><td>No</td> </tr>
+                    </tbody>
+                 </table>
             </div>
             
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Core VDOM Functions</h3>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">HTML.e(tag, attrs, children)</h4>
-                    <p class="text-light-text-secondary mb-3">Creates a Virtual DOM node representing an HTML element.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Required</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>tag</td>
-                                <td>string</td>
-                                <td>HTML tag name (e.g., "div", "span", "h1")</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>attrs</td>
-                                <td>table?</td>
-                                <td>Table of HTML attributes {key = value}</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>children</td>
-                                <td>string|number|VDOMNode|VDOMNode[]?</td>
-                                <td>Text content or child VDOM nodes</td>
-                                <td>No</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> VDOMNode - A virtual DOM node table with structure: {tag, attrs, children, content}</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Element Creation Examples</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Element Creation Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Simple element with text content</span>
-<span class="code-keyword">local</span> title = HTML.e(<span class="code-string">"h1"</span>, { class = <span class="code-string">"title"</span> }, <span class="code-string">"Hello World"</span>)
+                <pre><code><span class="comment">-- Simple element with text content</span>
+<span class="keyword">local</span> title = HTML.e(<span class="string">"h1"</span>, { class = <span class="string">"title"</span> }, <span class="string">"Hello World"</span>)
 
-<span class="code-comment">-- Element with multiple attributes</span>
-<span class="code-keyword">local</span> button = HTML.e(<span class="code-string">"button"</span>, {
-    id = <span class="code-string">"submit-btn"</span>,
-    class = <span class="code-string">"btn btn-primary"</span>,
-    disabled = true,
-    style = <span class="code-string">"background: blue; color: white;"</span>
-}, <span class="code-string">"Submit"</span>)
+<span class="comment">-- Element with multiple attributes</span>
+<span class="keyword">local</span> button = HTML.e(<span class="string">"button"</span>, {
+    id = <span class="string">"submit-btn"</span>,
+    class = <span class="string">"btn btn-primary"</span>,
+    disabled = <span class="keyword">true</span>
+}, <span class="string">"Submit"</span>)
 
-<span class="code-comment">-- Nested elements with children array</span>
-<span class="code-keyword">local</span> list = HTML.e(<span class="code-string">"ul"</span>, { class = <span class="code-string">"menu"</span> }, {
-    HTML.e(<span class="code-string">"li"</span>, {}, <span class="code-string">"Item 1"</span>),
-    HTML.e(<span class="code-string">"li"</span>, {}, <span class="code-string">"Item 2"</span>),
-    HTML.e(<span class="code-string">"li"</span>, {}, <span class="code-string">"Item 3"</span>)
-})
-
-<span class="code-comment">-- Self-closing tag</span>
-<span class="code-keyword">local</span> image = HTML.e(<span class="code-string">"img"</span>, {
-    src = <span class="code-string">"photo.jpg"</span>,
-    alt = <span class="code-string">"A beautiful photo"</span>
-}) <span class="code-comment">-- No children needed for self-closing tags</span></code></pre>
-                </div>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">HTML.fragment(children)</h4>
-                    <p class="text-light-text-secondary mb-3">Creates a VDOM fragment for grouping multiple nodes without a wrapper element.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Required</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>children</td>
-                                <td>VDOMNode|VDOMNode[]</td>
-                                <td>A list of VDOM nodes to include in the fragment</td>
-                                <td>Yes</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> VDOMNode - A fragment VDOM node table with structure: {tag = nil, children = children}</p>
-                </div>
-
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">HTML.bindText(varName, content, attrs)</h4>
-                    <p class="text-light-text-secondary mb-3">Creates a reactive text element that updates when state changes.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Required</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>varName</td>
-                                <td>string</td>
-                                <td>Name of the state variable this element is bound to</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>content</td>
-                                <td>string|number</td>
-                                <td>Current value of the variable</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>attrs</td>
-                                <td>table?</td>
-                                <td>Additional attributes for the span element</td>
-                                <td>No</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> VDOMNode - A span element with data-bind attribute</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Fragment & Reactive Binding Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Fragment example</span>
-<span class="code-keyword">local</span> tableRows = HTML.fragment({
-    HTML.e(<span class="code-string">"tr"</span>, {}, {
-        HTML.e(<span class="code-string">"td"</span>, {}, <span class="code-string">"John"</span>),
-        HTML.e(<span class="code-string">"td"</span>, {}, <span class="code-string">"30"</span>)
-    }),
-    HTML.e(<span class="code-string">"tr"</span>, {}, {
-        HTML.e(<span class="code-string">"td"</span>, {}, <span class="code-string">"Jane"</span>),
-        HTML.e(<span class="code-string">"td"</span>, {}, <span class="code-string">"25"</span>)
-    })
-})
-
-<span class="code-keyword">local</span> tableElement = HTML.e(<span class="code-string">"table"</span>, {}, tableRows)
-
-<span class="code-comment">-- Reactive text binding</span>
-<span class="code-keyword">local</span> userState = { name = <span class="code-string">"John Doe"</span>, score = 100 }
-<span class="code-keyword">local</span> userDisplay = HTML.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"user-info"</span> }, {
-    HTML.e(<span class="code-string">"h2"</span>, {}, <span class="code-string">"User: "</span>),
-    HTML.bindText(<span class="code-string">"userName"</span>, userState.name, { class = <span class="code-string">"font-bold"</span> }),
-    HTML.e(<span class="code-string">"br"</span>),
-    HTML.e(<span class="code-string">"span"</span>, {}, <span class="code-string">"Score: "</span>),
-    HTML.bindText(<span class="code-string">"userScore"</span>, userState.score, { class = <span class="code-string">"text-green-500"</span> })
-})
-
-<span class="code-comment">-- When userState changes, the bound elements update automatically</span></code></pre>
-                </div>
-            </div>
-            
-            <!-- Diff & Patch System -->
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Diff & Patch System</h3>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">HTML.diff(old, new, path)</h4>
-                    <p class="text-light-text-secondary mb-3">Compares two VDOM trees and generates patches for efficient updates.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Required</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>old</td>
-                                <td>VDOMNode?</td>
-                                <td>Previous VDOM tree</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>new</td>
-                                <td>VDOMNode?</td>
-                                <td>New VDOM tree</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>path</td>
-                                <td>string?</td>
-                                <td>Internal path tracking (default: "root")</td>
-                                <td>No</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> PatchObject[] - Array of patch objects with types: "attr", "remove-attr", "text", "replace", "remove"</p>
-                </div>
-
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">HTML.toJS(patches)</h4>
-                    <p class="text-light-text-secondary mb-3">Converts patch objects to executable JavaScript code.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Required</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>patches</td>
-                                <td>PatchObject[]</td>
-                                <td>Array of patch objects from HTML.diff</td>
-                                <td>Yes</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> string - JavaScript code that applies the patches</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Diff & Patch Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Initial VDOM</span>
-<span class="code-keyword">local</span> oldVDOM = HTML.e(<span class="code-string">"div"</span>, {
-    id = <span class="code-string">"container"</span>,
-    class = <span class="code-string">"old-style"</span>
-}, <span class="code-string">"Old content"</span>)
-
-<span class="code-comment">-- Updated VDOM</span>
-<span class="code-keyword">local</span> newVDOM = HTML.e(<span class="code-string">"div"</span>, {
-    id = <span class="code-string">"container"</span>,
-    class = <span class="code-string">"new-style active"</span>,
-    style = <span class="code-string">"color: red;"</span>
-}, <span class="code-string">"New content"</span>)
-
-<span class="code-comment">-- Generate patches</span>
-<span class="code-keyword">local</span> patches = HTML.diff(oldVDOM, newVDOM)
-
-<span class="code-comment">-- Convert to JavaScript</span>
-<span class="code-keyword">local</span> jsCode = HTML.toJS(patches)
-
-<span class="code-comment">-- Output JavaScript would be:</span>
-<span class="code-comment">-- document.querySelector("#container").setAttribute("class", "new-style active");</span>
-<span class="code-comment">-- document.querySelector("#container").setAttribute("style", "color: red;");</span>
-<span class="code-comment">-- document.querySelector("#container").textContent = "New content";</span>
-
-print(jsCode)</code></pre>
-                </div>
-            </div>
-
-            <!-- Advanced Patch Types -->
-            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Advanced Patch Types</h3>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">HTML.patch_list(selector, items, template_id, classes, staggerDelay)</h4>
-                    <p class="text-light-text-secondary mb-3">Creates a patch for updating lists reactively.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Required</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>selector</td>
-                                <td>string</td>
-                                <td>CSS selector for the list container</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>items</td>
-                                <td>table</td>
-                                <td>New list of data items</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>template_id</td>
-                                <td>string</td>
-                                <td>ID of HTML template for rendering items</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>classes</td>
-                                <td>string?</td>
-                                <td>CSS classes for staggered updates</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>staggerDelay</td>
-                                <td>number?</td>
-                                <td>Delay in ms for staggered item updates</td>
-                                <td>No</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">HTML.patch_object(selector, object, template_id)</h4>
-                    <p class="text-light-text-secondary mb-3">Creates a patch for updating object properties reactively.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Required</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>selector</td>
-                                <td>string</td>
-                                <td>CSS selector for the object container</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>object</td>
-                                <td>table</td>
-                                <td>New object data</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>template_id</td>
-                                <td>string</td>
-                                <td>ID of HTML template for rendering object</td>
-                                <td>Yes</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Advanced Patch Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- List patch for todo items</span>
-<span class="code-keyword">local</span> todos = {
-    { id = 1, text = <span class="code-string">"Learn Lua"</span>, completed = true },
-    { id = 2, text = <span class="code-string">"Build app"</span>, completed = false },
-    { id = 3, text = <span class="code-string">"Deploy"</span>, completed = false }
-}
-
-<span class="code-keyword">local</span> listPatch = HTML.patch_list(
-    <span class="code-string">"#todo-list"</span>,
-    todos,
-    <span class="code-string">"todo-item-template"</span>,
-    <span class="code-string">"fade-in"</span>,
-    100 <span class="code-comment">-- 100ms stagger delay</span>
-)
-
-<span class="code-comment">-- Object patch for user profile</span>
-<span class="code-keyword">local</span> user = {
-    name = <span class="code-string">"Jane Smith"</span>,
-    email = <span class="code-string">"jane@example.com"</span>,
-    avatar = <span class="code-string">"avatar.jpg"</span>,
-    bio = <span class="code-string">"Software developer"</span>
-}
-
-<span class="code-keyword">local</span> objectPatch = HTML.patch_object(
-    <span class="code-string">"#user-profile"</span>,
-    user,
-    <span class="code-string">"user-profile-template"</span>
-)
-
-<span class="code-comment">-- Nested patch for complex objects</span>
-<span class="code-keyword">local</span> nestedPatch = HTML.patch_nested(
-    <span class="code-string">"#app"</span>,
-    <span class="code-string">"user.preferences.theme"</span>,
-    <span class="code-string">"dark"</span>
-)</code></pre>
-                </div>
-            </div>
-        </section>
-
-        <!-- Client Operations Section -->
-        <section id="client-ops" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-build-green flex items-center justify-center text-white font-bold mr-4">2</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">Client Operations</h2>
-            </div>
-
-            <!-- DOM Operations -->
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">DOM Manipulation Operations</h3>
-                
-                <table class="method-table">
-                    <thead>
-                        <tr>
-                            <th>Method</th>
-                            <th>Parameters</th>
-                            <th>Description</th>
-                            <th>Returns</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>HTML.client.setText(sel, val)</td>
-                            <td>sel: string, val: string</td>
-                            <td>Sets text content of elements</td>
-                            <td>ClientOperation</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.setValue(sel, val)</td>
-                            <td>sel: string, val: string</td>
-                            <td>Sets value of input elements</td>
-                            <td>ClientOperation</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.setAttrs(sel, attrs)</td>
-                            <td>sel: string, attrs: table</td>
-                            <td>Sets multiple attributes</td>
-                            <td>ClientOperation</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.addClass(sel, cls)</td>
-                            <td>sel: string, cls: string</td>
-                            <td>Adds CSS class to elements</td>
-                            <td>ClientOperation</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.removeClass(sel, cls)</td>
-                            <td>sel: string, cls: string</td>
-                            <td>Removes CSS class from elements</td>
-                            <td>ClientOperation</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.show(sel)</td>
-                            <td>sel: string</td>
-                            <td>Shows elements (removes display: none)</td>
-                            <td>ClientOperation</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.hide(sel)</td>
-                            <td>sel: string</td>
-                            <td>Hides elements (sets display: none)</td>
-                            <td>ClientOperation</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.getText(sel)</td>
-                            <td>sel: string</td>
-                            <td>Gets text content of first matching element</td>
-                            <td>ClientOperation</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.getValue(sel)</td>
-                            <td>sel: string</td>
-                            <td>Gets value of first input element</td>
-                            <td>ClientOperation</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.getAttr(sel, attr)</td>
-                            <td>sel: string, attr: string</td>
-                            <td>Gets attribute value of first element</td>
-                            <td>ClientOperation</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mt-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">DOM Operations Example</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Complex DOM manipulation</span>
-<span class="code-keyword">local</span> domOps = HTML.client.batch(
-    HTML.client.setText(<span class="code-string">"#title"</span>, <span class="code-string">"New Title"</span>),
-    HTML.client.setValue(<span class="code-string">"#email"</span>, <span class="code-string">"user@example.com"</span>),
-    HTML.client.setAttrs(<span class="code-string">"#avatar"</span>, {
-        src = <span class="code-string">"new-avatar.jpg"</span>,
-        alt = <span class="code-string">"Profile picture"</span>,
-        title = <span class="code-string">"User avatar"</span>
-    }),
-    HTML.client.addClass(<span class="code-string">".item"</span>, <span class="code-string">"active highlighted"</span>),
-    HTML.client.removeClass(<span class="code-string">".old-item"</span>, <span class="code-string">"visible"</span>),
-    HTML.client.show(<span class="code-string">"#content"</span>),
-    HTML.client.hide(<span class="code-string">"#loading"</span>)
-)
-
-<span class="code-keyword">local</span> getOps = HTML.client.batch(
-    HTML.client.getText(<span class="code-string">"#username"</span>),
-    HTML.client.getValue(<span class="code-string">"#email-input"</span>),
-    HTML.client.getAttr(<span class="code-string">"#link"</span>, <span class="code-string">"href"</span>)
-)</code></pre>
-                </div>
-            </div>
-
-            <!-- Advanced DOM Operations -->
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Advanced DOM Operations</h3>
-                
-                <table class="method-table">
-                    <thead>
-                        <tr>
-                            <th>Method</th>
-                            <th>Parameters</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>HTML.client.append(sel, html)</td>
-                            <td>sel: string, html: string</td>
-                            <td>Appends HTML to elements</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.prepend(sel, html)</td>
-                            <td>sel: string, html: string</td>
-                            <td>Prepends HTML to elements</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.insertBefore(sel, html)</td>
-                            <td>sel: string, html: string</td>
-                            <td>Inserts HTML before elements</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.insertAfter(sel, html)</td>
-                            <td>sel: string, html: string</td>
-                            <td>Inserts HTML after elements</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.replace(sel, html)</td>
-                            <td>sel: string, html: string</td>
-                            <td>Replaces elements with HTML</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.replaceWith(sel, html)</td>
-                            <td>sel: string, html: string</td>
-                            <td>Replaces elements with HTML (alternative)</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.remove(sel)</td>
-                            <td>sel: string</td>
-                            <td>Removes elements from DOM</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.clear(sel)</td>
-                            <td>sel: string</td>
-                            <td>Clears content of elements</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.wrap(sel, tag, attrs)</td>
-                            <td>sel: string, tag: string, attrs: table?</td>
-                            <td>Wraps elements with new tag</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.wrapAll(sel, tag, attrs)</td>
-                            <td>sel: string, tag: string, attrs: table?</td>
-                            <td>Wraps all elements with new tag</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mt-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Advanced DOM Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Structure manipulation</span>
-<span class="code-keyword">local</span> structureOps = HTML.client.batch(
-    HTML.client.append(<span class="code-string">"#list"</span>, <span class="code-string">'&lt;li&gt;New Item&lt;/li&gt;'</span>),
-    HTML.client.prepend(<span class="code-string">"#list"</span>, <span class="code-string">'&lt;li&gt;First Item&lt;/li&gt;'</span>),
-    HTML.client.insertBefore(<span class="code-string">"#target"</span>, <span class="code-string">'&lt;div&gt;Before&lt;/div&gt;'</span>),
-    HTML.client.insertAfter(<span class="code-string">"#target"</span>, <span class="code-string">'&lt;div&gt;After&lt;/div&gt;'</span>),
-    HTML.client.replace(<span class="code-string">"#old"</span>, <span class="code-string">'&lt;div id="new"&gt;New Content&lt;/div&gt;'</span>),
-    HTML.client.remove(<span class="code-string">".obsolete"</span>),
-    HTML.client.clear(<span class="code-string">"#container"</span>)
-)
-
-<span class="code-comment">-- Wrapping elements</span>
-<span class="code-keyword">local</span> wrapOps = HTML.client.batch(
-    HTML.client.wrap(<span class="code-string">".item"</span>, <span class="code-string">"div"</span>, { class = <span class="code-string">"wrapper"</span> }),
-    HTML.client.wrapAll(<span class="code-string">".group"</span>, <span class="code-string">"section"</span>, { 
-        class = <span class="code-string">"container"</span>,
-        id = <span class="code-string">"main-section"</span>
-    })
-)</code></pre>
-                </div>
-            </div>
-
-            <!-- Array-style Operations -->
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Array-style DOM Operations</h3>
-                
-                <table class="method-table">
-                    <thead>
-                        <tr>
-                            <th>Method</th>
-                            <th>Parameters</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>HTML.client.push(sel, html)</td>
-                            <td>sel: string, html: string</td>
-                            <td>Adds element to end (like array push)</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.pop(sel)</td>
-                            <td>sel: string</td>
-                            <td>Removes last element (like array pop)</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.unshift(sel, html)</td>
-                            <td>sel: string, html: string</td>
-                            <td>Adds element to beginning (like unshift)</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.shift(sel)</td>
-                            <td>sel: string</td>
-                            <td>Removes first element (like shift)</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.slice(sel, start, finish)</td>
-                            <td>sel: string, start: number, finish: number?</td>
-                            <td>Gets slice of elements (like array slice)</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.splice(sel, start, deleteCount, html)</td>
-                            <td>sel: string, start: number, deleteCount: number, html: string?</td>
-                            <td>Modifies elements (like array splice)</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.sort(sel, compare)</td>
-                            <td>sel: string, compare: string?</td>
-                            <td>Sorts elements by text content or custom compare</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.reverse(sel)</td>
-                            <td>sel: string</td>
-                            <td>Reverses order of elements</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.shuffle(sel)</td>
-                            <td>sel: string</td>
-                            <td>Randomly shuffles elements</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mt-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Array-style Operations Example</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Array-like manipulations</span>
-<span class="code-keyword">local</span> arrayOps = HTML.client.batch(
-    HTML.client.push(<span class="code-string">"#list"</span>, <span class="code-string">'&lt;li&gt;Pushed Item&lt;/li&gt;'</span>),
-    HTML.client.pop(<span class="code-string">"#list"</span>),
-    HTML.client.unshift(<span class="code-string">"#list"</span>, <span class="code-string">'&lt;li&gt;Unshifted Item&lt;/li&gt;'</span>),
-    HTML.client.shift(<span class="code-string">"#list"</span>),
-    HTML.client.splice(<span class="code-string">"#list"</span>, 1, 2, <span class="code-string">'&lt;li&gt;Replacement&lt;/li&gt;'</span>),
-    HTML.client.sort(<span class="code-string">"#items"</span>, <span class="code-string">"text"</span>),
-    HTML.client.reverse(<span class="code-string">"#items"</span>),
-    HTML.client.shuffle(<span class="code-string">"#cards"</span>)
-)
-
-<span class="code-comment">-- Functional operations</span>
-<span class="code-keyword">local</span> functionalOps = HTML.client.batch(
-    HTML.client.map(<span class="code-string">".items"</span>, <span class="code-string">"item => item.textContent.toUpperCase()"</span>),
-    HTML.client.filter(<span class="code-string">".items"</span>, <span class="code-string">"item => item.dataset.active"</span>),
-    HTML.client.reduce(<span class="code-string">".prices"</span>, <span class="code-string">"(sum, item) => sum + parseFloat(item.textContent)"</span>)
-)</code></pre>
-                </div>
-            </div>
-
-            <!-- Storage Operations -->
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Storage & Clipboard Operations</h3>
-                
-                <table class="method-table">
-                    <thead>
-                        <tr>
-                            <th>Method</th>
-                            <th>Parameters</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>HTML.client.localSet(key, value)</td>
-                            <td>key: string, value: string</td>
-                            <td>Sets item in localStorage</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.localGet(key)</td>
-                            <td>key: string</td>
-                            <td>Gets item from localStorage</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.localRemove(key)</td>
-                            <td>key: string</td>
-                            <td>Removes item from localStorage</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.sessionSet(key, value)</td>
-                            <td>key: string, value: string</td>
-                            <td>Sets item in sessionStorage</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.sessionGet(key)</td>
-                            <td>key: string</td>
-                            <td>Gets item from sessionStorage</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.sessionRemove(key)</td>
-                            <td>key: string</td>
-                            <td>Removes item from sessionStorage</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.copyText(text)</td>
-                            <td>text: string</td>
-                            <td>Copies text to clipboard</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.readText()</td>
-                            <td>None</td>
-                            <td>Reads text from clipboard</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.notify(title, body)</td>
-                            <td>title: string, body: string</td>
-                            <td>Shows desktop notification</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mt-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Storage & Clipboard Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Storage operations</span>
-<span class="code-keyword">local</span> storageOps = HTML.client.batch(
-    HTML.client.localSet(<span class="code-string">"userPreferences"</span>, <span class="code-string">'{"theme":"dark","notifications":true}'</span>),
-    HTML.client.sessionSet(<span class="code-string">"sessionToken"</span>, <span class="code-string">"abc123"</span>),
-    HTML.client.localGet(<span class="code-string">"userPreferences"</span>),
-    HTML.client.sessionGet(<span class="code-string">"sessionToken"</span>)
-)
-
-<span class="code-comment">-- Clipboard and notifications</span>
-<span class="code-keyword">local</span> clipOps = HTML.client.batch(
-    HTML.client.copyText(<span class="code-string">"Text to copy to clipboard"</span>),
-    HTML.client.readText(),
-    HTML.client.notify(<span class="code-string">"Task Complete"</span>, <span class="code-string">"Your operation finished successfully"</span>)
-)</code></pre>
-                </div>
-            </div>
-
-            <!-- Fetch & Network Operations -->
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Fetch & Network Operations</h3>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">HTML.client.fetch(url, options, responseType, onSuccess, onError)</h4>
-                    <p class="text-light-text-secondary mb-3">Performs HTTP requests using the Fetch API.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Required</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>url</td>
-                                <td>string</td>
-                                <td>The URL to fetch</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>options</td>
-                                <td>table?</td>
-                                <td>Fetch options {method, headers, body, etc.}</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>responseType</td>
-                                <td>string?</td>
-                                <td>Expected response type: "text", "json", "blob"</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>onSuccess</td>
-                                <td>ClientOperation?</td>
-                                <td>Operations to run on successful response</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>onError</td>
-                                <td>ClientOperation?</td>
-                                <td>Operations to run on error</td>
-                                <td>No</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <table class="method-table mt-6">
-                    <thead>
-                        <tr>
-                            <th>WebSocket Method</th>
-                            <th>Parameters</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>HTML.client.wsConnect(id, url, handlers)</td>
-                            <td>id: string, url: string, handlers: table?</td>
-                            <td>Connects to WebSocket server</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.wsSend(id, message)</td>
-                            <td>id: string, message: string</td>
-                            <td>Sends message over WebSocket</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.wsClose(id)</td>
-                            <td>id: string</td>
-                            <td>Closes WebSocket connection</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mt-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Fetch & WebSocket Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Fetch with success/error handlers</span>
-<span class="code-keyword">local</span> fetchUser = HTML.client.fetch(
-    <span class="code-string">"/api/users/123"</span>,
-    {
-        method = <span class="code-string">"GET"</span>,
-        headers = {
-            [<span class="code-string">"Authorization"</span>] = <span class="code-string">"Bearer token123"</span>,
-            [<span class="code-string">"Content-Type"</span>] = <span class="code-string">"application/json"</span>
-        }
-    },
-    <span class="code-string">"json"</span>,
-    HTML.client.batch(
-        HTML.client.setText(<span class="code-string">"#user-name"</span>, <span class="code-string">"__VALUE__.name"</span>),
-        HTML.client.setAttrs(<span class="code-string">"#avatar"</span>, { src = <span class="code-string">"__VALUE__.avatar"</span> }),
-        HTML.client.console(<span class="code-string">"log"</span>, <span class="code-string">"User data loaded"</span>)
-    ),
-    HTML.client.batch(
-        HTML.client.setText(<span class="code-string">"#error"</span>, <span class="code-string">"Failed to load user"</span>),
-        HTML.client.addClass(<span class="code-string">"#error"</span>, <span class="code-string">"visible"</span>)
-    )
-)
-
-<span class="code-comment">-- WebSocket operations</span>
-<span class="code-keyword">local</span> wsOps = HTML.client.batch(
-    HTML.client.wsConnect(<span class="code-string">"chat"</span>, <span class="code-string">"ws://localhost:8080/chat"</span>, {
-        onMessage = HTML.client.batch(
-            HTML.client.append(<span class="code-string">"#messages"</span>, <span class="code-string">'&lt;div&gt;__VALUE__&lt;/div&gt;'</span>),
-            HTML.client.console(<span class="code-string">"log"</span>, <span class="code-string">"Message received: __VALUE__"</span>)
-        ),
-        onOpen = HTML.client.console(<span class="code-string">"log"</span>, <span class="code-string">"WebSocket connected"</span>),
-        onClose = HTML.client.console(<span class="code-string">"log"</span>, <span class="code-string">"WebSocket closed"</span>),
-        onError = HTML.client.console(<span class="code-string">"error"</span>, <span class="code-string">"WebSocket error: __VALUE__"</span>)
-    }),
-    HTML.client.wsSend(<span class="code-string">"chat"</span>, <span class="code-string">"Hello from LuaHTMLReactive!"</span>)
-)</code></pre>
-                </div>
-            </div>
-
-            <!-- Timer & Control Flow Operations -->
-            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Timers & Control Flow</h3>
-                
-                <table class="method-table">
-                    <thead>
-                        <tr>
-                            <th>Method</th>
-                            <th>Parameters</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>HTML.client.setTimeout(ms, cb)</td>
-                            <td>ms: number, cb: ClientOperation</td>
-                            <td>Executes callback after delay</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.setInterval(ms, cb, id)</td>
-                            <td>ms: number, cb: ClientOperation, id: string?</td>
-                            <td>Executes callback repeatedly</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.clearInterval(id)</td>
-                            <td>id: number</td>
-                            <td>Clears interval</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.requestAnimationFrame(cb, id)</td>
-                            <td>cb: ClientOperation, id: string?</td>
-                            <td>Schedules callback before repaint</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.cancelAnimationFrame(id)</td>
-                            <td>id: number</td>
-                            <td>Cancels animation frame</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.if_(condition, then_op, else_op)</td>
-                            <td>condition: any, then_op: ClientOperation, else_op: ClientOperation?</td>
-                            <td>Conditional execution</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.while_loop(condition, body_op)</td>
-                            <td>condition: any, body_op: ClientOperation</td>
-                            <td>While loop execution</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.client.for_loop(init, condition, increment, body)</td>
-                            <td>init: ClientOperation, condition: any, increment: ClientOperation, body: ClientOperation</td>
-                            <td>For loop execution</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mt-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Timer & Control Flow Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Timer operations</span>
-<span class="code-keyword">local</span> timerOps = HTML.client.batch(
-    HTML.client.setTimeout(1000, HTML.client.console(<span class="code-string">"log"</span>, <span class="code-string">"1 second passed"</span>)),
-    HTML.client.setInterval(5000, HTML.client.fetch(<span class="code-string">"/api/status"</span>), <span class="code-string">"statusCheck"</span>),
-    HTML.client.requestAnimationFrame(
-        HTML.client.batch(
-            HTML.client.console(<span class="code-string">"log"</span>, <span class="code-string">"Animation frame"</span>),
-            HTML.client.setAttrs(<span class="code-string">"#animated"</span>, { style = <span class="code-string">"transform: rotate(1deg)"</span> })
-        ),
-        <span class="code-string">"animation1"</span>
-    )
-)
-
-<span class="code-comment">-- Control flow with conditions</span>
-<span class="code-keyword">local</span> controlFlow = HTML.client.if_(
-    HTML.client.getText(<span class="code-string">"#status"</span>),
-    HTML.client.batch(
-        HTML.client.addClass(<span class="code-string">"#container"</span>, <span class="code-string">"active"</span>),
-        HTML.client.console(<span class="code-string">"log"</span>, <span class="code-string">"Status is true"</span>)
-    ),
-    HTML.client.batch(
-        HTML.client.addClass(<span class="code-string">"#container"</span>, <span class="code-string">"inactive"</span>),
-        HTML.client.console(<span class="code-string">"log"</span>, <span class="code-string">"Status is false"</span>)
-    )
-)
-
-<span class="code-comment">-- Loop operations</span>
-<span class="code-keyword">local</span> loopOps = HTML.client.for_loop(
-    HTML.client.setVar(<span class="code-string">"i"</span>, 0),
-    HTML.client.lt(HTML.client.getVar(<span class="code-string">"i"</span>), 10),
-    HTML.client.setVar(<span class="code-string">"i"</span>, HTML.client.sum(HTML.client.getVar(<span class="code-string">"i"</span>), 1)),
-    HTML.client.batch(
-        HTML.client.append(<span class="code-string">"#output"</span>, HTML.client.getVar(<span class="code-string">"i"</span>)),
-        HTML.client.console(<span class="code-string">"log"</span>, HTML.client.getVar(<span class="code-string">"i"</span>))
-    )
-)</code></pre>
-                </div>
-            </div>
-        </section>
-
-        <!-- Components Section -->
-        <section id="components" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-query-purple flex items-center justify-center text-white font-bold mr-4">3</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">Component System</h2>
-            </div>
-
-            <!-- Component Creation -->
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Component Creation & Management</h3>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">HTML.createComponent(fn, initialState)</h4>
-                    <p class="text-light-text-secondary mb-3">Creates a stateful reactive component with lifecycle methods.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Required</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>fn</td>
-                                <td>function</td>
-                                <td>Render function: function(state, props) return VDOMNode end</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>initialState</td>
-                                <td>table?</td>
-                                <td>Initial component state {key = value}</td>
-                                <td>No</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> Component - Object with: state, lastNode, patches, props, reactiveBindings, setState, render, patch, methods</p>
-                </div>
-
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">Component:setState(partial)</h4>
-                    <p class="text-light-text-secondary mb-3">Updates component state and generates UI patches.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Required</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>partial</td>
-                                <td>table</td>
-                                <td>Partial state update {key = newValue}</td>
-                                <td>Yes</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> PatchObject[] - Generated patches for UI updates</p>
-                </div>
-
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Component Creation Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Simple counter component</span>
-<span class="code-keyword">local</span> Counter = HTML.createComponent(<span class="code-keyword">function</span>(state, props)
-    <span class="code-keyword">return</span> HTML.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"counter"</span> }, {
-        HTML.e(<span class="code-string">"h2"</span>, {}, <span class="code-string">"Count: "</span> .. state.count),
-        HTML.e(<span class="code-string">"button"</span>, {
-            onclick = HTML.on(<span class="code-string">"click"</span>, HTML.handler(<span class="code-string">"increment"</span>, props.id))
-        }, <span class="code-string">"+"</span>),
-        HTML.e(<span class="code-string">"button"</span>, {
-            onclick = HTML.on(<span class="code-string">"click"</span>, HTML.handler(<span class="code-string">"decrement"</span>, props.id))
-        }, <span class="code-string">"-"</span>),
-        HTML.e(<span class="code-string">"button"</span>, {
-            onclick = HTML.on(<span class="code-string">"click"</span>, HTML.handler(<span class="code-string">"reset"</span>, props.id))
-        }, <span class="code-string">"Reset"</span>)
-    })
-<span class="code-keyword">end</span>, {
-    count = 0,
-    _reactiveBindings = { count = true } <span class="code-comment">-- Make count reactive</span>
-})
-
-<span class="code-comment">-- Add component methods</span>
-Counter.methods = {
-    increment = <span class="code-keyword">function</span>(self)
-        <span class="code-keyword">return</span> self:setState({ count = self.state.count + 1 })
-    <span class="code-keyword">end</span>,
-    
-    decrement = <span class="code-keyword">function</span>(self)
-        <span class="code-keyword">return</span> self:setState({ count = self.state.count - 1 })
-    <span class="code-keyword">end</span>,
-    
-    reset = <span class="code-keyword">function</span>(self)
-        <span class="code-keyword">return</span> self:setState({ count = 0 })
-    <span class="code-keyword">end</span>,
-    
-    setCount = <span class="code-keyword">function</span>(self, newCount)
-        <span class="code-keyword">return</span> self:setState({ count = newCount })
-    <span class="code-keyword">end</span>
-}
-
-<span class="code-comment">-- Render the component</span>
-<span class="code-keyword">local</span> counterHTML = Counter:render({ id = <span class="code-string">"counter1"</span> })
-
-<span class="code-comment">-- Update state (triggers patches)</span>
-<span class="code-keyword">local</span> patches = Counter:setState({ count = 5 })</code></pre>
-                </div>
-            </div>
-
-            <!-- Component Patching -->
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Component Patching & Communication</h3>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">HTML.patch(parentKey, componentKey, method, ...)</h4>
-                    <p class="text-light-text-secondary mb-3">Sends patch message to component for server-side method execution.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Required</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>parentKey</td>
-                                <td>string</td>
-                                <td>Parent component identifier</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>componentKey</td>
-                                <td>string?</td>
-                                <td>Child component key for namespacing</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>method</td>
-                                <td>string</td>
-                                <td>Component method name to call</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>...</td>
-                                <td>any</td>
-                                <td>Arguments to pass to component method</td>
-                                <td>No</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> HandlerObject - Server handler for patch operation</p>
-                </div>
-
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">HTML.Component(component_key, props)</h4>
-                    <p class="text-light-text-secondary mb-3">Creates a component placeholder for embedding.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Required</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>component_key</td>
-                                <td>string</td>
-                                <td>Key of the component to embed</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>props</td>
-                                <td>table?</td>
-                                <td>Properties to pass to component</td>
-                                <td>No</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> VDOMNode - Component placeholder element</p>
-                </div>
-
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Component Communication Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Parent component with embedded children</span>
-<span class="code-keyword">local</span> Dashboard = HTML.createComponent(<span class="code-keyword">function</span>(state, props)
-    <span class="code-keyword">return</span> HTML.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"dashboard"</span> }, {
-        HTML.e(<span class="code-string">"h1"</span>, {}, <span class="code-string">"Dashboard"</span>),
-        
-        <span class="code-comment">-- Embedded components</span>
-        HTML.Component(<span class="code-string">"userProfile"</span>, {
-            userId = state.currentUserId,
-            parentComponentKey = <span class="code-string">"dashboard"</span>
-        }),
-        
-        HTML.Component(<span class="code-string">"notifications"</span>, {
-            parentComponentKey = <span class="code-string">"dashboard"</span>
-        }),
-        
-        HTML.Component(<span class="code-string">"recentActivity"</span>, {
-            limit = 10,
-            parentComponentKey = <span class="code-string">"dashboard"</span>
-        }),
-        
-        <span class="code-comment">-- Buttons that patch child components</span>
-        HTML.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"controls"</span> }, {
-            HTML.e(<span class="code-string">"button"</span>, {
-                onclick = HTML.on(<span class="code-string">"click"</span>, HTML.patch(
-                    <span class="code-string">"dashboard"</span>,
-                    <span class="code-string">"userProfile"</span>,
-                    <span class="code-string">"refreshData"</span>,
-                    state.currentUserId
-                ))
-            }, <span class="code-string">"Refresh Profile"</span>),
-            
-            HTML.e(<span class="code-string">"button"</span>, {
-                onclick = HTML.on(<span class="code-string">"click"</span>, HTML.patch(
-                    <span class="code-string">"dashboard"</span>,
-                    <span class="code-string">"notifications"</span>,
-                    <span class="code-string">"markAllRead"</span>
-                ))
-            }, <span class="code-string">"Mark All Read"</span>),
-            
-            HTML.e(<span class="code-string">"button"</span>, {
-                onclick = HTML.on(<span class="code-string">"click"</span>, HTML.patch(
-                    <span class="code-string">"dashboard"</span>,
-                    <span class="code-string">"recentActivity"</span>,
-                    <span class="code-string">"loadMore"</span>,
-                    20
-                ))
-            }, <span class="code-string">"Load More"</span>)
-        })
-    })
-<span class="code-keyword">end</span>, {
-    currentUserId = <span class="code-string">"user123"</span>
-})
-
-<span class="code-comment">-- Child component implementation</span>
-<span class="code-keyword">local</span> UserProfile = HTML.createComponent(<span class="code-keyword">function</span>(state, props)
-    <span class="code-keyword">return</span> HTML.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"user-profile"</span> }, {
-        HTML.e(<span class="code-string">"img"</span>, { src = state.avatar, class = <span class="code-string">"avatar"</span> }),
-        HTML.e(<span class="code-string">"h2"</span>, {}, state.name),
-        HTML.e(<span class="code-string">"p"</span>, {}, state.email)
-    })
-<span class="code-keyword">end</span>, {
-    name = <span class="code-string">"Loading..."</span>,
-    email = <span class="code-string">""</span>,
-    avatar = <span class="code-string">"/default-avatar.jpg"</span>
-})
-
-<span class="code-comment">-- Child component methods</span>
-UserProfile.methods = {
-    refreshData = <span class="code-keyword">function</span>(self, userId)
-        <span class="code-comment">-- Simulate API call</span>
-        <span class="code-keyword">local</span> userData = {
-            name = <span class="code-string">"Jane Smith"</span>,
-            email = <span class="code-string">"jane@example.com"</span>,
-            avatar = <span class="code-string">"/avatars/jane.jpg"</span>
-        }
-        <span class="code-keyword">return</span> self:setState(userData)
-    <span class="code-keyword">end</span>,
-    
-    updateProfile = <span class="code-keyword">function</span>(self, updates)
-        <span class="code-keyword">return</span> self:setState(updates)
-    <span class="code-keyword">end</span>
-}
-
-<span class="code-comment">-- Register components for use with HTML.Component</span>
-<span class="code-comment">-- This would typically be done in a component registry</span></code></pre>
-                </div>
-            </div>
-
-            <!-- Enhanced Components -->
-            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Enhanced Component Features</h3>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">HTML.createComponentWithClientState(options)</h4>
-                    <p class="text-light-text-secondary mb-3">Creates component with built-in clientState support.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Required</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>options</td>
-                                <td>table</td>
-                                <td>Component configuration</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>options.render</td>
-                                <td>function</td>
-                                <td>Render function: function(state, props, clientState)</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>options.initialState</td>
-                                <td>table?</td>
-                                <td>Initial component state</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>options.initialClientState</td>
-                                <td>table?</td>
-                                <td>Initial client state</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>options.methods</td>
-                                <td>table?</td>
-                                <td>Component methods</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>options.onClientStateChange</td>
-                                <td>function?</td>
-                                <td>Callback when clientState changes</td>
-                                <td>No</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Enhanced Component Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Component with clientState support</span>
-<span class="code-keyword">local</span> EnhancedUserProfile = HTML.createComponentWithClientState({
-    render = <span class="code-keyword">function</span>(state, props, clientState)
-        <span class="code-keyword">return</span> HTML.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"user-profile"</span> }, {
-            HTML.e(<span class="code-string">"img"</span>, { 
-                src = state.avatar,
-                class = <span class="code-string">"avatar"</span>,
-                style = clientState.avatarLoaded <span class="code-keyword">and</span> <span class="code-string">""</span> <span class="code-keyword">or</span> <span class="code-string">"display: none"</span>
-            }),
-            HTML.e(<span class="code-string">"h2"</span>, {}, state.name),
-            HTML.clientStateDisplay(<span class="code-string">"onlineStatus"</span>, <span class="code-keyword">function</span>(value)
-                <span class="code-keyword">return</span> value <span class="code-keyword">and</span> <span class="code-string">"🟢 Online"</span> <span class="code-keyword">or</span> <span class="code-string">"🔴 Offline"</span>
-            <span class="code-keyword">end</span>),
-            HTML.clientStateInput(<span class="code-string">"statusMessage"</span>, <span class="code-string">"text"</span>, {
-                placeholder = <span class="code-string">"Update your status..."</span>,
-                class = <span class="code-string">"status-input"</span>
-            })
-        })
-    <span class="code-keyword">end</span>,
-    
-    initialState = {
-        name = <span class="code-string">"John Doe"</span>,
-        avatar = <span class="code-string">"/avatar.jpg"</span>,
-        email = <span class="code-string">"john@example.com"</span>
-    },
-    
-    initialClientState = {
-        onlineStatus = true,
-        statusMessage = <span class="code-string">"Hello world!"</span>,
-        avatarLoaded = false
-    },
-    
-    methods = {
-        setOnline = <span class="code-keyword">function</span>(self, online)
-            <span class="code-keyword">return</span> self:setClientState({ onlineStatus = online })
-        <span class="code-keyword">end</span>,
-        
-        onAvatarLoad = <span class="code-keyword">function</span>(self)
-            <span class="code-keyword">return</span> self:setClientState({ avatarLoaded = true })
-        <span class="code-keyword">end</span>
-    },
-    
-    onClientStateChange = <span class="code-keyword">function</span>(self, newClientState, oldClientState)
-        <span class="code-keyword">if</span> newClientState.onlineStatus ~= oldClientState.onlineStatus <span class="code-keyword">then</span>
-            print(<span class="code-string">"Online status changed to:"</span>, newClientState.onlineStatus)
-        <span class="code-keyword">end</span>
-    <span class="code-keyword">end</span>
-})
-
-<span class="code-comment">-- Using clientState bound elements</span>
-<span class="code-keyword">local</span> statusIndicator = HTML.clientStateBound(<span class="code-string">"onlineStatus"</span>, <span class="code-keyword">function</span>(value)
-    <span class="code-keyword">return</span> HTML.e(<span class="code-string">"span"</span>, {
-        class = value <span class="code-keyword">and</span> <span class="code-string">"online"</span> <span class="code-keyword">or</span> <span class="code-string">"offline"</span>
-    }, value <span class="code-keyword">and</span> <span class="code-string">"Online"</span> <span class="code-keyword">or</span> <span class="code-string">"Offline"</span>)
-<span class="code-keyword">end</span>)</code></pre>
-                </div>
-            </div>
-        </section>
-
-        <!-- Forms & Validation Section -->
-        <section id="forms" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-warning-amber flex items-center justify-center text-white font-bold mr-4">4</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">Forms & Validation</h2>
-            </div>
-
-            <!-- Form Schema System -->
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Form Schema System</h3>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">HTML.setSchema(name, schema)</h4>
-                    <p class="text-light-text-secondary mb-3">Registers a validation schema for form generation and validation.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Required</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>name</td>
-                                <td>string</td>
-                                <td>Unique identifier for the schema</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>schema</td>
-                                <td>Schema</td>
-                                <td>Schema definition table</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>schema.fields</td>
-                                <td>SchemaField[]</td>
-                                <td>Array of field definitions</td>
-                                <td>Yes</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">Schema Field Properties</h4>
-                    <p class="text-light-text-secondary mb-3">Each field in a schema can have these properties:</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Property</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Required</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>name</td>
-                                <td>string</td>
-                                <td>Field name (used as form input name)</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>label</td>
-                                <td>string?</td>
-                                <td>Display label for the field</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>type</td>
-                                <td>string?</td>
-                                <td>Input type: "text", "email", "textarea", "select", "file", etc.</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>required</td>
-                                <td>boolean?</td>
-                                <td>Whether field is mandatory</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>pattern</td>
-                                <td>string?</td>
-                                <td>Regex pattern for validation</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>placeholder</td>
-                                <td>string?</td>
-                                <td>Placeholder text</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>options</td>
-                                <td>string[]?</td>
-                                <td>Options for select fields</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>bind</td>
-                                <td>string?</td>
-                                <td>State variable to bind to (deprecated)</td>
-                                <td>No</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Schema Definition Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- User registration schema</span>
-HTML.setSchema(<span class="code-string">"userRegistration"</span>, {
-    fields = {
-        {
-            name = <span class="code-string">"username"</span>,
-            label = <span class="code-string">"Username"</span>,
-            type = <span class="code-string">"text"</span>,
-            required = true,
-            placeholder = <span class="code-string">"Choose a username"</span>,
-            pattern = <span class="code-string">"^[a-zA-Z0-9_]{3,20}$"</span>
-        },
-        {
-            name = <span class="code-string">"email"</span>,
-            label = <span class="code-string">"Email Address"</span>,
-            type = <span class="code-string">"email"</span>,
-            required = true,
-            placeholder = <span class="code-string">"your@email.com"</span>
-        },
-        {
-            name = <span class="code-string">"password"</span>,
-            label = <span class="code-string">"Password"</span>,
-            type = <span class="code-string">"password"</span>,
-            required = true,
-            pattern = <span class="code-string">"^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$"</span>
-        },
-        {
-            name = <span class="code-string">"country"</span>,
-            label = <span class="code-string">"Country"</span>,
-            type = <span class="code-string">"select"</span>,
-            required = true,
-            options = { <span class="code-string">"USA"</span>, <span class="code-string">"Canada"</span>, <span class="code-string">"UK"</span>, <span class="code-string">"Australia"</span> }
-        },
-        {
-            name = <span class="code-string">"bio"</span>,
-            label = <span class="code-string">"Biography"</span>,
-            type = <span class="code-string">"textarea"</span>,
-            required = false,
-            placeholder = <span class="code-string">"Tell us about yourself..."</span>
-        },
-        {
-            name = <span class="code-string">"avatar"</span>,
-            label = <span class="code-string">"Profile Picture"</span>,
-            type = <span class="code-string">"image"</span>,
-            required = false
-        },
-        {
-            name = <span class="code-string">"resume"</span>,
-            label = <span class="code-string">"Resume"</span>,
-            type = <span class="code-string">"file"</span>,
-            required = false
-        }
-    }
-})
-
-<span class="code-comment">-- Product creation schema</span>
-HTML.setSchema(<span class="code-string">"productCreation"</span>, {
-    fields = {
-        {
-            name = <span class="code-string">"name"</span>,
-            label = <span class="code-string">"Product Name"</span>,
-            type = <span class="code-string">"text"</span>,
-            required = true
-        },
-        {
-            name = <span class="code-string">"price"</span>,
-            label = <span class="code-string">"Price"</span>,
-            type = <span class="code-string">"number"</span>,
-            required = true,
-            pattern = <span class="code-string">"^\\d+(\\.\\d{1,2})?$"</span>
-        },
-        {
-            name = <span class="code-string">"category"</span>,
-            label = <span class="code-string">"Category"</span>,
-            type = <span class="code-string">"select"</span>,
-            required = true,
-            options = { <span class="code-string">"Electronics"</span>, <span class="code-string">"Clothing"</span>, <span class="code-string">"Books"</span>, <span class="code-string">"Home"</span> }
-        },
-        {
-            name = <span class="code-string">"description"</span>,
-            label = <span class="code-string">"Description"</span>,
-            type = <span class="code-string">"textarea"</span>,
-            required = false
-        },
-        {
-            name = <span class="code-string">"images"</span>,
-            label = <span class="code-string">"Product Images"</span>,
-            type = <span class="code-string">"image"</span>,
-            required = false
-        }
-    }
+<span class="comment">-- Nested elements with children array</span>
+<span class="keyword">local</span> list = HTML.e(<span class="string">"ul"</span>, { class = <span class="string">"menu"</span> }, {
+    HTML.e(<span class="string">"li"</span>, {}, <span class="string">"Item 1"</span>),
+    HTML.e(<span class="string">"li"</span>, {}, <span class="string">"Item 2"</span>),
+    HTML.e(<span class="string">"li"</span>, {}, <span class="string">"Item 3"</span>)
 })</code></pre>
-                </div>
             </div>
-
-            <!-- AutoForm & Validation -->
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">AutoForm Generation & Validation</h3>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">HTML.AutoForm(schema, values, errors)</h4>
-                    <p class="text-light-text-secondary mb-3">Automatically generates a complete form based on schema.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Required</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>schema</td>
-                                <td>Schema</td>
-                                <td>The form schema to use</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>values</td>
-                                <td>table?</td>
-                                <td>Current form values for pre-population</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>errors</td>
-                                <td>table?</td>
-                                <td>Validation errors to display {field = message}</td>
-                                <td>No</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">HTML.fragment(children)</h4>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">Creates a VDOM fragment for grouping multiple nodes without a wrapper element.</p>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Fragment & Reactive Binding Examples</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">HTML.validate(schema, values)</h4>
-                    <p class="text-light-text-secondary mb-3">Validates form values against schema rules.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Required</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>schema</td>
-                                <td>Schema</td>
-                                <td>Schema to validate against</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>values</td>
-                                <td>table?</td>
-                                <td>Form values to validate</td>
-                                <td>No</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> table - Error messages {field = message}, empty if valid</p>
-                </div>
-
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">AutoForm & Validation Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Get schema</span>
-<span class="code-keyword">local</span> schema = HTML.getSchema(<span class="code-string">"userRegistration"</span>)
-
-<span class="code-comment">-- Sample form data</span>
-<span class="code-keyword">local</span> formData = {
-    username = <span class="code-string">"johndoe"</span>,
-    email = <span class="code-string">"john@example.com"</span>,
-    country = <span class="code-string">"USA"</span>,
-    bio = <span class="code-string">"Software developer with 5 years experience."</span>
-}
-
-<span class="code-comment">-- Validate the data</span>
-<span class="code-keyword">local</span> errors = HTML.validate(schema, formData)
-
-<span class="code-comment">-- Generate form with values and errors</span>
-<span class="code-keyword">local</span> registrationForm = HTML.AutoForm(schema, formData, errors)
-
-<span class="code-comment">-- Create a complete registration component</span>
-<span class="code-keyword">local</span> RegistrationPage = HTML.createComponent(<span class="code-keyword">function</span>(state, props)
-    <span class="code-keyword">return</span> HTML.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"registration-page"</span> }, {
-        HTML.e(<span class="code-string">"h1"</span>, {}, <span class="code-string">"Create Account"</span>),
-        HTML.e(<span class="code-string">"form"</span>, {
-            id = <span class="code-string">"registration-form"</span>,
-            onsubmit = HTML.on(<span class="code-string">"submit"</span>, HTML.client.batch(
-                HTML.client.preventDefault(),
-                HTML.client.fetch(<span class="code-string">"/api/register"</span>, {
-                    method = <span class="code-string">"POST"</span>,
-                    body = HTML.client.getFormData(<span class="code-string">"#registration-form"</span>)
-                }, <span class="code-string">"json"</span>, 
-                    HTML.client.batch(
-                        HTML.client.console(<span class="code-string">"log"</span>, <span class="code-string">"Registration successful"</span>),
-                        HTML.client.redirect(<span class="code-string">"/dashboard"</span>)
-                    ),
-                    HTML.client.batch(
-                        HTML.client.console(<span class="code-string">"error"</span>, <span class="code-string">"Registration failed"</span>),
-                        HTML.client.setText(<span class="code-string">"#form-errors"</span>, <span class="code-string">"Registration failed. Please try again."</span>)
-                    )
-                )
-            ))
-        }, {
-            registrationForm,
-            HTML.e(<span class="code-string">"div"</span>, { id = <span class="code-string">"form-errors"</span>, class = <span class="code-string">"error-message"</span> }),
-            HTML.PrimaryButton(<span class="code-string">"Create Account"</span>, { type = <span class="code-string">"submit"</span> })
-        })
+                <pre><code><span class="keyword">local</span> tableRows = HTML.fragment({
+    HTML.e(<span class="string">"tr"</span>, {}, {
+        HTML.e(<span class="string">"td"</span>, {}, <span class="string">"John"</span>),
+        HTML.e(<span class="string">"td"</span>, {}, <span class="string">"30"</span>)
+    }),
+    HTML.e(<span class="string">"tr"</span>, {}, {
+        HTML.e(<span class="string">"td"</span>, {}, <span class="string">"Jane"</span>),
+        HTML.e(<span class="string">"td"</span>, {}, <span class="string">"25"</span>)
     })
-<span class="code-keyword">end</span>)
+})
 
-<span class="code-comment">-- Test validation with invalid data</span>
-<span class="code-keyword">local</span> invalidData = {
-    username = <span class="code-string">"jd"</span>,  <span class="code-comment">-- Too short</span>
-    email = <span class="code-string">"invalid-email"</span>,  <span class="code-comment">-- Invalid format</span>
-    password = <span class="code-string">"simple"</span>  <span class="code-comment">-- Doesn't meet requirements</span>
+<span class="comment">-- Reactive text binding</span>
+<span class="keyword">local</span> userState = { name = <span class="string">"John Doe"</span>, score = <span class="number">100</span> }
+<span class="keyword">local</span> userDisplay = HTML.e(<span class="string">"div"</span>, { class = <span class="string">"user-info"</span> }, {
+    HTML.e(<span class="string">"h2"</span>, {}, <span class="string">"User: "</span>),
+    HTML.bindText(<span class="string">"userName"</span>, userState.name, { class = <span class="string">"font-bold"</span> }),
+    HTML.e(<span class="string">"br</span>"),
+    HTML.e(<span class="string">"span"</span>, {}, <span class="string">"Score: "</span>),
+    HTML.bindText(<span class="string">"userScore"</span>, userState.score)
+})</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Client Operations Section -->
+    <section id="client-ops" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">2</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Client Operations</h2>
+        </div>
+
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - DOM Operations Example</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- DOM manipulation operations</span>
+<span class="keyword">local</span> domOps = HTML.client.batch(
+    HTML.client.setText(<span class="string">"#title"</span>, <span class="string">"New Title"</span>),
+    HTML.client.setValue(<span class="string">"#email"</span>, <span class="string">"user@example.com"</span>),
+    HTML.client.addClass(<span class="string">".item"</span>, <span class="string">"active"</span>),
+    HTML.client.show(<span class="string">"#content"</span>),
+    HTML.client.hide(<span class="string">"#loading"</span>)
+)
+
+<span class="comment">-- Storage operations</span>
+<span class="keyword">local</span> storageOps = HTML.client.batch(
+    HTML.client.localSet(<span class="string">"userPreferences"</span>, <span class="string">'{"theme":"dark"}'</span>),
+    HTML.client.sessionSet(<span class="string">"sessionToken"</span>, <span class="string">"abc123"</span>)
+)
+
+<span class="comment">-- Fetch API with success/error handlers</span>
+<span class="keyword">local</span> fetchUser = HTML.client.fetch(
+    <span class="string">"/api/users/123"</span>,
+    { method = <span class="string">"GET"</span> },
+    <span class="string">"json"</span>,
+    HTML.client.setText(<span class="string">"#user-name"</span>, <span class="string">"__VALUE__.name"</span>),
+    HTML.client.console(<span class="string">"error"</span>, <span class="string">"Failed to load user"</span>)
+)
+
+<span class="comment">-- Timer operations</span>
+<span class="keyword">local</span> timerOps = HTML.client.setTimeout(<span class="number">1000</span>, 
+    HTML.client.console(<span class="string">"log"</span>, <span class="string">"1 second passed"</span>)
+)
+
+<span class="comment">-- Conditional execution</span>
+<span class="keyword">local</span> controlFlow = HTML.client.if_(
+    HTML.client.getText(<span class="string">"#status"</span>),
+    HTML.client.addClass(<span class="string">"#container"</span>, <span class="string">"active"</span>),
+    HTML.client.addClass(<span class="string">"#container"</span>, <span class="string">"inactive"</span>)
+)</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Components Section -->
+    <section id="components" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">3</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Component System</h2>
+        </div>
+
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Component Creation Examples</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- Simple counter component</span>
+<span class="keyword">local</span> Counter = HTML.createComponent(<span class="keyword">function</span>(state, props)
+    <span class="keyword">return</span> HTML.e(<span class="string">"div"</span>, { class = <span class="string">"counter"</span> }, {
+        HTML.e(<span class="string">"h2"</span>, {}, <span class="string">"Count: "</span> .. state.count),
+        HTML.e(<span class="string">"button"</span>, {
+            onclick = HTML.on(<span class="string">"click"</span>, HTML.handler(<span class="string">"increment"</span>, props.id))
+        }, <span class="string">"+"</span>),
+        HTML.e(<span class="string">"button"</span>, {
+            onclick = HTML.on(<span class="string">"click"</span>, HTML.handler(<span class="string">"decrement"</span>, props.id))
+        }, <span class="string">"-"</span>)
+    })
+<span class="keyword">end</span>, { count = <span class="number">0</span> })
+
+Counter.methods = {
+    increment = <span class="keyword">function</span>(self)
+        <span class="keyword">return</span> self:setState({ count = self.state.count + <span class="number">1</span> })
+    <span class="keyword">end</span>,
+    decrement = <span class="keyword">function</span>(self)
+        <span class="keyword">return</span> self:setState({ count = self.state.count - <span class="number">1</span> })
+    <span class="keyword">end</span>
 }
 
-<span class="code-keyword">local</span> validationErrors = HTML.validate(schema, invalidData)
-<span class="code-comment">-- validationErrors would contain:</span>
-<span class="code-comment">-- { username = "Invalid format", email = "Invalid format", password = "Invalid format" }</span></code></pre>
-                </div>
+<span class="comment">-- Component communication with HTML.patch</span>
+<span class="keyword">local</span> button = HTML.e(<span class="string">"button"</span>, {
+    onclick = HTML.on(<span class="string">"click"</span>, HTML.patch(
+        <span class="string">"dashboard"</span>, <span class="string">"userProfile"</span>, <span class="string">"refreshData"</span>, userId
+    ))
+}, <span class="string">"Refresh Profile"</span>)</code></pre>
             </div>
+        </div>
+    </section>
 
-            <!-- File Input Components -->
-            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">File Input Components</h3>
-                
-                <table class="method-table">
-                    <thead>
-                        <tr>
-                            <th>Component</th>
-                            <th>Parameters</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>HTML.ImageInput(name, preview_id, attrs)</td>
-                            <td>name: string, preview_id: string?, attrs: table?</td>
-                            <td>Image file input with preview</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.FileInput(name, preview_id, attrs)</td>
-                            <td>name: string, preview_id: string?, attrs: table?</td>
-                            <td>General file input with preview</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.DragDropInput(name, preview_id, attrs)</td>
-                            <td>name: string, preview_id: string?, attrs: table?</td>
-                            <td>Drag & drop file input</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.AudioInput(name, preview_id, attrs)</td>
-                            <td>name: string, preview_id: string?, attrs: table?</td>
-                            <td>Audio file input with preview</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.VideoInput(name, preview_id, attrs)</td>
-                            <td>name: string, preview_id: string?, attrs: table?</td>
-                            <td>Video file input with preview</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.StreamingFileInput(name, accept, ws_id, preview_id, progress_id, chunk_size, attrs)</td>
-                            <td>name: string, accept: string, ws_id: string, preview_id: string?, progress_id: string?, chunk_size: number?, attrs: table?</td>
-                            <td>Large file input with streaming upload</td>
-                        </tr>
-                        <tr>
-                            <td>HTML.FileField(label, input_node, error)</td>
-                            <td>label: string, input_node: VDOMNode, error: string?</td>
-                            <td>Form field wrapper for file inputs</td>
-                        </tr>
-                    </tbody>
-                </table>
+    <!-- Forms & Validation Section -->
+    <section id="forms" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">4</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Forms & Validation</h2>
+        </div>
 
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mt-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">File Input Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Image upload with preview</span>
-<span class="code-keyword">local</span> avatarUpload = HTML.FileField(
-    <span class="code-string">"Profile Picture"</span>,
-    HTML.ImageInput(<span class="code-string">"avatar"</span>, <span class="code-string">"avatar-preview"</span>, {
-        accept = <span class="code-string">"image/*"</span>,
-        required = true,
-        class = <span class="code-string">"file-input"</span>
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Schema & Form Examples</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- Define validation schema</span>
+HTML.setSchema(<span class="string">"userRegistration"</span>, {
+    fields = {
+        { name = <span class="string">"username"</span>, label = <span class="string">"Username"</span>, type = <span class="string">"text"</span>, required = <span class="keyword">true</span> },
+        { name = <span class="string">"email"</span>, label = <span class="string">"Email"</span>, type = <span class="string">"email"</span>, required = <span class="keyword">true</span> },
+        { name = <span class="string">"country"</span>, label = <span class="string">"Country"</span>, type = <span class="string">"select"</span>, options = { <span class="string">"USA"</span>, <span class="string">"Canada"</span> } }
+    }
+})
+
+<span class="comment">-- Generate auto-form</span>
+<span class="keyword">local</span> formData = { username = <span class="string">"johndoe"</span>, email = <span class="string">"john@example.com"</span> }
+<span class="keyword">local</span> errors = HTML.validate(schema, formData)
+<span class="keyword">local</span> registrationForm = HTML.AutoForm(schema, formData, errors)
+
+<span class="comment">-- File input components</span>
+<span class="keyword">local</span> avatarUpload = HTML.FileField(
+    <span class="string">"Profile Picture"</span>,
+    HTML.ImageInput(<span class="string">"avatar"</span>, <span class="string">"avatar-preview"</span>, {
+        accept = <span class="string">"image/*"</span>,
+        required = <span class="keyword">true</span>
     }),
     errors.avatar
-)
-
-<span class="code-comment">-- Multiple file types</span>
-<span class="code-keyword">local</span> mediaUploads = HTML.fragment({
-    HTML.FileField(
-        <span class="code-string">"Audio File"</span>,
-        HTML.AudioInput(<span class="code-string">"audio"</span>, <span class="code-string">"audio-preview"</span>),
-        errors.audio
-    ),
-    HTML.FileField(
-        <span class="code-string">"Video File"</span>,
-        HTML.VideoInput(<span class="code-string">"video"</span>, <span class="code-string">"video-preview"</span>),
-        errors.video
-    ),
-    HTML.FileField(
-        <span class="code-string">"Documents"</span>,
-        HTML.DragDropInput(<span class="code-string">"documents"</span>, <span class="code-string">"doc-preview"</span>),
-        errors.documents
-    )
-})
-
-<span class="code-comment">-- Large file streaming upload</span>
-<span class="code-keyword">local</span> largeVideoUpload = HTML.FileField(
-    <span class="code-string">"Large Video File"</span>,
-    HTML.StreamingFileInput(
-        <span class="code-string">"largeVideo"</span>,
-        <span class="code-string">"video/*"</span>,
-        <span class="code-string">"uploadSocket"</span>,
-        <span class="code-string">"video-preview"</span>,
-        <span class="code-string">"upload-progress"</span>,
-        512 * 1024,  <span class="code-comment">-- 512KB chunks</span>
-        {
-            class = <span class="code-string">"large-file-input"</span>,
-            multiple = true
-        }
-    ),
-    errors.largeVideo
-)
-
-<span class="code-comment">-- Preview elements</span>
-<span class="code-keyword">local</span> previews = HTML.fragment({
-    HTML.e(<span class="code-string">"img"</span>, {
-        id = <span class="code-string">"avatar-preview"</span>,
-        class = <span class="code-string">"hidden mt-2 max-h-32 rounded"</span>
-    }),
-    HTML.e(<span class="code-string">"audio"</span>, {
-        id = <span class="code-string">"audio-preview"</span>,
-        class = <span class="code-string">"hidden mt-2"</span>,
-        controls = true
-    }),
-    HTML.e(<span class="code-string">"video"</span>, {
-        id = <span class="code-string">"video-preview"</span>,
-        class = <span class="code-string">"hidden mt-2 max-h-48"</span>,
-        controls = true
-    }),
-    HTML.e(<span class="code-string">"progress"</span>, {
-        id = <span class="code-string">"upload-progress"</span>,
-        class = <span class="code-string">"hidden mt-2 w-full"</span>,
-        max = 100,
-        value = 0
-    })
-})</code></pre>
-                </div>
+)</code></pre>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Layouts & Rendering Section -->
-        <section id="layouts" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-laser-blue flex items-center justify-center text-white font-bold mr-4">5</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">Layouts & Rendering</h2>
-            </div>
+    <!-- Layouts & Rendering Section -->
+    <section id="layouts" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">5</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Layouts & Rendering</h2>
+        </div>
 
-            <!-- Layout System -->
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Layout System</h3>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">HTML.defineLayout(name, fn)</h4>
-                    <p class="text-light-text-secondary mb-3">Registers a reusable layout template.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Required</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>name</td>
-                                <td>string</td>
-                                <td>Unique layout identifier</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>fn</td>
-                                <td>function</td>
-                                <td>Layout function: function(ctx) return VDOMNode end</td>
-                                <td>Yes</td>
-                            </tr>
-                        </tbody>
-                    </table>
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Layout & App Examples</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">HTML.useLayout(name, ctx)</h4>
-                    <p class="text-light-text-secondary mb-3">Renders a layout with provided context.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Required</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>name</td>
-                                <td>string</td>
-                                <td>Name of registered layout</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>ctx</td>
-                                <td>table</td>
-                                <td>Context with content and slots</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>ctx.content</td>
-                                <td>VDOMNode</td>
-                                <td>Main content for the layout</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>ctx.slots</td>
-                                <td>table?</td>
-                                <td>Named slots {slotName = content}</td>
-                                <td>No</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">HTML.Slot(name, ctx)</h4>
-                    <p class="text-light-text-secondary mb-3">Renders content from named slot.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Required</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>name</td>
-                                <td>string</td>
-                                <td>Slot name to render</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>ctx</td>
-                                <td>table</td>
-                                <td>Layout context containing slots</td>
-                                <td>Yes</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Layout System Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Define a main layout</span>
-HTML.defineLayout(<span class="code-string">"main"</span>, <span class="code-keyword">function</span>(ctx)
-    <span class="code-keyword">return</span> HTML.e(<span class="code-string">"html"</span>, {}, {
-        HTML.e(<span class="code-string">"head"</span>, {}, {
-            HTML.e(<span class="code-string">"title"</span>, {}, ctx.title <span class="code-keyword">or</span> <span class="code-string">"Default Title"</span>),
-            HTML.e(<span class="code-string">"meta"</span>, { charset = <span class="code-string">"utf-8"</span> }),
-            HTML.e(<span class="code-string">"meta"</span>, { 
-                name = <span class="code-string">"viewport"</span>, 
-                content = <span class="code-string">"width=device-width, initial-scale=1.0"</span> 
-            }),
-            HTML.Slot(<span class="code-string">"head"</span>, ctx)
+                <pre><code><span class="comment">-- Define reusable layout</span>
+HTML.defineLayout(<span class="string">"main"</span>, <span class="keyword">function</span>(ctx)
+    <span class="keyword">return</span> HTML.e(<span class="string">"html"</span>, {}, {
+        HTML.e(<span class="string">"head"</span>, {}, {
+            HTML.e(<span class="string">"title"</span>, {}, ctx.title),
+            HTML.Slot(<span class="string">"head"</span>, ctx)
         }),
-        HTML.e(<span class="code-string">"body"</span>, {}, {
-            HTML.e(<span class="code-string">"header"</span>, { class = <span class="code-string">"header"</span> }, {
-                HTML.e(<span class="code-string">"nav"</span>, {}, {
-                    HTML.e(<span class="code-string">"a"</span>, { href = <span class="code-string">"/"</span> }, <span class="code-string">"Home"</span>),
-                    HTML.e(<span class="code-string">"a"</span>, { href = <span class="code-string">"/about"</span> }, <span class="code-string">"About"</span>),
-                    HTML.Slot(<span class="code-string">"navigation"</span>, ctx)
-                })
-            }),
-            HTML.e(<span class="code-string">"main"</span>, { class = <span class="code-string">"main-content"</span> }, {
-                ctx.content
-            }),
-            HTML.e(<span class="code-string">"footer"</span>, { class = <span class="code-string">"footer"</span> }, {
-                HTML.Slot(<span class="code-string">"footer"</span>, ctx)
-            })
+        HTML.e(<span class="string">"body"</span>, {}, {
+            HTML.e(<span class="string">"header"</span>, {}, HTML.Slot(<span class="string">"header"</span>, ctx)),
+            HTML.e(<span class="string">"main"</span>, {}, ctx.content),
+            HTML.e(<span class="string">"footer"</span>, {}, HTML.Slot(<span class="string">"footer"</span>, ctx))
         })
     })
-<span class="code-keyword">end</span>)
+<span class="keyword">end</span>)
 
-<span class="code-comment">-- Use the layout</span>
-<span class="code-keyword">local</span> homePage = HTML.useLayout(<span class="code-string">"main"</span>, {
-    title = <span class="code-string">"Home Page"</span>,
-    content = HTML.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"home"</span> }, {
-        HTML.e(<span class="code-string">"h1"</span>, {}, <span class="code-string">"Welcome to our site!"</span>),
-        HTML.e(<span class="code-string">"p"</span>, {}, <span class="code-string">"This is the home page content."</span>)
-    }),
+<span class="comment">-- Use layout with content</span>
+<span class="keyword">local</span> homePage = HTML.useLayout(<span class="string">"main"</span>, {
+    title = <span class="string">"Home Page"</span>,
+    content = HTML.e(<span class="string">"div"</span>, {}, <span class="string">"Welcome to our site!"</span>),
     slots = {
-        head = HTML.e(<span class="code-string">"link"</span>, { 
-            rel = <span class="code-string">"stylesheet"</span>, 
-            href = <span class="code-string">"/styles.css"</span> 
-        }),
-        navigation = HTML.e(<span class="code-string">"a"</span>, { href = <span class="code-string">"/contact"</span> }, <span class="code-string">"Contact"</span>),
-        footer = HTML.e(<span class="code-string">"p"</span>, {}, <span class="code-string">"© 2023 My Company"</span>)
+        header = HTML.e(<span class="string">"nav"</span>, {}, <span class="string">"Navigation"</span>),
+        footer = HTML.e(<span class="string">"p"</span>, {}, <span class="string">"© 2023"</span>)
     }
 })
 
-<span class="code-comment">-- Define admin layout</span>
-HTML.defineLayout(<span class="code-string">"admin"</span>, <span class="code-keyword">function</span>(ctx)
-    <span class="code-keyword">return</span> HTML.useLayout(<span class="code-string">"main"</span>, {
-        title = (ctx.title <span class="code-keyword">or</span> <span class="code-string">"Admin"</span>) .. <span class="code-string">" | Admin Panel"</span>,
-        content = HTML.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"admin-layout"</span> }, {
-            HTML.e(<span class="code-string">"aside"</span>, { class = <span class="code-string">"sidebar"</span> }, {
-                HTML.e(<span class="code-string">"h3"</span>, {}, <span class="code-string">"Admin Menu"</span>),
-                HTML.e(<span class="code-string">"ul"</span>, {}, {
-                    HTML.e(<span class="code-string">"li"</span>, {}, HTML.e(<span class="code-string">"a"</span>, { href = <span class="code-string">"/admin"</span> }, <span class="code-string">"Dashboard"</span>)),
-                    HTML.e(<span class="code-string">"li"</span>, {}, HTML.e(<span class="code-string">"a"</span>, { href = <span class="code-string">"/admin/users"</span> }, <span class="code-string">"Users"</span>)),
-                    HTML.e(<span class="code-string">"li"</span>, {}, HTML.e(<span class="code-string">"a"</span>, { href = <span class="code-string">"/admin/settings"</span> }, <span class="code-string">"Settings"</span>))
-                })
-            }),
-            HTML.e(<span class="code-string">"section"</span>, { class = <span class="code-string">"admin-content"</span> }, {
-                ctx.content
-            })
-        }),
-        slots = ctx.slots
-    })
-<span class="code-keyword">end</span>)</code></pre>
-                </div>
-            </div>
-
-            <!-- Rendering & App Setup -->
-            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Rendering & App Setup</h3>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">HTML.render(vdom, opts)</h4>
-                    <p class="text-light-text-secondary mb-3">Renders VDOM to HTML string with SSR support.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Required</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>vdom</td>
-                                <td>VDOMNode</td>
-                                <td>Virtual DOM tree to render</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>opts</td>
-                                <td>table?</td>
-                                <td>Rendering options</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>opts.pretty</td>
-                                <td>boolean?</td>
-                                <td>Pretty-print output with indentation</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>opts.indent</td>
-                                <td>string?</td>
-                                <td>Indentation string (default: "  ")</td>
-                                <td>No</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">HTML.App(config)</h4>
-                    <p class="text-light-text-secondary mb-3">Creates complete HTML application with hydration.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Required</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>config</td>
-                                <td>table</td>
-                                <td>Application configuration</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>config.state</td>
-                                <td>table?</td>
-                                <td>Initial application state for hydration</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>config.title</td>
-                                <td>string?</td>
-                                <td>Page title</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>config.children</td>
-                                <td>VDOMNode?</td>
-                                <td>Root application content</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>config.head_extra</td>
-                                <td>VDOMNode?</td>
-                                <td>Additional head content</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>config.body_attrs</td>
-                                <td>table?</td>
-                                <td>Body element attributes</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>config.include_patch_client</td>
-                                <td>boolean?</td>
-                                <td>Include patch client script</td>
-                                <td>No</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Complete App Example</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Complete application setup</span>
-<span class="code-keyword">local</span> app = HTML.App({
-    title = <span class="code-string">"My Reactive Application"</span>,
-    state = {
-        user = {
-            id = <span class="code-string">"user123"</span>,
-            name = <span class="code-string">"John Doe"</span>,
-            email = <span class="code-string">"john@example.com"</span>,
-            preferences = {
-                theme = <span class="code-string">"dark"</span>,
-                notifications = true
-            }
-        },
-        items = {
-            { id = 1, name = <span class="code-string">"Item 1"</span>, completed = false },
-            { id = 2, name = <span class="code-string">"Item 2"</span>, completed = true },
-            { id = 3, name = <span class="code-string">"Item 3"</span>, completed = false }
-        },
-        ui = {
-            loading = false,
-            currentView = <span class="code-string">"dashboard"</span>
-        }
-    },
-    head_extra = HTML.fragment({
-        HTML.e(<span class="code-string">"meta"</span>, { name = <span class="code-string">"description"</span>, content = <span class="code-string">"My awesome app"</span> }),
-        HTML.e(<span class="code-string">"link"</span>, { rel = <span class="code-string">"preconnect"</span>, href = <span class="code-string">"https://fonts.googleapis.com"</span> }),
-        HTML.e(<span class="code-string">"style"</span>, {}, <span class="code-string">[[
-            .loading { opacity: 0.5; pointer-events: none; }
-            .error { color: red; border: 1px solid red; }
-        ]]</span>)
-    }),
-    body_attrs = {
-        class = <span class="code-string">"app-body"</span>,
-        onload = <span class="code-string">"console.log('App loaded')"</span>
-    },
-    children = HTML.useLayout(<span class="code-string">"main"</span>, {
-        title = <span class="code-string">"Dashboard"</span>,
-        content = HTML.fragment({
-            HTML.Component(<span class="code-string">"userProfile"</span>, { userId = <span class="code-string">"user123"</span> }),
-            HTML.Component(<span class="code-string">"todoList"</span>, { items = <span class="code-string">"state.items"</span> }),
-            HTML.Component(<span class="code-string">"recentActivity"</span>, { limit = 10 })
-        }),
-        slots = {
-            navigation = HTML.fragment({
-                HTML.e(<span class="code-string">"a"</span>, { href = <span class="code-string">"/dashboard"</span>, class = <span class="code-string">"nav-link active"</span> }, <span class="code-string">"Dashboard"</span>),
-                HTML.e(<span class="code-string">"a"</span>, { href = <span class="code-string">"/profile"</span>, class = <span class="code-string">"nav-link"</span> }, <span class="code-string">"Profile"</span>),
-                HTML.e(<span class="code-string">"a"</span>, { href = <span class="code-string">"/settings"</span>, class = <span class="code-string">"nav-link"</span> }, <span class="code-string">"Settings"</span>)
-            }),
-            footer = HTML.e(<span class="code-string">"div"</span>, { class = <span class="code-string">"footer-content"</span> }, {
-                HTML.e(<span class="code-string">"p"</span>, {}, <span class="code-string">"© 2023 My App. All rights reserved."</span>),
-                HTML.e(<span class="code-string">"p"</span>, {}, HTML.bindText(<span class="code-string">"version"</span>, <span class="code-string">"1.0.0"</span>))
-            })
-        }
-    })
+<span class="comment">-- Complete application</span>
+<span class="keyword">local</span> app = HTML.App({
+    title = <span class="string">"My App"</span>,
+    state = { user = { name = <span class="string">"John"</span> } },
+    children = homePage
 })
 
-<span class="code-comment">-- Render to HTML for SSR</span>
-<span class="code-keyword">local</span> htmlOutput = HTML.render(app, {
-    pretty = true,
-    indent = <span class="code-string">"  "</span>
-})
-
-<span class="code-comment">-- Output can be served directly</span>
-<span class="code-keyword">return</span> htmlOutput</code></pre>
-                </div>
+<span class="keyword">local</span> htmlOutput = HTML.render(app, { pretty = <span class="keyword">true</span> })
+<span class="keyword">return</span> htmlOutput</code></pre>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Footer -->
-        <footer class="mt-12 pt-8 border-t border-light-border text-center text-light-text-secondary">
-            <p>Dawn Framework LuaHTMLReactive &copy; 2023 - Complete Documentation</p>
-            <div class="flex justify-center space-x-4 mt-4">
-                <a href="#" class="text-laser-blue hover:underline">API Reference</a>
-                <a href="#" class="text-laser-blue hover:underline">Examples</a>
-                <a href="#" class="text-laser-blue hover:underline">GitHub</a>
-                <a href="#" class="text-laser-blue hover:underline">Community</a>
-            </div>
-        </footer>
-    </main>
+    <!-- Footer -->
+    <footer class="mt-12 pt-8 border-t text-center" style="border-color: var(--doc-border); color: var(--doc-text-secondary);">
+        <p>Dawn Framework LuaHTMLReactive © 2023 - Complete Documentation</p>
+        <div class="flex justify-center space-x-4 mt-4">
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">API Reference</a>
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">Examples</a>
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">GitHub</a>
+        </div>
+    </footer>
+</main>
 
-    <script>
-        // Copy code functionality
-        document.querySelectorAll('.copy-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const codeBlock = this.closest('.code-block').querySelector('pre code');
-                const textToCopy = codeBlock.textContent;
-                
-                navigator.clipboard.writeText(textToCopy).then(() => {
-                    const originalText = this.innerHTML;
-                    this.innerHTML = '<i class="fas fa-check mr-1"></i>Copied!';
-                    
-                    setTimeout(() => {
-                        this.innerHTML = originalText;
-                    }, 2000);
-                });
-            });
-        });
+<script>
+// Copy code functionality
+function copyCode(button) {
+    const codeBlock = button.closest('.code-block');
+    const code = codeBlock.querySelector('pre code');
+    const text = code.textContent;
+    
+    navigator.clipboard.writeText(text).then(() => {
+        const originalHTML = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        setTimeout(() => {
+            button.innerHTML = originalHTML;
+        }, 2000);
+    });
+}
+
+// Back to Top button
+const backToTop = document.createElement('button');
+backToTop.innerHTML = '<i class="fas fa-arrow-up"></i>';
+backToTop.className = 'back-to-top';
+document.body.appendChild(backToTop);
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+        backToTop.classList.add('visible');
+    } else {
+        backToTop.classList.remove('visible');
+    }
+});
+
+backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
         
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
+        const target = document.querySelector(targetId);
+        if (target) {
+            e.preventDefault();
+            const offset = 80;
+            const elementPosition = target.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - offset;
+            
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
             });
-        });
-    </script>
+        }
+    });
+});
+
+// Observe theme changes
+const observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+        if (mutation.attributeName === 'class') {
+            console.log('Theme updated');
+        }
+    });
+});
+
+observer.observe(document.body, { attributes: true });
+</script>

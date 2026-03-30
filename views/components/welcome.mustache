@@ -1,6 +1,64 @@
 <style>
+  /* Theme Variables - Light Mode Default */
+  :root {
+    --bg-primary: #FBFBFF;
+    --bg-secondary: #FFFFFF;
+    --text-primary: #1A1A2E;
+    --text-secondary: #4A5568;
+    --text-tertiary: #718096;
+    --border-color: #E0E5EC;
+    --card-bg: #FFFFFF;
+    --hover-bg: #F7F9FC;
+    --gradient-start: #0066FF;
+    --gradient-middle: #00CC88;
+    --gradient-end: #8A2BE2;
+    --gradient-bg-start: rgba(0, 102, 255, 0.05);
+    --gradient-bg-end: rgba(138, 43, 226, 0.05);
+    --header-bg: rgba(255, 255, 255, 0.8);
+    --button-secondary-bg: #F7F9FC;
+    --button-secondary-border: #E0E5EC;
+    --button-secondary-text: #1A1A2E;
+  }
+
+  /* Dark Theme */
+  body.dark-theme {
+    --bg-primary: #0A0A0F;
+    --bg-secondary: #151520;
+    --text-primary: #E0E5EC;
+    --text-secondary: #A0A5B5;
+    --text-tertiary: #6A737D;
+    --border-color: #2A2A3A;
+    --card-bg: #1F1F2E;
+    --hover-bg: #2A2A3A;
+    --gradient-start: #0066FF;
+    --gradient-middle: #00CC88;
+    --gradient-end: #8A2BE2;
+    --gradient-bg-start: rgba(0, 102, 255, 0.1);
+    --gradient-bg-end: rgba(138, 43, 226, 0.1);
+    --header-bg: rgba(10, 10, 15, 0.8);
+    --button-secondary-bg: #2A2A3A;
+    --button-secondary-border: #3A3A4A;
+    --button-secondary-text: #E0E5EC;
+  }
+
+  /* Base Styles */
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Smooth transitions for theme switching */
+  *, *::before, *::after {
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  /* Gradient Text Animation */
   .gradient-text {
-    background: linear-gradient(135deg, #0066FF, #00CC88, #8A2BE2);
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-middle), var(--gradient-end));
     background-size: 200% 200%;
     animation: gradient 8s ease infinite;
     -webkit-background-clip: text;
@@ -13,24 +71,263 @@
     50% { background-position: 100% 50%; }
   }
 
-  /* Smooth theme transitions */
-  body, .theme-transition {
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  /* Container */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  /* Header Styles */
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    padding: 1.5rem 0;
+    transition: all 0.3s ease;
+    background-color: var(--header-bg);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  /* Hero Section */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding-top: 5rem;
+  }
+
+  /* Background Gradient */
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--gradient-bg-start), transparent, var(--gradient-bg-end));
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Content Container */
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+  }
+
+  /* Slogan Grid */
+  .slogan-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .slogan-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .slogan-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .dot-blue { background-color: var(--gradient-start); }
+  .dot-green { background-color: var(--gradient-middle); }
+  .dot-purple { background-color: var(--gradient-end); }
+  .dot-yellow { background-color: #FFB300; }
+
+  .slogan-text {
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  /* Button Styles */
+  .btn {
+    padding: 1rem 2rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    font-size: 1.125rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    border: none;
+    text-decoration: none;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 102, 255, 0.2);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(0, 102, 255, 0.3);
+  }
+
+  .btn-secondary {
+    background-color: var(--button-secondary-bg);
+    border: 1px solid var(--button-secondary-border);
+    color: var(--button-secondary-text);
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--hover-bg);
+    transform: translateY(-2px);
+  }
+
+  .btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+
+  /* Theme Toggle Button */
+  .theme-toggle {
+    background-color: var(--button-secondary-bg);
+    border: 1px solid var(--button-secondary-border);
+    color: var(--button-secondary-text);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .theme-toggle:hover {
+    background-color: var(--hover-bg);
+    transform: translateY(-1px);
+  }
+
+  /* Logo */
+  .logo {
+    width: 2.5rem;
+    height: 2.5rem;
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 1.25rem;
+  }
+
+  .logo-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--text-primary);
+  }
+
+  /* Header Container */
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  /* Tagline */
+  .tagline {
+    font-size: 1.125rem;
+    font-style: italic;
+    color: var(--text-tertiary);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .gradient-text {
+      font-size: 2.5rem;
+    }
+    
+    .hero-content p {
+      font-size: 1.125rem;
+    }
+    
+    .btn {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+    }
+    
+    .slogan-grid {
+      gap: 1rem;
+    }
+    
+    .slogan-text {
+      font-size: 0.875rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .gradient-text {
+      font-size: 2rem;
+    }
+    
+    .btn-group {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--border-color);
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, var(--gradient-end), var(--gradient-start));
   }
 </style>
 
-<div class="bg-[#0A0A0F] text-[#E0E5EC] font-sans transition-all duration-300">
+<div class="hero">
+  <div class="hero-bg"></div>
+  
   <!-- Header -->
-  <header class="fixed top-0 left-0 right-0 z-50 py-6 transition-all duration-300">
-    <div class="container mx-auto px-4">
-      <div class="flex justify-between items-center">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 bg-gradient-to-br from-[#0066FF] to-[#8A2BE2] rounded-lg flex items-center justify-center text-white font-bold">
+  <header class="header">
+    <div class="container">
+      <div class="header-container">
+        <div class="logo-wrapper">
+          <div class="logo">
             Q
           </div>
-          <span class="text-2xl font-bold dark:text-[#E0E5EC] text-[#1A1A2E]">QoLeng</span>
+          <span class="logo-text">QoLeng</span>
         </div>
-        <button onclick="toggleTheme()" class="bg-[#151520] dark:bg-white/10 border border-[#2A2A3A] dark:border-white/20 text-[#E0E5EC] dark:text-[#E0E5EC] px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-[#2A2A3A] dark:hover:bg-white/20 transition-all duration-300">
+        <button onclick="toggleTheme()" class="theme-toggle" id="themeToggleBtn">
           <i class="fas fa-moon"></i>
           <span>Dark Theme</span>
         </button>
@@ -38,64 +335,125 @@
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="min-h-screen flex items-center relative overflow-hidden pt-20 transition-all duration-300">
-    <!-- Background gradients (non-blocking now) -->
-    <div class="absolute inset-0 bg-gradient-to-br from-[#0066FF]/5 via-transparent to-[#8A2BE2]/5 dark:from-[#0066FF]/10 dark:to-[#8A2BE2]/10 pointer-events-none z-0"></div>
+  <!-- Hero Content -->
+  <div class="hero-content container">
+    <!-- Headline -->
+    <h1 class="gradient-text" style="font-size: 3.5rem; font-weight: 800; margin-bottom: 1.5rem;">
+      Build Bold.<br>Run Fast.<br>Scale Wild.
+    </h1>
 
-    <!-- Foreground content -->
-    <div class="relative z-10 container mx-auto px-4 text-center">
-      <!-- Headline -->
-      <h1 class="text-5xl md:text-6xl font-black mb-6 gradient-text">
-        Build Bold.<br>Run Fast.<br>Scale Wild.
-      </h1>
+    <!-- Subheadline -->
+    <p class="subheadline" style="font-size: 1.25rem; color: var(--text-secondary); margin-bottom: 2rem; max-width: 48rem; margin-left: auto; margin-right: auto; line-height: 1.6;">
+      QoLeng is a developer's web framework forged for power, precision, and performance. 
+      It delivers speed performance, strength, stability, and wild efficiency.
+    </p>
 
-      <!-- Subheadline -->
-      <p class="text-xl md:text-2xl dark:text-[#E0E5EC]/80 text-[#4A5568] mb-8 max-w-3xl mx-auto leading-relaxed transition-all duration-300">
-        QoLeng is a developer's web framework forged for power, precision, and performance. 
-        It delivers speed performance, strength, stability, and wild efficiency.
-      </p>
-
-      <!-- Slogan Grid -->
-      <div class="flex flex-wrap justify-center gap-6 mb-8 transition-all duration-300">
-        <div class="flex items-center gap-2">
-          <div class="w-2 h-2 bg-[#0066FF] rounded-full"></div>
-          <span class="font-semibold dark:text-[#E0E5EC] text-[#1A1A2E]">Strength</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <div class="w-2 h-2 bg-[#00CC88] rounded-full"></div>
-          <span class="font-semibold dark:text-[#E0E5EC] text-[#1A1A2E]">Stability</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <div class="w-2 h-2 bg-[#8A2BE2] rounded-full"></div>
-          <span class="font-semibold dark:text-[#E0E5EC] text-[#1A1A2E]">Speed</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <div class="w-2 h-2 bg-[#FFB300] rounded-full"></div>
-          <span class="font-semibold dark:text-[#E0E5EC] text-[#1A1A2E]">Wild Efficiency</span>
-        </div>
+    <!-- Slogan Grid -->
+    <div class="slogan-grid">
+      <div class="slogan-item">
+        <div class="slogan-dot dot-blue"></div>
+        <span class="slogan-text">Strength</span>
       </div>
-
-      <!-- CTA Buttons -->
-      <div class="flex flex-wrap justify-center gap-4 mb-12">
-        <button class="bg-[#0066FF] text-white px-8 py-4 rounded-lg font-semibold text-lg hover:shadow-2xl hover:shadow-[#0066FF]/30 hover:-translate-y-1 transition-all duration-300 flex items-center gap-3">
-          <i class="fas fa-bolt"></i>
-          Get Started →
-        </button>
-        <button class="bg-[#151520] dark:bg-white/10 border border-[#2A2A3A] dark:border-white/20 text-[#E0E5EC] dark:text-[#E0E5EC] px-8 py-4 rounded-lg font-semibold text-lg hover:bg-[#2A2A3A] dark:hover:bg-white/20 hover:-translate-y-1 transition-all duration-300 flex items-center gap-3">
-          <i class="fas fa-book"></i>
-          View Docs
-        </button>
-        <button class="bg-[#151520] dark:bg-white/10 border border-[#2A2A3A] dark:border-white/20 text-[#E0E5EC] dark:text-[#E0E5EC] px-8 py-4 rounded-lg font-semibold text-lg hover:bg-[#2A2A3A] dark:hover:bg-white/20 hover:-translate-y-1 transition-all duration-300 flex items-center gap-3">
-          <i class="fab fa-github"></i>
-          GitHub
-        </button>
+      <div class="slogan-item">
+        <div class="slogan-dot dot-green"></div>
+        <span class="slogan-text">Stability</span>
       </div>
-
-      <!-- Tagline -->
-      <p class="text-lg dark:text-[#E0E5EC]/60 text-[#718096] italic transition-all duration-300">
-        "Engineered for builders. Optimized for performance. Built for Wild Efficiency."
-      </p>
+      <div class="slogan-item">
+        <div class="slogan-dot dot-purple"></div>
+        <span class="slogan-text">Speed</span>
+      </div>
+      <div class="slogan-item">
+        <div class="slogan-dot dot-yellow"></div>
+        <span class="slogan-text">Wild Efficiency</span>
+      </div>
     </div>
-  </section>
+
+    <!-- CTA Buttons -->
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="window.location.href='/web/setup'">
+        <i class="fas fa-bolt"></i>
+        Get Started →
+      </button>
+      <button class="btn btn-secondary" onclick="window.location.href='/web'">
+        <i class="fas fa-book"></i>
+        View Docs
+      </button>
+      <button class="btn btn-secondary" onclick="window.open('https://github.com', '_blank')">
+        <i class="fab fa-github"></i>
+        GitHub
+      </button>
+    </div>
+
+    <!-- Tagline -->
+    <p class="tagline">
+      "Engineered for builders. Optimized for performance. Built for Wild Efficiency."
+    </p>
+  </div>
 </div>
+
+<script>
+// Theme toggle functionality
+function toggleTheme() {
+  const body = document.body;
+  const themeToggleBtn = document.getElementById('themeToggleBtn');
+  const icon = themeToggleBtn.querySelector('i');
+  const text = themeToggleBtn.querySelector('span');
+  
+  if (body.classList.contains('dark-theme')) {
+    body.classList.remove('dark-theme');
+    icon.classList.remove('fa-sun');
+    icon.classList.add('fa-moon');
+    text.textContent = 'Dark Theme';
+    localStorage.setItem('theme', 'light');
+  } else {
+    body.classList.add('dark-theme');
+    icon.classList.remove('fa-moon');
+    icon.classList.add('fa-sun');
+    text.textContent = 'Light Theme';
+    localStorage.setItem('theme', 'dark');
+  }
+}
+
+// Load saved theme
+function loadTheme() {
+  const savedTheme = localStorage.getItem('theme');
+  const body = document.body;
+  const themeToggleBtn = document.getElementById('themeToggleBtn');
+  
+  if (savedTheme === 'dark') {
+    body.classList.add('dark-theme');
+    if (themeToggleBtn) {
+      const icon = themeToggleBtn.querySelector('i');
+      const text = themeToggleBtn.querySelector('span');
+      icon.classList.remove('fa-moon');
+      icon.classList.add('fa-sun');
+      text.textContent = 'Light Theme';
+    }
+  } else {
+    body.classList.remove('dark-theme');
+    if (themeToggleBtn) {
+      const icon = themeToggleBtn.querySelector('i');
+      const text = themeToggleBtn.querySelector('span');
+      icon.classList.remove('fa-sun');
+      icon.classList.add('fa-moon');
+      text.textContent = 'Dark Theme';
+    }
+  }
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+  loadTheme();
+  
+  // Add scroll effect to header
+  const header = document.querySelector('.header');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+      header.style.padding = '1rem 0';
+      header.style.backgroundColor = 'var(--header-bg)';
+    } else {
+      header.style.padding = '1.5rem 0';
+    }
+  });
+});
+</script>

@@ -1,310 +1,484 @@
-
-    <style>
-        .code-block {
-            background: #0A0A0F;
-            border-left: 4px solid #0066FF;
+<style>
+    /* Dawn Database Setup - Integrated Theme System */
+    
+    /* Theme Variables */
+    .main-content-body {
+        --doc-bg: #FFFFFF;
+        --doc-text: #2A2A3A;
+        --doc-text-secondary: #5A6578;
+        --doc-border: #E0E5EC;
+        --doc-card-bg: #FFFFFF;
+        --doc-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        --doc-code-bg: #1E1E2E;
+        --doc-code-text: #E0E5EC;
+        --doc-code-comment: #6A737D;
+        --doc-code-keyword: #00CC88;
+        --doc-code-string: #8A2BE2;
+        --doc-code-function: #0066FF;
+        --doc-code-number: #FFB300;
+        --doc-code-variable: #8A2BE2;
+        --doc-code-type: #FFB300;
+        --doc-signature-bg: #F0F4F8;
+        --doc-warning-bg: #FEF3C7;
+        --doc-warning-border: #F59E0B;
+        --doc-info-bg: #DBEAFE;
+        --doc-info-border: #3B82F6;
+        --doc-success-bg: #D1FAE5;
+        --doc-success-border: #10B981;
+        --doc-badge-blue: #DBEAFE;
+        --doc-badge-green: #D1FAE5;
+        --doc-badge-purple: #EDE9FE;
+    }
+    
+    body.dark-theme .main-content-body {
+        --doc-bg: #151520;
+        --doc-text: #E0E5EC;
+        --doc-text-secondary: #A0A5B5;
+        --doc-border: #2A2A3A;
+        --doc-card-bg: #1F1F2E;
+        --doc-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        --doc-code-bg: #0A0A0F;
+        --doc-code-text: #E0E5EC;
+        --doc-code-comment: #6A737D;
+        --doc-code-keyword: #00CC88;
+        --doc-code-string: #8A2BE2;
+        --doc-code-function: #0066FF;
+        --doc-code-number: #FFB300;
+        --doc-code-variable: #8A2BE2;
+        --doc-code-type: #FFB300;
+        --doc-signature-bg: #2A2A3A;
+        --doc-warning-bg: #78350F;
+        --doc-warning-border: #F59E0B;
+        --doc-info-bg: #1E3A8A;
+        --doc-info-border: #3B82F6;
+        --doc-success-bg: #064E3B;
+        --doc-success-border: #10B981;
+        --doc-badge-blue: #1E3A8A;
+        --doc-badge-green: #064E3B;
+        --doc-badge-purple: #4C1D95;
+    }
+    
+    .main-content-body {
+        background-color: var(--doc-bg);
+        color: var(--doc-text);
+        transition: all 0.3s ease;
+    }
+    
+    /* Feature Cards */
+    .feature-card {
+        background: var(--doc-card-bg);
+        border-radius: 16px;
+        padding: 1.5rem;
+        border: 1px solid var(--doc-border);
+        transition: all 0.3s ease;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--laser-blue);
+        box-shadow: 0 10px 25px -5px rgba(0, 102, 255, 0.2);
+    }
+    
+    /* Code Blocks */
+    .code-block {
+        background: var(--doc-code-bg);
+        border-radius: 12px;
+        margin: 1.5rem 0;
+        overflow: hidden;
+        position: relative;
+        border: 1px solid var(--doc-border);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .code-block:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .code-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(138, 43, 226, 0.1));
+        border-bottom: 1px solid var(--doc-border);
+    }
+    
+    .code-language {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--doc-text-secondary);
+    }
+    
+    .copy-btn {
+        background: rgba(0, 102, 255, 0.2);
+        color: var(--doc-text);
+        border: none;
+        padding: 0.25rem 0.75rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .copy-btn:hover {
+        background: rgba(0, 102, 255, 0.4);
+        transform: scale(1.05);
+    }
+    
+    .code-block pre {
+        margin: 0;
+        padding: 1.5rem;
+        overflow-x: auto;
+        font-family: 'Fira Code', 'Courier New', monospace;
+        font-size: 0.875rem;
+        line-height: 1.6;
+    }
+    
+    .code-block code {
+        font-family: 'Fira Code', 'Courier New', monospace;
+        color: var(--doc-code-text);
+    }
+    
+    /* Syntax Highlighting */
+    .code-block code .keyword {
+        color: var(--doc-code-keyword);
+        font-weight: 500;
+    }
+    
+    .code-block code .string {
+        color: var(--doc-code-string);
+    }
+    
+    .code-block code .function {
+        color: var(--doc-code-function);
+    }
+    
+    .code-block code .number {
+        color: var(--doc-code-number);
+    }
+    
+    .code-block code .comment {
+        color: var(--doc-code-comment);
+        font-style: italic;
+    }
+    
+    .code-block code .variable {
+        color: var(--doc-code-variable);
+    }
+    
+    .code-block code .type {
+        color: var(--doc-code-type);
+    }
+    
+    /* Section Numbers */
+    .section-number {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--laser-blue), var(--build-green));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        margin-right: 1rem;
+    }
+    
+    /* Function Signatures */
+    .function-signature {
+        background: var(--doc-signature-bg);
+        border-left: 4px solid var(--laser-blue);
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+    
+    /* Warning/Info/Success Boxes */
+    .warning-box, .info-box, .success-box {
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 8px;
+        border-left: 4px solid;
+        transition: all 0.3s ease;
+    }
+    
+    .warning-box {
+        background: var(--doc-warning-bg);
+        border-left-color: var(--doc-warning-border);
+        color: var(--doc-text);
+    }
+    
+    .info-box {
+        background: var(--doc-info-bg);
+        border-left-color: var(--doc-info-border);
+        color: var(--doc-text);
+    }
+    
+    .success-box {
+        background: var(--doc-success-bg);
+        border-left-color: var(--doc-success-border);
+        color: var(--doc-text);
+    }
+    
+    /* Step Number */
+    .step-number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        height: 2rem;
+        background: linear-gradient(135deg, var(--laser-blue), var(--build-green));
+        color: white;
+        border-radius: 50%;
+        font-weight: bold;
+        margin-right: 0.75rem;
+    }
+    
+    /* Back to Top Button */
+    .back-to-top {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--laser-blue), var(--build-green));
+        color: white;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+    }
+    
+    .back-to-top.visible {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .back-to-top:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
         }
-        
-        .light-theme .code-block {
-            background: #F7F9FC;
-            border-left: 4px solid #0066FF;
-            color: #2A2A3A;
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
-        
-        .code-keyword {
-            color: #0066FF;
-        }
-        
-        .code-string {
-            color: #00CC88;
-        }
-        
-        .code-comment {
-            color: #6A737D;
-        }
-        
-        .light-theme .code-comment {
-            color: #9AA5B5;
-        }
-        
-        .code-variable {
-            color: #8A2BE2;
-        }
-        
-        .code-type {
-            color: #FFB300;
-        }
-        
-        .code-block::-webkit-scrollbar {
-            height: 8px;
-        }
-        
-        .code-block::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 4px;
-        }
-        
-        .code-block::-webkit-scrollbar-thumb {
-            background: rgba(0, 102, 255, 0.5);
-            border-radius: 4px;
-        }
-        
-        .code-block::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 102, 255, 0.7);
-        }
-        
-        .nav-link {
-            position: relative;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #00CC88, #8A2BE2);
-            transition: width 0.3s ease;
-        }
-        
-        .nav-link:hover::after {
-            width: 100%;
-        }
-        
+    }
+    
+    .animate-fadeIn {
+        animation: fadeIn 0.6s ease-out;
+    }
+    
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: var(--doc-border);
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));
+        border-radius: 10px;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
         .feature-card {
-            transition: all 0.3s ease;
+            padding: 1rem;
         }
         
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        .section-number {
+            width: 2rem;
+            height: 2rem;
+            font-size: 0.875rem;
+        }
+        
+        .code-block pre {
+            font-size: 0.75rem;
+            padding: 1rem;
         }
         
         .function-signature {
-            background: #F0F4F8;
-            border-left: 4px solid #0066FF;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-radius: 0.5rem;
-        }
-        
-        .param-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0;
-        }
-        
-        .param-table th, .param-table td {
-            padding: 0.75rem;
-            text-align: left;
-            border-bottom: 1px solid #E0E5EC;
-        }
-        
-        .param-table th {
-            background-color: #F7F9FC;
-            font-weight: 600;
-        }
-        
-        .warning-box {
-            background: #fff3cd;
-            border-left: 4px solid #ffc107;
             padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 0.5rem;
         }
-        
-        .info-box {
-            background: #d1ecf1;
-            border-left: 4px solid #17a2b8;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 0.5rem;
-        }
-        
-        .success-box {
-            background: #d1f7c4;
-            border-left: 4px solid #28a745;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 0.5rem;
-        }
-        
-        .step-number {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-            background: #0066FF;
-            color: white;
-            border-radius: 50%;
-            font-weight: bold;
-            margin-right: 12px;
-        }
-    </style>
+    }
+</style>
 
-    <!-- Main Documentation Content -->
-    <main class="main-content-body max-w-7xl mx-auto px-6 py-8 light-theme">
-        <!-- Hero Section -->
-        <section id="prerequisites" class="mb-16 animate-fadeIn">
-            <div class="bg-white rounded-xl shadow-lg p-8 border border-light-border">
-                <h1 class="text-4xl font-bold mb-6 text-neural-charcoal">Dawn Database Setup & Management</h1>
-                <p class="text-xl text-light-text-secondary mb-8">
-                    Complete guide to setting up PostgreSQL, configuring database connections, and managing migrations with Dawn Framework's database manager.
-                </p>
-                
-                <div class="grid md:grid-cols-3 gap-6 mb-8">
-                    <div class="feature-card bg-blue-50 p-6 rounded-lg border border-blue-100">
-                        <div class="w-12 h-12 rounded-full bg-laser-blue flex items-center justify-center text-white mb-4">
-                            <i class="fas fa-database"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 text-laser-blue">PostgreSQL Setup</h3>
-                        <p class="text-light-text-secondary text-sm">Install, configure, and secure your PostgreSQL database</p>
+<!-- Main Documentation Content -->
+<main class="main-content-body max-w-7xl mx-auto px-6 py-8">
+    <!-- Hero Section -->
+    <section id="prerequisites" class="mb-16 animate-fadeIn">
+        <div class="rounded-xl p-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <h1 class="text-4xl font-bold mb-6" style="background: linear-gradient(135deg, var(--laser-blue), var(--build-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                Dawn Database Setup & Management
+            </h1>
+            <p class="text-xl mb-8" style="color: var(--doc-text-secondary);">
+                Complete guide to setting up PostgreSQL, configuring database connections, and managing migrations with Dawn Framework's database manager.
+            </p>
+            
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <div class="feature-card">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center text-white mb-4" style="background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));">
+                        <i class="fas fa-database"></i>
                     </div>
-                    
-                    <div class="feature-card bg-green-50 p-6 rounded-lg border border-green-100">
-                        <div class="w-12 h-12 rounded-full bg-build-green flex items-center justify-center text-white mb-4">
-                            <i class="fas fa-cogs"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 text-build-green">Environment Config</h3>
-                        <p class="text-light-text-secondary text-sm">Configure database connections for different environments</p>
-                    </div>
-                    
-                    <div class="feature-card bg-purple-50 p-6 rounded-lg border border-purple-100">
-                        <div class="w-12 h-12 rounded-full bg-query-purple flex items-center justify-center text-white mb-4">
-                            <i class="fas fa-code-branch"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 text-query-purple">Migrations</h3>
-                        <p class="text-light-text-secondary text-sm">Generate and run database migrations safely</p>
-                    </div>
+                    <h3 class="text-xl font-bold mb-2" style="color: var(--doc-text);">PostgreSQL Setup</h3>
+                    <p class="text-sm" style="color: var(--doc-text-secondary);">Install, configure, and secure your PostgreSQL database</p>
                 </div>
                 
-                <div class="warning-box">
-                    <h4 class="font-bold text-lg mb-2"><i class="fas fa-exclamation-triangle mr-2"></i>Before You Begin</h4>
-                    <p>This guide assumes you have administrative access to your system and basic familiarity with command-line operations. Some steps may require <code>sudo</code> privileges.</p>
+                <div class="feature-card">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center text-white mb-4" style="background: linear-gradient(135deg, var(--build-green), var(--query-purple));">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2" style="color: var(--doc-text);">Environment Config</h3>
+                    <p class="text-sm" style="color: var(--doc-text-secondary);">Configure database connections for different environments</p>
                 </div>
-            </div>
-        </section>
-
-        <!-- PostgreSQL Setup Section -->
-        <section id="postgresql-setup" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-laser-blue flex items-center justify-center text-white font-bold mr-4">1</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">PostgreSQL Installation & Setup</h2>
+                
+                <div class="feature-card">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center text-white mb-4" style="background: linear-gradient(135deg, var(--query-purple), var(--warning-amber));">
+                        <i class="fas fa-code-branch"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2" style="color: var(--doc-text);">Migrations</h3>
+                    <p class="text-sm" style="color: var(--doc-text-secondary);">Generate and run database migrations safely</p>
+                </div>
             </div>
             
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Step 1: Install PostgreSQL</h3>
-                <p class="text-light-text-secondary mb-6">
-                    First, ensure PostgreSQL is installed on your system. Installation methods vary by operating system.
-                </p>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Installation Commands</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment"># Ubuntu/Debian</span>
+            <div class="warning-box">
+                <h4 class="font-bold text-lg mb-2"><i class="fas fa-exclamation-triangle mr-2"></i>Before You Begin</h4>
+                <p>This guide assumes you have administrative access to your system and basic familiarity with command-line operations. Some steps may require <code>sudo</code> privileges.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PostgreSQL Setup Section -->
+    <section id="postgresql-setup" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">1</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">PostgreSQL Installation & Setup</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 mb-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">Step 1: Install PostgreSQL</h4>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">First, ensure PostgreSQL is installed on your system. Installation methods vary by operating system.</p>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fas fa-terminal"></i> Bash - Installation Commands</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment"># Ubuntu/Debian</span>
 sudo apt update
 sudo apt install postgresql postgresql-contrib
 
-<span class="code-comment"># CentOS/RHEL</span>
+<span class="comment"># CentOS/RHEL</span>
 sudo yum install postgresql-server postgresql-contrib
 sudo postgresql-setup initdb
 
-<span class="code-comment"># macOS (Homebrew)</span>
+<span class="comment"># macOS (Homebrew)</span>
 brew install postgresql
 brew services start postgresql
 
-<span class="code-comment"># Windows - Download from https://www.postgresql.org/download/windows/</span></code></pre>
+<span class="comment"># Windows - Download from https://www.postgresql.org/download/windows/</span></code></pre>
+            </div>
+            
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">Step 2: Start PostgreSQL Service</h4>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fas fa-terminal"></i> Bash - Start Service</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">Step 2: Start PostgreSQL Service</h4>
-                    <p class="text-light-text-secondary mb-3">Start the PostgreSQL service and enable it to run on system boot.</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Start PostgreSQL Service</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment"># Linux (Systemd)</span>
+                <pre><code><span class="comment"># Linux (Systemd)</span>
 sudo systemctl start postgresql
 sudo systemctl enable postgresql
-
-<span class="code-comment"># Check status</span>
 sudo systemctl status postgresql
 
-<span class="code-comment"># macOS (Homebrew)</span>
+<span class="comment"># macOS (Homebrew)</span>
 brew services start postgresql
 
-<span class="code-comment"># Windows - Start from Services Manager or use pg_ctl</span>
+<span class="comment"># Windows - Start from Services Manager or use pg_ctl</span>
 pg_ctl -D "C:\Program Files\PostgreSQL\15\data" start</code></pre>
+            </div>
+            
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">Step 3: Create Database Administrator User</h4>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fas fa-database"></i> SQL - Create Admin User</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">Step 3: Create Database Administrator User</h4>
-                    <p class="text-light-text-secondary mb-3">Create a superuser with database creation privileges for your application.</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Create Admin User</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment"># Access PostgreSQL as default postgres user</span>
+                <pre><code><span class="comment"># Access PostgreSQL as default postgres user</span>
 sudo -u postgres psql
 
-<span class="code-comment">-- Create a new role with superuser and database creation privileges</span>
+<span class="comment">-- Create a new role with superuser privileges</span>
 CREATE ROLE admin WITH 
   LOGIN 
   SUPERUSER 
   CREATEDB 
   CREATEROLE 
-  PASSWORD '<span class="code-variable">your_secure_password</span>';
+  PASSWORD '<span class="variable">your_secure_password</span>';
 
-<span class="code-comment">-- Verify the role was created</span>
+<span class="comment">-- Verify the role was created</span>
 \du
 
-<span class="code-comment">-- Exit psql</span>
+<span class="comment">-- Exit psql</span>
 \q</code></pre>
+            </div>
+            
+            <div class="info-box">
+                <h4 class="font-bold mb-2"><i class="fas fa-lightbulb mr-2"></i>Security Best Practice</h4>
+                <p>For production environments, create separate users with minimal required privileges instead of using a superuser. Consider creating:</p>
+                <ul class="list-disc list-inside mt-2 ml-4">
+                    <li><strong>Application User:</strong> Basic read/write permissions</li>
+                    <li><strong>Migration User:</strong> DDL permissions for migrations</li>
+                    <li><strong>Backup User:</strong> Read-only permissions for backups</li>
+                </ul>
+            </div>
+            
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">Step 4: Create Application Database</h4>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fas fa-database"></i> SQL - Create Database</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-                
-                <div class="info-box">
-                    <h4 class="font-bold mb-2"><i class="fas fa-lightbulb mr-2"></i>Security Best Practice</h4>
-                    <p>For production environments, create separate users with minimal required privileges instead of using a superuser. Consider creating:</p>
-                    <ul class="list-disc list-inside mt-2 ml-4">
-                        <li><strong>Application User:</strong> Basic read/write permissions</li>
-                        <li><strong>Migration User:</strong> DDL permissions for migrations</li>
-                        <li><strong>Backup User:</strong> Read-only permissions for backups</li>
-                    </ul>
-                </div>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">Step 4: Create Application Database</h4>
-                    <p class="text-light-text-secondary mb-3">Create a dedicated database for your Dawn application.</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Create Database</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment"># Connect as admin user</span>
+                <pre><code><span class="comment"># Connect as admin user</span>
 psql -U admin -h localhost
 
-<span class="code-comment">-- Create your application database</span>
+<span class="comment">-- Create your application database</span>
 CREATE DATABASE myapp_database 
   OWNER admin
   ENCODING 'UTF8'
@@ -312,406 +486,299 @@ CREATE DATABASE myapp_database
   LC_CTYPE 'en_US.UTF-8'
   TEMPLATE template0;
 
-<span class="code-comment">-- Connect to the new database</span>
+<span class="comment">-- Connect to the new database</span>
 \c myapp_database
 
-<span class="code-comment">-- Verify connection and exit</span>
+<span class="comment">-- Verify connection and exit</span>
 \dt
 \q</code></pre>
-                </div>
             </div>
+        </div>
+        
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <h3 class="text-2xl font-bold mb-4" style="color: var(--laser-blue);">Optional: pgAdmin GUI Setup</h3>
             
-            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Optional: pgAdmin GUI Setup</h3>
-                <p class="text-light-text-secondary mb-6">
-                    pgAdmin provides a graphical interface for managing your PostgreSQL databases.
-                </p>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Install pgAdmin</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment"># Ubuntu/Debian</span>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fas fa-terminal"></i> Bash - Install pgAdmin</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment"># Ubuntu/Debian</span>
 sudo apt install pgadmin4
 
-<span class="code-comment"># macOS (Homebrew)</span>
+<span class="comment"># macOS (Homebrew)</span>
 brew install --cask pgadmin4
 
-<span class="code-comment"># Windows - Download from https://www.pgadmin.org/download/</span>
-
-<span class="code-comment"># Or use web version</span>
+<span class="comment"># Or use web version</span>
 sudo apt install pgadmin4-web
 sudo /usr/pgadmin4/bin/setup-web.sh</code></pre>
-                </div>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">Connecting to Database via pgAdmin</h4>
-                    <p class="text-light-text-secondary mb-3">Step-by-step guide to connect pgAdmin to your PostgreSQL database.</p>
-                    
-                    <ol class="list-decimal list-inside ml-4 space-y-2">
-                        <li class="mb-2"><strong>Launch pgAdmin</strong> from your applications or via web browser</li>
-                        <li class="mb-2"><strong>Right-click "Servers"</strong> → <strong>"Register"</strong> → <strong>"Server"</strong></li>
-                        <li class="mb-2"><strong>General Tab:</strong> Enter server name (e.g., "MyApp Development")</li>
-                        <li class="mb-2"><strong>Connection Tab:</strong>
-                            <ul class="list-disc list-inside ml-6 mt-1">
-                                <li>Host: <code>localhost</code> or <code>127.0.0.1</code></li>
-                                <li>Port: <code>5432</code></li>
-                                <li>Maintenance database: <code>postgres</code></li>
-                                <li>Username: <code>admin</code></li>
-                                <li>Password: <code>your_secure_password</code></li>
-                            </ul>
-                        </li>
-                        <li class="mb-2"><strong>Click "Save"</strong> to establish connection</li>
-                    </ol>
-                </div>
-                
-                <div class="success-box">
-                    <h4 class="font-bold mb-2"><i class="fas fa-check-circle mr-2"></i>Connection Test</h4>
-                    <p>Once connected, you should see your database in the object browser. You can expand it to view tables, run queries, and manage database objects visually.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Environment Configuration Section -->
-        <section id="environment-config" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-build-green flex items-center justify-center text-white font-bold mr-4">2</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">Environment Configuration</h2>
             </div>
             
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Database Configuration Files</h3>
-                <p class="text-light-text-secondary mb-6">
-                    Configure your database connections for different environments (development, production, testing).
-                </p>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">Step 5: Update Environment Files</h4>
-                    <p class="text-light-text-secondary mb-3">Create or update your environment configuration files with database connection details.</p>
+            <div class="success-box">
+                <h4 class="font-bold mb-2"><i class="fas fa-check-circle mr-2"></i>Connection Test</h4>
+                <p>Once connected, you should see your database in the object browser. You can expand it to view tables, run queries, and manage database objects visually.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Environment Configuration Section -->
+    <section id="environment-config" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">2</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Environment Configuration</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 mb-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">Step 5: Update Environment Files</h4>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">Create or update your environment configuration files with database connection details.</p>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fas fa-file-alt"></i> dev.env - Development Environment</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">dev.env - Development Environment</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment"># Dawn Framework Development Environment</span>
-<span class="code-comment"># Database Configuration</span>
+                <pre><code><span class="comment"># Dawn Framework Development Environment</span>
 DB_CONFIG={
-  <span class="code-string">"host"</span>: <span class="code-string">"localhost"</span>,
-  <span class="code-string">"port"</span>: 5432,
-  <span class="code-string">"user"</span>: <span class="code-string">"admin"</span>,
-  <span class="code-string">"password"</span>: <span class="code-string">"your_secure_password"</span>,
-  <span class="code-string">"dbname"</span>: <span class="code-string">"myapp_development"</span>,
-  <span class="code-string">"ssl"</span>: false,
-  <span class="code-string">"max_connections"</span>: 20,
-  <span class="code-string">"idle_timeout"</span>: 30000
+  <span class="string">"host"</span>: <span class="string">"localhost"</span>,
+  <span class="string">"port"</span>: <span class="number">5432</span>,
+  <span class="string">"user"</span>: <span class="string">"admin"</span>,
+  <span class="string">"password"</span>: <span class="string">"your_secure_password"</span>,
+  <span class="string">"dbname"</span>: <span class="string">"myapp_development"</span>,
+  <span class="string">"ssl"</span>: false,
+  <span class="string">"max_connections"</span>: <span class="number">20</span>
 }
 
-<span class="code-comment"># Connection string format (alternative)</span>
-DB_CONNECTION_STRING=<span class="code-string">"host=localhost port=5432 user=admin password=your_secure_password dbname=myapp_development sslmode=disable"</span>
+DB_CONNECTION_STRING=<span class="string">"host=localhost port=5432 user=admin password=your_secure_password dbname=myapp_development"</span>
 
-<span class="code-comment"># Application Settings</span>
-APP_PORT=8080
+APP_PORT=<span class="number">8080</span>
 APP_ENV=development
 LOG_LEVEL=debug</code></pre>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fas fa-file-alt"></i> prod.env - Production Environment</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">prod.env - Production Environment</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment"># Dawn Framework Production Environment</span>
-<span class="code-comment"># Database Configuration</span>
+                <pre><code><span class="comment"># Dawn Framework Production Environment</span>
 DB_CONFIG={
-  <span class="code-string">"host"</span>: <span class="code-string">"production-db.example.com"</span>,
-  <span class="code-string">"port"</span>: 5432,
-  <span class="code-string">"user"</span>: <span class="code-string">"myapp_prod_user"</span>,
-  <span class="code-string">"password"</span>: <span class="code-string">"${DB_PASSWORD}"</span>, <span class="code-comment"># Use environment variable for security</span>
-  <span class="code-string">"dbname"</span>: <span class="code-string">"myapp_production"</span>,
-  <span class="code-string">"ssl"</span>: true,
-  <span class="code-string">"ssl_ca"</span>: <span class="code-string">"/path/to/ca-certificate.crt"</span>,
-  <span class="code-string">"max_connections"</span>: 50,
-  <span class="code-string">"idle_timeout"</span>: 30000
+  <span class="string">"host"</span>: <span class="string">"production-db.example.com"</span>,
+  <span class="string">"port"</span>: <span class="number">5432</span>,
+  <span class="string">"user"</span>: <span class="string">"myapp_prod_user"</span>,
+  <span class="string">"password"</span>: <span class="string">"${DB_PASSWORD}"</span>,
+  <span class="string">"dbname"</span>: <span class="string">"myapp_production"</span>,
+  <span class="string">"ssl"</span>: true,
+  <span class="string">"max_connections"</span>: <span class="number">50</span>
 }
 
-<span class="code-comment"># Connection string format</span>
-DB_CONNECTION_STRING=<span class="code-string">"host=production-db.example.com port=5432 user=myapp_prod_user password=${DB_PASSWORD} dbname=myapp_production sslmode=verify-full"</span>
-
-<span class="code-comment"># Application Settings</span>
-APP_PORT=8080
+APP_PORT=<span class="number">8080</span>
 APP_ENV=production
 LOG_LEVEL=info</code></pre>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">test.env - Testing Environment</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment"># Dawn Framework Testing Environment</span>
-DB_CONFIG={
-  <span class="code-string">"host"</span>: <span class="code-string">"localhost"</span>,
-  <span class="code-string">"port"</span>: 5432,
-  <span class="code-string">"user"</span>: <span class="code-string">"admin"</span>,
-  <span class="code-string">"password"</span>: <span class="code-string">"your_secure_password"</span>,
-  <span class="code-string">"dbname"</span>: <span class="code-string">"myapp_test"</span>,
-  <span class="code-string">"ssl"</span>: false,
-  <span class="code-string">"max_connections"</span>: 10
-}
-
-DB_CONNECTION_STRING=<span class="code-string">"host=localhost port=5432 user=admin password=your_secure_password dbname=myapp_test sslmode=disable"</span>
-
-APP_PORT=8081
-APP_ENV=test
-LOG_LEVEL=warn</code></pre>
-                </div>
-                
-                <div class="warning-box mt-6">
-                    <h4 class="font-bold mb-2"><i class="fas fa-shield-alt mr-2"></i>Security Important</h4>
-                    <p>Never commit passwords or sensitive information to version control. Use environment variables for production credentials and ensure your <code>.env</code> files are included in <code>.gitignore</code>.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Migrations Section -->
-        <section id="migrations" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-query-purple flex items-center justify-center text-white font-bold mr-4">3</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">Database Migrations</h2>
             </div>
             
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Model Creation & Migration Workflow</h3>
-                <p class="text-light-text-secondary mb-6">
-                    Learn how to create models and manage database schema changes using Dawn's migration system.
-                </p>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">Step 6: Create Your Data Model</h4>
-                    <p class="text-light-text-secondary mb-3">Define your data structure using Dawn's ORM model system.</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Example: User Model (models/user.lua)</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-keyword">local</span> Model = <span class="code-keyword">require</span>(<span class="code-string">"path.to.model"</span>)
+            <div class="warning-box">
+                <h4 class="font-bold mb-2"><i class="fas fa-shield-alt mr-2"></i>Security Important</h4>
+                <p>Never commit passwords or sensitive information to version control. Use environment variables for production credentials and ensure your <code>.env</code> files are included in <code>.gitignore</code>.</p>
+            </div>
+        </div>
+    </section>
 
-<span class="code-keyword">local</span> User = Model:<span class="code-type">extend</span>(<span class="code-string">"users"</span>, {
-    id = <span class="code-string">"integer"</span>,
-    username = <span class="code-string">"string"</span>,
-    email = <span class="code-string">"string"</span>,
-    password_hash = <span class="code-string">"string"</span>,
-    first_name = <span class="code-string">"string"</span>,
-    last_name = <span class="code-string">"string"</span>,
-    is_active = <span class="code-string">"boolean"</span>,
-    created_at = <span class="code-string">"timestamp"</span>,
-    updated_at = <span class="code-string">"timestamp"</span>
+    <!-- Migrations Section -->
+    <section id="migrations" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">3</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Database Migrations</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">Step 6: Create Your Data Model</h4>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">Define your data structure using Dawn's ORM model system.</p>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - User Model (models/user.lua)</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="keyword">local</span> Model = <span class="keyword">require</span>(<span class="string">"path.to.model"</span>)
+
+<span class="keyword">local</span> User = Model:<span class="function">extend</span>(<span class="string">"users"</span>, {
+    id = <span class="string">"integer"</span>,
+    username = <span class="string">"string"</span>,
+    email = <span class="string">"string"</span>,
+    password_hash = <span class="string">"string"</span>,
+    is_active = <span class="string">"boolean"</span>,
+    created_at = <span class="string">"timestamp"</span>
 }, {
-    _primary_key = <span class="code-string">"id"</span>,
+    _primary_key = <span class="string">"id"</span>,
     _timestamps = true,
-    _unique_keys = {
-        {<span class="code-string">"email"</span>},
-        {<span class="code-string">"username"</span>}
-    },
-    _indexes = {
-        <span class="code-string">"email"</span>,
-        {<span class="code-string">"last_name"</span>, <span class="code-string">"first_name"</span>}
-    }
+    _unique_keys = { {<span class="string">"email"</span>}, {<span class="string">"username"</span>} },
+    _indexes = { <span class="string">"email"</span>, {<span class="string">"username"</span>} }
 })
 
-<span class="code-keyword">return</span> User</code></pre>
+<span class="keyword">return</span> User</code></pre>
+            </div>
+            
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">Step 7: Run Migrations</h4>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">Execute the migration to create or modify your database schema.</p>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fas fa-terminal"></i> Bash - Migration Commands</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">Step 7: Generate Migration File</h4>
-                    <p class="text-light-text-secondary mb-3">Create a migration file based on your model definition.</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Generate Migration Command</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment"># Generate migration for users table</span>
-dawn generate migration users
-
-<span class="code-comment"># Generate migration for specific model</span>
-dawn generate migration create_loans_table
-
-
-<span class="code-comment"># Output: Created migration: db/migrations/20231010120000_create_users_table.lua</span></code></pre>
-                </div>
-                
-             
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">Step 8: Run Migrations</h4>
-                    <p class="text-light-text-secondary mb-3">Execute the migration to create or modify your database schema.</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Migration Commands</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment"># Run specific migration file</span>
+                <pre><code><span class="comment"># Run specific migration file</span>
 dawn db migrate db/migrations/create_users_table.lua
 
-<span class="code-comment"># Run all pending migrations</span>
+<span class="comment"># Run all pending migrations</span>
 dawn db migrate
 
-</code></pre>
-                </div>
-                
-                <div class="success-box">
-                    <h4 class="font-bold mb-2"><i class="fas fa-check-circle mr-2"></i>Verification</h4>
-                    <p>After running migrations, verify your tables were created correctly by connecting to your database and running <code>\dt</code> in psql or checking in pgAdmin.</p>
-                </div>
+<span class="comment"># Rollback last migration</span>
+dawn db rollback</code></pre>
             </div>
             
-        </section>
+            <div class="success-box">
+                <h4 class="font-bold mb-2"><i class="fas fa-check-circle mr-2"></i>Verification</h4>
+                <p>After running migrations, verify your tables were created correctly by connecting to your database and running <code>\dt</code> in psql or checking in pgAdmin.</p>
+            </div>
+        </div>
+    </section>
 
-        <!-- Troubleshooting Section -->
-        <section id="troubleshooting" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-warning-amber flex items-center justify-center text-white font-bold mr-4">4</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">Troubleshooting & Common Issues</h2>
+    <!-- Troubleshooting Section -->
+    <section id="troubleshooting" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">4</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Troubleshooting & Common Issues</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="warning-box">
+                <h4 class="font-bold text-lg mb-2">Connection Refused Errors</h4>
+                <p><strong>Problem:</strong> <code>psql: could not connect to server: Connection refused</code></p>
+                <p><strong>Solution:</strong></p>
+                <ul class="list-disc list-inside ml-4 mt-2">
+                    <li>Ensure PostgreSQL service is running: <code>sudo systemctl status postgresql</code></li>
+                    <li>Check if PostgreSQL is listening on correct port: <code>sudo netstat -tulpn | grep 5432</code></li>
+                    <li>Verify <code>pg_hba.conf</code> allows connections from your IP</li>
+                </ul>
             </div>
             
-            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Common Problems and Solutions</h3>
-                
-                <div class="space-y-6">
-                    <div class="warning-box">
-                        <h4 class="font-bold text-lg mb-2">Connection Refused Errors</h4>
-                        <p><strong>Problem:</strong> <code>psql: could not connect to server: Connection refused</code></p>
-                        <p><strong>Solution:</strong></p>
-                        <ul class="list-disc list-inside ml-4 mt-2">
-                            <li>Ensure PostgreSQL service is running: <code>sudo systemctl status postgresql</code></li>
-                            <li>Check if PostgreSQL is listening on correct port: <code>sudo netstat -tulpn | grep 5432</code></li>
-                            <li>Verify <code>pg_hba.conf</code> allows connections from your IP</li>
-                        </ul>
+            <div class="warning-box">
+                <h4 class="font-bold text-lg mb-2">Authentication Failures</h4>
+                <p><strong>Problem:</strong> <code>password authentication failed for user "admin"</code></p>
+                <p><strong>Solution:</strong></p>
+                <ul class="list-disc list-inside ml-4 mt-2">
+                    <li>Verify password in <code>.env</code> files matches PostgreSQL user password</li>
+                    <li>Check <code>pg_hba.conf</code> authentication method for your user</li>
+                    <li>Reset password: <code>ALTER USER admin WITH PASSWORD 'newpassword';</code></li>
+                </ul>
+            </div>
+            
+            <div class="info-box">
+                <h4 class="font-bold text-lg mb-2">Useful Diagnostic Commands</h4>
+                <div class="code-block mt-2">
+                    <div class="code-header">
+                        <span class="code-language"><i class="fas fa-terminal"></i> Bash - Diagnostic Commands</span>
+                        <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                     </div>
-                    
-                    <div class="warning-box">
-                        <h4 class="font-bold text-lg mb-2">Authentication Failures</h4>
-                        <p><strong>Problem:</strong> <code>password authentication failed for user "admin"</code></p>
-                        <p><strong>Solution:</strong></p>
-                        <ul class="list-disc list-inside ml-4 mt-2">
-                            <li>Verify password in <code>.env</code> files matches PostgreSQL user password</li>
-                            <li>Check <code>pg_hba.conf</code> authentication method for your user</li>
-                            <li>Reset password: <code>ALTER USER admin WITH PASSWORD 'newpassword';</code></li>
-                        </ul>
-                    </div>
-                    
-                    <div class="warning-box">
-                        <h4 class="font-bold text-lg mb-2">Database Does Not Exist</h4>
-                        <p><strong>Problem:</strong> <code>database "myapp_development" does not exist</code></p>
-                        <p><strong>Solution:</strong></p>
-                        <ul class="list-disc list-inside ml-4 mt-2">
-                            <li>Create the database: <code>CREATE DATABASE myapp_development;</code></li>
-                            <li>Check database name spelling in <code>.env</code> file</li>
-                            <li>Verify user has access to the database</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="warning-box">
-                        <h4 class="font-bold text-lg mb-2">Migration Failures</h4>
-                        <p><strong>Problem:</strong> Migration fails with syntax errors or constraint violations</p>
-                        <p><strong>Solution:</strong></p>
-                        <ul class="list-disc list-inside ml-4 mt-2">
-                            <li>Check migration file for SQL syntax errors</li>
-                            <li>Verify table doesn't already exist before creating</li>
-                            <li>Use <code>IF NOT EXISTS</code> for table and index creation</li>
-                            <li>Run migrations in transaction mode for easy rollback</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="info-box">
-                        <h4 class="font-bold text-lg mb-2">Useful Diagnostic Commands</h4>
-                        <div class="bg-gray-800 text-gray-200 rounded-lg p-4 code-block mt-2">
-                            <pre class="overflow-x-auto text-sm"><code><span class="code-comment"># Check PostgreSQL service status</span>
+                    <pre><code><span class="comment"># Check PostgreSQL service status</span>
 sudo systemctl status postgresql
 
-<span class="code-comment"># Check active connections</span>
-sudo -u postgres psql -c "SELECT datname, usename, application_name, client_addr FROM pg_stat_activity;"
+<span class="comment"># Check active connections</span>
+sudo -u postgres psql -c "SELECT datname, usename, client_addr FROM pg_stat_activity;"
 
-<span class="code-comment"># List all databases</span>
+<span class="comment"># List all databases</span>
 sudo -u postgres psql -c "\l"
 
-<span class="code-comment"># List all users</span>
+<span class="comment"># List all users</span>
 sudo -u postgres psql -c "\du"
 
-<span class="code-comment"># Check table sizes and row counts</span>
-sudo -u postgres psql -d myapp_development -c "\dt+"
-
-<span class="code-comment"># View PostgreSQL logs</span>
-sudo tail -f /var/log/postgresql/postgresql-*.log</code></pre>
-                        </div>
-                    </div>
+<span class="comment"># Check table sizes and row counts</span>
+sudo -u postgres psql -d myapp_development -c "\dt+"</code></pre>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Footer -->
-        <footer class="mt-12 pt-8 border-t border-light-border text-center text-light-text-secondary">
-            <p>Dawn Framework Database Setup Guide &copy; 2023</p>
-            <div class="flex justify-center space-x-4 mt-4">
-                <a href="#" class="text-laser-blue hover:underline">ORM Documentation</a>
-                <a href="#" class="text-laser-blue hover:underline">API Reference</a>
-                <a href="#" class="text-laser-blue hover:underline">Examples Repository</a>
-                <a href="#" class="text-laser-blue hover:underline">Community Support</a>
-            </div>
-        </footer>
-    </main>
+    <!-- Footer -->
+    <footer class="mt-12 pt-8 border-t text-center" style="border-color: var(--doc-border); color: var(--doc-text-secondary);">
+        <p>Dawn Framework Database Setup Guide © 2023</p>
+        <div class="flex justify-center space-x-4 mt-4">
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">ORM Documentation</a>
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">API Reference</a>
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">Examples Repository</a>
+        </div>
+    </footer>
+</main>
 
-    <script>
-        // Copy code functionality
-        document.querySelectorAll('.copy-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const codeBlock = this.closest('.code-block').querySelector('pre code');
-                const textToCopy = codeBlock.textContent;
-                
-                navigator.clipboard.writeText(textToCopy).then(() => {
-                    const originalText = this.innerHTML;
-                    this.innerHTML = '<i class="fas fa-check mr-1"></i>Copied!';
-                    
-                    setTimeout(() => {
-                        this.innerHTML = originalText;
-                    }, 2000);
-                });
-            });
-        });
+<script>
+// Copy code functionality
+function copyCode(button) {
+    const codeBlock = button.closest('.code-block');
+    const code = codeBlock.querySelector('pre code');
+    const text = code.textContent;
+    
+    navigator.clipboard.writeText(text).then(() => {
+        const originalHTML = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        setTimeout(() => {
+            button.innerHTML = originalHTML;
+        }, 2000);
+    });
+}
+
+// Back to Top button
+const backToTop = document.createElement('button');
+backToTop.innerHTML = '<i class="fas fa-arrow-up"></i>';
+backToTop.className = 'back-to-top';
+document.body.appendChild(backToTop);
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+        backToTop.classList.add('visible');
+    } else {
+        backToTop.classList.remove('visible');
+    }
+});
+
+backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
         
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
+        const target = document.querySelector(targetId);
+        if (target) {
+            e.preventDefault();
+            const offset = 80;
+            const elementPosition = target.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - offset;
+            
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
             });
-        });
-    </script>
+        }
+    });
+});
+
+// Observe theme changes
+const observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+        if (mutation.attributeName === 'class') {
+            console.log('Theme updated');
+        }
+    });
+});
+
+observer.observe(document.body, { attributes: true });
+</script>

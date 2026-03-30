@@ -11,6 +11,8 @@
         --header-icon-bg: #F3F4F6;
         --header-icon-color: #6B7280;
         --header-top-bar: linear-gradient(135deg, #0066FF, #8A2BE2);
+        --header-logo-gradient: linear-gradient(135deg, #0066FF, #00CC88);
+        --header-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     }
 
     body.dark-theme header {
@@ -23,26 +25,56 @@
         --header-icon-bg: #2A2A3A;
         --header-icon-color: #E0E5EC;
         --header-top-bar: linear-gradient(135deg, #0066FF, #8A2BE2);
+        --header-logo-gradient: linear-gradient(135deg, #0066FF, #00CC88);
+        --header-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     }
 
     header {
         background-color: var(--header-bg);
         border-bottom: 1px solid var(--header-border);
         transition: all 0.3s ease;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: var(--header-shadow);
     }
 
+    /* Top Bar */
+    .top-bar-gradient {
+        background: var(--header-top-bar);
+        transition: all 0.3s ease;
+    }
+
+    /* Navigation Links */
     .nav-link {
         color: var(--header-text);
-        transition: color 0.3s ease;
+        transition: all 0.3s ease;
         cursor: pointer;
+        position: relative;
+        text-decoration: none;
+    }
+
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--laser-blue), var(--build-green));
+        transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+        width: 100%;
     }
 
     .nav-link:hover {
-        color: #0066FF;
+        color: var(--laser-blue);
     }
 
     body.dark-theme .nav-link:hover {
-        color: #00CC88;
+        color: var(--build-green);
     }
 
     /* Dropdown Styles */
@@ -55,7 +87,7 @@
         top: 100%;
         left: 0;
         margin-top: 0.5rem;
-        min-width: 220px;
+        min-width: 240px;
         background-color: var(--header-dropdown-bg);
         border: 1px solid var(--header-border);
         border-radius: 0.75rem;
@@ -83,14 +115,19 @@
         font-size: 0.875rem;
     }
 
+    .dropdown-menu a i {
+        width: 1.25rem;
+        margin-right: 0.5rem;
+    }
+
     .dropdown-menu a:hover {
         background-color: var(--header-dropdown-hover);
-        color: #0066FF;
+        color: var(--laser-blue);
         padding-left: 1.25rem;
     }
 
     body.dark-theme .dropdown-menu a:hover {
-        color: #00CC88;
+        color: var(--build-green);
     }
 
     .dropdown-toggle {
@@ -102,170 +139,208 @@
 
     .dropdown-toggle i {
         transition: transform 0.3s ease;
+        font-size: 0.75rem;
     }
 
     .dropdown.active .dropdown-toggle i {
         transform: rotate(180deg);
     }
 
-    .text-light-text-secondary {
+    /* Logo */
+    .logo-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-decoration: none;
+    }
+
+    .logo-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        background: var(--header-logo-gradient);
+        border-radius: 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 1.25rem;
+        transition: transform 0.3s ease;
+    }
+
+    .logo-icon:hover {
+        transform: scale(1.05);
+    }
+
+    .logo-text {
+        font-size: 1.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, var(--laser-blue), var(--build-green));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+    }
+
+    .logo-subtitle {
+        font-size: 0.75rem;
         color: var(--header-text-secondary);
+        margin-top: -0.25rem;
     }
 
-    .bg-white {
-        background-color: var(--header-bg);
+    /* CTA Buttons */
+    .btn-outline {
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+        border-radius: 0.5rem;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: var(--laser-blue);
+        border: 1px solid var(--laser-blue);
     }
 
-    .bg-gray-100 {
+    .btn-outline:hover {
+        background-color: var(--header-dropdown-hover);
+        transform: translateY(-1px);
+    }
+
+    .btn-primary {
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+        border-radius: 0.5rem;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        background: linear-gradient(135deg, var(--laser-blue), var(--build-green));
+        color: white;
+        box-shadow: 0 2px 4px rgba(0, 102, 255, 0.2);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+    }
+
+    /* Theme Toggle */
+    .theme-toggle-btn {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
         background-color: var(--header-icon-bg);
-    }
-
-    .text-gray-600 {
         color: var(--header-icon-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: none;
     }
 
-    .border-light-border {
-        border-color: var(--header-border);
+    .theme-toggle-btn:hover {
+        background-color: var(--header-dropdown-hover);
+        transform: rotate(15deg);
     }
 
-    .top-bar-gradient {
-        background: var(--header-top-bar);
+    /* Mobile Menu Button */
+    .mobile-menu-btn {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 0.5rem;
+        background-color: var(--header-icon-bg);
+        color: var(--header-icon-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: none;
     }
 
+    .mobile-menu-btn:hover {
+        background-color: var(--header-dropdown-hover);
+    }
+
+    /* Mobile Menu */
     .mobile-menu {
         max-height: 0;
         overflow: hidden;
         transition: max-height 0.5s ease;
         background-color: var(--header-bg);
+        border-radius: 0.75rem;
     }
 
     .mobile-menu.open {
-        max-height: 500px;
+        max-height: 600px;
     }
 
     .mobile-menu a {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem;
         color: var(--header-text);
-        border-color: var(--header-border);
+        text-decoration: none;
+        border-bottom: 1px solid var(--header-border);
+        transition: all 0.2s ease;
     }
 
     .mobile-menu a:hover {
         background-color: var(--header-dropdown-hover);
+        padding-left: 1.25rem;
     }
 
-    /* Table Styles for Documentation */
-    .doc-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 1.5rem 0;
-        background-color: var(--bg-surface);
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    .mobile-menu a i {
+        width: 1.25rem;
+        text-align: center;
     }
 
-    .doc-table thead {
-        background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));
-        color: white;
+    .mobile-menu .btn-outline,
+    .mobile-menu .btn-primary {
+        display: block;
+        text-align: center;
+        margin: 0.5rem 1rem;
     }
 
-    .doc-table th {
-        padding: 1rem;
-        text-align: left;
-        font-weight: 600;
-        font-size: 0.875rem;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+        .desktop-nav {
+            display: none;
+        }
+        
+        .desktop-cta {
+            display: none;
+        }
+        
+        .mobile-menu-btn {
+            display: flex;
+        }
+        
+        .logo-text {
+            font-size: 1.25rem;
+        }
+        
+        .logo-icon {
+            width: 2rem;
+            height: 2rem;
+            font-size: 1rem;
+        }
     }
-
-    .doc-table td {
-        padding: 1rem;
-        border-bottom: 1px solid var(--border-color);
-        color: var(--text-primary);
-        font-size: 0.875rem;
-    }
-
-    .doc-table tr:last-child td {
-        border-bottom: none;
-    }
-
-    .doc-table tbody tr:hover {
-        background-color: var(--sidebar-hover-bg);
-        transition: background-color 0.2s ease;
-    }
-
-    body.dark-theme .doc-table td {
-        color: var(--text-primary);
-    }
-
-    .doc-table code {
-        background-color: rgba(0, 102, 255, 0.1);
-        padding: 0.2rem 0.4rem;
-        border-radius: 4px;
-        font-family: 'Fira Code', monospace;
-        font-size: 0.8125rem;
-        color: var(--laser-blue);
-    }
-
-    body.dark-theme .doc-table code {
-        background-color: rgba(0, 204, 136, 0.1);
-        color: var(--build-green);
-    }
-
-    /* Parameter Table Specific Styles */
-    .parameter-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 1.5rem 0;
-        background-color: var(--bg-surface);
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
-
-    .parameter-table th {
-        background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));
-        color: white;
-        padding: 1rem;
-        text-align: left;
-        font-weight: 600;
-    }
-
-    .parameter-table td {
-        padding: 1rem;
-        border-bottom: 1px solid var(--border-color);
-        color: var(--text-primary);
-    }
-
-    .parameter-table tr:last-child td {
-        border-bottom: none;
-    }
-
-    .parameter-table tr:hover {
-        background-color: var(--sidebar-hover-bg);
-    }
-
-    .parameter-table .required-badge {
-        display: inline-block;
-        padding: 0.25rem 0.5rem;
-        border-radius: 4px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        background-color: var(--build-green);
-        color: white;
-    }
-
-    .parameter-table .optional-badge {
-        display: inline-block;
-        padding: 0.25rem 0.5rem;
-        border-radius: 4px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        background-color: var(--warning-amber);
-        color: var(--neural-charcoal);
+    
+    @media (min-width: 1025px) {
+        .mobile-menu-btn {
+            display: none;
+        }
+        
+        .desktop-nav {
+            display: flex;
+        }
+        
+        .desktop-cta {
+            display: flex;
+        }
     }
 </style>
 
-<header class="sticky top-0 z-1000 shadow-md">
+<header>
     <!-- Top Bar -->
     <div class="top-bar-gradient text-white py-2 px-4 text-sm">
         <div class="container mx-auto flex justify-between items-center">
@@ -293,18 +368,18 @@
     <nav class="container mx-auto px-4 py-4">
         <div class="flex justify-between items-center">
             <!-- Logo -->
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-lg bg-gradient-to-r from-laser-blue to-build-green flex items-center justify-center text-white font-bold">
+            <a href="/" class="logo-wrapper">
+                <div class="logo-icon">
                     <i class="fas fa-sun"></i>
                 </div>
                 <div>
-                    <h1 class="text-2xl font-bold bg-gradient-to-r from-laser-blue to-build-green bg-clip-text text-transparent">Dawn</h1>
-                    <p class="text-xs" style="color: var(--header-text-secondary);">Web Framework</p>
+                    <div class="logo-text">Dawn</div>
+                    <div class="logo-subtitle">Web Framework</div>
                 </div>
-            </div>
+            </a>
             
             <!-- Desktop Navigation -->
-            <div class="hidden lg:flex items-center space-x-8">
+            <div class="desktop-nav items-center space-x-8">
                 <!-- Documentation Dropdown -->
                 <div class="dropdown">
                     <div class="dropdown-toggle nav-link font-medium">
@@ -312,7 +387,7 @@
                         <i class="fas fa-chevron-down text-xs"></i>
                     </div>
                     <div class="dropdown-menu">
-                        <a href="#">
+                        <a href="/web/setup">
                             <i class="fas fa-book mr-2 text-laser-blue"></i>
                             Getting Started
                         </a>
@@ -389,55 +464,55 @@
             </div>
             
             <!-- CTA Buttons -->
-            <div class="hidden lg:flex items-center space-x-4">
-                <a href="#" class="px-4 py-2 font-medium rounded-lg transition-colors" style="color: #0066FF;" onmouseover="this.style.backgroundColor='var(--header-dropdown-hover)'" onmouseout="this.style.backgroundColor='transparent'">
+            <div class="desktop-cta items-center space-x-4">
+                <a href="#" class="btn-outline">
                     Sign In
                 </a>
-                <a href="#" class="px-4 py-2 bg-gradient-to-r from-laser-blue to-build-green text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5">
+                <a href="#" class="btn-primary">
                     Get Started
                     <i class="fas fa-arrow-right ml-1"></i>
                 </a>
                 
                 <!-- Theme Toggle -->
-                <button id="theme-toggle-header" class="w-10 h-10 rounded-full flex items-center justify-center transition-colors" style="background-color: var(--header-icon-bg); color: var(--header-icon-color);">
+                <button id="theme-toggle-header" class="theme-toggle-btn">
                     <i class="fas fa-moon"></i>
                 </button>
             </div>
             
             <!-- Mobile Menu Button -->
-            <button id="mobile-menu-button" class="lg:hidden w-10 h-10 rounded-lg flex items-center justify-center transition-colors" style="background-color: var(--header-icon-bg); color: var(--header-icon-color);">
+            <button id="mobile-menu-button" class="mobile-menu-btn">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
         
         <!-- Mobile Navigation -->
-        <div id="mobile-menu" class="mobile-menu lg:hidden mt-4 rounded-lg shadow-md border overflow-hidden" style="border-color: var(--header-border);">
+        <div id="mobile-menu" class="mobile-menu mt-4 border" style="border-color: var(--header-border);">
             <div class="py-2">
-                <a href="#" class="block px-4 py-3 border-b flex items-center transition-colors" style="border-color: var(--header-border);">
+                <a href="#">
                     <i class="fas fa-book mr-3 text-laser-blue"></i>
                     Documentation
                 </a>
-                <a href="#" class="block px-4 py-3 border-b flex items-center transition-colors" style="border-color: var(--header-border);">
+                <a href="#">
                     <i class="fas fa-code mr-3 text-build-green"></i>
                     Examples
                 </a>
-                <a href="#" class="block px-4 py-3 border-b flex items-center transition-colors" style="border-color: var(--header-border);">
+                <a href="#">
                     <i class="fas fa-newspaper mr-3 text-query-purple"></i>
                     Blog
                 </a>
-                <a href="#" class="block px-4 py-3 border-b flex items-center transition-colors" style="border-color: var(--header-border);">
+                <a href="#">
                     <i class="fas fa-tools mr-3 text-warning-amber"></i>
                     Resources
                 </a>
-                <a href="#" class="block px-4 py-3 border-b flex items-center transition-colors" style="border-color: var(--header-border);">
+                <a href="#">
                     <i class="fas fa-users mr-3 text-laser-blue"></i>
                     Community
                 </a>
                 <div class="px-4 py-3 flex flex-col space-y-3">
-                    <a href="#" class="px-4 py-2 text-center font-medium rounded-lg transition-colors" style="color: #0066FF; border: 1px solid #0066FF;" onmouseover="this.style.backgroundColor='var(--header-dropdown-hover)'" onmouseout="this.style.backgroundColor='transparent'">
+                    <a href="#" class="btn-outline text-center" style="display: block;">
                         Sign In
                     </a>
-                    <a href="#" class="px-4 py-2 text-center bg-gradient-to-r from-laser-blue to-build-green text-white font-medium rounded-lg shadow-md">
+                    <a href="#" class="btn-primary text-center" style="display: block;">
                         Get Started
                     </a>
                 </div>
@@ -481,17 +556,6 @@
                     dropdown.classList.toggle('active');
                     menu.classList.toggle('active');
                 });
-                
-                // Optional: Close on hover (comment out if you prefer click)
-                // dropdown.addEventListener('mouseenter', function() {
-                //     dropdown.classList.add('active');
-                //     menu.classList.add('active');
-                // });
-                // 
-                // dropdown.addEventListener('mouseleave', function() {
-                //     dropdown.classList.remove('active');
-                //     menu.classList.remove('active');
-                // });
             }
         });
     }

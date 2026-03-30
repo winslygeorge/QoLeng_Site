@@ -1,1213 +1,990 @@
-    <style>
-        /* Custom styles for code blocks and other elements */
-        .code-block {
-            background: #0A0A0F;
-            border-left: 4px solid #0066FF;
+<style>
+    /* Server State Management - Integrated Theme System */
+    
+    /* Theme Variables */
+    .main-content-body {
+        --doc-bg: #FFFFFF;
+        --doc-text: #2A2A3A;
+        --doc-text-secondary: #5A6578;
+        --doc-border: #E0E5EC;
+        --doc-card-bg: #FFFFFF;
+        --doc-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        --doc-code-bg: #1E1E2E;
+        --doc-code-text: #E0E5EC;
+        --doc-code-comment: #6A737D;
+        --doc-code-keyword: #00CC88;
+        --doc-code-string: #8A2BE2;
+        --doc-code-function: #0066FF;
+        --doc-code-number: #FFB300;
+        --doc-toc-bg: #F9FAFB;
+        --doc-badge-server: #3B82F6;
+        --doc-badge-client: #8B5CF6;
+        --doc-badge-redis: #EF4444;
+        --doc-info-bg: #DBEAFE;
+        --doc-info-border: #3B82F6;
+        --doc-warning-bg: #FEF3C7;
+        --doc-warning-border: #F59E0B;
+        --doc-success-bg: #D1FAE5;
+        --doc-success-border: #10B981;
+        --doc-method-bg: #F0F4F8;
+    }
+    
+    body.dark-theme .main-content-body {
+        --doc-bg: #151520;
+        --doc-text: #E0E5EC;
+        --doc-text-secondary: #A0A5B5;
+        --doc-border: #2A2A3A;
+        --doc-card-bg: #1F1F2E;
+        --doc-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        --doc-code-bg: #0A0A0F;
+        --doc-code-text: #E0E5EC;
+        --doc-code-comment: #6A737D;
+        --doc-code-keyword: #00CC88;
+        --doc-code-string: #8A2BE2;
+        --doc-code-function: #0066FF;
+        --doc-code-number: #FFB300;
+        --doc-toc-bg: #1A1A2A;
+        --doc-badge-server: #2563EB;
+        --doc-badge-client: #7C3AED;
+        --doc-badge-redis: #DC2626;
+        --doc-info-bg: #1E3A8A;
+        --doc-info-border: #3B82F6;
+        --doc-warning-bg: #78350F;
+        --doc-warning-border: #F59E0B;
+        --doc-success-bg: #064E3B;
+        --doc-success-border: #10B981;
+        --doc-method-bg: #2A2A3A;
+    }
+    
+    .main-content-body {
+        background-color: var(--doc-bg);
+        color: var(--doc-text);
+        transition: all 0.3s ease;
+    }
+    
+    /* State Badges */
+    .state-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 1rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-right: 0.5rem;
+    }
+    
+    .badge-server {
+        background: var(--doc-badge-server);
+        color: white;
+    }
+    
+    .badge-client {
+        background: var(--doc-badge-client);
+        color: white;
+    }
+    
+    .badge-redis {
+        background: var(--doc-badge-redis);
+        color: white;
+    }
+    
+    /* Tables */
+    .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0;
+        background-color: var(--doc-card-bg);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    .comparison-table th,
+    .comparison-table td {
+        padding: 0.75rem 1rem;
+        text-align: left;
+        border-bottom: 1px solid var(--doc-border);
+        color: var(--doc-text);
+    }
+    
+    .comparison-table th {
+        background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));
+        color: white;
+        font-weight: 600;
+    }
+    
+    .comparison-table tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .comparison-table tr:hover {
+        background-color: rgba(0, 102, 255, 0.05);
+    }
+    
+    body.dark-theme .comparison-table tr:hover {
+        background-color: rgba(0, 204, 136, 0.05);
+    }
+    
+    .comparison-table code {
+        background-color: rgba(0, 102, 255, 0.1);
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-family: 'Fira Code', monospace;
+        font-size: 0.8125rem;
+        color: var(--laser-blue);
+    }
+    
+    body.dark-theme .comparison-table code {
+        background-color: rgba(0, 204, 136, 0.1);
+        color: var(--build-green);
+    }
+    
+    /* Method Cards */
+    .method-card {
+        background: var(--doc-card-bg);
+        border-radius: 12px;
+        padding: 1rem;
+        border: 1px solid var(--doc-border);
+    }
+    
+    /* Feature Cards */
+    .feature-card {
+        background: var(--doc-card-bg);
+        border-radius: 12px;
+        padding: 1rem;
+        border: 1px solid var(--doc-border);
+        transition: all 0.3s ease;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--laser-blue);
+        box-shadow: 0 10px 25px -5px rgba(0, 102, 255, 0.2);
+    }
+    
+    /* Info/Warning/Success Boxes */
+    .info-box, .warning-box, .success-box {
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 12px;
+        border-left: 4px solid;
+        transition: all 0.3s ease;
+    }
+    
+    .info-box {
+        background: var(--doc-info-bg);
+        border-left-color: var(--doc-info-border);
+        color: var(--doc-text);
+    }
+    
+    .warning-box {
+        background: var(--doc-warning-bg);
+        border-left-color: var(--doc-warning-border);
+        color: var(--doc-text);
+    }
+    
+    .success-box {
+        background: var(--doc-success-bg);
+        border-left-color: var(--doc-success-border);
+        color: var(--doc-text);
+    }
+    
+    .method-signature {
+        background: var(--doc-method-bg);
+        border-left: 4px solid var(--laser-blue);
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 8px;
+        font-family: 'Fira Code', monospace;
+        font-size: 0.875rem;
+        color: var(--doc-text);
+    }
+    
+    /* Code Blocks */
+    .code-block {
+        background: var(--doc-code-bg);
+        border-radius: 12px;
+        margin: 1.5rem 0;
+        overflow: hidden;
+        position: relative;
+        border: 1px solid var(--doc-border);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .code-block:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .code-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(138, 43, 226, 0.1));
+        border-bottom: 1px solid var(--doc-border);
+    }
+    
+    .code-language {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--doc-text-secondary);
+    }
+    
+    .copy-btn {
+        background: rgba(0, 102, 255, 0.2);
+        color: var(--doc-text);
+        border: none;
+        padding: 0.25rem 0.75rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .copy-btn:hover {
+        background: rgba(0, 102, 255, 0.4);
+        transform: scale(1.05);
+    }
+    
+    .code-block pre {
+        margin: 0;
+        padding: 1.5rem;
+        overflow-x: auto;
+        font-family: 'Fira Code', 'Courier New', monospace;
+        font-size: 0.875rem;
+        line-height: 1.6;
+    }
+    
+    .code-block code {
+        font-family: 'Fira Code', 'Courier New', monospace;
+        color: var(--doc-code-text);
+    }
+    
+    /* Syntax Highlighting */
+    .code-block code .keyword {
+        color: var(--doc-code-keyword);
+        font-weight: 500;
+    }
+    
+    .code-block code .string {
+        color: var(--doc-code-string);
+    }
+    
+    .code-block code .function {
+        color: var(--doc-code-function);
+    }
+    
+    .code-block code .number {
+        color: var(--doc-code-number);
+    }
+    
+    .code-block code .comment {
+        color: var(--doc-code-comment);
+        font-style: italic;
+    }
+    
+    /* Table of Contents */
+    .toc-container {
+        background: var(--doc-toc-bg);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border: 1px solid var(--doc-border);
+    }
+    
+    .toc-container a {
+        color: var(--laser-blue);
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+    
+    .toc-container a:hover {
+        color: var(--build-green);
+    }
+    
+    body.dark-theme .toc-container a {
+        color: var(--build-green);
+    }
+    
+    body.dark-theme .toc-container a:hover {
+        color: var(--laser-blue);
+    }
+    
+    /* Section Numbers */
+    .section-number {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--laser-blue), var(--build-green));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        margin-right: 1rem;
+    }
+    
+    /* Data Source Badges */
+    .data-source-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 1rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+        background: var(--doc-method-bg);
+        color: var(--doc-text);
+        border: 1px solid var(--doc-border);
+    }
+    
+    /* Back to Top Button */
+    .back-to-top {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--laser-blue), var(--build-green));
+        color: white;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+    }
+    
+    .back-to-top.visible {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .back-to-top:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .feature-grid {
+            grid-template-columns: 1fr;
         }
         
-        .light-theme .code-block {
-            background: #F7F9FC;
-            border-left: 4px solid #0066FF;
-            color: #2A2A3A;
+        .section-number {
+            width: 2rem;
+            height: 2rem;
+            font-size: 0.875rem;
         }
         
-        .code-keyword {
-            color: #0066FF;
-        }
-        
-        .code-string {
-            color: #00CC88;
-        }
-        
-        .code-comment {
-            color: #6A737D;
-        }
-        
-        .light-theme .code-comment {
-            color: #9AA5B5;
-        }
-        
-        .code-variable {
-            color: #8A2BE2;
-        }
-        
-        .code-type {
-            color: #FFB300;
-        }
-        
-        /* Custom scrollbar for code blocks */
-        .code-block::-webkit-scrollbar {
-            height: 8px;
-        }
-        
-        .code-block::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 4px;
-        }
-        
-        .code-block::-webkit-scrollbar-thumb {
-            background: rgba(0, 102, 255, 0.5);
-            border-radius: 4px;
-        }
-        
-        .code-block::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 102, 255, 0.7);
-        }
-        
-        /* Additional custom styles */
-        .nav-link {
-            position: relative;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #00CC88, #8A2BE2);
-            transition: width 0.3s ease;
-        }
-        
-        .nav-link:hover::after {
-            width: 100%;
-        }
-        
-        .feature-card {
-            transition: all 0.3s ease;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        }
-        
-        .data-source-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 1rem;
+        .code-block pre {
             font-size: 0.75rem;
-            font-weight: 600;
-            margin-right: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .function-signature {
-            background: #F0F4F8;
-            border-left: 4px solid #0066FF;
             padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 0.5rem;
         }
-        
-        .param-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0;
-        }
-        
-        .param-table th, .param-table td {
-            padding: 0.75rem;
-            text-align: left;
-            border-bottom: 1px solid #E0E5EC;
-        }
-        
-        .param-table th {
-            background-color: #F7F9FC;
-            font-weight: 600;
-        }
-    </style>
+    }
+    
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: var(--doc-border);
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));
+        border-radius: 10px;
+    }
+</style>
 
-    <!-- Main Documentation Content -->
-    <main class="main-content-body max-w-6xl mx-auto px-6 py-8 light-theme">
-        <!-- Header -->
-        <div class="mb-12 text-center">
-            <h1 class="text-4xl font-bold mb-4">Server State Management Guide</h1>
-            <p class="text-xl text-gray-600">Comprehensive guide to managing state in Dawn Framework applications</p>
-            <div class="mt-4 flex justify-center gap-2 flex-wrap">
-                <span class="state-badge badge-server">Server State</span>
-                <span class="state-badge badge-client">Client State</span>
-                <span class="state-badge badge-redis">Redis Persistence</span>
-            </div>
+<!-- Main Documentation Content -->
+<main class="main-content-body max-w-6xl mx-auto px-6 py-8">
+    <!-- Header -->
+    <div class="mb-12 text-center">
+        <h1 class="text-4xl font-bold mb-4" style="background: linear-gradient(135deg, var(--laser-blue), var(--build-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+            Server State Management Guide
+        </h1>
+        <p class="text-xl" style="color: var(--doc-text-secondary);">
+            Comprehensive guide to managing state in Dawn Framework applications
+        </p>
+        <div class="mt-4 flex justify-center gap-2 flex-wrap">
+            <span class="state-badge badge-server"><i class="fas fa-server mr-1"></i> Server State</span>
+            <span class="state-badge badge-client"><i class="fas fa-laptop mr-1"></i> Client State</span>
+            <span class="state-badge badge-redis"><i class="fas fa-database mr-1"></i> Redis Persistence</span>
         </div>
+    </div>
 
-        <!-- Table of Contents -->
-        <div class="bg-gray-50 rounded-xl p-6 mb-12">
-            <h2 class="text-2xl font-bold mb-4">Table of Contents</h2>
-            <div class="grid md:grid-cols-2 gap-4">
-                <ul class="space-y-2">
-                    <li><a href="#overview" class="text-blue-600 hover:underline">1. State Management Overview</a></li>
-                    <li><a href="#state-types" class="text-blue-600 hover:underline">2. Understanding State Types</a></li>
-                    <li><a href="#server-state" class="text-blue-600 hover:underline">3. Server State (Component State)</a></li>
-                    <li><a href="#client-state" class="text-blue-600 hover:underline">4. Client State</a></li>
-                    <li><a href="#redis-persistence" class="text-blue-600 hover:underline">5. Redis Persistence</a></li>
-                </ul>
-                <ul class="space-y-2">
-                    <li><a href="#crud-operations" class="text-blue-600 hover:underline">6. CRUD Operations</a></li>
-                    <li><a href="#methods-patterns" class="text-blue-600 hover:underline">7. Methods & Patterns</a></li>
-                    <li><a href="#advanced-patterns" class="text-blue-600 hover:underline">8. Advanced Patterns</a></li>
-                    <li><a href="#configuration" class="text-blue-600 hover:underline">9. Configuration Reference</a></li>
-                    <li><a href="#best-practices" class="text-blue-600 hover:underline">10. Best Practices</a></li>
-                </ul>
-            </div>
+    <!-- Table of Contents -->
+    <div class="toc-container">
+        <h2 class="text-2xl font-bold mb-4">📑 Table of Contents</h2>
+        <div class="grid md:grid-cols-2 gap-4">
+            <ul class="space-y-2">
+                <li><a href="#overview" class="hover:underline">1. State Management Overview</a></li>
+                <li><a href="#state-types" class="hover:underline">2. Understanding State Types</a></li>
+                <li><a href="#server-state" class="hover:underline">3. Server State (Component State)</a></li>
+                <li><a href="#client-state" class="hover:underline">4. Client State</a></li>
+                <li><a href="#redis-persistence" class="hover:underline">5. Redis Persistence</a></li>
+            </ul>
+            <ul class="space-y-2">
+                <li><a href="#crud-operations" class="hover:underline">6. CRUD Operations</a></li>
+                <li><a href="#methods-patterns" class="hover:underline">7. Methods & Patterns</a></li>
+                <li><a href="#advanced-patterns" class="hover:underline">8. Advanced Patterns</a></li>
+                <li><a href="#configuration" class="hover:underline">9. Configuration Reference</a></li>
+                <li><a href="#best-practices" class="hover:underline">10. Best Practices</a></li>
+            </ul>
         </div>
+    </div>
 
-        <!-- Section 1: Overview -->
-        <section id="overview" class="doc-section mb-16">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold mr-4">1</div>
-                <h2 class="text-3xl font-bold">State Management Overview</h2>
+    <!-- Section 1: Overview -->
+    <section id="overview" class="doc-section mb-16">
+        <div class="flex items-center mb-6">
+            <div class="section-number">1</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">State Management Overview</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <p class="mb-4" style="color: var(--doc-text);">
+                The Dawn Framework provides a dual-state architecture that separates <strong>server-side state</strong> (shared across all clients) 
+                from <strong>client-side state</strong> (isolated per client). This approach enables:
+            </p>
+            
+            <div class="grid md:grid-cols-3 gap-4 mb-6">
+                <div class="feature-card p-4">
+                    <h3 class="font-bold mb-2" style="color: var(--doc-text);">📦 Server State</h3>
+                    <p class="text-sm" style="color: var(--doc-text-secondary);">Shared across all connected clients. Persisted to Redis automatically. Perfect for application data.</p>
+                </div>
+                <div class="feature-card p-4">
+                    <h3 class="font-bold mb-2" style="color: var(--doc-text);">🖥️ Client State</h3>
+                    <p class="text-sm" style="color: var(--doc-text-secondary);">Isolated per client session. Persisted to Redis with client identifier. Perfect for UI state and forms.</p>
+                </div>
+                <div class="feature-card p-4">
+                    <h3 class="font-bold mb-2" style="color: var(--doc-text);">💾 Redis Persistence</h3>
+                    <p class="text-sm" style="color: var(--doc-text-secondary);">Automatic persistence with TTL. Supports reconnection and state recovery.</p>
+                </div>
             </div>
             
-            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-                <p class="text-gray-700 mb-4">
-                    The Dawn Framework provides a dual-state architecture that separates <strong>server-side state</strong> (shared across all clients) 
-                    from <strong>client-side state</strong> (isolated per client). This approach enables:
-                </p>
-                
-                <div class="grid md:grid-cols-3 gap-4 mb-6">
-                    <div class="p-4 bg-blue-50 rounded-lg">
-                        <h3 class="font-bold text-blue-800 mb-2">📦 Server State</h3>
-                        <p class="text-sm text-gray-600">Shared across all connected clients. Persisted to Redis automatically. Perfect for application data.</p>
-                    </div>
-                    <div class="p-4 bg-purple-50 rounded-lg">
-                        <h3 class="font-bold text-purple-800 mb-2">🖥️ Client State</h3>
-                        <p class="text-sm text-gray-600">Isolated per client session. Persisted to Redis with client identifier. Perfect for UI state and forms.</p>
-                    </div>
-                    <div class="p-4 bg-red-50 rounded-lg">
-                        <h3 class="font-bold text-red-800 mb-2">💾 Redis Persistence</h3>
-                        <p class="text-sm text-gray-600">Automatic persistence with TTL. Supports reconnection and state recovery.</p>
-                    </div>
-                </div>
-                
-                <div class="info-box">
-                    <strong>💡 Key Insight:</strong> Server state is updated via <code>setState()</code> and affects all users. Client state is updated via <code>setClientState()</code> and is unique per user session.
-                </div>
+            <div class="info-box">
+                <strong>💡 Key Insight:</strong> Server state is updated via <code>setState()</code> and affects all users. Client state is updated via <code>setClientState()</code> and is unique per user session.
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Section 2: Understanding State Types -->
-        <section id="state-types" class="doc-section mb-16">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold mr-4">2</div>
-                <h2 class="text-3xl font-bold">Understanding State Types</h2>
+    <!-- Section 2: Understanding State Types -->
+    <section id="state-types" class="doc-section mb-16">
+        <div class="flex items-center mb-6">
+            <div class="section-number">2</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Understanding State Types</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <h3 class="text-2xl font-bold mb-4" style="color: var(--doc-text);">State Comparison</h3>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr><th>Feature</th><th>Server State</th><th>Client State</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Scope</td><td>All connected clients</td><td>Single client session</td></tr>
+                    <tr><td>Update Method</td><td><code>setState()</code></td><td><code>setClientState()</code></td></tr>
+                    <tr><td>Redis Key Pattern</td><td><code>component_state:key</code></td><td><code>client_state:key:client_token</code></td></tr>
+                    <tr><td>Use Cases</td><td>Application data, shared resources</td><td>Form inputs, UI preferences, temporary data</td></tr>
+                    <tr><td>Persistence</td><td>Global with component key</td><td>Per client with token</td></tr>
+                </tbody>
+            </table>
+            
+            <div class="method-signature">
+                <strong>State Structure:</strong> Both state types are Lua tables that can contain nested data structures.
             </div>
             
-            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-                <h3 class="text-2xl font-bold mb-4">State Comparison</h3>
-                
-                <table class="comparison-table">
-                    <thead>
-                        <tr><th>Feature</th><th>Server State</th><th>Client State</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Scope</td><td>All connected clients</td><td>Single client session</td></tr>
-                        <tr><td>Update Method</td><td><code>setState()</code></td><td><code>setClientState()</code></td></tr>
-                        <tr><td>Redis Key Pattern</td><td><code>component_state:key</code></td><td><code>client_state:key:client_token</code></td></tr>
-                        <tr><td>Use Cases</td><td>Application data, shared resources</td><td>Form inputs, UI preferences, temporary data</td></tr>
-                        <tr><td>Persistence</td><td>Global with component key</td><td>Per client with token</td></tr>
-                    </tbody>
-                </table>
-                
-                <div class="method-signature">
-                    <strong>State Structure:</strong> Both state types are Lua tables that can contain nested data structures.
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - State Structures</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-                
-                <div class="code-block">
-                    <pre><code class="language-lua"><span class="text-gray-400">-- Example State Structures</span>
-<span class="text-blue-400">local</span> serverState = {
+                <pre><code><span class="comment">-- Example State Structures</span>
+<span class="keyword">local</span> serverState = {
     tasks = {
-        { id = 1, title = <span class="text-green-400">"Task 1"</span>, completed = <span class="text-orange-400">false</span> },
-        { id = 2, title = <span class="text-green-400">"Task 2"</span>, completed = <span class="text-orange-400">true</span> }
+        { id = <span class="number">1</span>, title = <span class="string">"Task 1"</span>, completed = <span class="keyword">false</span> },
+        { id = <span class="number">2</span>, title = <span class="string">"Task 2"</span>, completed = <span class="keyword">true</span> }
     },
-    nextId = 3,
+    nextId = <span class="number">3</span>,
     settings = {
-        theme = <span class="text-green-400">"dark"</span>,
-        notifications = <span class="text-orange-400">true</span>
+        theme = <span class="string">"dark"</span>,
+        notifications = <span class="keyword">true</span>
     }
 }
 
-<span class="text-gray-400">-- Example Client State (isolated per user)</span>
-<span class="text-blue-400">local</span> clientState = {
+<span class="comment">-- Example Client State (isolated per user)</span>
+<span class="keyword">local</span> clientState = {
     draftForm = {
-        name = <span class="text-green-400">""</span>,
-        email = <span class="text-green-400">""</span>
+        name = <span class="string">""</span>,
+        email = <span class="string">""</span>
     },
     uiPreferences = {
-        sidebarCollapsed = <span class="text-orange-400">false</span>,
-        activeTab = <span class="text-green-400">"tasks"</span>
+        sidebarCollapsed = <span class="keyword">false</span>,
+        activeTab = <span class="string">"tasks"</span>
     },
     temporaryData = {
-        searchQuery = <span class="text-green-400">""</span>
+        searchQuery = <span class="string">""</span>
     }
 }</code></pre>
-                </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Section 3: Server State (Component State) -->
-        <section id="server-state" class="doc-section mb-16">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold mr-4">3</div>
-                <h2 class="text-3xl font-bold">Server State (Component State)</h2>
-            </div>
+    <!-- Section 3: Server State -->
+    <section id="server-state" class="doc-section mb-16">
+        <div class="flex items-center mb-6">
+            <div class="section-number">3</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Server State (Component State)</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <p class="mb-4" style="color: var(--doc-text);">
+                Server state is stored in the <code>self.state</code> table of your component. Updates to this state affect all connected clients 
+                and are automatically persisted to Redis when available.
+            </p>
             
-            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-                <p class="text-gray-700 mb-4">
-                    Server state is stored in the <code>self.state</code> table of your component. Updates to this state affect all connected clients 
-                    and are automatically persisted to Redis when available.
-                </p>
-                
-                <h3 class="text-xl font-bold mt-6 mb-3">Setting Up Server State</h3>
-                
-                <div class="code-block">
-                    <pre><code class="language-lua"><span class="text-gray-400">-- Initialize component with server state</span>
-<span class="text-blue-400">local</span> MyComponent = FunctionalComponent:extends()
+            <h3 class="text-xl font-bold mt-6 mb-3" style="color: var(--doc-text);">Setting Up Server State</h3>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Server State Setup</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- Initialize component with server state</span>
+<span class="keyword">local</span> MyComponent = FunctionalComponent:extends()
 MyComponent:setReactiveView()
 
-<span class="text-gray-400">-- Define initial state (optional, will be loaded from Redis if available)</span>
+<span class="comment">-- Define initial state (optional, will be loaded from Redis if available)</span>
 MyComponent.state = {
     items = {},
-    nextId = 1,
+    nextId = <span class="number">1</span>,
     settings = {
-        maxItems = 100
+        maxItems = <span class="number">100</span>
     }
 }
 
-<span class="text-gray-400">-- Load state from Redis (called after setComponentKey)</span>
+<span class="comment">-- Load state from Redis (called after setComponentKey)</span>
 MyComponent:loadStateFromRedis()</code></pre>
-                </div>
-                
-                <h3 class="text-xl font-bold mt-6 mb-3">Updating Server State</h3>
-                
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="method-card">
-                        <h4 class="font-bold text-lg mb-2">Method 1: Partial Table Update</h4>
-                        <p class="text-sm text-gray-600 mb-3">Merge changes into existing state.</p>
-                        <div class="code-block bg-gray-900 p-3 rounded">
-                            <pre><code class="language-lua">MyComponent:setState({
-    items = { { id = 1, title = "New Task" } }
-})</code></pre>
-                        </div>
-                    </div>
-                    
-                    <div class="method-card">
-                        <h4 class="font-bold text-lg mb-2">Method 2: Updater Function</h4>
-                        <p class="text-sm text-gray-600 mb-3">Calculate new state based on current.</p>
-                        <div class="code-block bg-gray-900 p-3 rounded">
-                            <pre><code class="language-lua">MyComponent:setState(<span class="text-blue-400">function</span>(currentState)
-    <span class="text-blue-400">local</span> newItem = {
-        id = currentState.nextId,
-        title = <span class="text-green-400">"New Item"</span>
-    }
-    <span class="text-blue-400">return</span> {
-        items = { table.unpack(currentState.items), newItem },
-        nextId = currentState.nextId + 1
-    }
-<span class="text-blue-400">end</span>)</code></pre>
-                        </div>
-                    </div>
-                </div>
-                
-                <h3 class="text-xl font-bold mt-6 mb-3">Reading Server State</h3>
-                
-                <div class="code-block">
-                    <pre><code class="language-lua"><span class="text-gray-400">-- In your component methods</span>
-<span class="text-blue-400">function</span> MyComponent:someMethod(ws_id, args)
-    <span class="text-gray-400">-- Direct access to self.state</span>
-    <span class="text-blue-400">local</span> currentItems = self.state.items <span class="text-keyword">or</span> {}
-    <span class="text-blue-400">local</span> nextId = self.state.nextId <span class="text-keyword">or</span> 1
-    
-    <span class="text-gray-400">-- Or use reactive component helper</span>
-    <span class="text-blue-400">local</span> normalState = self.reactive_component:getNormalState()
-    <span class="text-blue-400">print</span>(<span class="text-green-400">"Items count:"</span>, #normalState.items)
-<span class="text-blue-400">end</span></code></pre>
-                </div>
-                
-                <div class="warning-box">
-                    <strong>⚠️ Important:</strong> Server state updates trigger re-renders for ALL connected clients. Use sparingly for high-frequency updates or consider client state for user-specific data.
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 4: Client State -->
-        <section id="client-state" class="doc-section mb-16">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold mr-4">4</div>
-                <h2 class="text-3xl font-bold">Client State</h2>
             </div>
             
-            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-                <p class="text-gray-700 mb-4">
-                    Client state is isolated per user session and stored with a client token or WebSocket ID. Perfect for UI state, form drafts, 
-                    and user preferences that shouldn't affect other users.
-                </p>
+            <h3 class="text-xl font-bold mt-6 mb-3" style="color: var(--doc-text);">Updating Server State</h3>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="method-card">
+                    <h4 class="font-bold text-lg mb-2" style="color: var(--doc-text);">Method 1: Partial Table Update</h4>
+                    <p class="text-sm mb-3" style="color: var(--doc-text-secondary);">Merge changes into existing state.</p>
+                    <div class="code-block" style="margin: 0;">
+                        <pre><code>MyComponent:setState({
+    items = { { id = <span class="number">1</span>, title = <span class="string">"New Task"</span> } }
+})</code></pre>
+                    </div>
+                </div>
                 
-                <h3 class="text-xl font-bold mt-6 mb-3">Setting Up Client State</h3>
-                
-                <div class="code-block">
-                    <pre><code class="language-lua"><span class="text-gray-400">-- Client state is initialized when the client connects</span>
-MyComponent:onClientReady(<span class="text-blue-400">function</span>(self, ws_id, client_token)
-    <span class="text-gray-400">-- Initialize client state for this user</span>
+                <div class="method-card">
+                    <h4 class="font-bold text-lg mb-2" style="color: var(--doc-text);">Method 2: Updater Function</h4>
+                    <p class="text-sm mb-3" style="color: var(--doc-text-secondary);">Calculate new state based on current.</p>
+                    <div class="code-block" style="margin: 0;">
+                        <pre><code>MyComponent:setState(<span class="keyword">function</span>(currentState)
+    <span class="keyword">local</span> newItem = {
+        id = currentState.nextId,
+        title = <span class="string">"New Item"</span>
+    }
+    <span class="keyword">return</span> {
+        items = { table.unpack(currentState.items), newItem },
+        nextId = currentState.nextId + <span class="number">1</span>
+    }
+<span class="keyword">end</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="warning-box mt-4">
+                <strong>⚠️ Important:</strong> Server state updates trigger re-renders for ALL connected clients. Use sparingly for high-frequency updates or consider client state for user-specific data.
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Client State -->
+    <section id="client-state" class="doc-section mb-16">
+        <div class="flex items-center mb-6">
+            <div class="section-number">4</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Client State</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <p class="mb-4" style="color: var(--doc-text);">
+                Client state is isolated per user session and stored with a client token or WebSocket ID. Perfect for UI state, form drafts, 
+                and user preferences that shouldn't affect other users.
+            </p>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Client State Setup</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code>MyComponent:onClientReady(<span class="keyword">function</span>(self, ws_id, client_token)
+    <span class="comment">-- Initialize client state for this user</span>
     self:setClientState(ws_id, {
         tasks = {},
-        nextClientId = 1,
+        nextClientId = <span class="number">1</span>,
         uiState = {
-            sidebarOpen = <span class="text-orange-400">true</span>,
-            activeTab = <span class="text-green-400">"all"</span>
+            sidebarOpen = <span class="keyword">true</span>,
+            activeTab = <span class="string">"all"</span>
         }
-    }, <span class="text-green-400">"my_component"</span>)
-<span class="text-blue-400">end</span>)</code></pre>
-                </div>
-                
-                <h3 class="text-xl font-bold mt-6 mb-3">Updating Client State</h3>
-                
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="method-card">
-                        <h4 class="font-bold text-lg mb-2">Method 1: Direct Merge</h4>
-                        <div class="code-block bg-gray-900 p-3 rounded">
-                            <pre><code class="language-lua"><span class="text-gray-400">-- Update specific fields</span>
-MyComponent.methods.updateTask = <span class="text-blue-400">function</span>(self, ws_id, args)
-    self:setClientState(ws_id, {
-        tasks = self:getClientState(ws_id).tasks,
-        <span class="text-gray-400">-- ... updates</span>
-    })
-<span class="text-blue-400">end</span></code></pre>
-                        </div>
-                    </div>
-                    
-                    <div class="method-card">
-                        <h4 class="font-bold text-lg mb-2">Method 2: Updater Function</h4>
-                        <div class="code-block bg-gray-900 p-3 rounded">
-                            <pre><code class="language-lua"><span class="text-gray-400">-- Use function to transform state</span>
-MyComponent.methods.addTask = <span class="text-blue-400">function</span>(self, ws_id, args)
-    self:setClientState(ws_id, <span class="text-blue-400">function</span>(clientState)
-        <span class="text-blue-400">local</span> tasks = clientState.tasks <span class="text-keyword">or</span> {}
-        table.insert(tasks, { id = #tasks + 1, title = args.title })
-        <span class="text-blue-400">return</span> { tasks = tasks }
-    <span class="text-blue-400">end</span>)
-<span class="text-blue-400">end</span></code></pre>
-                        </div>
-                    </div>
-                </div>
-                
-                <h3 class="text-xl font-bold mt-6 mb-3">Reading Client State</h3>
-                
-                <div class="code-block">
-                    <pre><code class="language-lua"><span class="text-gray-400">-- Get current client state</span>
-<span class="text-blue-400">function</span> MyComponent:someMethod(ws_id, args)
-    <span class="text-blue-400">local</span> clientState = self:getClientState(ws_id)
-    <span class="text-blue-400">print</span>(<span class="text-green-400">"User has"</span>, #clientState.tasks, <span class="text-green-400">"tasks"</span>)
-    
-    <span class="text-gray-400">-- Access specific values</span>
-    <span class="text-blue-400">local</span> activeTab = clientState.uiState <span class="text-keyword">and</span> clientState.uiState.activeTab <span class="text-keyword">or</span> <span class="text-green-400">"all"</span>
-<span class="text-blue-400">end</span></code></pre>
-                </div>
-                
-                <div class="info-box">
-                    <strong>💡 Tip:</strong> Client state is automatically persisted to Redis with the pattern <code>client_state:{component_key}:{client_token}</code>. 
-                    When a user reconnects, their state is restored automatically.
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 5: Redis Persistence -->
-        <section id="redis-persistence" class="doc-section mb-16">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center text-white font-bold mr-4">5</div>
-                <h2 class="text-3xl font-bold">Redis Persistence</h2>
+    }, <span class="string">"my_component"</span>)
+<span class="keyword">end</span>)</code></pre>
             </div>
             
-            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-                <p class="text-gray-700 mb-4">
-                    The Dawn Framework integrates with Redis for automatic state persistence. Both server and client states are saved with appropriate TTLs.
-                </p>
-                
-                <h3 class="text-xl font-bold mt-6 mb-3">Redis Key Patterns</h3>
-                
-                <table class="comparison-table">
-                    <thead><tr><th>State Type</th><th>Key Pattern</th><th>TTL</th></tr></thead>
-                    <tbody>
-                        <tr><td>Server State</td><td><code>component_state:{component_key}</code></td><td>24 hours (configurable)</td></tr>
-                        <tr><td>Client State</td><td><code>client_state:{component_key}:{client_token}</code></td><td>24 hours</td></tr>
-                    </tbody>
-                </table>
-                
-                <h3 class="text-xl font-bold mt-6 mb-3">Manual Redis Operations</h3>
-                
-                <div class="code-block">
-                    <pre><code class="language-lua"><span class="text-gray-400">-- Load server state from Redis (called after setComponentKey)</span>
+            <div class="info-box mt-4">
+                <strong>💡 Tip:</strong> Client state is automatically persisted to Redis with the pattern <code>client_state:{component_key}:{client_token}</code>. 
+                When a user reconnects, their state is restored automatically.
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Redis Persistence -->
+    <section id="redis-persistence" class="doc-section mb-16">
+        <div class="flex items-center mb-6">
+            <div class="section-number">5</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Redis Persistence</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <p class="mb-4" style="color: var(--doc-text);">
+                The Dawn Framework integrates with Redis for automatic state persistence. Both server and client states are saved with appropriate TTLs.
+            </p>
+            
+            <table class="comparison-table">
+                <thead><tr><th>State Type</th><th>Key Pattern</th><th>TTL</th></tr></thead>
+                <tbody>
+                    <tr><td>Server State</td><td><code>component_state:{component_key}</code></td><td>24 hours (configurable)</td></tr>
+                    <tr><td>Client State</td><td><code>client_state:{component_key}:{client_token}</code></td><td>24 hours</td></tr>
+                </tbody>
+            </table>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Redis Operations</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- Load server state from Redis (called after setComponentKey)</span>
 MyComponent:loadStateFromRedis()
 
-<span class="text-gray-400">-- Get client state from Redis directly</span>
-<span class="text-blue-400">local</span> clientState = self:getRedisClientState(client_token, <span class="text-green-400">"my_component"</span>)
+<span class="comment">-- Get client state from Redis directly</span>
+<span class="keyword">local</span> clientState = self:getRedisClientState(client_token, <span class="string">"my_component"</span>)
 
-<span class="text-gray-400">-- Get component-wide state</span>
-<span class="text-blue-400">local</span> componentState = self:getRedisComponentState(<span class="text-green-400">"my_component"</span>)
+<span class="comment">-- Get component-wide state</span>
+<span class="keyword">local</span> componentState = self:getRedisComponentState(<span class="string">"my_component"</span>)
 
-<span class="text-gray-400">-- Validate Redis connection</span>
-<span class="text-blue-400">local</span> isConnected = self:validateRedisConnection()</code></pre>
-                </div>
-                
-                <h3 class="text-xl font-bold mt-6 mb-3">Pruning Client States</h3>
-                
-                <div class="code-block">
-                    <pre><code class="language-lua"><span class="text-gray-400">-- Automatically prune old client states</span>
-<span class="text-gray-400">-- Called automatically, but can be invoked manually</span>
-self:pruneClientStates(
-    <span class="text-orange-400">300</span>,      <span class="text-gray-400">-- Maximum number of entries to keep</span>
-    <span class="text-orange-400">24 * 3600</span>  <span class="text-gray-400">-- Maximum age in seconds (24 hours)</span>
-)</code></pre>
-                </div>
-                
-                <div class="warning-box">
-                    <strong>⚠️ Important:</strong> Redis persistence requires the server to be configured with Redis support. Check <code>self.server.dawn_sockets_handler.state_management.redis</code> for availability.
-                </div>
+<span class="comment">-- Validate Redis connection</span>
+<span class="keyword">local</span> isConnected = self:validateRedisConnection()</code></pre>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Section 6: CRUD Operations -->
-        <section id="crud-operations" class="doc-section mb-16">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white font-bold mr-4">6</div>
-                <h2 class="text-3xl font-bold">CRUD Operations</h2>
+    <!-- Section 6: CRUD Operations -->
+    <section id="crud-operations" class="doc-section mb-16">
+        <div class="flex items-center mb-6">
+            <div class="section-number">6</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">CRUD Operations</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <p class="mb-4" style="color: var(--doc-text);">
+                The framework provides built-in CRUD operations for both server and client state.
+            </p>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-6">
+                <span class="data-source-badge"><code>APPEND</code></span>
+                <span class="data-source-badge"><code>PREPEND</code></span>
+                <span class="data-source-badge"><code>INSERT</code></span>
+                <span class="data-source-badge"><code>REMOVE</code></span>
+                <span class="data-source-badge"><code>SET</code></span>
+                <span class="data-source-badge"><code>UPDATE</code></span>
+                <span class="data-source-badge"><code>MERGE</code></span>
+                <span class="data-source-badge"><code>CLEAR</code></span>
             </div>
             
-            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-                <p class="text-gray-700 mb-4">
-                    The framework provides built-in CRUD operations for both server and client state using the <code>HTML.CRUD_OPERATIONS</code> constants.
-                </p>
-                
-                <h3 class="text-xl font-bold mt-6 mb-3">Available CRUD Operations</h3>
-                
-                <div class="grid md:grid-cols-3 gap-2 mb-6">
-                    <span class="bg-gray-100 p-2 rounded text-center"><code>APPEND</code></span>
-                    <span class="bg-gray-100 p-2 rounded text-center"><code>PREPEND</code></span>
-                    <span class="bg-gray-100 p-2 rounded text-center"><code>INSERT</code></span>
-                    <span class="bg-gray-100 p-2 rounded text-center"><code>REMOVE</code></span>
-                    <span class="bg-gray-100 p-2 rounded text-center"><code>SET</code></span>
-                    <span class="bg-gray-100 p-2 rounded text-center"><code>UPDATE</code></span>
-                    <span class="bg-gray-100 p-2 rounded text-center"><code>MERGE</code></span>
-                    <span class="bg-gray-100 p-2 rounded text-center"><code>CLEAR</code></span>
-                    <span class="bg-gray-100 p-2 rounded text-center"><code>DELETE</code></span>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - CRUD Examples</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-                
-                <h3 class="text-xl font-bold mt-6 mb-3">Using CRUD with Server State</h3>
-                
-                <div class="code-block">
-                    <pre><code class="language-lua"><span class="text-gray-400">-- Append to an array</span>
+                <pre><code><span class="comment">-- Append to an array</span>
 self:setState({
     _operation = HTML.CRUD_OPERATIONS.APPEND,
-    _target = <span class="text-green-400">"tasks"</span>,
-    _data = { id = 5, title = <span class="text-green-400">"New Task"</span> }
+    _target = <span class="string">"tasks"</span>,
+    _data = { id = <span class="number">5</span>, title = <span class="string">"New Task"</span> }
 })
 
-<span class="text-gray-400">-- Update a specific field</span>
+<span class="comment">-- Update a specific field</span>
 self:setState({
     _operation = HTML.CRUD_OPERATIONS.UPDATE,
-    _target = <span class="text-green-400">"tasks"</span>,
-    _data = { completed = <span class="text-orange-400">true</span> },
-    _options = { key = 1 }  <span class="text-gray-400">-- Update task with index 1</span>
+    _target = <span class="string">"tasks"</span>,
+    _data = { completed = <span class="keyword">true</span> },
+    _options = { key = <span class="number">1</span> }
 })
 
-<span class="text-gray-400">-- Delete from array by predicate</span>
+<span class="comment">-- Delete from array by predicate</span>
 self:setState({
     _operation = HTML.CRUD_OPERATIONS.REMOVE,
-    _target = <span class="text-green-400">"tasks"</span>,
-    _options = { predicate = <span class="text-blue-400">function</span>(task) <span class="text-blue-400">return</span> task.completed <span class="text-blue-400">end</span> }
+    _target = <span class="string">"tasks"</span>,
+    _options = { predicate = <span class="keyword">function</span>(task) <span class="keyword">return</span> task.completed <span class="keyword">end</span> }
 })</code></pre>
-                </div>
-                
-                <h3 class="text-xl font-bold mt-6 mb-3">Using CRUD with Client State</h3>
-                
-                <div class="code-block">
-                    <pre><code class="language-lua"><span class="text-gray-400">-- Append to client state array</span>
-self:setClientState(ws_id, {
-    _operation = HTML.CRUD_OPERATIONS.APPEND,
-    _target = <span class="text-green-400">"tasks"</span>,  <span class="text-gray-400">-- No "cs." prefix needed</span>
-    _data = { id = nextId, title = title }
-})
-
-<span class="text-gray-400">-- Set a value (create or replace)</span>
-self:setClientState(ws_id, {
-    _operation = HTML.CRUD_OPERATIONS.SET,
-    _target = <span class="text-green-400">"uiState.activeTab"</span>,
-    _data = <span class="text-green-400">"settings"</span>
-})
-
-<span class="text-gray-400">-- Merge into an object</span>
-self:setClientState(ws_id, {
-    _operation = HTML.CRUD_OPERATIONS.MERGE,
-    _target = <span class="text-green-400">"formData"</span>,
-    _data = { email = <span class="text-green-400">"user@example.com"</span> }
-})</code></pre>
-                </div>
-                
-                <div class="success-box">
-                    <strong>✨ Pro Tip:</strong> The CRUD operations automatically generate optimized patches for the client, ensuring efficient DOM updates.
-                </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Section 7: Methods & Patterns -->
-        <section id="methods-patterns" class="doc-section mb-16">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-yellow-600 flex items-center justify-center text-white font-bold mr-4">7</div>
-                <h2 class="text-3xl font-bold">Methods & Patterns</h2>
-            </div>
-            
-            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-                <h3 class="text-xl font-bold mt-6 mb-3">Component Methods</h3>
-                
-                <div class="code-block">
-                    <pre><code class="language-lua"><span class="text-gray-400">-- Define methods on your component</span>
-MyComponent.methods.addTask = <span class="text-blue-400">function</span>(self, ws_id, args)
-    <span class="text-blue-400">local</span> title = args.title
-    <span class="text-blue-400">if</span> <span class="text-blue-400">not</span> title <span class="text-keyword">or</span> title == <span class="text-green-400">""</span> <span class="text-blue-400">then</span> <span class="text-blue-400">return</span> <span class="text-blue-400">end</span>
+    <!-- Section 7: Methods & Patterns -->
+    <section id="methods-patterns" class="doc-section mb-16">
+        <div class="flex items-center mb-6">
+            <div class="section-number">7</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Methods & Patterns</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Component Methods</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code>MyComponent.methods.addTask = <span class="keyword">function</span>(self, ws_id, args)
+    <span class="keyword">local</span> title = args.title
+    <span class="keyword">if</span> <span class="keyword">not</span> title <span class="keyword">or</span> title == <span class="string">""</span> <span class="keyword">then</span> <span class="keyword">return</span> <span class="keyword">end</span>
     
-    <span class="text-gray-400">-- Update server state</span>
-    self:setState(<span class="text-blue-400">function</span>(state)
-        <span class="text-blue-400">local</span> tasks = state.tasks <span class="text-keyword">or</span> {}
-        <span class="text-blue-400">local</span> nextId = state.nextId <span class="text-keyword">or</span> 1
+    self:setState(<span class="keyword">function</span>(state)
+        <span class="keyword">local</span> tasks = state.tasks <span class="keyword">or</span> {}
+        <span class="keyword">local</span> nextId = state.nextId <span class="keyword">or</span> <span class="number">1</span>
         
         table.insert(tasks, {
             id = nextId,
             title = title,
-            completed = <span class="text-orange-400">false</span>,
+            completed = <span class="keyword">false</span>,
             createdAt = os.time()
         })
         
-        <span class="text-blue-400">return</span> {
+        <span class="keyword">return</span> {
             tasks = tasks,
-            nextId = nextId + 1
+            nextId = nextId + <span class="number">1</span>
         }
-    <span class="text-blue-400">end</span>)
-<span class="text-blue-400">end</span>
+    <span class="keyword">end</span>)
+<span class="keyword">end</span></code></pre>
+            </div>
+        </div>
+    </section>
 
-MyComponent.methods.deleteTask = <span class="text-blue-400">function</span>(self, ws_id, args)
-    <span class="text-blue-400">local</span> id = tonumber(args.id)
-    
-    self:setState(<span class="text-blue-400">function</span>(state)
-        <span class="text-blue-400">local</span> tasks = {}
-        <span class="text-blue-400">for</span> _, task <span class="text-blue-400">in</span> ipairs(state.tasks <span class="text-keyword">or</span> {}) <span class="text-blue-400">do</span>
-            <span class="text-blue-400">if</span> task.id ~= id <span class="text-blue-400">then</span>
-                table.insert(tasks, task)
-            <span class="text-blue-400">end</span>
-        <span class="text-blue-400">end</span>
-        <span class="text-blue-400">return</span> { tasks = tasks }
-    <span class="text-blue-400">end</span>)
-<span class="text-blue-400">end</span></code></pre>
-                </div>
-                
-                <h3 class="text-xl font-bold mt-6 mb-3">Using utils for State Manipulation</h3>
-                
-                <div class="code-block">
-                    <pre><code class="language-lua"><span class="text-gray-400">-- The component's utils object provides array and object helpers</span>
-MyComponent.methods.addTaskWithUtils = <span class="text-blue-400">function</span>(self, ws_id, args)
-    <span class="text-blue-400">local</span> title = args.title
-    
-    self:setState(<span class="text-blue-400">function</span>(state)
-        <span class="text-blue-400">local</span> nextId = state.nextId <span class="text-keyword">or</span> 1
+    <!-- Section 8: Advanced Patterns -->
+    <section id="advanced-patterns" class="doc-section mb-16">
+        <div class="flex items-center mb-6">
+            <div class="section-number">8</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Advanced Patterns</h2>
+        </div>
         
-        <span class="text-blue-400">return</span> self.utils.objectMerge(state, {
-            tasks = self.utils.arrayPush(state.tasks <span class="text-keyword">or</span> {}, {
-                id = nextId,
-                title = title,
-                completed = <span class="text-orange-400">false</span>
-            }),
-            nextId = nextId + 1
-        })
-    <span class="text-blue-400">end</span>)
-<span class="text-blue-400">end</span>
-
-<span class="text-gray-400">-- Available utils methods:</span>
-<span class="text-gray-400">-- arrayPush(arr, item) - Add to end</span>
-<span class="text-gray-400">-- arrayRemove(arr, predicate) - Filter array</span>
-<span class="text-gray-400">-- arrayMap(arr, mapper) - Transform array</span>
-<span class="text-gray-400">-- objectMerge(obj1, obj2) - Merge objects</span>
-<span class="text-gray-400">-- objectSet(obj, key, value) - Set property</span>
-<span class="text-gray-400">-- objectDelete(obj, key) - Delete property</span>
-<span class="text-gray-400">-- objectClear(obj) - Clear all properties</span></code></pre>
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Optimistic Updates with Rollback</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-                
-                <h3 class="text-xl font-bold mt-6 mb-3">HTML.patch for Client-Server Communication</h3>
-                
-                <div class="code-block">
-                    <pre><code class="language-lua"><span class="text-gray-400">-- In your UI template, use HTML.patch to call component methods</span>
-HTML.e(<span class="text-green-400">"button"</span>, 
-    HTML.onClick(
-        HTML.patch(<span class="text-green-400">"my_component_key"</span>, <span class="text-keyword">nil</span>, <span class="text-green-400">"addTask"</span>, {
-            title = HTML.client.getValue(<span class="text-green-400">"#taskInput"</span>)
-        })
-    ), 
-    <span class="text-green-400">"Add Task"</span>
-)
-
-<span class="text-gray-400">-- For client state updates, use HTML.patch to call methods that update client state</span>
-HTML.e(<span class="text-green-400">"button"</span>, 
-    HTML.onClick(
-        HTML.patch(<span class="text-green-400">"my_component_key"</span>, <span class="text-keyword">nil</span>, <span class="text-green-400">"updateClientPreference"</span>, {
-            key = <span class="text-green-400">"theme"</span>,
-            value = <span class="text-green-400">"dark"</span>
-        })
-    ), 
-    <span class="text-green-400">"Dark Mode"</span>
-)</code></pre>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 8: Advanced Patterns -->
-        <section id="advanced-patterns" class="doc-section mb-16">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold mr-4">8</div>
-                <h2 class="text-3xl font-bold">Advanced Patterns</h2>
-            </div>
-            
-            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-                <h3 class="text-xl font-bold mt-6 mb-3">Pattern 1: Optimistic Updates with Rollback</h3>
-                
-                <div class="code-block">
-                    <pre><code class="language-lua">MyComponent.methods.optimisticUpdate = <span class="text-blue-400">function</span>(self, ws_id, args)
-    <span class="text-blue-400">local</span> taskId = args.id
-    <span class="text-blue-400">local</span> oldState = self:getClientState(ws_id)
+                <pre><code>MyComponent.methods.optimisticUpdate = <span class="keyword">function</span>(self, ws_id, args)
+    <span class="keyword">local</span> taskId = args.id
+    <span class="keyword">local</span> oldState = self:getClientState(ws_id)
     
-    <span class="text-gray-400">-- Apply optimistic update</span>
-    self:setClientState(ws_id, <span class="text-blue-400">function</span>(state)
-        <span class="text-blue-400">return</span> self.utils.objectMerge(state, {
-            tasks = self.utils.arrayMap(state.tasks <span class="text-keyword">or</span> {}, <span class="text-blue-400">function</span>(task)
-                <span class="text-blue-400">if</span> task.id == taskId <span class="text-blue-400">then</span>
-                    <span class="text-blue-400">return</span> self.utils.objectMerge(task, { completed = <span class="text-orange-400">true</span> })
-                <span class="text-blue-400">end</span>
-                <span class="text-blue-400">return</span> task
-            <span class="text-blue-400">end</span>)
+    <span class="comment">-- Apply optimistic update</span>
+    self:setClientState(ws_id, <span class="keyword">function</span>(state)
+        <span class="keyword">return</span> self.utils.objectMerge(state, {
+            tasks = self.utils.arrayMap(state.tasks <span class="keyword">or</span> {}, <span class="keyword">function</span>(task)
+                <span class="keyword">if</span> task.id == taskId <span class="keyword">then</span>
+                    <span class="keyword">return</span> self.utils.objectMerge(task, { completed = <span class="keyword">true</span> })
+                <span class="keyword">end</span>
+                <span class="keyword">return</span> task
+            <span class="keyword">end</span>)
         })
-    <span class="text-blue-400">end</span>)
+    <span class="keyword">end</span>)
     
-    <span class="text-gray-400">-- Attempt server sync, rollback on failure</span>
-    <span class="text-blue-400">local</span> success = self:syncToServer(taskId, <span class="text-orange-400">true</span>)
-    <span class="text-blue-400">if</span> <span class="text-blue-400">not</span> success <span class="text-blue-400">then</span>
-        <span class="text-gray-400">-- Rollback to old state</span>
+    <span class="comment">-- Attempt server sync, rollback on failure</span>
+    <span class="keyword">local</span> success = self:syncToServer(taskId, <span class="keyword">true</span>)
+    <span class="keyword">if</span> <span class="keyword">not</span> success <span class="keyword">then</span>
         self:setClientState(ws_id, oldState)
-    <span class="text-blue-400">end</span>
-<span class="text-blue-400">end</span></code></pre>
-                </div>
-                
-                <h3 class="text-xl font-bold mt-6 mb-3">Pattern 2: State History with Undo/Redo</h3>
-                
-                <div class="code-block">
-                    <pre><code class="language-lua"><span class="text-gray-400">-- Initialize with history tracking</span>
-MyComponent:onClientReady(<span class="text-blue-400">function</span>(self, ws_id, client_token)
-    self:setClientState(ws_id, {
-        tasks = {},
-        history = { states = {}, currentIndex = -1 },
-        nextClientId = 1
-    })
-<span class="text-blue-400">end</span>)
-
-<span class="text-gray-400">-- Wrap state updates with history tracking</span>
-MyComponent.methods.saveToHistory = <span class="text-blue-400">function</span>(self, ws_id, newState)
-    self:setClientState(ws_id, <span class="text-blue-400">function</span>(state)
-        <span class="text-blue-400">local</span> history = state.history <span class="text-keyword">or</span> { states = {}, currentIndex = -1 }
-        
-        <span class="text-gray-400">-- Trim forward history if we're not at the end</span>
-        <span class="text-blue-400">if</span> history.currentIndex < #history.states <span class="text-blue-400">then</span>
-            <span class="text-blue-400">for</span> i = #history.states, history.currentIndex + 1, -1 <span class="text-blue-400">do</span>
-                table.remove(history.states, i)
-            <span class="text-blue-400">end</span>
-        <span class="text-blue-400">end</span>
-        
-        <span class="text-gray-400">-- Save current state</span>
-        <span class="text-blue-400">local</span> currentSnapshot = self.utils.objectMerge({}, state)
-        currentSnapshot.history = <span class="text-keyword">nil</span>
-        table.insert(history.states, currentSnapshot)
-        history.currentIndex = #history.states
-        
-        <span class="text-blue-400">return</span> self.utils.objectMerge(state, {
-            history = history,
-            <span class="text-gray-400">-- ... apply actual state change ...</span>
-        })
-    <span class="text-blue-400">end</span>)
-<span class="text-blue-400">end</span>
-
-MyComponent.methods.undo = <span class="text-blue-400">function</span>(self, ws_id, args)
-    self:setClientState(ws_id, <span class="text-blue-400">function</span>(state)
-        <span class="text-blue-400">local</span> history = state.history
-        <span class="text-blue-400">if</span> history <span class="text-keyword">and</span> history.currentIndex > 1 <span class="text-blue-400">then</span>
-            history.currentIndex = history.currentIndex - 1
-            <span class="text-blue-400">return</span> self.utils.objectMerge(history.states[history.currentIndex], {
-                history = history
-            })
-        <span class="text-blue-400">end</span>
-        <span class="text-blue-400">return</span> state
-    <span class="text-blue-400">end</span>)
-<span class="text-blue-400">end</span></code></pre>
-                </div>
-                
-                <h3 class="text-xl font-bold mt-6 mb-3">Pattern 3: Cross-Component State Sharing</h3>
-                
-                <div class="code-block">
-                    <pre><code class="language-lua"><span class="text-gray-400">-- Parent component holds shared state</span>
-ParentComponent.methods.updateSharedData = <span class="text-blue-400">function</span>(self, ws_id, args)
-    <span class="text-gray-400">-- Update parent state</span>
-    self:setState({
-        sharedData = args.data
-    })
-<span class="text-blue-400">end</span>
-
-<span class="text-gray-400">-- Child component can access parent state</span>
-ChildComponent.methods.getParentData = <span class="text-blue-400">function</span>(self, ws_id, args)
-    <span class="text-blue-400">local</span> parent = self:getParentComponent()
-    <span class="text-blue-400">if</span> parent <span class="text-blue-400">then</span>
-        <span class="text-blue-400">return</span> parent.state.sharedData
-    <span class="text-blue-400">end</span>
-<span class="text-blue-400">end</span>
-
-<span class="text-gray-400">-- Or use callParentMethod to update parent</span>
-ChildComponent.methods.updateParentData = <span class="text-blue-400">function</span>(self, ws_id, args)
-    self:callParentMethod(<span class="text-green-400">"updateSharedData"</span>, { data = args.newData })
-<span class="text-blue-400">end</span></code></pre>
-                </div>
+    <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Section 9: Configuration Reference -->
-        <section id="configuration" class="doc-section mb-16">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center text-white font-bold mr-4">9</div>
-                <h2 class="text-3xl font-bold">Configuration Reference</h2>
+    <!-- Section 9: Configuration Reference -->
+    <section id="configuration" class="doc-section mb-16">
+        <div class="flex items-center mb-6">
+            <div class="section-number">9</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Configuration Reference</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <table class="comparison-table">
+                <thead>
+                    <tr><th>Option</th><th>Type</th><th>Description</th><th>Default</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>component_key</code></td><td>string</td><td>Unique identifier for the component (required for Redis persistence)</td><td>nil</td></tr>
+                    <tr><td><code>view_mode</code></td><td>string</td><td>Either "lustache" or "html_reactive"</td><td>nil</td></tr>
+                    <tr><td><code>state</code></td><td>table</td><td>Initial server state</td><td>{}</td></tr>
+                    <tr><td><code>methods</code></td><td>table</td><td>Component methods callable from client</td><td>{}</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Section 10: Best Practices -->
+    <section id="best-practices" class="doc-section mb-16">
+        <div class="flex items-center mb-6">
+            <div class="section-number">10</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Best Practices</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="grid md:grid-cols-2 gap-6 mb-6">
+                <div class="success-box">
+                    <h3 class="font-bold mb-2">✅ DO</h3>
+                    <ul class="list-disc pl-5 text-sm space-y-1">
+                        <li>Use client state for user-specific UI preferences</li>
+                        <li>Keep server state lean and focused on shared data</li>
+                        <li>Set component_key before loading from Redis</li>
+                        <li>Initialize client state in onClientReady callback</li>
+                        <li>Use CRUD operations for array manipulations</li>
+                        <li>Use utils helpers for immutable state updates</li>
+                    </ul>
+                </div>
+                
+                <div class="warning-box">
+                    <h3 class="font-bold mb-2">❌ DON'T</h3>
+                    <ul class="list-disc pl-5 text-sm space-y-1">
+                        <li>Store large binary data in state (use files instead)</li>
+                        <li>Update server state on every keystroke</li>
+                        <li>Forget to set component_key before using Redis</li>
+                        <li>Mix server and client state in the same table</li>
+                        <li>Use mutable state updates without deep copy</li>
+                        <li>Store sensitive data in client state (it's persisted)</li>
+                    </ul>
+                </div>
             </div>
             
-            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-                <h3 class="text-xl font-bold mt-6 mb-3">Component Configuration Options</h3>
-                
-                <table class="comparison-table">
-                    <thead>
-                        <tr><th>Option</th><th>Type</th><th>Description</th><th>Default</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td><code>component_key</code></td><td>string</td><td>Unique identifier for the component (required for Redis persistence)</td><td>nil</td></tr>
-                        <tr><td><code>view_mode</code></td><td>string</td><td>Either "lustache" or "html_reactive"</td><td>nil</td></tr>
-                        <tr><td><code>state</code></td><td>table</td><td>Initial server state</td><td>{}</td></tr>
-                        <tr><td><code>client_states</code></td><td>table</td><td>Internal storage for client states</td><td>{}</td></tr>
-                        <tr><td><code>methods</code></td><td>table</td><td>Component methods callable from client</td><td>{}</td></tr>
-                    </tbody>
-                </table>
-                
-                <h3 class="text-xl font-bold mt-6 mb-3">Redis Configuration</h3>
-                
-                <div class="code-block">
-                    <pre><code class="language-lua"><span class="text-gray-400">-- Redis is configured in the server's dawn_sockets_handler</span>
-<span class="text-gray-400">-- Ensure these are set in your server configuration:</span>
-server.dawn_sockets_handler = {
-    state_management = {
-        redis = <span class="text-gray-400">-- Redis client instance</span>
-    }
-}
-
-<span class="text-gray-400">-- TTL for state keys (set automatically)</span>
-redis:expire(key, <span class="text-orange-400">86400</span>)  <span class="text-gray-400">-- 24 hours</span></code></pre>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fas fa-bolt"></i> Performance Tips</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-                
-                <h3 class="text-xl font-bold mt-6 mb-3">Pruning Configuration</h3>
-                
-                <div class="code-block">
-                    <pre><code class="language-lua"><span class="text-gray-400">-- Configure client state pruning</span>
-self:pruneClientStates(
-    <span class="text-orange-400">300</span>,       <span class="text-gray-400">-- max_count: Maximum entries per component</span>
-    <span class="text-orange-400">24 * 3600</span>  <span class="text-gray-400">-- max_age: Maximum age in seconds</span>
-)
-
-<span class="text-gray-400">-- Pruning is automatically called on client join</span>
-<span class="text-gray-400">-- Can be called manually or via cron job</span></code></pre>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 10: Best Practices -->
-        <section id="best-practices" class="doc-section mb-16">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-teal-600 flex items-center justify-center text-white font-bold mr-4">10</div>
-                <h2 class="text-3xl font-bold">Best Practices</h2>
-            </div>
-            
-            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="p-4 bg-green-50 rounded-lg">
-                        <h3 class="font-bold text-green-800 mb-2">✅ DO</h3>
-                        <ul class="list-disc pl-5 text-sm space-y-1">
-                            <li>Use client state for user-specific UI preferences</li>
-                            <li>Keep server state lean and focused on shared data</li>
-                            <li>Set component_key before loading from Redis</li>
-                            <li>Initialize client state in onClientReady callback</li>
-                            <li>Use CRUD operations for array manipulations</li>
-                            <li>Prune client states regularly to manage memory</li>
-                            <li>Use utils helpers for immutable state updates</li>
-                            <li>Handle Redis connection failures gracefully</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="p-4 bg-red-50 rounded-lg">
-                        <h3 class="font-bold text-red-800 mb-2">❌ DON'T</h3>
-                        <ul class="list-disc pl-5 text-sm space-y-1">
-                            <li>Store large binary data in state (use files instead)</li>
-                            <li>Update server state on every keystroke</li>
-                            <li>Forget to set component_key before using Redis</li>
-                            <li>Mix server and client state in the same table</li>
-                            <li>Use mutable state updates without deep copy</li>
-                            <li>Ignore the difference between setState and setClientState</li>
-                            <li>Store sensitive data in client state (it's persisted)</li>
-                            <li>Overuse server state for user-specific data</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <h3 class="text-xl font-bold mt-8 mb-3">Performance Tips</h3>
-                
-                <div class="code-block">
-                    <pre><code class="language-lua"><span class="text-gray-400">-- 1. Batch updates when possible</span>
+                <pre><code><span class="comment">-- 1. Batch updates when possible</span>
 self:setClientState(ws_id, {
     tasks = newTasks,
     uiState = newUiState,
     filters = newFilters
-})  <span class="text-gray-400">-- Single update instead of multiple</span>
+})
 
-<span class="text-gray-400">-- 2. Use shallow state when deep nesting isn't needed</span>
-<span class="text-gray-400">-- Instead of:</span>
-state.users[userId].profile.settings.theme = <span class="text-green-400">"dark"</span>
+<span class="comment">-- 2. Use shallow state when deep nesting isn't needed</span>
+<span class="comment">-- Instead of:</span>
+state.users[userId].profile.settings.theme = <span class="string">"dark"</span>
 
-<span class="text-gray-400">-- Consider:</span>
-state.userThemes[userId] = <span class="text-green-400">"dark"</span>
+<span class="comment">-- Consider:</span>
+state.userThemes[userId] = <span class="string">"dark"</span>
 
-<span class="text-gray-400">-- 3. Prune client states proactively</span>
-self:pruneClientStates(<span class="text-orange-400">100</span>, <span class="text-orange-400">3600</span>)  <span class="text-gray-400">-- Keep only last hour's states</span>
-
-<span class="text-gray-400">-- 4. Use the utils helpers for immutable updates</span>
-<span class="text-gray-400">-- They're optimized and prevent accidental mutations</span>
-self.utils.arrayPush(tasks, newTask)  <span class="text-gray-400">-- Returns new array</span>
-self.utils.objectMerge(obj, updates)   <span class="text-gray-400">-- Returns merged object</span></code></pre>
-                </div>
+<span class="comment">-- 3. Use the utils helpers for immutable updates</span>
+self.utils.arrayPush(tasks, newTask)  <span class="comment">-- Returns new array</span>
+self.utils.objectMerge(obj, updates)   <span class="comment">-- Returns merged object</span></code></pre>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Complete Example -->
-        <section id="complete-example" class="doc-section mb-16">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold mr-4">📝</div>
-                <h2 class="text-3xl font-bold">Complete Component Example</h2>
-            </div>
-            
-            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-                <div class="code-block">
-                    <pre><code class="language-lua"><span class="text-gray-400">-- TaskManager.lua - Complete state management example</span>
-<span class="text-blue-400">local</span> FunctionalComponent = <span class="text-blue-400">require</span>(<span class="text-green-400">"layout.renderer.FuncComponent"</span>)
-<span class="text-blue-400">local</span> HTML = <span class="text-blue-400">require</span>(<span class="text-green-400">"layout.renderer.LuaHTMLReactive"</span>)
+    <!-- Footer -->
+    <footer class="mt-12 pt-8 border-t text-center" style="border-color: var(--doc-border); color: var(--doc-text-secondary);">
+        <p>Dawn Framework - Server State Management Guide v1.0</p>
+        <div class="flex justify-center space-x-4 mt-4">
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">API Reference</a>
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">Examples Repository</a>
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">Community Support</a>
+        </div>
+    </footer>
+</main>
 
-<span class="text-blue-400">local</span> TaskManager = FunctionalComponent:extends()
-TaskManager:setReactiveView()
-
-<span class="text-gray-400">-- ===== INITIAL STATE =====</span>
-TaskManager.state = {
-    tasks = {},
-    nextId = 1,
-    settings = {
-        maxTasks = <span class="text-orange-400">50</span>,
-        defaultView = <span class="text-green-400">"list"</span>
-    }
+<script>
+// Copy code functionality
+function copyCode(button) {
+    const codeBlock = button.closest('.code-block');
+    const code = codeBlock.querySelector('pre code');
+    const text = code.textContent;
+    
+    navigator.clipboard.writeText(text).then(() => {
+        const originalHTML = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        setTimeout(() => {
+            button.innerHTML = originalHTML;
+        }, 2000);
+    });
 }
 
-<span class="text-gray-400">-- ===== CLIENT READY - INITIALIZE CLIENT STATE =====</span>
-TaskManager:onClientReady(<span class="text-blue-400">function</span>(self, ws_id, client_token)
-    <span class="text-gray-400">-- Load persisted client state from Redis</span>
-    <span class="text-blue-400">local</span> savedState = self:getRedisClientState(client_token, <span class="text-green-400">"taskManager"</span>)
-    
-    self:setClientState(ws_id, {
-        tasks = savedState.tasks <span class="text-keyword">or</span> {},
-        nextClientId = savedState.nextClientId <span class="text-keyword">or</span> <span class="text-orange-400">1</span>,
-        draftTask = savedState.draftTask <span class="text-keyword">or</span> <span class="text-green-400">""</span>,
-        uiState = savedState.uiState <span class="text-keyword">or</span> {
-            viewMode = <span class="text-green-400">"list"</span>,
-            selectedTaskId = <span class="text-keyword">nil</span>,
-            filters = {}
-        }
-    }, <span class="text-green-400">"taskManager"</span>)
-<span class="text-blue-400">end</span>)
+// Back to Top button
+const backToTop = document.createElement('button');
+backToTop.innerHTML = '<i class="fas fa-arrow-up"></i>';
+backToTop.className = 'back-to-top';
+document.body.appendChild(backToTop);
 
-<span class="text-gray-400">-- ===== SERVER STATE METHODS =====</span>
-TaskManager.methods.addServerTask = <span class="text-blue-400">function</span>(self, ws_id, args)
-    <span class="text-blue-400">local</span> title = args.title
-    <span class="text-blue-400">if</span> <span class="text-blue-400">not</span> title <span class="text-keyword">or</span> title == <span class="text-green-400">""</span> <span class="text-blue-400">then</span> <span class="text-blue-400">return</span> <span class="text-blue-400">end</span>
-    
-    self:setState(<span class="text-blue-400">function</span>(state)
-        <span class="text-blue-400">local</span> tasks = state.tasks <span class="text-keyword">or</span> {}
-        <span class="text-blue-400">local</span> nextId = state.nextId <span class="text-keyword">or</span> <span class="text-orange-400">1</span>
-        
-        table.insert(tasks, {
-            id = nextId,
-            title = title,
-            completed = <span class="text-orange-400">false</span>,
-            createdAt = os.time(),
-            userId = ws_id
-        })
-        
-        <span class="text-blue-400">return</span> {
-            tasks = tasks,
-            nextId = nextId + <span class="text-orange-400">1</span>
-        }
-    <span class="text-blue-400">end</span>)
-<span class="text-blue-400">end</span>
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+        backToTop.classList.add('visible');
+    } else {
+        backToTop.classList.remove('visible');
+    }
+});
 
-TaskManager.methods.deleteServerTask = <span class="text-blue-400">function</span>(self, ws_id, args)
-    <span class="text-blue-400">local</span> id = tonumber(args.id)
-    
-    self:setState(<span class="text-blue-400">function</span>(state)
-        <span class="text-blue-400">return</span> {
-            tasks = self.utils.arrayRemove(state.tasks, <span class="text-blue-400">function</span>(task)
-                <span class="text-blue-400">return</span> task.id == id
-            <span class="text-blue-400">end</span>)
-        }
-    <span class="text-blue-400">end</span>)
-<span class="text-blue-400">end</span>
+backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
 
-<span class="text-gray-400">-- ===== CLIENT STATE METHODS =====</span>
-TaskManager.methods.addClientTask = <span class="text-blue-400">function</span>(self, ws_id, args)
-    <span class="text-blue-400">local</span> title = args.title
-    <span class="text-blue-400">if</span> <span class="text-blue-400">not</span> title <span class="text-keyword">or</span> title == <span class="text-green-400">""</span> <span class="text-blue-400">then</span> <span class="text-blue-400">return</span> <span class="text-blue-400">end</span>
-    
-    self:setClientState(ws_id, <span class="text-blue-400">function</span>(clientState)
-        <span class="text-blue-400">local</span> tasks = clientState.tasks <span class="text-keyword">or</span> {}
-        <span class="text-blue-400">local</span> nextId = clientState.nextClientId <span class="text-keyword">or</span> <span class="text-orange-400">1</span>
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
         
-        table.insert(tasks, {
-            id = nextId,
-            title = title,
-            completed = <span class="text-orange-400">false</span>,
-            editing = <span class="text-orange-400">false</span>,
-            editTitle = title,
-            createdAt = os.time()
-        })
-        
-        <span class="text-blue-400">return</span> {
-            tasks = tasks,
-            nextClientId = nextId + <span class="text-orange-400">1</span>,
-            draftTask = <span class="text-green-400">""</span>
-        }
-    <span class="text-blue-400">end</span>)
-<span class="text-blue-400">end</span>
-
-TaskManager.methods.toggleClientTask = <span class="text-blue-400">function</span>(self, ws_id, args)
-    <span class="text-blue-400">local</span> id = tonumber(args.id)
-    
-    self:setClientState(ws_id, <span class="text-blue-400">function</span>(clientState)
-        <span class="text-blue-400">return</span> {
-            tasks = self.utils.arrayMap(clientState.tasks, <span class="text-blue-400">function</span>(task)
-                <span class="text-blue-400">if</span> task.id == id <span class="text-blue-400">then</span>
-                    <span class="text-blue-400">return</span> self.utils.objectMerge(task, {
-                        completed = <span class="text-blue-400">not</span> task.completed
-                    })
-                <span class="text-blue-400">end</span>
-                <span class="text-blue-400">return</span> task
-            <span class="text-blue-400">end</span>)
-        }
-    <span class="text-blue-400">end</span>)
-<span class="text-blue-400">end</span>
-
-<span class="text-gray-400">-- ===== RENDER FUNCTION =====</span>
-<span class="text-blue-400">function</span> TaskManager:renderLayout(state, props, children, H, clientState)
-    state = state <span class="text-keyword">or</span> {}
-    clientState = clientState <span class="text-keyword">or</span> {}
-    
-    <span class="text-blue-400">local</span> serverTasks = state.tasks <span class="text-keyword">or</span> {}
-    <span class="text-blue-400">local</span> clientTasks = clientState.tasks <span class="text-keyword">or</span> {}
-    
-    <span class="text-blue-400">return</span> H.e(<span class="text-green-400">"div"</span>, { class = <span class="text-green-400">"p-6 max-w-6xl mx-auto"</span> }, {
-        <span class="text-gray-400">-- Header</span>
-        H.e(<span class="text-green-400">"h1"</span>, { class = <span class="text-green-400">"text-3xl font-bold mb-8"</span> }, <span class="text-green-400">"Task Manager"</span>),
-        
-        <span class="text-gray-400">-- Client State Section</span>
-        H.e(<span class="text-green-400">"div"</span>, { class = <span class="text-green-400">"mb-8 p-4 border-2 border-purple-300 rounded-xl"</span> }, {
-            H.e(<span class="text-green-400">"h2"</span>, { class = <span class="text-green-400">"text-xl font-bold mb-4 text-purple-800"</span> }, <span class="text-green-400">"My Tasks (Client State)"</span>),
+        const target = document.querySelector(targetId);
+        if (target) {
+            e.preventDefault();
+            const offset = 80;
+            const elementPosition = target.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - offset;
             
-            <span class="text-gray-400">-- Add task input</span>
-            H.e(<span class="text-green-400">"div"</span>, { class = <span class="text-green-400">"flex gap-2 mb-4"</span> }, {
-                H.e(<span class="text-green-400">"input"</span>, {
-                    id = <span class="text-green-400">"clientTaskInput"</span>,
-                    type = <span class="text-green-400">"text"</span>,
-                    class = <span class="text-green-400">"flex-grow p-2 border rounded"</span>,
-                    placeholder = <span class="text-green-400">"New task..."</span>,
-                    value = clientState.draftTask <span class="text-keyword">or</span> <span class="text-green-400">""</span>,
-                    ["data-bind-client"] = <span class="text-green-400">"draftTask"</span>
-                }),
-                H.e(<span class="text-green-400">"button"</span>, 
-                    H.merge({ class = <span class="text-green-400">"px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"</span> },
-                        H.onClick(
-                            HTML.patch(self.component_key, <span class="text-keyword">nil</span>, <span class="text-green-400">"addClientTask"</span>, {
-                                title = H.client.getValue(<span class="text-green-400">"#clientTaskInput"</span>)
-                            })
-                        )
-                    ),
-                    <span class="text-green-400">"Add"</span>
-                )
-            }),
-            
-            <span class="text-gray-400">-- Tasks list</span>
-            H.e(<span class="text-green-400">"div"</span>, { class = <span class="text-green-400">"space-y-2"</span> }, 
-                H.map(clientTasks, <span class="text-blue-400">function</span>(task)
-                    <span class="text-blue-400">return</span> H.e(<span class="text-green-400">"div"</span>, { class = <span class="text-green-400">"flex items-center gap-2 p-2 border rounded"</span> }, {
-                        H.e(<span class="text-green-400">"input"</span>, {
-                            type = <span class="text-green-400">"checkbox"</span>,
-                            checked = task.completed,
-                            onclick = HTML.patch(self.component_key, <span class="text-keyword">nil</span>, <span class="text-green-400">"toggleClientTask"</span>, { id = task.id })
-                        }),
-                        H.e(<span class="text-green-400">"span"</span>, { 
-                            class = task.completed <span class="text-keyword">and</span> <span class="text-green-400">"line-through text-gray-500"</span> <span class="text-keyword">or</span> <span class="text-green-400">"text-gray-800"</span>
-                        }, task.title),
-                        H.e(<span class="text-green-400">"span"</span>, { class = <span class="text-green-400">"text-xs text-gray-400 ml-auto"</span> }, 
-                            os.date(<span class="text-green-400">"%H:%M"</span>, task.createdAt)
-                        )
-                    })
-                <span class="text-blue-400">end</span>)
-            )
-        }),
-        
-        <span class="text-gray-400">-- Server State Section (Read-only)</span>
-        H.e(<span class="text-green-400">"div"</span>, { class = <span class="text-green-400">"p-4 border-2 border-blue-300 rounded-xl"</span> }, {
-            H.e(<span class="text-green-400">"h2"</span>, { class = <span class="text-green-400">"text-xl font-bold mb-4 text-blue-800"</span> }, <span class="text-green-400">"All Users Tasks (Server State)"</span>),
-            
-            H.e(<span class="text-green-400">"div"</span>, { class = <span class="text-green-400">"flex gap-2 mb-4"</span> }, {
-                H.e(<span class="text-green-400">"input"</span>, {
-                    id = <span class="text-green-400">"serverTaskInput"</span>,
-                    type = <span class="text-green-400">"text"</span>,
-                    class = <span class="text-green-400">"flex-grow p-2 border rounded"</span>,
-                    placeholder = <span class="text-green-400">"New global task..."</span>
-                }),
-                H.e(<span class="text-green-400">"button"</span>, 
-                    H.merge({ class = <span class="text-green-400">"px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"</span> },
-                        H.onClick(
-                            HTML.patch(self.component_key, <span class="text-keyword">nil</span>, <span class="text-green-400">"addServerTask"</span>, {
-                                title = H.client.getValue(<span class="text-green-400">"#serverTaskInput"</span>)
-                            })
-                        )
-                    ),
-                    <span class="text-green-400">"Add Global Task"</span>
-                )
-            }),
-            
-            H.e(<span class="text-green-400">"div"</span>, { class = <span class="text-green-400">"space-y-2"</span> }, 
-                H.map(serverTasks, <span class="text-blue-400">function</span>(task)
-                    <span class="text-blue-400">return</span> H.e(<span class="text-green-400">"div"</span>, { class = <span class="text-green-400">"p-2 bg-gray-50 rounded flex justify-between"</span> }, {
-                        H.e(<span class="text-green-400">"span"</span>, {}, task.title),
-                        H.e(<span class="text-green-400">"span"</span>, { class = <span class="text-green-400">"text-xs text-gray-400"</span> }, 
-                            <span class="text-green-400">"by user "</span> .. task.userId
-                        )
-                    })
-                <span class="text-blue-400">end</span>)
-            )
-        })
-    })
-<span class="text-blue-400">end</span>
-
-<span class="text-gray-400">-- ===== INITIALIZATION =====</span>
-<span class="text-blue-400">function</span> TaskManager:load()
-    self:setComponentKey(<span class="text-green-400">"taskManager"</span>)
-    self:loadStateFromRedis()
-    
-    self:init(<span class="text-blue-400">function</span>(server, children, props, style, H)
-        <span class="text-blue-400">return</span> <span class="text-blue-400">function</span>(state, props, children, H, clientState)
-            <span class="text-blue-400">return</span> self:renderLayout(state, props, children, H, clientState)
-        <span class="text-blue-400">end</span>
-    <span class="text-blue-400">end</span>)
-<span class="text-blue-400">end</span>
-
-<span class="text-blue-400">return</span> TaskManager</code></pre>
-                </div>
-            </div>
-        </section>
-
-        <!-- Back to Top Button -->
-        <button id="backToTop" 
-                class="fixed bottom-8 right-8 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 opacity-0 invisible"
-                style="transition: opacity 0.3s, visibility 0.3s; z-index: 1000;">
-            <i class="fas fa-arrow-up"></i>
-        </button>
-
-        <!-- Footer -->
-        <footer class="mt-12 pt-8 border-t border-gray-200 text-center text-gray-500">
-            <p>Dawn Framework - Server State Management Guide v1.0</p>
-            <div class="flex justify-center space-x-4 mt-4">
-                <a href="#" class="text-blue-600 hover:underline">API Reference</a>
-                <a href="#" class="text-blue-600 hover:underline">Examples Repository</a>
-                <a href="#" class="text-blue-600 hover:underline">Community Support</a>
-            </div>
-        </footer>
-    </main>
-
-    <script>
-        // Back to Top button functionality
-        const backToTopButton = document.getElementById('backToTop');
-        
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                backToTopButton.classList.remove('opacity-0', 'invisible');
-                backToTopButton.classList.add('opacity-100', 'visible');
-            } else {
-                backToTopButton.classList.add('opacity-0', 'invisible');
-                backToTopButton.classList.remove('opacity-100', 'visible');
-            }
-        });
-        
-        backToTopButton.addEventListener('click', () => {
             window.scrollTo({
-                top: 0,
+                top: offsetPosition,
                 behavior: 'smooth'
             });
-        });
-        
-        // Smooth scroll for anchor links with offset for fixed headers
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    e.preventDefault();
-                    
-                    const offset = 80; // Offset for any fixed headers
-                    const elementPosition = targetElement.getBoundingClientRect().top;
-                    const offsetPosition = elementPosition + window.pageYOffset - offset;
-                    
-                    window.scrollTo({
-                        top: offsetPosition,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-        
-        // Copy code functionality
-        document.querySelectorAll('.code-block pre').forEach(block => {
-            const button = document.createElement('button');
-            button.textContent = 'Copy';
-            button.className = 'absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded hover:bg-blue-700 transition-colors';
-            button.style.position = 'absolute';
-            
-            const wrapper = document.createElement('div');
-            wrapper.style.position = 'relative';
-            block.parentNode.insertBefore(wrapper, block);
-            wrapper.appendChild(block);
-            wrapper.appendChild(button);
-            
-            button.addEventListener('click', () => {
-                const code = block.querySelector('code') || block;
-                navigator.clipboard.writeText(code.textContent).then(() => {
-                    button.textContent = 'Copied!';
-                    setTimeout(() => {
-                        button.textContent = 'Copy';
-                    }, 2000);
-                });
-            });
-        });
-    </script>
+        }
+    });
+});
+
+// Observe theme changes
+const observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+        if (mutation.attributeName === 'class') {
+            // Theme changed, CSS variables handle the rest
+            console.log('Theme updated');
+        }
+    });
+});
+
+observer.observe(document.body, { attributes: true });
+</script>

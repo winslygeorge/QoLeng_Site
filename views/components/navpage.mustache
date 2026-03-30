@@ -11,6 +11,9 @@
         overflow-x: hidden;
         position: relative;
         z-index: 10;
+        width: 280px;
+        min-width: 280px;
+        flex-shrink: 0;
     }
 
     /* Light Mode Variables */
@@ -37,7 +40,7 @@
         --sidebar-title-gradient: linear-gradient(135deg, #FFFFFF, #0066FF);
     }
 
-    /* Collapsed State */
+    /* Collapsed State (Desktop) */
     .doc-sidebar.collapsed {
         min-width: 80px !important;
         max-width: 80px !important;
@@ -151,7 +154,7 @@
         border-radius: 4px;
     }
 
-    /* Collapse Button */
+    /* Collapse Button (Desktop Only) */
     .collapse-btn {
         position: absolute;
         top: 1.5rem;
@@ -205,13 +208,14 @@
         -webkit-text-fill-color: transparent;
         background-clip: text;
         letter-spacing: -0.02em;
+        padding: 0 1rem;
     }
 
     .doc-title::after {
         content: '';
         position: absolute;
         bottom: 0;
-        left: 0;
+        left: 1rem;
         width: 40px;
         height: 3px;
         background: linear-gradient(90deg, #0066FF, #00CC88);
@@ -232,6 +236,10 @@
     }
 
     /* Navigation Sections */
+    .doc-nav {
+        padding: 0 1rem 1rem 1rem;
+    }
+    
     .nav-section {
         margin-bottom: 1rem;
         position: relative;
@@ -419,9 +427,50 @@
         }
     }
 
-    /* Resize Handle (Hidden in new design) */
-    .resize-handle {
+    /* Mobile Menu Toggle Button */
+    .mobile-sidebar-toggle {
+        position: fixed;
+        top: 80px;
+        left: 1rem;
+        z-index: 1001;
+        background: linear-gradient(135deg, #0066FF, #8A2BE2);
+        border: none;
+        border-radius: 12px;
+        padding: 0.75rem;
+        color: white;
+        cursor: pointer;
         display: none;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .mobile-sidebar-toggle:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(0, 102, 255, 0.4);
+    }
+
+    /* Hide mobile toggle when sidebar is open */
+    .mobile-sidebar-toggle.hidden {
+        display: none !important;
+    }
+
+    /* Mobile Overlay */
+    .mobile-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .mobile-overlay.active {
+        display: block;
+        opacity: 1;
     }
 
     /* Responsive Design */
@@ -432,6 +481,13 @@
             top: 0;
             bottom: 0;
             z-index: 1000;
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 280px !important;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .doc-sidebar.mobile-open {
             transform: translateX(0);
         }
 
@@ -443,26 +499,28 @@
             display: none;
         }
 
-        .mobile-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            display: none;
+        .mobile-sidebar-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .mobile-overlay.active {
-            display: block;
+        .main-content-body {
+            margin-left: 0;
+        }
+    }
+
+    /* Desktop: hide mobile toggle */
+    @media (min-width: 1025px) {
+        .mobile-sidebar-toggle {
+            display: none !important;
         }
     }
 </style>
 
 <aside class="doc-sidebar" id="docSidebar">
     <div class="collapse-btn" id="collapseBtn" onclick="toggleSidebar()">
-        <i class="fas fa-chevron-left"></i>
+        <i class="fas fa-chevron-arrow"></i> 
     </div>
     
     <h3 class="doc-title">
@@ -689,8 +747,13 @@
     </nav>
 </aside>
 
+<!-- Mobile Sidebar Toggle Button -->
+<button class="mobile-sidebar-toggle" id="mobileSidebarToggle">
+    <span>GO TO -></span>
+</button>
+
 <!-- Mobile Overlay -->
-<div class="mobile-overlay" id="mobileOverlay" onclick="closeMobileSidebar()"></div>
+<div class="mobile-overlay" id="mobileOverlay"></div>
 
 <script>
     // Toggle section submenu with animation
@@ -703,7 +766,7 @@
         localStorage.setItem(`section_${sectionTitle}`, section.classList.contains('open') ? 'open' : 'closed');
     }
     
-    // Toggle sidebar collapse
+    // Toggle sidebar collapse (desktop only)
     function toggleSidebar() {
         const sidebar = document.getElementById('docSidebar');
         sidebar.classList.toggle('collapsed');
@@ -712,22 +775,46 @@
         localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
     }
     
+    // Open mobile sidebar
+    function openMobileSidebar() {
+        const sidebar = document.getElementById('docSidebar');
+        const overlay = document.getElementById('mobileOverlay');
+        const mobileToggle = document.getElementById('mobileSidebarToggle');
+        
+        sidebar.classList.add('mobile-open');
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        
+        // Hide the hamburger icon when sidebar is open
+        if (mobileToggle) {
+            mobileToggle.classList.add('hidden');
+        }
+    }
+    
     // Close mobile sidebar
     function closeMobileSidebar() {
         const sidebar = document.getElementById('docSidebar');
         const overlay = document.getElementById('mobileOverlay');
-        if (window.innerWidth <= 1024) {
-            sidebar.classList.add('collapsed');
-            overlay.classList.remove('active');
+        const mobileToggle = document.getElementById('mobileSidebarToggle');
+        
+        sidebar.classList.remove('mobile-open');
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+        
+        // Show the hamburger icon when sidebar is closed
+        if (mobileToggle) {
+            mobileToggle.classList.remove('hidden');
         }
     }
     
     // Load saved states
     function loadSavedStates() {
-        // Load sidebar collapse state
+        // Load sidebar collapse state (desktop only)
         const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
         const sidebar = document.getElementById('docSidebar');
-        if (isCollapsed && sidebar) {
+        
+        // Only apply collapse on desktop
+        if (window.innerWidth > 1024 && isCollapsed && sidebar) {
             sidebar.classList.add('collapsed');
         }
         
@@ -782,42 +869,51 @@
         }
     }
     
-    // Handle mobile menu
-    function initMobileMenu() {
-        if (window.innerWidth <= 1024) {
-            const sidebar = document.getElementById('docSidebar');
-            const overlay = document.getElementById('mobileOverlay');
-            
-            // Add menu toggle button to header if needed
-            const header = document.querySelector('header');
-            if (header && !document.querySelector('.mobile-menu-toggle')) {
-                const toggleBtn = document.createElement('button');
-                toggleBtn.className = 'mobile-menu-toggle';
-                toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
-                toggleBtn.style.cssText = `
-                    position: fixed;
-                    top: 1rem;
-                    left: 1rem;
-                    z-index: 1001;
-                    background: linear-gradient(135deg, #0066FF, #8A2BE2);
-                    border: none;
-                    border-radius: 8px;
-                    padding: 0.75rem;
-                    color: white;
-                    cursor: pointer;
-                    display: none;
-                `;
-                toggleBtn.onclick = () => {
+    // Handle window resize
+    function handleResize() {
+        const sidebar = document.getElementById('docSidebar');
+        const overlay = document.getElementById('mobileOverlay');
+        const mobileToggle = document.getElementById('mobileSidebarToggle');
+        
+        if (window.innerWidth > 1024) {
+            // Desktop: remove mobile classes and restore collapse state if needed
+            if (sidebar) {
+                sidebar.classList.remove('mobile-open');
+                const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+                if (isCollapsed) {
+                    sidebar.classList.add('collapsed');
+                } else {
                     sidebar.classList.remove('collapsed');
-                    overlay.classList.add('active');
-                };
-                document.body.appendChild(toggleBtn);
-                toggleBtn.style.display = 'flex';
+                }
+            }
+            if (overlay) {
+                overlay.classList.remove('active');
+            }
+            document.body.style.overflow = '';
+            
+            // Ensure mobile toggle is hidden on desktop
+            if (mobileToggle) {
+                mobileToggle.style.display = 'none';
+            }
+        } else {
+            // Mobile: show toggle button and ensure it's visible if sidebar is closed
+            if (mobileToggle) {
+                mobileToggle.style.display = 'flex';
+                // If sidebar is open, hide toggle, otherwise show it
+                if (sidebar && sidebar.classList.contains('mobile-open')) {
+                    mobileToggle.classList.add('hidden');
+                } else {
+                    mobileToggle.classList.remove('hidden');
+                }
+            }
+            // Ensure collapse class is removed on mobile
+            if (sidebar) {
+                sidebar.classList.remove('collapsed');
             }
         }
     }
     
-    // Sync theme with body class
+    // Sync theme with body
     function syncThemeWithBody() {
         const sidebar = document.getElementById('docSidebar');
         const body = document.body;
@@ -829,29 +925,32 @@
         }
     }
     
-    // Handle window resize
-    window.addEventListener('resize', () => {
-        const sidebar = document.getElementById('docSidebar');
-        const overlay = document.getElementById('mobileOverlay');
-        
-        if (window.innerWidth > 1024) {
-            if (sidebar && overlay) {
-                sidebar.classList.remove('collapsed');
-                overlay.classList.remove('active');
-            }
-        } else {
-            initMobileMenu();
-        }
-    });
-    
     // Initialize everything
     document.addEventListener('DOMContentLoaded', function() {
         loadSavedStates();
         setActiveLink();
-        initMobileMenu();
         syncThemeWithBody();
         
-        // Watch for theme changes on body
+        // Mobile sidebar toggle
+        const mobileToggle = document.getElementById('mobileSidebarToggle');
+        const overlay = document.getElementById('mobileOverlay');
+        
+        if (mobileToggle) {
+            mobileToggle.addEventListener('click', openMobileSidebar);
+        }
+        
+        if (overlay) {
+            overlay.addEventListener('click', closeMobileSidebar);
+        }
+        
+        // Close on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeMobileSidebar();
+            }
+        });
+        
+        // Watch for theme changes
         const observer = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
                 if (mutation.attributeName === 'class') {
@@ -870,12 +969,15 @@
                 
                 // Close mobile sidebar on click
                 if (window.innerWidth <= 1024) {
-                    const sidebar = document.getElementById('docSidebar');
-                    const overlay = document.getElementById('mobileOverlay');
-                    sidebar.classList.add('collapsed');
-                    overlay.classList.remove('active');
+                    closeMobileSidebar();
                 }
             });
         });
+        
+        // Handle window resize
+        window.addEventListener('resize', handleResize);
+        
+        // Initial resize check
+        handleResize();
     });
 </script>

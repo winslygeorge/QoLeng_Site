@@ -1,1871 +1,789 @@
-
-    <style>
-        .code-block {
-            background: #0A0A0F;
-            border-left: 4px solid #0066FF;
-        }
-        
-        .light-theme .code-block {
-            background: #F7F9FC;
-            border-left: 4px solid #0066FF;
-            color: #2A2A3A;
-        }
-        
-        .code-keyword { color: #0066FF; }
-        .code-string { color: #00CC88; }
-        .code-comment { color: #6A737D; }
-        .light-theme .code-comment { color: #9AA5B5; }
-        .code-variable { color: #8A2BE2; }
-        .code-type { color: #FFB300; }
-        
-        .code-block::-webkit-scrollbar {
-            height: 8px;
-        }
-        
-        .code-block::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 4px;
-        }
-        
-        .code-block::-webkit-scrollbar-thumb {
-            background: rgba(0, 102, 255, 0.5);
-            border-radius: 4px;
-        }
-        
-        .code-block::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 102, 255, 0.7);
-        }
-        
-        .nav-link {
-            position: relative;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #00CC88, #8A2BE2);
-            transition: width 0.3s ease;
-        }
-        
-        .nav-link:hover::after {
-            width: 100%;
-        }
-        
-        .feature-card {
-            transition: all 0.3s ease;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        }
-        
-        .function-signature {
-            background: #F0F4F8;
-            border-left: 4px solid #0066FF;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 0.5rem;
-        }
-        
-        .param-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0;
-        }
-        
-        .param-table th, .param-table td {
-            padding: 0.75rem;
-            text-align: left;
-            border-bottom: 1px solid #E0E5EC;
-        }
-        
-        .param-table th {
-            background-color: #F7F9FC;
-            font-weight: 600;
-        }
-        
-        .method-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0;
-        }
-        
-        .method-table th, .method-table td {
-            padding: 0.75rem;
-            text-align: left;
-            border: 1px solid #E0E5EC;
-        }
-        
-        .method-table th {
-            background-color: #F7F9FC;
-            font-weight: 600;
-        }
-        
-        .category-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 1rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-right: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .badge-dom { background: #E3F2FD; color: #1565C0; }
-        .badge-storage { background: #E8F5E8; color: #2E7D32; }
-        .badge-network { background: #F3E5F5; color: #7B1FA2; }
-        .badge-timer { background: #FFF3E0; color: #EF6C00; }
-        .badge-control { background: #E0F2F1; color: #00695C; }
-        .badge-math { background: #E8EAF6; color: #303F9F; }
-        .badge-util { background: #FCE4EC; color: #C2185B; }
-    </style>
+<style>
+    /* HTML.client Operations - Integrated Theme System */
     
-    <main class="main-content-body max-w-7xl mx-auto px-6 py-8 light-theme">
-        <!-- Overview Section -->
-        <section id="overview" class="mb-16 animate-fadeIn">
-            <div class="bg-white rounded-xl shadow-lg p-8 border border-light-border">
-                <h1 class="text-4xl font-bold mb-6 text-neural-charcoal">HTML.client Operations</h1>
-                <p class="text-xl text-light-text-secondary mb-8">
-                    Complete reference for all HTML.client operations - a comprehensive DSL for client-side JavaScript operations
-                    that can be executed directly from Lua code.
-                </p>
-                
-                <div class="grid md:grid-cols-4 gap-6 mb-8">
-                    <div class="feature-card bg-blue-50 p-6 rounded-lg border border-blue-100">
-                        <div class="w-12 h-12 rounded-full bg-laser-blue flex items-center justify-center text-white mb-4">
-                            <i class="fas fa-code"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 text-laser-blue">DOM Operations</h3>
-                        <p class="text-light-text-secondary">80+ methods for DOM manipulation, traversal, and modification</p>
+    /* Theme Variables */
+    .main-content-body {
+        --doc-bg: #FFFFFF;
+        --doc-text: #2A2A3A;
+        --doc-text-secondary: #5A6578;
+        --doc-border: #E0E5EC;
+        --doc-card-bg: #FFFFFF;
+        --doc-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        --doc-code-bg: #1E1E2E;
+        --doc-code-text: #E0E5EC;
+        --doc-code-comment: #6A737D;
+        --doc-code-keyword: #00CC88;
+        --doc-code-string: #8A2BE2;
+        --doc-code-function: #0066FF;
+        --doc-code-number: #FFB300;
+        --doc-code-variable: #8A2BE2;
+        --doc-code-type: #FFB300;
+        --doc-table-header-bg: #F7F9FC;
+        --doc-table-border: #E0E5EC;
+        --doc-signature-bg: #F0F4F8;
+        --doc-badge-dom: #E3F2FD;
+        --doc-badge-dom-text: #1565C0;
+        --doc-badge-storage: #E8F5E8;
+        --doc-badge-storage-text: #2E7D32;
+        --doc-badge-network: #F3E5F5;
+        --doc-badge-network-text: #7B1FA2;
+        --doc-badge-timer: #FFF3E0;
+        --doc-badge-timer-text: #EF6C00;
+        --doc-badge-control: #E0F2F1;
+        --doc-badge-control-text: #00695C;
+        --doc-badge-math: #E8EAF6;
+        --doc-badge-math-text: #303F9F;
+        --doc-badge-util: #FCE4EC;
+        --doc-badge-util-text: #C2185B;
+    }
+    
+    body.dark-theme .main-content-body {
+        --doc-bg: #151520;
+        --doc-text: #E0E5EC;
+        --doc-text-secondary: #A0A5B5;
+        --doc-border: #2A2A3A;
+        --doc-card-bg: #1F1F2E;
+        --doc-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        --doc-code-bg: #0A0A0F;
+        --doc-code-text: #E0E5EC;
+        --doc-code-comment: #6A737D;
+        --doc-code-keyword: #00CC88;
+        --doc-code-string: #8A2BE2;
+        --doc-code-function: #0066FF;
+        --doc-code-number: #FFB300;
+        --doc-code-variable: #8A2BE2;
+        --doc-code-type: #FFB300;
+        --doc-table-header-bg: #2A2A3A;
+        --doc-table-border: #2A2A3A;
+        --doc-signature-bg: #2A2A3A;
+        --doc-badge-dom: #0D47A1;
+        --doc-badge-dom-text: #E3F2FD;
+        --doc-badge-storage: #1B5E20;
+        --doc-badge-storage-text: #E8F5E8;
+        --doc-badge-network: #4A148C;
+        --doc-badge-network-text: #F3E5F5;
+        --doc-badge-timer: #E65100;
+        --doc-badge-timer-text: #FFF3E0;
+        --doc-badge-control: #004D40;
+        --doc-badge-control-text: #E0F2F1;
+        --doc-badge-math: #1A237E;
+        --doc-badge-math-text: #E8EAF6;
+        --doc-badge-util: #880E4F;
+        --doc-badge-util-text: #FCE4EC;
+    }
+    
+    .main-content-body {
+        background-color: var(--doc-bg);
+        color: var(--doc-text);
+        transition: all 0.3s ease;
+    }
+    
+    /* Feature Cards */
+    .feature-card {
+        background: var(--doc-card-bg);
+        border-radius: 16px;
+        padding: 1.5rem;
+        border: 1px solid var(--doc-border);
+        transition: all 0.3s ease;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--laser-blue);
+        box-shadow: 0 10px 25px -5px rgba(0, 102, 255, 0.2);
+    }
+    
+    /* Code Blocks */
+    .code-block {
+        background: var(--doc-code-bg);
+        border-radius: 12px;
+        margin: 1.5rem 0;
+        overflow: hidden;
+        position: relative;
+        border: 1px solid var(--doc-border);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .code-block:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .code-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(138, 43, 226, 0.1));
+        border-bottom: 1px solid var(--doc-border);
+    }
+    
+    .code-language {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--doc-text-secondary);
+    }
+    
+    .copy-btn {
+        background: rgba(0, 102, 255, 0.2);
+        color: var(--doc-text);
+        border: none;
+        padding: 0.25rem 0.75rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .copy-btn:hover {
+        background: rgba(0, 102, 255, 0.4);
+        transform: scale(1.05);
+    }
+    
+    .code-block pre {
+        margin: 0;
+        padding: 1.5rem;
+        overflow-x: auto;
+        font-family: 'Fira Code', 'Courier New', monospace;
+        font-size: 0.875rem;
+        line-height: 1.6;
+    }
+    
+    .code-block code {
+        font-family: 'Fira Code', 'Courier New', monospace;
+        color: var(--doc-code-text);
+    }
+    
+    /* Syntax Highlighting */
+    .code-block code .keyword {
+        color: var(--doc-code-keyword);
+        font-weight: 500;
+    }
+    
+    .code-block code .string {
+        color: var(--doc-code-string);
+    }
+    
+    .code-block code .function {
+        color: var(--doc-code-function);
+    }
+    
+    .code-block code .number {
+        color: var(--doc-code-number);
+    }
+    
+    .code-block code .comment {
+        color: var(--doc-code-comment);
+        font-style: italic;
+    }
+    
+    .code-block code .variable {
+        color: var(--doc-code-variable);
+    }
+    
+    .code-block code .type {
+        color: var(--doc-code-type);
+    }
+    
+    /* Section Numbers */
+    .section-number {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--laser-blue), var(--build-green));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        margin-right: 1rem;
+    }
+    
+    /* Function Signatures */
+    .function-signature {
+        background: var(--doc-signature-bg);
+        border-left: 4px solid var(--laser-blue);
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+    
+    /* Method Tables */
+    .method-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0;
+        background-color: var(--doc-card-bg);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    .method-table th,
+    .method-table td {
+        padding: 0.75rem 1rem;
+        text-align: left;
+        border: 1px solid var(--doc-border);
+        color: var(--doc-text);
+    }
+    
+    .method-table th {
+        background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));
+        color: white;
+        font-weight: 600;
+    }
+    
+    .method-table tr:hover {
+        background-color: rgba(0, 102, 255, 0.05);
+    }
+    
+    body.dark-theme .method-table tr:hover {
+        background-color: rgba(0, 204, 136, 0.05);
+    }
+    
+    .method-table code {
+        background-color: rgba(0, 102, 255, 0.1);
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-family: 'Fira Code', monospace;
+        font-size: 0.8125rem;
+        color: var(--laser-blue);
+    }
+    
+    body.dark-theme .method-table code {
+        background-color: rgba(0, 204, 136, 0.1);
+        color: var(--build-green);
+    }
+    
+    /* Category Badges */
+    .category-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 1rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+        background: var(--doc-badge-dom);
+        color: var(--doc-badge-dom-text);
+    }
+    
+    .badge-dom { background: var(--doc-badge-dom); color: var(--doc-badge-dom-text); }
+    .badge-storage { background: var(--doc-badge-storage); color: var(--doc-badge-storage-text); }
+    .badge-network { background: var(--doc-badge-network); color: var(--doc-badge-network-text); }
+    .badge-timer { background: var(--doc-badge-timer); color: var(--doc-badge-timer-text); }
+    .badge-control { background: var(--doc-badge-control); color: var(--doc-badge-control-text); }
+    .badge-math { background: var(--doc-badge-math); color: var(--doc-badge-math-text); }
+    .badge-util { background: var(--doc-badge-util); color: var(--doc-badge-util-text); }
+    
+    /* Parameter Tables */
+    .param-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0;
+        background-color: var(--doc-card-bg);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    .param-table th,
+    .param-table td {
+        padding: 0.75rem 1rem;
+        text-align: left;
+        border-bottom: 1px solid var(--doc-border);
+        color: var(--doc-text);
+    }
+    
+    .param-table th {
+        background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));
+        color: white;
+        font-weight: 600;
+    }
+    
+    .param-table tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .param-table tr:hover {
+        background-color: rgba(0, 102, 255, 0.05);
+    }
+    
+    body.dark-theme .param-table tr:hover {
+        background-color: rgba(0, 204, 136, 0.05);
+    }
+    
+    .param-table code {
+        background-color: rgba(0, 102, 255, 0.1);
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-family: 'Fira Code', monospace;
+        font-size: 0.8125rem;
+        color: var(--laser-blue);
+    }
+    
+    body.dark-theme .param-table code {
+        background-color: rgba(0, 204, 136, 0.1);
+        color: var(--build-green);
+    }
+    
+    /* Back to Top Button */
+    .back-to-top {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--laser-blue), var(--build-green));
+        color: white;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+    }
+    
+    .back-to-top.visible {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .back-to-top:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .animate-fadeIn {
+        animation: fadeIn 0.6s ease-out;
+    }
+    
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: var(--doc-border);
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));
+        border-radius: 10px;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .feature-card {
+            padding: 1rem;
+        }
+        
+        .section-number {
+            width: 2rem;
+            height: 2rem;
+            font-size: 0.875rem;
+        }
+        
+        .code-block pre {
+            font-size: 0.75rem;
+            padding: 1rem;
+        }
+        
+        .method-table th,
+        .method-table td,
+        .param-table th,
+        .param-table td {
+            padding: 0.5rem;
+        }
+    }
+</style>
+
+<main class="main-content-body max-w-7xl mx-auto px-6 py-8">
+    <!-- Overview Section -->
+    <section id="overview" class="mb-16 animate-fadeIn">
+        <div class="rounded-xl p-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <h1 class="text-4xl font-bold mb-6" style="background: linear-gradient(135deg, var(--laser-blue), var(--build-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                HTML.client Operations
+            </h1>
+            <p class="text-xl mb-8" style="color: var(--doc-text-secondary);">
+                Complete reference for all HTML.client operations - a comprehensive DSL for client-side JavaScript operations
+                that can be executed directly from Lua code.
+            </p>
+            
+            <div class="grid md:grid-cols-4 gap-6 mb-8">
+                <div class="feature-card">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center text-white mb-4" style="background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));">
+                        <i class="fas fa-code"></i>
                     </div>
-                    
-                    <div class="feature-card bg-green-50 p-6 rounded-lg border border-green-100">
-                        <div class="w-12 h-12 rounded-full bg-build-green flex items-center justify-center text-white mb-4">
-                            <i class="fas fa-database"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 text-build-green">Storage & Clipboard</h3>
-                        <p class="text-light-text-secondary">LocalStorage, sessionStorage, clipboard, and notifications</p>
-                    </div>
-                    
-                    <div class="feature-card bg-purple-50 p-6 rounded-lg border border-purple-100">
-                        <div class="w-12 h-12 rounded-full bg-query-purple flex items-center justify-center text-white mb-4">
-                            <i class="fas fa-globe"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 text-query-purple">Network Operations</h3>
-                        <p class="text-light-text-secondary">Fetch API, WebSockets, and real-time communication</p>
-                    </div>
-                    
-                    <div class="feature-card bg-amber-50 p-6 rounded-lg border border-amber-100">
-                        <div class="w-12 h-12 rounded-full bg-warning-amber flex items-center justify-center text-white mb-4">
-                            <i class="fas fa-calculator"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 text-warning-amber">Math & Logic</h3>
-                        <p class="text-light-text-secondary">Mathematical operations, conditionals, and control flow</p>
-                    </div>
+                    <h3 class="text-xl font-bold mb-2" style="color: var(--doc-text);">DOM Operations</h3>
+                    <p style="color: var(--doc-text-secondary);">80+ methods for DOM manipulation, traversal, and modification</p>
                 </div>
                 
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-bold">Basic Usage Pattern</h3>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
+                <div class="feature-card">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center text-white mb-4" style="background: linear-gradient(135deg, var(--build-green), var(--query-purple));">
+                        <i class="fas fa-database"></i>
                     </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Single operation</span>
-<span class="code-keyword">local</span> singleOp = HTML.client.setText(<span class="code-string">"#message"</span>, <span class="code-string">"Hello World"</span>)
+                    <h3 class="text-xl font-bold mb-2" style="color: var(--doc-text);">Storage & Clipboard</h3>
+                    <p style="color: var(--doc-text-secondary);">LocalStorage, sessionStorage, clipboard, and notifications</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center text-white mb-4" style="background: linear-gradient(135deg, var(--query-purple), var(--warning-amber));">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2" style="color: var(--doc-text);">Network Operations</h3>
+                    <p style="color: var(--doc-text-secondary);">Fetch API, WebSockets, and real-time communication</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center text-white mb-4" style="background: linear-gradient(135deg, var(--warning-amber), var(--laser-blue));">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2" style="color: var(--doc-text);">Math & Logic</h3>
+                    <p style="color: var(--doc-text-secondary);">Mathematical operations, conditionals, and control flow</p>
+                </div>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Basic Usage Pattern</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- Single operation</span>
+<span class="keyword">local</span> singleOp = HTML.client.setText(<span class="string">"#message"</span>, <span class="string">"Hello World"</span>)
 
-<span class="code-comment">-- Batch multiple operations</span>
-<span class="code-keyword">local</span> batchOps = HTML.client.batch(
-    HTML.client.addClass(<span class="code-string">"#element"</span>, <span class="code-string">"active"</span>),
-    HTML.client.show(<span class="code-string">"#content"</span>),
-    HTML.client.fetch(<span class="code-string">"/api/data"</span>)
+<span class="comment">-- Batch multiple operations</span>
+<span class="keyword">local</span> batchOps = HTML.client.batch(
+    HTML.client.addClass(<span class="string">"#element"</span>, <span class="string">"active"</span>),
+    HTML.client.show(<span class="string">"#content"</span>),
+    HTML.client.fetch(<span class="string">"/api/data"</span>)
 )
 
-<span class="code-comment">-- Use in event handlers</span>
-<span class="code-keyword">local</span> button = HTML.e(<span class="code-string">"button"</span>, {
-    onclick = HTML.on(<span class="code-string">"click"</span>, batchOps)
-}, <span class="code-string">"Click Me"</span>)
+<span class="comment">-- Use in event handlers</span>
+<span class="keyword">local</span> button = HTML.e(<span class="string">"button"</span>, {
+    onclick = HTML.on(<span class="string">"click"</span>, batchOps)
+}, <span class="string">"Click Me"</span>)</code></pre>
+            </div>
+        </div>
+    </section>
 
-<span class="code-comment">-- Chain operations with conditionals</span>
-<span class="code-keyword">local</span> conditionalOps = HTML.client.if_(
-    HTML.client.getValue(<span class="code-string">"#input"</span>),
-    HTML.client.batch(
-        HTML.client.setText(<span class="code-string">"#status"</span>, <span class="code-string">"Valid"</span>),
-        HTML.client.addClass(<span class="code-string">"#status"</span>, <span class="code-string">"success"</span>)
-    ),
-    HTML.client.batch(
-        HTML.client.setText(<span class="code-string">"#status"</span>, <span class="code-string">"Invalid"</span>),
-        HTML.client.addClass(<span class="code-string">"#status"</span>, <span class="code-string">"error"</span>)
-    )
-)</code></pre>
+    <!-- DOM Operations Section -->
+    <section id="dom" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">1</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">DOM Operations</h2>
+        </div>
+
+        <div class="rounded-xl p-6 mb-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <h3 class="text-2xl font-bold mb-4" style="color: var(--laser-blue);">Basic DOM Manipulation</h3>
+            
+            <table class="method-table">
+                <thead>
+                    <tr><th>Method</th><th>Parameters</th><th>Description</th><th>Returns</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><span class="category-badge badge-dom">DOM</span>HTML.client.setText(sel, val)</td><td>sel: string, val: string</td><td>Sets text content of elements matching selector</td><td>ClientOperation</td></tr>
+                    <tr><td><span class="category-badge badge-dom">DOM</span>HTML.client.setValue(sel, val)</td><td>sel: string, val: string</td><td>Sets value of input elements</td><td>ClientOperation</td></tr>
+                    <tr><td><span class="category-badge badge-dom">DOM</span>HTML.client.addClass(sel, cls)</td><td>sel: string, cls: string</td><td>Adds CSS class to elements</td><td>ClientOperation</td></tr>
+                    <tr><td><span class="category-badge badge-dom">DOM</span>HTML.client.removeClass(sel, cls)</td><td>sel: string, cls: string</td><td>Removes CSS class from elements</td><td>ClientOperation</td></tr>
+                    <tr><td><span class="category-badge badge-dom">DOM</span>HTML.client.show(sel)</td><td>sel: string</td><td>Shows elements (removes display: none)</td><td>ClientOperation</td></tr>
+                    <tr><td><span class="category-badge badge-dom">DOM</span>HTML.client.hide(sel)</td><td>sel: string</td><td>Hides elements (sets display: none)</td><td>ClientOperation</td></tr>
+                </tbody>
+            </table>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Basic DOM Examples</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
+                <pre><code><span class="comment">-- Basic DOM manipulation</span>
+<span class="keyword">local</span> basicOps = HTML.client.batch(
+    HTML.client.setText(<span class="string">"#title"</span>, <span class="string">"New Page Title"</span>),
+    HTML.client.setValue(<span class="string">"#email"</span>, <span class="string">"user@example.com"</span>),
+    HTML.client.addClass(<span class="string">".item"</span>, <span class="string">"active"</span>),
+    HTML.client.show(<span class="string">"#main-content"</span>),
+    HTML.client.hide(<span class="string">"#loading-spinner"</span>)
+)</code></pre>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- DOM Operations Section -->
-        <section id="dom" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-laser-blue flex items-center justify-center text-white font-bold mr-4">1</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">DOM Operations</h2>
-            </div>
+    <!-- Storage & Clipboard Section -->
+    <section id="storage" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">2</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Storage & Clipboard Operations</h2>
+        </div>
 
-            <!-- Basic DOM Manipulation -->
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Basic DOM Manipulation</h3>
-                <p class="text-light-text-secondary mb-6">
-                    Fundamental operations for manipulating DOM elements, attributes, classes, and content.
-                </p>
-                
-                <table class="method-table">
-                    <thead>
-                        <tr>
-                            <th>Method</th>
-                            <th>Parameters</th>
-                            <th>Description</th>
-                            <th>Returns</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.setText(sel, val)</td>
-                            <td>sel: string, val: string</td>
-                            <td>Sets text content of elements matching selector</td>
-                            <td>ClientOperation</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.setValue(sel, val)</td>
-                            <td>sel: string, val: string</td>
-                            <td>Sets value of input elements</td>
-                            <td>ClientOperation</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.setAttrs(sel, attrs)</td>
-                            <td>sel: string, attrs: table</td>
-                            <td>Sets multiple attributes {key = value}</td>
-                            <td>ClientOperation</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.addClass(sel, cls)</td>
-                            <td>sel: string, cls: string</td>
-                            <td>Adds CSS class to elements</td>
-                            <td>ClientOperation</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.removeClass(sel, cls)</td>
-                            <td>sel: string, cls: string</td>
-                            <td>Removes CSS class from elements</td>
-                            <td>ClientOperation</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.show(sel)</td>
-                            <td>sel: string</td>
-                            <td>Shows elements (removes display: none)</td>
-                            <td>ClientOperation</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.hide(sel)</td>
-                            <td>sel: string</td>
-                            <td>Hides elements (sets display: none)</td>
-                            <td>ClientOperation</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.getText(sel)</td>
-                            <td>sel: string</td>
-                            <td>Gets text content of first matching element</td>
-                            <td>ClientOperation</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.getValue(sel)</td>
-                            <td>sel: string</td>
-                            <td>Gets value of first input element</td>
-                            <td>ClientOperation</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.getAttr(sel, attr)</td>
-                            <td>sel: string, attr: string</td>
-                            <td>Gets attribute value of first element</td>
-                            <td>ClientOperation</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mt-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Basic DOM Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Basic DOM manipulation</span>
-<span class="code-keyword">local</span> basicOps = HTML.client.batch(
-    HTML.client.setText(<span class="code-string">"#title"</span>, <span class="code-string">"New Page Title"</span>),
-    HTML.client.setValue(<span class="code-string">"#email"</span>, <span class="code-string">"user@example.com"</span>),
-    HTML.client.setAttrs(<span class="code-string">"#avatar"</span>, {
-        src = <span class="code-string">"new-avatar.jpg"</span>,
-        alt = <span class="code-string">"User profile picture"</span>,
-        title = <span class="code-string">"Click to change"</span>
-    }),
-    HTML.client.addClass(<span class="code-string">".item"</span>, <span class="code-string">"active highlighted"</span>),
-    HTML.client.removeClass(<span class="code-string">".old-item"</span>, <span class="code-string">"visible"</span>),
-    HTML.client.show(<span class="code-string">"#main-content"</span>),
-    HTML.client.hide(<span class="code-string">"#loading-spinner"</span>)
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Storage Examples</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- Local storage operations</span>
+<span class="keyword">local</span> storageOps = HTML.client.batch(
+    HTML.client.localSet(<span class="string">"userPreferences"</span>, <span class="string">'{"theme":"dark"}'</span>),
+    HTML.client.localGet(<span class="string">"userPreferences"</span>),
+    HTML.client.localRemove(<span class="string">"temporaryData"</span>)
 )
 
-<span class="code-comment">-- Getting values for conditional logic</span>
-<span class="code-keyword">local</span> getOps = HTML.client.batch(
-    HTML.client.getText(<span class="code-string">"#username"</span>),
-    HTML.client.getValue(<span class="code-string">"#email-input"</span>),
-    HTML.client.getAttr(<span class="code-string">"#main-link"</span>, <span class="code-string">"href"</span>)
-)</code></pre>
-                </div>
-            </div>
-
-            <!-- DOM Structure Manipulation -->
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">DOM Structure Manipulation</h3>
-                <p class="text-light-text-secondary mb-6">
-                    Operations for modifying DOM structure - adding, removing, replacing, and wrapping elements.
-                </p>
-                
-                <table class="method-table">
-                    <thead>
-                        <tr>
-                            <th>Method</th>
-                            <th>Parameters</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.append(sel, html)</td>
-                            <td>sel: string, html: string</td>
-                            <td>Appends HTML to the end of elements</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.prepend(sel, html)</td>
-                            <td>sel: string, html: string</td>
-                            <td>Prepends HTML to the beginning of elements</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.insertBefore(sel, html)</td>
-                            <td>sel: string, html: string</td>
-                            <td>Inserts HTML before elements</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.insertAfter(sel, html)</td>
-                            <td>sel: string, html: string</td>
-                            <td>Inserts HTML after elements</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.replace(sel, html)</td>
-                            <td>sel: string, html: string</td>
-                            <td>Replaces elements with HTML</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.replaceWith(sel, html)</td>
-                            <td>sel: string, html: string</td>
-                            <td>Replaces elements with HTML (alternative syntax)</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.remove(sel)</td>
-                            <td>sel: string</td>
-                            <td>Removes elements from DOM</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.clear(sel)</td>
-                            <td>sel: string</td>
-                            <td>Clears content of elements</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.wrap(sel, tag, attrs)</td>
-                            <td>sel: string, tag: string, attrs: table?</td>
-                            <td>Wraps elements with new tag and attributes</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.wrapAll(sel, tag, attrs)</td>
-                            <td>sel: string, tag: string, attrs: table?</td>
-                            <td>Wraps all matching elements with new tag</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.replaceChildren(sel, html)</td>
-                            <td>sel: string, html: string</td>
-                            <td>Replaces all children with new HTML</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.clone(sel, deep)</td>
-                            <td>sel: string, deep: boolean?</td>
-                            <td>Clones elements (deep clone if true)</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.move(sel, targetSel, position)</td>
-                            <td>sel: string, targetSel: string, position: string?</td>
-                            <td>Moves elements to new position</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mt-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Structure Manipulation Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Structure manipulation operations</span>
-<span class="code-keyword">local</span> structureOps = HTML.client.batch(
-    HTML.client.append(<span class="code-string">"#list"</span>, <span class="code-string">'&lt;li&gt;New Item&lt;/li&gt;'</span>),
-    HTML.client.prepend(<span class="code-string">"#list"</span>, <span class="code-string">'&lt;li&gt;First Item&lt;/li&gt;'</span>),
-    HTML.client.insertBefore(<span class="code-string">"#target"</span>, <span class="code-string">'&lt;div class="before"&gt;Before&lt;/div&gt;'</span>),
-    HTML.client.insertAfter(<span class="code-string">"#target"</span>, <span class="code-string">'&lt;div class="after"&gt;After&lt;/div&gt;'</span>),
-    HTML.client.replace(<span class="code-string">"#old-content"</span>, <span class="code-string">'&lt;div id="new-content"&gt;Updated&lt;/div&gt;'</span>),
-    HTML.client.remove(<span class="code-string">".temporary"</span>),
-    HTML.client.clear(<span class="code-string">"#container"</span>)
+<span class="comment">-- Session storage operations</span>
+<span class="keyword">local</span> sessionOps = HTML.client.batch(
+    HTML.client.sessionSet(<span class="string">"sessionToken"</span>, <span class="string">"abc123xyz"</span>),
+    HTML.client.sessionGet(<span class="string">"sessionToken"</span>)
 )
 
-<span class="code-comment">-- Wrapping and cloning</span>
-<span class="code-keyword">local</span> wrapOps = HTML.client.batch(
-    HTML.client.wrap(<span class="code-string">".item"</span>, <span class="code-string">"div"</span>, { 
-        class = <span class="code-string">"wrapper"</span>,
-        style = <span class="code-string">"border: 1px solid #ccc;"</span>
-    }),
-    HTML.client.wrapAll(<span class="code-string">".group"</span>, <span class="code-string">"section"</span>, { 
-        class = <span class="code-string">"container"</span>,
-        id = <span class="code-string">"main-section"</span>
-    }),
-    HTML.client.clone(<span class="code-string">"#template"</span>, true),
-    HTML.client.move(<span class="code-string">"#movable"</span>, <span class="code-string">"#new-parent"</span>, <span class="code-string">"beforeend"</span>)
-)</code></pre>
-                </div>
-            </div>
-
-            <!-- Array-style DOM Operations -->
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Array-style DOM Operations</h3>
-                <p class="text-light-text-secondary mb-6">
-                    Treat DOM collections like arrays with push, pop, sort, filter, and other array methods.
-                </p>
-                
-                <table class="method-table">
-                    <thead>
-                        <tr>
-                            <th>Method</th>
-                            <th>Parameters</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.push(sel, html)</td>
-                            <td>sel: string, html: string</td>
-                            <td>Adds element to end (like array push)</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.pop(sel)</td>
-                            <td>sel: string</td>
-                            <td>Removes last element (like array pop)</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.unshift(sel, html)</td>
-                            <td>sel: string, html: string</td>
-                            <td>Adds element to beginning (like unshift)</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.shift(sel)</td>
-                            <td>sel: string</td>
-                            <td>Removes first element (like shift)</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.slice(sel, start, finish)</td>
-                            <td>sel: string, start: number, finish: number?</td>
-                            <td>Gets slice of elements (like array slice)</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.splice(sel, start, deleteCount, html)</td>
-                            <td>sel: string, start: number, deleteCount: number, html: string?</td>
-                            <td>Modifies elements (like array splice)</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.sort(sel, compare)</td>
-                            <td>sel: string, compare: string?</td>
-                            <td>Sorts elements by text content or custom compare</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.reverse(sel)</td>
-                            <td>sel: string</td>
-                            <td>Reverses order of elements</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.shuffle(sel)</td>
-                            <td>sel: string</td>
-                            <td>Randomly shuffles elements</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.split(sel, size)</td>
-                            <td>sel: string, size: number?</td>
-                            <td>Splits elements into chunks of specified size</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.concat(selA, selB, targetSel)</td>
-                            <td>selA: string, selB: string, targetSel: string</td>
-                            <td>Concatenates two collections into target</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.swap(selA, selB)</td>
-                            <td>selA: string, selB: string</td>
-                            <td>Swaps positions of two elements</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mt-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Array-style Operations Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Array-like manipulations</span>
-<span class="code-keyword">local</span> arrayOps = HTML.client.batch(
-    HTML.client.push(<span class="code-string">"#list"</span>, <span class="code-string">'&lt;li&gt;Pushed Item&lt;/li&gt;'</span>),
-    HTML.client.pop(<span class="code-string">"#list"</span>),
-    HTML.client.unshift(<span class="code-string">"#list"</span>, <span class="code-string">'&lt;li&gt;Unshifted Item&lt;/li&gt;'</span>),
-    HTML.client.shift(<span class="code-string">"#list"</span>),
-    HTML.client.splice(<span class="code-string">"#list"</span>, 1, 2, <span class="code-string">'&lt;li&gt;Replacement&lt;/li&gt;'</span>),
-    HTML.client.sort(<span class="code-string">"#items"</span>, <span class="code-string">"text"</span>),
-    HTML.client.reverse(<span class="code-string">"#items"</span>),
-    HTML.client.shuffle(<span class="code-string">"#cards"</span>)
-)
-
-<span class="code-comment">-- Collection operations</span>
-<span class="code-keyword">local</span> collectionOps = HTML.client.batch(
-    HTML.client.split(<span class="code-string">".items"</span>, 3),
-    HTML.client.concat(<span class="code-string">"#list1"</span>, <span class="code-string">"#list2"</span>, <span class="code-string">"#combined"</span>),
-    HTML.client.swap(<span class="code-string">"#item1"</span>, <span class="code-string">"#item2"</span>)
-)</code></pre>
-                </div>
-            </div>
-
-            <!-- Functional DOM Operations -->
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Functional DOM Operations</h3>
-                <p class="text-light-text-secondary mb-6">
-                    Higher-order operations for processing DOM collections with map, filter, reduce, and other functional patterns.
-                </p>
-                
-                <table class="method-table">
-                    <thead>
-                        <tr>
-                            <th>Method</th>
-                            <th>Parameters</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.map(sel, transform)</td>
-                            <td>sel: string, transform: string</td>
-                            <td>Transforms each element using function</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.filter(sel, condition)</td>
-                            <td>sel: string, condition: string</td>
-                            <td>Filters elements based on condition</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.reduce(sel, accumulator)</td>
-                            <td>sel: string, accumulator: string</td>
-                            <td>Reduces collection to single value</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.groupBy(sel, key)</td>
-                            <td>sel: string, key: string</td>
-                            <td>Groups elements by specified key</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.partition(sel, condition)</td>
-                            <td>sel: string, condition: string</td>
-                            <td>Splits elements into two groups based on condition</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.flatten(sel)</td>
-                            <td>sel: string</td>
-                            <td>Flattens nested collections</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.nest(sel, wrapperTag, levels)</td>
-                            <td>sel: string, wrapperTag: string, levels: number?</td>
-                            <td>Nests elements with wrapper tags</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.unique(sel, mode)</td>
-                            <td>sel: string, mode: string?</td>
-                            <td>Removes duplicate elements</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.deduplicate(sel, key)</td>
-                            <td>sel: string, key: string</td>
-                            <td>Removes duplicates by key</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mt-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Functional Operations Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Functional programming with DOM</span>
-<span class="code-keyword">local</span> functionalOps = HTML.client.batch(
-    HTML.client.map(<span class="code-string">".items"</span>, <span class="code-string">"item => item.textContent.toUpperCase()"</span>),
-    HTML.client.filter(<span class="code-string">".items"</span>, <span class="code-string">"item => item.dataset.active === 'true'"</span>),
-    HTML.client.reduce(<span class="code-string">".prices"</span>, <span class="code-string">"(sum, item) => sum + parseFloat(item.textContent)"</span>),
-    HTML.client.groupBy(<span class="code-string">".products"</span>, <span class="code-string">"category"</span>),
-    HTML.client.partition(<span class="code-string">".users"</span>, <span class="code-string">"user => user.dataset.online === 'true'"</span>),
-    HTML.client.flatten(<span class="code-string">".nested-lists"</span>),
-    HTML.client.unique(<span class="code-string">".duplicates"</span>, <span class="code-string">"text"</span>)
-)</code></pre>
-                </div>
-            </div>
-
-            <!-- Set Operations -->
-            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Set & Combinatorics Operations</h3>
-                <p class="text-light-text-secondary mb-6">
-                    Mathematical set operations and combinatorics for advanced DOM collection manipulation.
-                </p>
-                
-                <table class="method-table">
-                    <thead>
-                        <tr>
-                            <th>Method</th>
-                            <th>Parameters</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.union(selA, selB, targetSel, key)</td>
-                            <td>selA: string, selB: string, targetSel: string, key: string?</td>
-                            <td>Combines two sets (union)</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.intersect(selA, selB, targetSel, key)</td>
-                            <td>selA: string, selB: string, targetSel: string, key: string?</td>
-                            <td>Finds common elements (intersection)</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.difference(selA, selB, targetSel, key)</td>
-                            <td>selA: string, selB: string, targetSel: string, key: string?</td>
-                            <td>Finds elements in A but not B (difference)</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.relativeComplement(selA, selB, targetSel, key)</td>
-                            <td>selA: string, selB: string, targetSel: string, key: string?</td>
-                            <td>Finds relative complement</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.symmetricDifference(selA, selB, targetSel, key)</td>
-                            <td>selA: string, selB: string, targetSel: string, key: string?</td>
-                            <td>Finds symmetric difference</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.isSubset(selA, selB, key)</td>
-                            <td>selA: string, selB: string, key: string?</td>
-                            <td>Checks if A is subset of B</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.isSuperset(selA, selB, key)</td>
-                            <td>selA: string, selB: string, key: string?</td>
-                            <td>Checks if A is superset of B</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.isDisjoint(selA, selB, key)</td>
-                            <td>selA: string, selB: string, key: string?</td>
-                            <td>Checks if sets have no common elements</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.isEqual(selA, selB, key)</td>
-                            <td>selA: string, selB: string, key: string?</td>
-                            <td>Checks if sets are equal</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.cardinality(sel, key)</td>
-                            <td>sel: string, key: string?</td>
-                            <td>Gets number of elements in set</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.zip(selA, selB, targetSel)</td>
-                            <td>selA: string, selB: string, targetSel: string</td>
-                            <td>Zips two collections together</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.zipWith(selA, selB, targetSel, template)</td>
-                            <td>selA: string, selB: string, targetSel: string, template: string</td>
-                            <td>Zips with custom template</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.cartesian(selA, selB, targetSel, template)</td>
-                            <td>selA: string, selB: string, targetSel: string, template: string</td>
-                            <td>Creates Cartesian product</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.cartesianN(selectors, targetSel, template)</td>
-                            <td>selectors: table, targetSel: string, template: string</td>
-                            <td>Creates Cartesian product of N sets</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.combinations(sel, k, targetSel, template)</td>
-                            <td>sel: string, k: number, targetSel: string, template: string</td>
-                            <td>Generates combinations of size k</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.permutations(sel, k, targetSel, template)</td>
-                            <td>sel: string, k: number, targetSel: string, template: string</td>
-                            <td>Generates permutations of size k</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.powerSet(sel, targetSel, key)</td>
-                            <td>sel: string, targetSel: string, key: string?</td>
-                            <td>Generates power set</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.combinationsWithReplacement(sel, k, targetSel, template)</td>
-                            <td>sel: string, k: number, targetSel: string, template: string</td>
-                            <td>Combinations with replacement</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-dom">DOM</span>HTML.client.permutationsWithReplacement(sel, k, targetSel, template)</td>
-                            <td>sel: string, k: number, targetSel: string, template: string</td>
-                            <td>Permutations with replacement</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mt-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Set & Combinatorics Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Set operations</span>
-<span class="code-keyword">local</span> setOps = HTML.client.batch(
-    HTML.client.union(<span class="code-string">"#set1"</span>, <span class="code-string">"#set2"</span>, <span class="code-string">"#result"</span>),
-    HTML.client.intersect(<span class="code-string">"#set1"</span>, <span class="code-string">"#set2"</span>, <span class="code-string">"#common"</span>),
-    HTML.client.difference(<span class="code-string">"#set1"</span>, <span class="code-string">"#set2"</span>, <span class="code-string">"#unique"</span>),
-    HTML.client.isSubset(<span class="code-string">"#subset"</span>, <span class="code-string">"#superset"</span>),
-    HTML.client.cardinality(<span class="code-string">"#collection"</span>)
-)
-
-<span class="code-comment">-- Combinatorics</span>
-<span class="code-keyword">local</span> combinatoricsOps = HTML.client.batch(
-    HTML.client.zip(<span class="code-string">"#names"</span>, <span class="code-string">"#values"</span>, <span class="code-string">"#zipped"</span>),
-    HTML.client.cartesian(<span class="code-string">"#setA"</span>, <span class="code-string">"#setB"</span>, <span class="code-string">"#product"</span>, <span class="code-string">"&lt;div&gt;{0} - {1}&lt;/div&gt;"</span>),
-    HTML.client.combinations(<span class="code-string">".items"</span>, 2, <span class="code-string">"#combinations"</span>, <span class="code-string">"&lt;div&gt;{0}, {1}&lt;/div&gt;"</span>),
-    HTML.client.permutations(<span class="code-string">".items"</span>, 2, <span class="code-string">"#permutations"</span>, <span class="code-string">"&lt;div&gt;{0} then {1}&lt;/div&gt;"</span>),
-    HTML.client.powerSet(<span class="code-string">".elements"</span>, <span class="code-string">"#powerset"</span>)
-)</code></pre>
-                </div>
-            </div>
-        </section>
-
-        <!-- Storage & Clipboard Section -->
-        <section id="storage" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-build-green flex items-center justify-center text-white font-bold mr-4">2</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">Storage & Clipboard Operations</h2>
-            </div>
-
-            <!-- Storage Operations -->
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Storage Operations</h3>
-                <p class="text-light-text-secondary mb-6">
-                    Operations for working with browser storage (localStorage, sessionStorage) and client-side variables.
-                </p>
-                
-                <table class="method-table">
-                    <thead>
-                        <tr>
-                            <th>Method</th>
-                            <th>Parameters</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><span class="category-badge badge-storage">Storage</span>HTML.client.localSet(key, value)</td>
-                            <td>key: string, value: string</td>
-                            <td>Sets item in localStorage</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-storage">Storage</span>HTML.client.localGet(key)</td>
-                            <td>key: string</td>
-                            <td>Gets item from localStorage</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-storage">Storage</span>HTML.client.localRemove(key)</td>
-                            <td>key: string</td>
-                            <td>Removes item from localStorage</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-storage">Storage</span>HTML.client.sessionSet(key, value)</td>
-                            <td>key: string, value: string</td>
-                            <td>Sets item in sessionStorage</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-storage">Storage</span>HTML.client.sessionGet(key)</td>
-                            <td>key: string</td>
-                            <td>Gets item from sessionStorage</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-storage">Storage</span>HTML.client.sessionRemove(key)</td>
-                            <td>key: string</td>
-                            <td>Removes item from sessionStorage</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-storage">Storage</span>HTML.client.storeVar(name, value)</td>
-                            <td>name: string, value: any</td>
-                            <td>Stores variable in client memory</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-storage">Storage</span>HTML.client.setVar(name, value)</td>
-                            <td>name: string, value: any</td>
-                            <td>Sets client variable (alias for storeVar)</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-storage">Storage</span>HTML.client.getVar(name)</td>
-                            <td>name: string</td>
-                            <td>Gets client variable value</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mt-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Storage Operations Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Local storage operations</span>
-<span class="code-keyword">local</span> storageOps = HTML.client.batch(
-    HTML.client.localSet(<span class="code-string">"userPreferences"</span>, <span class="code-string">'{"theme":"dark","notifications":true}'</span>),
-    HTML.client.localSet(<span class="code-string">"lastVisit"</span>, <span class="code-string">"2023-12-07"</span>),
-    HTML.client.localGet(<span class="code-string">"userPreferences"</span>),
-    HTML.client.localRemove(<span class="code-string">"temporaryData"</span>)
-)
-
-<span class="code-comment">-- Session storage operations</span>
-<span class="code-keyword">local</span> sessionOps = HTML.client.batch(
-    HTML.client.sessionSet(<span class="code-string">"sessionToken"</span>, <span class="code-string">"abc123xyz"</span>),
-    HTML.client.sessionSet(<span class="code-string">"currentPage"</span>, <span class="code-string">"dashboard"</span>),
-    HTML.client.sessionGet(<span class="code-string">"sessionToken"</span>),
-    HTML.client.sessionRemove(<span class="code-string">"tempSession"</span>)
-)
-
-<span class="code-comment">-- Client variables</span>
-<span class="code-keyword">local</span> varOps = HTML.client.batch(
-    HTML.client.storeVar(<span class="code-string">"counter"</span>, 0),
-    HTML.client.setVar(<span class="code-string">"userName"</span>, <span class="code-string">"John Doe"</span>),
-    HTML.client.setVar(<span class="code-string">"isLoggedIn"</span>, true),
-    HTML.client.getVar(<span class="code-string">"counter"</span>),
-    HTML.client.getVar(<span class="code-string">"userName"</span>)
-)</code></pre>
-                </div>
-            </div>
-
-            <!-- Clipboard & Notifications -->
-            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Clipboard & Notification Operations</h3>
-                <p class="text-light-text-secondary mb-6">
-                    Operations for clipboard access and desktop notifications.
-                </p>
-                
-                <table class="method-table">
-                    <thead>
-                        <tr>
-                            <th>Method</th>
-                            <th>Parameters</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><span class="category-badge badge-storage">Clipboard</span>HTML.client.copyText(text)</td>
-                            <td>text: string</td>
-                            <td>Copies text to clipboard</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-storage">Clipboard</span>HTML.client.readText()</td>
-                            <td>None</td>
-                            <td>Reads text from clipboard</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-storage">Notification</span>HTML.client.notify(title, body)</td>
-                            <td>title: string, body: string</td>
-                            <td>Shows desktop notification</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mt-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Clipboard & Notification Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Clipboard operations</span>
-<span class="code-keyword">local</span> clipboardOps = HTML.client.batch(
-    HTML.client.copyText(<span class="code-string">"Text to copy to clipboard"</span>),
+<span class="comment">-- Clipboard operations</span>
+<span class="keyword">local</span> clipboardOps = HTML.client.batch(
+    HTML.client.copyText(<span class="string">"Text to copy to clipboard"</span>),
     HTML.client.readText()
 )
 
-<span class="code-comment">-- Notification operations</span>
-<span class="code-keyword">local</span> notificationOps = HTML.client.batch(
-    HTML.client.notify(<span class="code-string">"Task Complete"</span>, <span class="code-string">"Your operation finished successfully"</span>),
-    HTML.client.notify(<span class="code-string">"New Message"</span>, <span class="code-string">"You have a new message from John"</span>),
-    HTML.client.notify(<span class="code-string">"System Alert"</span>, <span class="code-string">"System maintenance in 5 minutes"</span>)
-)
-
-<span class="code-comment">-- Combined example: copy and notify</span>
-<span class="code-keyword">local</span> copyAndNotify = HTML.client.batch(
-    HTML.client.copyText(<span class="code-string">"Important information"</span>),
-    HTML.client.notify(<span class="code-string">"Copied!"</span>, <span class="code-string">"Text copied to clipboard"</span>)
-)</code></pre>
-                </div>
+<span class="comment">-- Notifications</span>
+<span class="keyword">local</span> notificationOps = HTML.client.notify(<span class="string">"Task Complete"</span>, <span class="string">"Your operation finished successfully"</span>)</code></pre>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Network Operations Section -->
-        <section id="network" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-query-purple flex items-center justify-center text-white font-bold mr-4">3</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">Network Operations</h2>
-            </div>
+    <!-- Network Operations Section -->
+    <section id="network" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">3</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Network Operations</h2>
+        </div>
 
-            <!-- Fetch API -->
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Fetch API Operations</h3>
-                <p class="text-light-text-secondary mb-6">
-                    Comprehensive HTTP client operations using the Fetch API with support for all HTTP methods, headers, and response types.
-                </p>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">HTML.client.fetch(url, options, responseType, onSuccess, onError)</h4>
-                    <p class="text-light-text-secondary mb-3">Performs HTTP requests with full configuration options.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Required</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>url</td>
-                                <td>string</td>
-                                <td>The URL to fetch</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>options</td>
-                                <td>table?</td>
-                                <td>Fetch options {method, headers, body, credentials, etc.}</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>responseType</td>
-                                <td>string?</td>
-                                <td>Expected response type: "text", "json", "blob"</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>onSuccess</td>
-                                <td>ClientOperation?</td>
-                                <td>Operations to run on successful response</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>onError</td>
-                                <td>ClientOperation?</td>
-                                <td>Operations to run on error</td>
-                                <td>No</td>
-                            </tr>
-                        </tbody>
-                    </table>
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Fetch API Examples</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
+                <pre><code><span class="comment">-- Basic GET request</span>
+<span class="keyword">local</span> getRequest = HTML.client.fetch(<span class="string">"/api/users"</span>)
 
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mt-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Fetch API Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Basic GET request</span>
-<span class="code-keyword">local</span> getRequest = HTML.client.fetch(<span class="code-string">"/api/users"</span>)
-
-<span class="code-comment">-- GET with JSON response and success handler</span>
-<span class="code-keyword">local</span> getUser = HTML.client.fetch(
-    <span class="code-string">"/api/users/123"</span>,
+<span class="comment">-- POST request with JSON body</span>
+<span class="keyword">local</span> postUser = HTML.client.fetch(
+    <span class="string">"/api/users"</span>,
     {
-        method = <span class="code-string">"GET"</span>,
-        headers = {
-            [<span class="code-string">"Authorization"</span>] = <span class="code-string">"Bearer token123"</span>,
-            [<span class="code-string">"Content-Type"</span>] = <span class="code-string">"application/json"</span>
-        }
+        method = <span class="string">"POST"</span>,
+        headers = { [<span class="string">"Content-Type"</span>] = <span class="string">"application/json"</span> },
+        body = JSON.encode({ name = <span class="string">"John Doe"</span>, email = <span class="string">"john@example.com"</span> })
     },
-    <span class="code-string">"json"</span>,
-    HTML.client.batch(
-        HTML.client.setText(<span class="code-string">"#user-name"</span>, <span class="code-string">"__VALUE__.name"</span>),
-        HTML.client.setAttrs(<span class="code-string">"#avatar"</span>, { src = <span class="code-string">"__VALUE__.avatar"</span> }),
-        HTML.client.console(<span class="code-string">"log"</span>, <span class="code-string">"User data loaded successfully"</span>)
-    ),
-    HTML.client.batch(
-        HTML.client.setText(<span class="code-string">"#error"</span>, <span class="code-string">"Failed to load user data"</span>),
-        HTML.client.addClass(<span class="code-string">"#error"</span>, <span class="code-string">"visible"</span>)
-    )
+    <span class="string">"json"</span>,
+    HTML.client.console(<span class="string">"log"</span>, <span class="string">"User created"</span>)
 )
 
-<span class="code-comment">-- POST request with form data</span>
-<span class="code-keyword">local</span> postUser = HTML.client.fetch(
-    <span class="code-string">"/api/users"</span>,
-    {
-        method = <span class="code-string">"POST"</span>,
-        headers = {
-            [<span class="code-string">"Content-Type"</span>] = <span class="code-string">"application/json"</span>
-        },
-        body = JSON.encode({
-            name = <span class="code-string">"John Doe"</span>,
-            email = <span class="code-string">"john@example.com"</span>
-        })
-    },
-    <span class="code-string">"json"</span>,
-    HTML.client.batch(
-        HTML.client.console(<span class="code-string">"log"</span>, <span class="code-string">"User created with ID: __VALUE__.id"</span>),
-        HTML.client.redirect(<span class="code-string">"/users/__VALUE__.id"</span>)
-    ),
-    HTML.client.batch(
-        HTML.client.console(<span class="code-string">"error"</span>, <span class="code-string">"Failed to create user"</span>),
-        HTML.client.setText(<span class="code-string">"#form-error"</span>, <span class="code-string">"__VALUE__.message"</span>)
-    )
-)
-
-<span class="code-comment">-- PUT request for updating</span>
-<span class="code-keyword">local</span> updateUser = HTML.client.fetch(
-    <span class="code-string">"/api/users/123"</span>,
-    {
-        method = <span class="code-string">"PUT"</span>,
-        headers = {
-            [<span class="code-string">"Content-Type"</span>] = <span class="code-string">"application/json"</span>
-        },
-        body = JSON.encode({
-            name = <span class="code-string">"Jane Smith"</span>,
-            email = <span class="code-string">"jane@example.com"</span>
-        })
-    },
-    <span class="code-string">"json"</span>,
-    HTML.client.console(<span class="code-string">"log"</span>, <span class="code-string">"User updated successfully"</span>)
-)
-
-<span class="code-comment">-- DELETE request</span>
-<span class="code-keyword">local</span> deleteUser = HTML.client.fetch(
-    <span class="code-string">"/api/users/123"</span>,
-    {
-        method = <span class="code-string">"DELETE"</span>
-    },
-    <span class="code-string">"text"</span>,
-    HTML.client.batch(
-        HTML.client.console(<span class="code-string">"log"</span>, <span class="code-string">"User deleted"</span>),
-        HTML.client.remove(<span class="code-string">"#user-123"</span>)
-    )
-)</code></pre>
-                </div>
-            </div>
-
-            <!-- WebSocket Operations -->
-            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">WebSocket Operations</h3>
-                <p class="text-light-text-secondary mb-6">
-                    Real-time communication operations using WebSockets with event handlers for connection lifecycle.
-                </p>
-                
-                <table class="method-table">
-                    <thead>
-                        <tr>
-                            <th>Method</th>
-                            <th>Parameters</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><span class="category-badge badge-network">WebSocket</span>HTML.client.wsConnect(id, url, handlers)</td>
-                            <td>id: string, url: string, handlers: table?</td>
-                            <td>Connects to WebSocket server</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-network">WebSocket</span>HTML.client.wsSend(id, message)</td>
-                            <td>id: string, message: string</td>
-                            <td>Sends message over WebSocket</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-network">WebSocket</span>HTML.client.wsClose(id)</td>
-                            <td>id: string</td>
-                            <td>Closes WebSocket connection</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="function-signature mt-6">
-                    <h4 class="font-bold text-lg mb-2">WebSocket Handlers Configuration</h4>
-                    <p class="text-light-text-secondary mb-3">WebSocket event handlers for different connection states.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Handler</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>onMessage</td>
-                                <td>ClientOperation</td>
-                                <td>Called when message is received</td>
-                            </tr>
-                            <tr>
-                                <td>onOpen</td>
-                                <td>ClientOperation</td>
-                                <td>Called when connection opens</td>
-                            </tr>
-                            <tr>
-                                <td>onClose</td>
-                                <td>ClientOperation</td>
-                                <td>Called when connection closes</td>
-                            </tr>
-                            <tr>
-                                <td>onError</td>
-                                <td>ClientOperation</td>
-                                <td>Called when error occurs</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mt-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">WebSocket Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Chat application WebSocket</span>
-<span class="code-keyword">local</span> chatSocket = HTML.client.wsConnect(<span class="code-string">"chat"</span>, <span class="code-string">"ws://localhost:8080/chat"</span>, {
-    onMessage = HTML.client.batch(
-        HTML.client.append(<span class="code-string">"#messages"</span>, <span class="code-string">'&lt;div class="message"&gt;__VALUE__&lt;/div&gt;'</span>),
-        HTML.client.scrollTo(<span class="code-string">"#messages"</span>, <span class="code-string">"bottom"</span>),
-        HTML.client.console(<span class="code-string">"log"</span>, <span class="code-string">"Message received: __VALUE__"</span>)
-    ),
-    onOpen = HTML.client.batch(
-        HTML.client.setText(<span class="code-string">"#status"</span>, <span class="code-string">"Connected"</span>),
-        HTML.client.addClass(<span class="code-string">"#status"</span>, <span class="code-string">"connected"</span>),
-        HTML.client.console(<span class="code-string">"log"</span>, <span class="code-string">"WebSocket connected"</span>)
-    ),
-    onClose = HTML.client.batch(
-        HTML.client.setText(<span class="code-string">"#status"</span>, <span class="code-string">"Disconnected"</span>),
-        HTML.client.addClass(<span class="code-string">"#status"</span>, <span class="code-string">"disconnected"</span>),
-        HTML.client.console(<span class="code-string">"log"</span>, <span class="code-string">"WebSocket closed"</span>)
-    ),
-    onError = HTML.client.batch(
-        HTML.client.setText(<span class="code-string">"#status"</span>, <span class="code-string">"Error"</span>),
-        HTML.client.addClass(<span class="code-string">"#status"</span>, <span class="code-string">"error"</span>),
-        HTML.client.console(<span class="code-string">"error"</span>, <span class="code-string">"WebSocket error: __VALUE__"</span>)
-    )
+<span class="comment">-- WebSocket connection</span>
+<span class="keyword">local</span> chatSocket = HTML.client.wsConnect(<span class="string">"chat"</span>, <span class="string">"ws://localhost:8080/chat"</span>, {
+    onMessage = HTML.client.append(<span class="string">"#messages"</span>, <span class="string">'&lt;div&gt;__VALUE__&lt;/div&gt;'</span>),
+    onOpen = HTML.client.setText(<span class="string">"#status"</span>, <span class="string">"Connected"</span>)
 })
 
-<span class="code-comment">-- Sending messages</span>
-<span class="code-keyword">local</span> sendMessage = HTML.client.wsSend(<span class="code-string">"chat"</span>, <span class="code-string">"Hello from LuaHTMLReactive!"</span>)
+<span class="comment">-- Sending WebSocket message</span>
+<span class="keyword">local</span> sendMsg = HTML.client.wsSend(<span class="string">"chat"</span>, <span class="string">"Hello World!"</span>)</code></pre>
+            </div>
+        </div>
+    </section>
 
-<span class="code-comment">-- Real-time dashboard updates</span>
-<span class="code-keyword">local</span> dashboardSocket = HTML.client.wsConnect(<span class="code-string">"dashboard"</span>, <span class="code-string">"ws://localhost:8080/dashboard"</span>, {
-    onMessage = HTML.client.batch(
-        HTML.client.setText(<span class="code-string">"#metrics"</span>, <span class="code-string">"__VALUE__.metrics"</span>),
-        HTML.client.setAttrs(<span class="code-string">"#chart"</span>, { <span class="code-string">"data-values"</span> = <span class="code-string">"__VALUE__.chartData"</span> }),
-        HTML.client.console(<span class="code-string">"log"</span>, <span class="code-string">"Dashboard updated"</span>)
-    )
-})
+    <!-- Timers & Control Flow Section -->
+    <section id="timers" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">4</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Timers & Control Flow</h2>
+        </div>
 
-<span class="code-comment">-- Closing connections</span>
-<span class="code-keyword">local</span> closeOps = HTML.client.batch(
-    HTML.client.wsClose(<span class="code-string">"chat"</span>),
-    HTML.client.wsClose(<span class="code-string">"dashboard"</span>)
-)</code></pre>
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Timer Examples</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-            </div>
-        </section>
-
-        <!-- Timers & Control Flow Section -->
-        <section id="timers" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-warning-amber flex items-center justify-center text-white font-bold mr-4">4</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">Timers & Control Flow</h2>
-            </div>
-
-            <!-- Timer Operations -->
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Timer Operations</h3>
-                <p class="text-light-text-secondary mb-6">
-                    Operations for scheduling and controlling timed execution of code.
-                </p>
-                
-                <table class="method-table">
-                    <thead>
-                        <tr>
-                            <th>Method</th>
-                            <th>Parameters</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><span class="category-badge badge-timer">Timer</span>HTML.client.setTimeout(ms, cb)</td>
-                            <td>ms: number, cb: ClientOperation</td>
-                            <td>Executes callback once after delay</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-timer">Timer</span>HTML.client.setInterval(ms, cb, id)</td>
-                            <td>ms: number, cb: ClientOperation, id: string?</td>
-                            <td>Executes callback repeatedly at interval</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-timer">Timer</span>HTML.client.clearInterval(id)</td>
-                            <td>id: number</td>
-                            <td>Clears previously set interval</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-timer">Timer</span>HTML.client.requestAnimationFrame(cb, id)</td>
-                            <td>cb: ClientOperation, id: string?</td>
-                            <td>Schedules callback before next repaint</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-timer">Timer</span>HTML.client.cancelAnimationFrame(id)</td>
-                            <td>id: number</td>
-                            <td>Cancels animation frame request</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mt-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Timer Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Simple timeout</span>
-<span class="code-keyword">local</span> simpleTimeout = HTML.client.setTimeout(1000, 
-    HTML.client.console(<span class="code-string">"log"</span>, <span class="code-string">"1 second passed"</span>)
+                <pre><code><span class="comment">-- Simple timeout</span>
+<span class="keyword">local</span> simpleTimeout = HTML.client.setTimeout(<span class="number">1000</span>, 
+    HTML.client.console(<span class="string">"log"</span>, <span class="string">"1 second passed"</span>)
 )
 
-<span class="code-comment">-- Interval for polling</span>
-<span class="code-keyword">local</span> pollInterval = HTML.client.setInterval(5000, 
-    HTML.client.fetch(<span class="code-string">"/api/status"</span>),
-    <span class="code-string">"statusPoll"</span>
+<span class="comment">-- Interval for polling</span>
+<span class="keyword">local</span> pollInterval = HTML.client.setInterval(<span class="number">5000</span>, 
+    HTML.client.fetch(<span class="string">"/api/status"</span>),
+    <span class="string">"statusPoll"</span>
 )
 
-<span class="code-comment">-- Animation frame for smooth animations</span>
-<span class="code-keyword">local</span> animation = HTML.client.requestAnimationFrame(
-    HTML.client.batch(
-        HTML.client.console(<span class="code-string">"log"</span>, <span class="code-string">"Animation frame"</span>),
-        HTML.client.setAttrs(<span class="code-string">"#animated"</span>, { 
-            style = <span class="code-string">"transform: rotate(__VALUE__deg)"</span> 
-        })
-    ),
-    <span class="code-string">"rotationAnimation"</span>
+<span class="comment">-- Conditional execution</span>
+<span class="keyword">local</span> conditional = HTML.client.if_(
+    HTML.client.getValue(<span class="string">"#toggle"</span>),
+    HTML.client.setText(<span class="string">"#status"</span>, <span class="string">"Enabled"</span>),
+    HTML.client.setText(<span class="string">"#status"</span>, <span class="string">"Disabled"</span>)
 )
 
-<span class="code-comment">-- Complex timer example: countdown</span>
-<span class="code-keyword">local</span> countdown = HTML.client.setInterval(1000,
-    HTML.client.batch(
-        HTML.client.setVar(<span class="code-string">"count"</span>, 
-            HTML.client.subtract(HTML.client.getVar(<span class="code-string">"count"</span>), 1)
-        ),
-        HTML.client.setText(<span class="code-string">"#timer"</span>, HTML.client.getVar(<span class="code-string">"count"</span>)),
-        HTML.client.if_(
-            HTML.client.lte(HTML.client.getVar(<span class="code-string">"count"</span>), 0),
-            HTML.client.batch(
-                HTML.client.clearInterval(<span class="code-string">"countdown"</span>),
-                HTML.client.setText(<span class="code-string">"#timer"</span>, <span class="code-string">"Time's up!"</span>),
-                HTML.client.addClass(<span class="code-string">"#timer"</span>, <span class="code-string">"expired"</span>)
-            )
-        )
-    ),
-    <span class="code-string">"countdown"</span>
+<span class="comment">-- For loop example</span>
+<span class="keyword">local</span> forLoop = HTML.client.for_loop(
+    HTML.client.setVar(<span class="string">"i"</span>, <span class="number">0</span>),
+    HTML.client.lt(HTML.client.getVar(<span class="string">"i"</span>), <span class="number">10</span>),
+    HTML.client.setVar(<span class="string">"i"</span>, HTML.client.sum(HTML.client.getVar(<span class="string">"i"</span>), <span class="number">1</span>)),
+    HTML.client.append(<span class="string">"#output"</span>, HTML.client.getVar(<span class="string">"i"</span>))
 )</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Math & Logic Section -->
+    <section id="math" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">5</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Math & Logic Operations</h2>
+        </div>
+
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Math & Logic Examples</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-            </div>
-
-            <!-- Control Flow Operations -->
-            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Control Flow Operations</h3>
-                <p class="text-light-text-secondary mb-6">
-                    Operations for conditional execution, loops, and complex program flow control.
-                </p>
-                
-                <table class="method-table">
-                    <thead>
-                        <tr>
-                            <th>Method</th>
-                            <th>Parameters</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><span class="category-badge badge-control">Control</span>HTML.client.if_(condition, then_op, else_op)</td>
-                            <td>condition: any, then_op: ClientOperation, else_op: ClientOperation?</td>
-                            <td>Conditional execution</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-control">Control</span>HTML.client.while_loop(condition, body_op)</td>
-                            <td>condition: any, body_op: ClientOperation</td>
-                            <td>While loop execution</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-control">Control</span>HTML.client.do_while_loop(body_op, condition)</td>
-                            <td>body_op: ClientOperation, condition: any</td>
-                            <td>Do-while loop (executes at least once)</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-control">Control</span>HTML.client.loop_until(body_op, condition)</td>
-                            <td>body_op: ClientOperation, condition: any</td>
-                            <td>Loop until condition is true</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-control">Control</span>HTML.client.for_loop(init, condition, increment, body)</td>
-                            <td>init: ClientOperation, condition: any, increment: ClientOperation, body: ClientOperation</td>
-                            <td>For loop with initialization, condition, and increment</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-control">Control</span>HTML.client.foreach_loop(collection, itemVar, indexVar, body_op)</td>
-                            <td>collection: any, itemVar: string, indexVar: string?, body_op: ClientOperation</td>
-                            <td>For-each loop over collections</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-control">Control</span>HTML.client.break_()</td>
-                            <td>None</td>
-                            <td>Breaks out of current loop</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-control">Control</span>HTML.client.continue_()</td>
-                            <td>None</td>
-                            <td>Continues to next loop iteration</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-control">Control</span>HTML.client.return_(value)</td>
-                            <td>value: any?</td>
-                            <td>Returns from current function</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mt-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Control Flow Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Conditional execution</span>
-<span class="code-keyword">local</span> conditional = HTML.client.if_(
-    HTML.client.getValue(<span class="code-string">"#toggle"</span>),
-    HTML.client.batch(
-        HTML.client.setText(<span class="code-string">"#status"</span>, <span class="code-string">"Enabled"</span>),
-        HTML.client.addClass(<span class="code-string">"#status"</span>, <span class="code-string">"enabled"</span>)
-    ),
-    HTML.client.batch(
-        HTML.client.setText(<span class="code-string">"#status"</span>, <span class="code-string">"Disabled"</span>),
-        HTML.client.addClass(<span class="code-string">"#status"</span>, <span class="code-string">"disabled"</span>)
-    )
+                <pre><code><span class="comment">-- Basic arithmetic</span>
+<span class="keyword">local</span> arithmetic = HTML.client.batch(
+    HTML.client.sum(<span class="number">5</span>, <span class="number">10</span>, <span class="number">15</span>),
+    HTML.client.subtract(<span class="number">20</span>, <span class="number">5</span>),
+    HTML.client.multiply(<span class="number">4</span>, <span class="number">7</span>),
+    HTML.client.divide(<span class="number">100</span>, <span class="number">4</span>)
 )
 
-<span class="code-comment">-- For loop example</span>
-<span class="code-keyword">local</span> forLoop = HTML.client.for_loop(
-    HTML.client.setVar(<span class="code-string">"i"</span>, 0),
-    HTML.client.lt(HTML.client.getVar(<span class="code-string">"i"</span>), 10),
-    HTML.client.setVar(<span class="code-string">"i"</span>, HTML.client.sum(HTML.client.getVar(<span class="code-string">"i"</span>), 1)),
-    HTML.client.batch(
-        HTML.client.append(<span class="code-string">"#output"</span>, 
-            HTML.client.concat(<span class="code-string">"Item "</span>, HTML.client.getVar(<span class="code-string">"i"</span>))
-        ),
-        HTML.client.console(<span class="code-string">"log"</span>, HTML.client.getVar(<span class="code-string">"i"</span>))
-    )
+<span class="comment">-- Advanced math operations</span>
+<span class="keyword">local</span> advancedMath = HTML.client.batch(
+    HTML.client.pow(<span class="number">2</span>, <span class="number">8</span>),
+    HTML.client.sqrt(<span class="number">144</span>),
+    HTML.client.abs(<span class="number">-42</span>),
+    HTML.client.round(<span class="number">3.7</span>),
+    HTML.client.random(<span class="number">1</span>, <span class="number">100</span>)
 )
 
-<span class="code-comment">-- While loop with break</span>
-<span class="code-keyword">local</span> whileLoop = HTML.client.while_loop(
-    HTML.client.lt(HTML.client.getVar(<span class="code-string">"counter"</span>), 100),
-    HTML.client.batch(
-        HTML.client.setVar(<span class="code-string">"counter"</span>, 
-            HTML.client.sum(HTML.client.getVar(<span class="code-string">"counter"</span>), 1)
-        ),
-        HTML.client.if_(
-            HTML.client.gt(HTML.client.getVar(<span class="code-string">"counter"</span>), 50),
-            HTML.client.break_()
-        )
-    )
+<span class="comment">-- Comparisons</span>
+<span class="keyword">local</span> comparisons = HTML.client.batch(
+    HTML.client.eq(HTML.client.getVar(<span class="string">"a"</span>), HTML.client.getVar(<span class="string">"b"</span>)),
+    HTML.client.gt(HTML.client.getVar(<span class="string">"score"</span>), <span class="number">100</span>),
+    HTML.client.lt(HTML.client.getVar(<span class="string">"temperature"</span>), <span class="number">0</span>)
 )
 
-<span class="code-comment">-- For-each loop over DOM elements</span>
-<span class="code-keyword">local</span> foreachLoop = HTML.client.foreach_loop(
-    HTML.client.querySelectorAll(<span class="code-string">".items"</span>),
-    <span class="code-string">"item"</span>,
-    <span class="code-string">"index"</span>,
-    HTML.client.batch(
-        HTML.client.setText(<span class="code-string">"item"</span>, 
-            HTML.client.concat(<span class="code-string">"Item #"</span>, <span class="code-string">"index"</span>)
-        ),
-        HTML.client.console(<span class="code-string">"log"</span>, 
-            HTML.client.concat(<span class="code-string">"Processing item "</span>, <span class="code-string">"index"</span>)
-        )
-    )
-)
-
-<span class="code-comment">-- Do-while loop (executes at least once)</span>
-<span class="code-keyword">local</span> doWhile = HTML.client.do_while_loop(
-    HTML.client.batch(
-        HTML.client.setVar(<span class="code-string">"attempts"</span>, 
-            HTML.client.sum(HTML.client.getVar(<span class="code-string">"attempts"</span>), 1)
-        ),
-        HTML.client.fetch(<span class="code-string">"/api/data"</span>)
-    ),
-    HTML.client.and_(
-        HTML.client.lt(HTML.client.getVar(<span class="code-string">"attempts"</span>), 3),
-        HTML.client.not(HTML.client.getVar(<span class="code-string">"success"</span>))
-    )
-)</code></pre>
-                </div>
-            </div>
-        </section>
-
-        <!-- Math & Logic Section -->
-        <section id="math" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-query-purple flex items-center justify-center text-white font-bold mr-4">5</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">Math & Logic Operations</h2>
-            </div>
-
-            <!-- Math Operations -->
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Mathematical Operations</h3>
-                <p class="text-light-text-secondary mb-6">
-                    Complete set of mathematical operations including arithmetic, trigonometry, and utility functions.
-                </p>
-                
-                <table class="method-table">
-                    <thead>
-                        <tr>
-                            <th>Method</th>
-                            <th>Parameters</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><span class="category-badge badge-math">Math</span>HTML.client.sum(...)</td>
-                            <td>...: number|ClientOperation</td>
-                            <td>Adds numbers</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Math</span>HTML.client.subtract(...)</td>
-                            <td>...: number|ClientOperation</td>
-                            <td>Subtracts numbers</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Math</span>HTML.client.multiply(...)</td>
-                            <td>...: number|ClientOperation</td>
-                            <td>Multiplies numbers</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Math</span>HTML.client.divide(...)</td>
-                            <td>...: number|ClientOperation</td>
-                            <td>Divides numbers</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Math</span>HTML.client.mod(a, b)</td>
-                            <td>a: number, b: number</td>
-                            <td>Modulo operation</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Math</span>HTML.client.pow(base, exponent)</td>
-                            <td>base: number, exponent: number</td>
-                            <td>Power operation</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Math</span>HTML.client.sqrt(x)</td>
-                            <td>x: number</td>
-                            <td>Square root</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Math</span>HTML.client.abs(x)</td>
-                            <td>x: number</td>
-                            <td>Absolute value</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Math</span>HTML.client.round(x)</td>
-                            <td>x: number</td>
-                            <td>Round to nearest integer</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Math</span>HTML.client.floor(x)</td>
-                            <td>x: number</td>
-                            <td>Round down to integer</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Math</span>HTML.client.ceil(x)</td>
-                            <td>x: number</td>
-                            <td>Round up to integer</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Math</span>HTML.client.min(...)</td>
-                            <td>...: number|ClientOperation</td>
-                            <td>Minimum value</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Math</span>HTML.client.max(...)</td>
-                            <td>...: number|ClientOperation</td>
-                            <td>Maximum value</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Math</span>HTML.client.random(min, max)</td>
-                            <td>min: number?, max: number?</td>
-                            <td>Random number in range</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Math</span>HTML.client.sin(x)</td>
-                            <td>x: number</td>
-                            <td>Sine function</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Math</span>HTML.client.cos(x)</td>
-                            <td>x: number</td>
-                            <td>Cosine function</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Math</span>HTML.client.tan(x)</td>
-                            <td>x: number</td>
-                            <td>Tangent function</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Math</span>HTML.client.asin(x)</td>
-                            <td>x: number</td>
-                            <td>Arcsine function</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Math</span>HTML.client.acos(x)</td>
-                            <td>x: number</td>
-                            <td>Arccosine function</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Math</span>HTML.client.atan(x)</td>
-                            <td>x: number</td>
-                            <td>Arctangent function</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Math</span>HTML.client.atan2(y, x)</td>
-                            <td>y: number, x: number</td>
-                            <td>Arctangent of y/x</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Math</span>HTML.client.log(x)</td>
-                            <td>x: number</td>
-                            <td>Natural logarithm</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Math</span>HTML.client.log10(x)</td>
-                            <td>x: number</td>
-                            <td>Base 10 logarithm</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Math</span>HTML.client.exp(x)</td>
-                            <td>x: number</td>
-                            <td>Exponential function</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Math</span>HTML.client.pi()</td>
-                            <td>None</td>
-                            <td>Returns π (pi)</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Math</span>HTML.client.e()</td>
-                            <td>None</td>
-                            <td>Returns Euler's number</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mt-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Math Operations Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Basic arithmetic</span>
-<span class="code-keyword">local</span> arithmetic = HTML.client.batch(
-    HTML.client.sum(5, 10, 15),
-    HTML.client.subtract(20, 5),
-    HTML.client.multiply(4, 7),
-    HTML.client.divide(100, 4),
-    HTML.client.mod(17, 5)
-)
-
-<span class="code-comment">-- Advanced math operations</span>
-<span class="code-keyword">local</span> advancedMath = HTML.client.batch(
-    HTML.client.pow(2, 8),
-    HTML.client.sqrt(144),
-    HTML.client.abs(-42),
-    HTML.client.round(3.7),
-    HTML.client.floor(3.7),
-    HTML.client.ceil(3.2)
-)
-
-<span class="code-comment">-- Statistical operations</span>
-<span class="code-keyword">local</span> stats = HTML.client.batch(
-    HTML.client.min(5, 2, 8, 1, 9),
-    HTML.client.max(5, 2, 8, 1, 9),
-    HTML.client.random(),
-    HTML.client.random(1, 100)
-)
-
-<span class="code-comment">-- Trigonometric functions</span>
-<span class="code-keyword">local</span> trig = HTML.client.batch(
-    HTML.client.sin(HTML.client.multiply(HTML.client.pi(), 0.5)),
-    HTML.client.cos(0),
-    HTML.client.tan(HTML.client.divide(HTML.client.pi(), 4)),
-    HTML.client.asin(0.5),
-    HTML.client.acos(0.5),
-    HTML.client.atan(1)
-)
-
-<span class="code-comment">-- Logarithmic functions</span>
-<span class="code-keyword">local</span> logarithms = HTML.client.batch(
-    HTML.client.log(HTML.client.e()),
-    HTML.client.log10(100),
-    HTML.client.exp(1)
-)
-
-<span class="code-comment">-- Complex calculation example</span>
-<span class="code-keyword">local</span> complexCalc = HTML.client.divide(
-    HTML.client.multiply(
-        HTML.client.sum(HTML.client.getVar(<span class="code-string">"a"</span>), HTML.client.getVar(<span class="code-string">"b"</span>)),
-        HTML.client.subtract(HTML.client.getVar(<span class="code-string">"c"</span>), HTML.client.getVar(<span class="code-string">"d"</span>))
-    ),
-    HTML.client.pow(HTML.client.getVar(<span class="code-string">"e"</span>), 2)
-)</code></pre>
-                </div>
-            </div>
-
-            <!-- Logic & Comparison Operations -->
-            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Logic & Comparison Operations</h3>
-                <p class="text-light-text-secondary mb-6">
-                    Boolean logic, comparison operations, and condition builders for complex conditional logic.
-                </p>
-                
-                <table class="method-table">
-                    <thead>
-                        <tr>
-                            <th>Method</th>
-                            <th>Parameters</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><span class="category-badge badge-math">Logic</span>HTML.client.and_(...)</td>
-                            <td>...: any</td>
-                            <td>Logical AND of conditions</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Logic</span>HTML.client.or_(...)</td>
-                            <td>...: any</td>
-                            <td>Logical OR of conditions</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Logic</span>HTML.client.not_(cond)</td>
-                            <td>cond: any</td>
-                            <td>Logical NOT (negation)</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Logic</span>HTML.client.cmp(left, operator, right)</td>
-                            <td>left: any, operator: string, right: any</td>
-                            <td>Generic comparison: ==, !=, >, <, >=, <=</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Logic</span>HTML.client.eq(a, b)</td>
-                            <td>a: any, b: any</td>
-                            <td>Equality comparison (==)</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Logic</span>HTML.client.neq(a, b)</td>
-                            <td>a: any, b: any</td>
-                            <td>Inequality comparison (!=)</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Logic</span>HTML.client.gt(a, b)</td>
-                            <td>a: any, b: any</td>
-                            <td>Greater than (>)</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Logic</span>HTML.client.gte(a, b)</td>
-                            <td>a: any, b: any</td>
-                            <td>Greater than or equal (>=)</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Logic</span>HTML.client.lt(a, b)</td>
-                            <td>a: any, b: any</td>
-                            <td>Less than (<)</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-math">Logic</span>HTML.client.lte(a, b)</td>
-                            <td>a: any, b: any</td>
-                            <td>Less than or equal (<=)</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-util">Util</span>HTML.client.trim(op)</td>
-                            <td>op: ClientOperation</td>
-                            <td>Trims whitespace from string result</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-util">Util</span>HTML.client.convert(op, targetType)</td>
-                            <td>op: ClientOperation, targetType: string</td>
-                            <td>Converts value to specified type</td>
-                        </tr>
-                        <tr>
-                            <td><span class="category-badge badge-util">Util</span>HTML.client.console(level, message)</td>
-                            <td>level: string, message: any</td>
-                            <td>Logs to browser console</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mt-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Logic & Comparison Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Basic comparisons</span>
-<span class="code-keyword">local</span> comparisons = HTML.client.batch(
-    HTML.client.eq(HTML.client.getVar(<span class="code-string">"a"</span>), HTML.client.getVar(<span class="code-string">"b"</span>)),
-    HTML.client.neq(HTML.client.getVar(<span class="code-string">"x"</span>), HTML.client.getVar(<span class="code-string">"y"</span>)),
-    HTML.client.gt(HTML.client.getVar(<span class="code-string">"score"</span>), 100),
-    HTML.client.lt(HTML.client.getVar(<span class="code-string">"temperature"</span>), 0)
-)
-
-<span class="code-comment">-- Complex logical conditions</span>
-<span class="code-keyword">local</span> complexCondition = HTML.client.and_(
-    HTML.client.gte(HTML.client.getVar(<span class="code-string">"age"</span>), 18),
+<span class="comment">-- Complex logical conditions</span>
+<span class="keyword">local</span> complexCondition = HTML.client.and_(
+    HTML.client.gte(HTML.client.getVar(<span class="string">"age"</span>), <span class="number">18</span>),
     HTML.client.or_(
-        HTML.client.eq(HTML.client.getVar(<span class="code-string">"country"</span>), <span class="code-string">"US"</span>),
-        HTML.client.eq(HTML.client.getVar(<span class="code-string">"country"</span>), <span class="code-string">"CA"</span>)
+        HTML.client.eq(HTML.client.getVar(<span class="string">"country"</span>), <span class="string">"US"</span>),
+        HTML.client.eq(HTML.client.getVar(<span class="string">"country"</span>), <span class="string">"CA"</span>)
     ),
-    HTML.client.not_(HTML.client.getVar(<span class="code-string">"isBanned"</span>))
+    HTML.client.not_(HTML.client.getVar(<span class="string">"isBanned"</span>))
 )
 
-<span class="code-comment">-- String operations and conversion</span>
-<span class="code-keyword">local</span> stringOps = HTML.client.batch(
-    HTML.client.trim(HTML.client.getText(<span class="code-string">"#input"</span>)),
-    HTML.client.convert(HTML.client.getValue(<span class="code-string">"#number-input"</span>), <span class="code-string">"number"</span>),
-    HTML.client.convert(HTML.client.getVar(<span class="code-string">"data"</span>), <span class="code-string">"json"</span>)
-)
-
-<span class="code-comment">-- Console logging</span>
-<span class="code-keyword">local</span> logging = HTML.client.batch(
-    HTML.client.console(<span class="code-string">"log"</span>, <span class="code-string">"Normal message"</span>),
-    HTML.client.console(<span class="code-string">"info"</span>, <span class="code-string">"Informational message"</span>),
-    HTML.client.console(<span class="code-string">"warn"</span>, <span class="code-string">"Warning message"</span>),
-    HTML.client.console(<span class="code-string">"error"</span>, <span class="code-string">"Error message"</span>),
-    HTML.client.console(<span class="code-string">"debug"</span>, <span class="code-string">"Debug message"</span>)
-)
-
-<span class="code-comment">-- Complex validation example</span>
-<span class="code-keyword">local</span> validation = HTML.client.if_(
-    HTML.client.and_(
-        HTML.client.gte(HTML.client.convert(HTML.client.getValue(<span class="code-string">"#age"</span>), <span class="code-string">"number"</span>), 18),
-        HTML.client.neq(HTML.client.trim(HTML.client.getValue(<span class="code-string">"#email"</span>)), <span class="code-string">""</span>),
-        HTML.client.gt(HTML.client.length(HTML.client.getValue(<span class="code-string">"#password"</span>)), 7)
-    ),
-    HTML.client.batch(
-        HTML.client.setText(<span class="code-string">"#validation"</span>, <span class="code-string">"Valid"</span>),
-        HTML.client.addClass(<span class="code-string">"#submit-btn"</span>, <span class="code-string">"enabled"</span>)
-    ),
-    HTML.client.batch(
-        HTML.client.setText(<span class="code-string">"#validation"</span>, <span class="code-string">"Invalid"</span>),
-        HTML.client.addClass(<span class="code-string">"#submit-btn"</span>, <span class="code-string">"disabled"</span>)
-    )
+<span class="comment">-- Console logging</span>
+<span class="keyword">local</span> logging = HTML.client.batch(
+    HTML.client.console(<span class="string">"log"</span>, <span class="string">"Normal message"</span>),
+    HTML.client.console(<span class="string">"warn"</span>, <span class="string">"Warning message"</span>),
+    HTML.client.console(<span class="string">"error"</span>, <span class="string">"Error message"</span>)
 )</code></pre>
-                </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Footer -->
-        <footer class="mt-12 pt-8 border-t border-light-border text-center text-light-text-secondary">
-            <p>Dawn Framework HTML.client Operations &copy; 2023 - Complete Reference</p>
-            <div class="flex justify-center space-x-4 mt-4">
-                <a href="#" class="text-laser-blue hover:underline">API Reference</a>
-                <a href="#" class="text-laser-blue hover:underline">Examples</a>
-                <a href="#" class="text-laser-blue hover:underline">GitHub</a>
-                <a href="#" class="text-laser-blue hover:underline">Community</a>
-            </div>
-        </footer>
-    </main>
+    <!-- Footer -->
+    <footer class="mt-12 pt-8 border-t text-center" style="border-color: var(--doc-border); color: var(--doc-text-secondary);">
+        <p>Dawn Framework HTML.client Operations © 2023 - Complete Reference</p>
+        <div class="flex justify-center space-x-4 mt-4">
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">API Reference</a>
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">Examples</a>
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">GitHub</a>
+        </div>
+    </footer>
+</main>
 
-    <script>
-        // Copy code functionality
-        document.querySelectorAll('.copy-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const codeBlock = this.closest('.code-block').querySelector('pre code');
-                const textToCopy = codeBlock.textContent;
-                
-                navigator.clipboard.writeText(textToCopy).then(() => {
-                    const originalText = this.innerHTML;
-                    this.innerHTML = '<i class="fas fa-check mr-1"></i>Copied!';
-                    
-                    setTimeout(() => {
-                        this.innerHTML = originalText;
-                    }, 2000);
-                });
-            });
-        });
+<script>
+// Copy code functionality
+function copyCode(button) {
+    const codeBlock = button.closest('.code-block');
+    const code = codeBlock.querySelector('pre code');
+    const text = code.textContent;
+    
+    navigator.clipboard.writeText(text).then(() => {
+        const originalHTML = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        setTimeout(() => {
+            button.innerHTML = originalHTML;
+        }, 2000);
+    });
+}
+
+// Back to Top button
+const backToTop = document.createElement('button');
+backToTop.innerHTML = '<i class="fas fa-arrow-up"></i>';
+backToTop.className = 'back-to-top';
+document.body.appendChild(backToTop);
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+        backToTop.classList.add('visible');
+    } else {
+        backToTop.classList.remove('visible');
+    }
+});
+
+backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
         
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
+        const target = document.querySelector(targetId);
+        if (target) {
+            e.preventDefault();
+            const offset = 80;
+            const elementPosition = target.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - offset;
+            
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
             });
-        });
-    </script>
+        }
+    });
+});
+
+// Observe theme changes
+const observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+        if (mutation.attributeName === 'class') {
+            console.log('Theme updated');
+        }
+    });
+});
+
+observer.observe(document.body, { attributes: true });
+</script>

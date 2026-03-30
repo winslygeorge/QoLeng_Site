@@ -1,1069 +1,764 @@
-
-    <style>
-        /* Custom styles for code blocks and other elements */
-        .code-block {
-            background: #0A0A0F;
-            border-left: 4px solid #0066FF;
-        }
-        
-        .light-theme .code-block {
-            background: #F7F9FC;
-            border-left: 4px solid #0066FF;
-            color: #2A2A3A;
-        }
-        
-        .code-keyword {
-            color: #0066FF;
-        }
-        
-        .code-string {
-            color: #00CC88;
-        }
-        
-        .code-comment {
-            color: #6A737D;
-        }
-        
-        .light-theme .code-comment {
-            color: #9AA5B5;
-        }
-        
-        .code-variable {
-            color: #8A2BE2;
-        }
-        
-        .code-type {
-            color: #FFB300;
-        }
-        
-        /* Custom scrollbar for code blocks */
-        .code-block::-webkit-scrollbar {
-            height: 8px;
-        }
-        
-        .code-block::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 4px;
-        }
-        
-        .code-block::-webkit-scrollbar-thumb {
-            background: rgba(0, 102, 255, 0.5);
-            border-radius: 4px;
-        }
-        
-        .code-block::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 102, 255, 0.7);
-        }
-        
-        /* Additional custom styles */
-        .nav-link {
-            position: relative;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #00CC88, #8A2BE2);
-            transition: width 0.3s ease;
-        }
-        
-        .nav-link:hover::after {
-            width: 100%;
-        }
-        
-        .feature-card {
-            transition: all 0.3s ease;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        }
-        
-        .data-source-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 1rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-right: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .function-signature {
-            background: #F0F4F8;
-            border-left: 4px solid #0066FF;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 0.5rem;
-        }
-        
-        .param-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0;
-        }
-        
-        .param-table th, .param-table td {
-            padding: 0.75rem;
-            text-align: left;
-            border-bottom: 1px solid #E0E5EC;
-        }
-        
-        .param-table th {
-            background-color: #F7F9FC;
-            font-weight: 600;
-        }
-    </style>
-    <!-- Main Documentation Content -->
-    <main class="main-content-body max-w-6xl mx-auto px-6 py-8 light-theme">
-        <!-- Overview Section -->
-        <section id="overview" class="mb-16 animate-fadeIn">
-            <div class="bg-white rounded-xl shadow-lg p-8 border border-light-border">
-                <h1 class="text-4xl font-bold mb-6 text-neural-charcoal">ORM Model System</h1>
-                <p class="text-xl text-light-text-secondary mb-8">
-                    Comprehensive guide to using the ORM Model system in Dawn Framework applications.
-                    This documentation covers model creation, CRUD operations, query building, and advanced features.
-                </p>
-                
-                <div class="grid md:grid-cols-3 gap-6 mb-8">
-                    <div class="feature-card bg-blue-50 p-6 rounded-lg border border-blue-100">
-                        <div class="w-12 h-12 rounded-full bg-laser-blue flex items-center justify-center text-white mb-4">
-                            <i class="fas fa-database"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 text-laser-blue">Model Creation</h3>
-                        <p class="text-light-text-secondary">Define database schemas with fields, indexes, and relationships</p>
-                    </div>
-                    
-                    <div class="feature-card bg-green-50 p-6 rounded-lg border border-green-100">
-                        <div class="w-12 h-12 rounded-full bg-build-green flex items-center justify-center text-white mb-4">
-                            <i class="fas fa-plus-circle"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 text-build-green">CRUD Operations</h3>
-                        <p class="text-light-text-secondary">Create, read, update, and delete operations with ease</p>
-                    </div>
-                    
-                    <div class="feature-card bg-purple-50 p-6 rounded-lg border border-purple-100">
-                        <div class="w-12 h-12 rounded-full bg-query-purple flex items-center justify-center text-white mb-4">
-                            <i class="fas fa-search"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 text-query-purple">Query Building</h3>
-                        <p class="text-light-text-secondary">Advanced query building with filtering, sorting, and pagination</p>
-                    </div>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-bold">Basic Setup</h3>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Import the Model base class</span>
-<span class="code-keyword">local</span> Model = <span class="code-keyword">require</span>(<span class="code-string">"path.to.model"</span>)
-
-<span class="code-comment">-- Define a simple User model</span>
-<span class="code-keyword">local</span> User = Model:<span class="code-type">extend</span>(<span class="code-string">"users"</span>, {
-    id = <span class="code-string">"integer"</span>,
-    username = <span class="code-string">"string"</span>,
-    email = <span class="code-string">"string"</span>,
-    created_at = <span class="code-string">"timestamp"</span>
-}, {
-    _primary_key = <span class="code-string">"id"</span>
-})
-
-<span class="code-comment">-- Now you can use all ORM methods</span>
-<span class="code-keyword">local</span> user, err = User:<span class="code-type">create</span>({
-    username = <span class="code-string">"john_doe"</span>,
-    email = <span class="code-string">"john@example.com"</span>
-})</code></pre>
-                </div>
-            </div>
-        </section>
-
-        <!-- Model Creation Section -->
-        <section id="model-creation" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-laser-blue flex items-center justify-center text-white font-bold mr-4">1</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">Model Creation & Configuration</h2>
-            </div>
-            
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Model.extend() Method</h3>
-                <p class="text-light-text-secondary mb-6">
-                    The primary method for creating new model classes. Defines the database table schema and model configuration.
-                </p>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">Model:extend(table_name, fields, options)</h4>
-                    <p class="text-light-text-secondary mb-3">Creates a new model class with the specified table schema and configuration.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>table_name</td>
-                                <td>string</td>
-                                <td>The name of the database table</td>
-                            </tr>
-                            <tr>
-                                <td>fields</td>
-                                <td>table</td>
-                                <td>Field definitions as key-value pairs: {field_name = "type"}</td>
-                            </tr>
-                            <tr>
-                                <td>options</td>
-                                <td>table</td>
-                                <td>Optional configuration for the model</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> New model class</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Complete Model Definition</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-keyword">local</span> User = Model:<span class="code-type">extend</span>(<span class="code-string">"users"</span>, {
-    <span class="code-comment">-- Field definitions (string types only)</span>
-    id = <span class="code-string">"integer"</span>,
-    username = <span class="code-string">"string"</span>,
-    email = <span class="code-string">"string"</span>,
-    password_hash = <span class="code-string">"string"</span>,
-    first_name = <span class="code-string">"string"</span>,
-    last_name = <span class="code-string">"string"</span>,
-    age = <span class="code-string">"integer"</span>,
-    salary = <span class="code-string">"float"</span>,
-    is_active = <span class="code-string">"boolean"</span>,
-    bio = <span class="code-string">"text"</span>,
-    created_at = <span class="code-string">"timestamp"</span>,
-    updated_at = <span class="code-string">"timestamp"</span>,
-    deleted_at = <span class="code-string">"timestamp"</span>
-}, {
-    <span class="code-comment">-- Model options</span>
-    _primary_key = <span class="code-string">"id"</span>,
-    _connection_mode = <span class="code-string">"sync"</span>, <span class="code-comment">-- or "async"</span>
-    _timestamps = true,
+<style>
+    /* ORM Model System - Integrated Theme System */
     
-    <span class="code-comment">-- Unique constraints</span>
-    _unique_keys = {
-        {<span class="code-string">"email"</span>},
-        {<span class="code-string">"username"</span>},
-        {<span class="code-string">"first_name"</span>, <span class="code-string">"last_name"</span>}
-    },
-    
-    <span class="code-comment">-- Index definitions</span>
-    _indexes = {
-        <span class="code-string">"email"</span>,
-        {<span class="code-string">"last_name"</span>, <span class="code-string">"first_name"</span>},
-        {columns = <span class="code-string">"email"</span>, unique = true}
-    },
-    
-    <span class="code-comment">-- Foreign key relationships</span>
-    _foreign_keys = {
-        {
-            columns = <span class="code-string">"created_by"</span>,
-            references = <span class="code-string">"users(id)"</span>,
-            on_delete = <span class="code-string">"SET NULL"</span>
-        }
-    },
-    
-    <span class="code-comment">-- ORM relations for eager loading</span>
-    _relations = {
-        posts = {
-            model = <span class="code-string">"Post"</span>,
-            foreign_key = <span class="code-string">"author_id"</span>,
-            local_key = <span class="code-string">"id"</span>,
-            join_type = <span class="code-string">"LEFT"</span>
-        }
-    },
-    
-    <span class="code-comment">-- Filter presets for reusable queries</span>
-    _filter_presets = {
-        active = <span class="code-keyword">function</span>(qb)
-            <span class="code-keyword">return</span> qb:<span class="code-type">where</span>(<span class="code-string">"is_active"</span>, <span class="code-string">"="</span>, true)
-        <span class="code-keyword">end</span>,
-        recent = <span class="code-keyword">function</span>(qb)
-            <span class="code-keyword">return</span> qb:<span class="code-type">where</span>(<span class="code-string">"created_at"</span>, <span class="code-string">">"</span>, os.date(<span class="code-string">"!%Y-%m-%d"</span>, os.time() - 7*24*60*60))
-        <span class="code-keyword">end</span>
-    },
-    
-    <span class="code-comment">-- Required for relation loading</span>
-    _model_classes = {Post = Post}
-})</code></pre>
-                </div>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">Supported Field Types</h4>
-                    <p class="text-light-text-secondary mb-3">The ORM supports these basic field types:</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Example</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><code>"integer"</code></td>
-                                <td>Whole numbers</td>
-                                <td><code>age = "integer"</code></td>
-                            </tr>
-                            <tr>
-                                <td><code>"string"</code></td>
-                                <td>Short text/VARCHAR</td>
-                                <td><code>username = "string"</code></td>
-                            </tr>
-                            <tr>
-                                <td><code>"timestamp"</code></td>
-                                <td>Date and time</td>
-                                <td><code>created_at = "timestamp"</code></td>
-                            </tr>
-                            <tr>
-                                <td><code>"boolean"</code></td>
-                                <td>True/false (stored as 1/0)</td>
-                                <td><code>is_active = "boolean"</code></td>
-                            </tr>
-                            <tr>
-                                <td><code>"float"</code></td>
-                                <td>Floating point numbers</td>
-                                <td><code>salary = "float"</code></td>
-                            </tr>
-                            <tr>
-                                <td><code>"text"</code></td>
-                                <td>Long text content</td>
-                                <td><code>bio = "text"</code></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <!-- CRUD Operations Section -->
-        <section id="crud-operations" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-build-green flex items-center justify-center text-white font-bold mr-4">2</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">CRUD Operations</h2>
-            </div>
-            
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Create Operations</h3>
-                <p class="text-light-text-secondary mb-6">
-                    Methods for creating new records in the database.
-                </p>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">create(data, callback)</h4>
-                    <p class="text-light-text-secondary mb-3">Creates a new record and returns a model instance.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>data</td>
-                                <td>table</td>
-                                <td>Field values for the new record</td>
-                            </tr>
-                            <tr>
-                                <td>callback</td>
-                                <td>function</td>
-                                <td>Optional callback for async mode</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> New model instance, error message</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Create Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Basic create operation</span>
-<span class="code-keyword">local</span> user, err = User:<span class="code-type">create</span>({
-    username = <span class="code-string">"john_doe"</span>,
-    email = <span class="code-string">"john@example.com"</span>,
-    first_name = <span class="code-string">"John"</span>,
-    last_name = <span class="code-string">"Doe"</span>,
-    age = 30
-})
-
-<span class="code-keyword">if</span> err <span class="code-keyword">then</span>
-    print(<span class="code-string">"Error creating user: "</span> .. err)
-<span class="code-keyword">else</span>
-    print(<span class="code-string">"User created with ID: "</span> .. user.id)
-<span class="code-keyword">end</span>
-
-<span class="code-comment">-- Async create operation</span>
-User:<span class="code-type">create</span>({
-    username = <span class="code-string">"jane_doe"</span>,
-    email = <span class="code-string">"jane@example.com"</span>
-}, <span class="code-keyword">function</span>(user, err)
-    <span class="code-keyword">if</span> err <span class="code-keyword">then</span>
-        print(<span class="code-string">"Error: "</span> .. err)
-    <span class="code-keyword">else</span>
-        print(<span class="code-string">"User created: "</span> .. user.username)
-    <span class="code-keyword">end</span>
-<span class="code-keyword">end</span>)</code></pre>
-                </div>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">save(callback)</h4>
-                    <p class="text-light-text-secondary mb-3">Saves the current model instance (inserts new or updates existing).</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>callback</td>
-                                <td>function</td>
-                                <td>Optional callback for async mode</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> boolean success, error message</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Save Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Create new instance and save</span>
-<span class="code-keyword">local</span> user = User:<span class="code-type">new</span>({
-    username = <span class="code-string">"bob_smith"</span>,
-    email = <span class="code-string">"bob@example.com"</span>
-})
-
-<span class="code-keyword">local</span> success, err = user:<span class="code-type">save</span>()
-<span class="code-keyword">if</span> success <span class="code-keyword">then</span>
-    print(<span class="code-string">"User saved with ID: "</span> .. user.id)
-<span class="code-keyword">end</span>
-
-<span class="code-comment">-- Update existing instance</span>
-<span class="code-keyword">local</span> user = User:<span class="code-type">find</span>(1)
-<span class="code-keyword">if</span> user <span class="code-keyword">then</span>
-    user.email = <span class="code-string">"new_email@example.com"</span>
-    <span class="code-keyword">local</span> success, err = user:<span class="code-type">save</span>()
-<span class="code-keyword">end</span></code></pre>
-                </div>
-            </div>
-            
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Read Operations</h3>
-                <p class="text-light-text-secondary mb-6">
-                    Methods for retrieving records from the database.
-                </p>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">find(id, opts, callback)</h4>
-                    <p class="text-light-text-secondary mb-3">Finds a record by its primary key.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>id</td>
-                                <td>mixed</td>
-                                <td>Primary key value</td>
-                            </tr>
-                            <tr>
-                                <td>opts</td>
-                                <td>table</td>
-                                <td>Optional: {include_relations = true}</td>
-                            </tr>
-                            <tr>
-                                <td>callback</td>
-                                <td>function</td>
-                                <td>Optional callback for async mode</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> Model instance or nil, error message</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Find Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Find by primary key</span>
-<span class="code-keyword">local</span> user, err = User:<span class="code-type">find</span>(1)
-<span class="code-keyword">if</span> user <span class="code-keyword">then</span>
-    print(<span class="code-string">"Found user: "</span> .. user.username)
-<span class="code-keyword">end</span>
-
-<span class="code-comment">-- Find with relations (eager loading)</span>
-<span class="code-keyword">local</span> user, err = User:<span class="code-type">find</span>(1, {include_relations = true})
-<span class="code-keyword">if</span> user <span class="code-keyword">then</span>
-    print(<span class="code-string">"User posts: "</span> .. #user.posts)
-<span class="code-keyword">end</span>
-
-<span class="code-comment">-- Async find</span>
-User:<span class="code-type">find</span>(1, <span class="code-keyword">function</span>(user, err)
-    <span class="code-keyword">if</span> user <span class="code-keyword">then</span>
-        print(<span class="code-string">"Found: "</span> .. user.username)
-    <span class="code-keyword">end</span>
-<span class="code-keyword">end</span>)</code></pre>
-                </div>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">find_by(criteria, opts, callback)</h4>
-                    <p class="text-light-text-secondary mb-3">Finds a record by one or more column values.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>criteria</td>
-                                <td>table</td>
-                                <td>{column = value} pairs</td>
-                            </tr>
-                            <tr>
-                                <td>opts</td>
-                                <td>table</td>
-                                <td>Optional options</td>
-                            </tr>
-                            <tr>
-                                <td>callback</td>
-                                <td>function</td>
-                                <td>Optional callback for async mode</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> Model instance or nil, error message</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Find By Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Find by single criteria</span>
-<span class="code-keyword">local</span> user, err = User:<span class="code-type">find_by</span>({email = <span class="code-string">"john@example.com"</span>})
-<span class="code-keyword">if</span> user <span class="code-keyword">then</span>
-    print(<span class="code-string">"Found user: "</span> .. user.username)
-<span class="code-keyword">end</span>
-
-<span class="code-comment">-- Find by multiple criteria</span>
-<span class="code-keyword">local</span> user, err = User:<span class="code-type">find_by</span>({
-    first_name = <span class="code-string">"John"</span>,
-    last_name = <span class="code-string">"Doe"</span>,
-    is_active = true
-})
-
-<span class="code-comment">-- Find all matching records</span>
-<span class="code-keyword">local</span> users, err = User:<span class="code-type">find_all_by</span>({is_active = true})
-<span class="code-keyword">for</span> i, user <span class="code-keyword">in</span> ipairs(users) <span class="code-keyword">do</span>
-    print(<span class="code-string">"Active user: "</span> .. user.username)
-<span class="code-keyword">end</span></code></pre>
-                </div>
-            </div>
-            
-            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Update & Delete Operations</h3>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">delete(callback)</h4>
-                    <p class="text-light-text-secondary mb-3">Deletes the current model instance (soft delete if deleted_at field exists).</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>callback</td>
-                                <td>function</td>
-                                <td>Optional callback for async mode</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> boolean success, error message</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Update & Delete Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Update via save</span>
-<span class="code-keyword">local</span> user = User:<span class="code-type">find</span>(1)
-<span class="code-keyword">if</span> user <span class="code-keyword">then</span>
-    user.email = <span class="code-string">"updated@example.com"</span>
-    <span class="code-keyword">local</span> success, err = user:<span class="code-type">save</span>()
-<span class="code-keyword">end</span>
-
-<span class="code-comment">-- Delete a record</span>
-<span class="code-keyword">local</span> user = User:<span class="code-type">find</span>(1)
-<span class="code-keyword">if</span> user <span class="code-keyword">then</span>
-    <span class="code-keyword">local</span> success, err = user:<span class="code-type">delete</span>()
-    <span class="code-keyword">if</span> success <span class="code-keyword">then</span>
-        print(<span class="code-string">"User deleted"</span>)
-    <span class="code-keyword">end</span>
-<span class="code-keyword">end</span>
-
-<span class="code-comment">-- Soft delete (if deleted_at field exists)</span>
-<span class="code-comment">-- Sets deleted_at timestamp instead of hard delete</span>
-
-<span class="code-comment">-- Include soft deleted records in queries</span>
-<span class="code-keyword">local</span> users, err = User:<span class="code-type">with_soft_deleted</span>():<span class="code-type">all</span>()</code></pre>
-                </div>
-            </div>
-        </section>
-
-        <!-- Query Methods Section -->
-        <section id="query-methods" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-query-purple flex items-center justify-center text-white font-bold mr-4">3</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">Query Methods</h2>
-            </div>
-            
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Basic Query Methods</h3>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">all(opts, callback)</h4>
-                    <p class="text-light-text-secondary mb-3">Retrieves all records from the table.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>opts</td>
-                                <td>table</td>
-                                <td>Optional: {include_relations = true}</td>
-                            </tr>
-                            <tr>
-                                <td>callback</td>
-                                <td>function</td>
-                                <td>Optional callback for async mode</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> Array of model instances, error message</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">All & Where Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Get all users</span>
-<span class="code-keyword">local</span> users, err = User:<span class="code-type">all</span>()
-<span class="code-keyword">for</span> i, user <span class="code-keyword">in</span> ipairs(users) <span class="code-keyword">do</span>
-    print(<span class="code-string">"User: "</span> .. user.username)
-<span class="code-keyword">end</span>
-
-<span class="code-comment">-- Get all with relations</span>
-<span class="code-keyword">local</span> users, err = User:<span class="code-type">all</span>({include_relations = true})
-
-<span class="code-comment">-- Where conditions</span>
-<span class="code-keyword">local</span> active_users, err = User:<span class="code-type">where</span>({is_active = true})
-<span class="code-keyword">local</span> admins, err = User:<span class="code-type">where</span>({role = <span class="code-string">"admin"</span>, status = <span class="code-string">"active"</span>})
-
-<span class="code-comment">-- Advanced where conditions</span>
-<span class="code-keyword">local</span> users, err = User:<span class="code-type">find_where</span>({
-    {<span class="code-string">"age"</span>, <span class="code-string">">"</span>, 18},
-    {<span class="code-string">"created_at"</span>, <span class="code-string">">"</span>, <span class="code-string">"2023-01-01"</span>},
-    {<span class="code-string">"email"</span>, <span class="code-string">"LIKE"</span>, <span class="code-string">"%@gmail.com"</span>}
-})</code></pre>
-                </div>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">query()</h4>
-                    <p class="text-light-text-secondary mb-3">Starts a query builder chain for complex queries.</p>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> QueryBuilder instance</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Query Builder Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Complex query with query builder</span>
-<span class="code-keyword">local</span> users, err = User:<span class="code-type">query</span>()
-    :<span class="code-type">where</span>(<span class="code-string">"is_active"</span>, <span class="code-string">"="</span>, true)
-    :<span class="code-type">where</span>(<span class="code-string">"age"</span>, <span class="code-string">">="</span>, 18)
-    :<span class="code-type">order_by</span>(<span class="code-string">"created_at"</span>, <span class="code-string">"desc"</span>)
-    :<span class="code-type">limit</span>(10)
-    :<span class="code-type">execute</span>()
-
-<span class="code-comment">-- Join queries</span>
-<span class="code-keyword">local</span> users_with_posts, err = User:<span class="code-type">query</span>()
-    :<span class="code-type">join</span>(<span class="code-string">"posts"</span>, <span class="code-string">"users.id = posts.author_id"</span>)
-    :<span class="code-type">where</span>(<span class="code-string">"posts.created_at"</span>, <span class="code-string">">"</span>, <span class="code-string">"2023-01-01"</span>)
-    :<span class="code-type">select</span>({<span class="code-string">"users.*"</span>, <span class="code-string">"COUNT(posts.id) as post_count"</span>})
-    :<span class="code-type">group_by</span>(<span class="code-string">"users.id"</span>)
-    :<span class="code-type">execute</span>()</code></pre>
-                </div>
-            </div>
-            
-            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Pagination Methods</h3>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">paginate(page, per_page, opts, callback)</h4>
-                    <p class="text-light-text-secondary mb-3">Basic pagination with page numbers.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>page</td>
-                                <td>number</td>
-                                <td>Page number (1-based)</td>
-                            </tr>
-                            <tr>
-                                <td>per_page</td>
-                                <td>number</td>
-                                <td>Items per page</td>
-                            </tr>
-                            <tr>
-                                <td>opts</td>
-                                <td>table</td>
-                                <td>Optional options</td>
-                            </tr>
-                            <tr>
-                                <td>callback</td>
-                                <td>function</td>
-                                <td>Optional callback for async mode</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> {items, page, per_page, total, pages}, error message</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Pagination Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Basic pagination</span>
-<span class="code-keyword">local</span> result, err = User:<span class="code-type">paginate</span>(1, 10)
-<span class="code-keyword">if</span> result <span class="code-keyword">then</span>
-    print(<span class="code-string">"Page "</span> .. result.page .. <span class="code-string">" of "</span> .. result.pages)
-    print(<span class="code-string">"Total items: "</span> .. result.total)
-    <span class="code-keyword">for</span> i, user <span class="code-keyword">in</span> ipairs(result.items) <span class="code-keyword">do</span>
-        print(<span class="code-string">"User: "</span> .. user.username)
-    <span class="code-keyword">end</span>
-<span class="code-keyword">end</span>
-
-<span class="code-comment">-- Advanced pagination with filters</span>
-<span class="code-keyword">local</span> result, err = User:<span class="code-type">paginate_with</span>({
-    page = 1,
-    per_page = 20,
-    where = {is_active = true},
-    order_by = {
-        {column = <span class="code-string">"created_at"</span>, direction = <span class="code-string">"desc"</span>}
-    },
-    include_deleted = false,
-    includes = {<span class="code-string">"posts"</span>}
-})
-
-<span class="code-comment">-- Advanced pagination with search</span>
-<span class="code-keyword">local</span> result = User:<span class="code-type">paginate_with_advanced</span>({
-    page = 1,
-    per_page = 15,
-    search = {
-        username = <span class="code-string">"john"</span>,
-        email = <span class="code-string">"example"</span>
-    },
-    sort_by = <span class="code-string">"created_at"</span>,
-    sort_dir = <span class="code-string">"desc"</span>,
-    filters = {
-        active = true,
-        recent = true
+    /* Theme Variables */
+    .main-content-body {
+        --doc-bg: #FFFFFF;
+        --doc-text: #2A2A3A;
+        --doc-text-secondary: #5A6578;
+        --doc-border: #E0E5EC;
+        --doc-card-bg: #FFFFFF;
+        --doc-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        --doc-code-bg: #1E1E2E;
+        --doc-code-text: #E0E5EC;
+        --doc-code-comment: #6A737D;
+        --doc-code-keyword: #00CC88;
+        --doc-code-string: #8A2BE2;
+        --doc-code-function: #0066FF;
+        --doc-code-number: #FFB300;
+        --doc-code-variable: #8A2BE2;
+        --doc-code-type: #FFB300;
+        --doc-table-header-bg: #F7F9FC;
+        --doc-table-border: #E0E5EC;
+        --doc-signature-bg: #F0F4F8;
+        --doc-badge-blue: #DBEAFE;
+        --doc-badge-green: #D1FAE5;
+        --doc-badge-purple: #EDE9FE;
     }
-})</code></pre>
+    
+    body.dark-theme .main-content-body {
+        --doc-bg: #151520;
+        --doc-text: #E0E5EC;
+        --doc-text-secondary: #A0A5B5;
+        --doc-border: #2A2A3A;
+        --doc-card-bg: #1F1F2E;
+        --doc-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        --doc-code-bg: #0A0A0F;
+        --doc-code-text: #E0E5EC;
+        --doc-code-comment: #6A737D;
+        --doc-code-keyword: #00CC88;
+        --doc-code-string: #8A2BE2;
+        --doc-code-function: #0066FF;
+        --doc-code-number: #FFB300;
+        --doc-code-variable: #8A2BE2;
+        --doc-code-type: #FFB300;
+        --doc-table-header-bg: #2A2A3A;
+        --doc-table-border: #2A2A3A;
+        --doc-signature-bg: #2A2A3A;
+        --doc-badge-blue: #1E3A8A;
+        --doc-badge-green: #064E3B;
+        --doc-badge-purple: #4C1D95;
+    }
+    
+    .main-content-body {
+        background-color: var(--doc-bg);
+        color: var(--doc-text);
+        transition: all 0.3s ease;
+    }
+    
+    /* Feature Cards */
+    .feature-card {
+        background: var(--doc-card-bg);
+        border-radius: 16px;
+        padding: 1.5rem;
+        border: 1px solid var(--doc-border);
+        transition: all 0.3s ease;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--laser-blue);
+        box-shadow: 0 10px 25px -5px rgba(0, 102, 255, 0.2);
+    }
+    
+    /* Code Blocks */
+    .code-block {
+        background: var(--doc-code-bg);
+        border-radius: 12px;
+        margin: 1.5rem 0;
+        overflow: hidden;
+        position: relative;
+        border: 1px solid var(--doc-border);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .code-block:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .code-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(138, 43, 226, 0.1));
+        border-bottom: 1px solid var(--doc-border);
+    }
+    
+    .code-language {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--doc-text-secondary);
+    }
+    
+    .copy-btn {
+        background: rgba(0, 102, 255, 0.2);
+        color: var(--doc-text);
+        border: none;
+        padding: 0.25rem 0.75rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .copy-btn:hover {
+        background: rgba(0, 102, 255, 0.4);
+        transform: scale(1.05);
+    }
+    
+    .code-block pre {
+        margin: 0;
+        padding: 1.5rem;
+        overflow-x: auto;
+        font-family: 'Fira Code', 'Courier New', monospace;
+        font-size: 0.875rem;
+        line-height: 1.6;
+    }
+    
+    .code-block code {
+        font-family: 'Fira Code', 'Courier New', monospace;
+        color: var(--doc-code-text);
+    }
+    
+    /* Syntax Highlighting */
+    .code-block code .keyword {
+        color: var(--doc-code-keyword);
+        font-weight: 500;
+    }
+    
+    .code-block code .string {
+        color: var(--doc-code-string);
+    }
+    
+    .code-block code .function {
+        color: var(--doc-code-function);
+    }
+    
+    .code-block code .number {
+        color: var(--doc-code-number);
+    }
+    
+    .code-block code .comment {
+        color: var(--doc-code-comment);
+        font-style: italic;
+    }
+    
+    .code-block code .variable {
+        color: var(--doc-code-variable);
+    }
+    
+    .code-block code .type {
+        color: var(--doc-code-type);
+    }
+    
+    /* Section Numbers */
+    .section-number {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--laser-blue), var(--build-green));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        margin-right: 1rem;
+    }
+    
+    /* Function Signatures */
+    .function-signature {
+        background: var(--doc-signature-bg);
+        border-left: 4px solid var(--laser-blue);
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+    
+    /* Parameter Tables */
+    .param-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0;
+        background-color: var(--doc-card-bg);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    .param-table th,
+    .param-table td {
+        padding: 0.75rem 1rem;
+        text-align: left;
+        border-bottom: 1px solid var(--doc-border);
+        color: var(--doc-text);
+    }
+    
+    .param-table th {
+        background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));
+        color: white;
+        font-weight: 600;
+    }
+    
+    .param-table tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .param-table tr:hover {
+        background-color: rgba(0, 102, 255, 0.05);
+    }
+    
+    body.dark-theme .param-table tr:hover {
+        background-color: rgba(0, 204, 136, 0.05);
+    }
+    
+    .param-table code {
+        background-color: rgba(0, 102, 255, 0.1);
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-family: 'Fira Code', monospace;
+        font-size: 0.8125rem;
+        color: var(--laser-blue);
+    }
+    
+    body.dark-theme .param-table code {
+        background-color: rgba(0, 204, 136, 0.1);
+        color: var(--build-green);
+    }
+    
+    /* Field Types Badges */
+    .field-type {
+        display: inline-block;
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        background: var(--doc-badge-blue);
+        color: var(--doc-text);
+    }
+    
+    /* Back to Top Button */
+    .back-to-top {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--laser-blue), var(--build-green));
+        color: white;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+    }
+    
+    .back-to-top.visible {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .back-to-top:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .animate-fadeIn {
+        animation: fadeIn 0.6s ease-out;
+    }
+    
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: var(--doc-border);
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));
+        border-radius: 10px;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .feature-card {
+            padding: 1rem;
+        }
+        
+        .section-number {
+            width: 2rem;
+            height: 2rem;
+            font-size: 0.875rem;
+        }
+        
+        .code-block pre {
+            font-size: 0.75rem;
+            padding: 1rem;
+        }
+        
+        .param-table th,
+        .param-table td {
+            padding: 0.5rem;
+        }
+    }
+</style>
+
+<!-- Main Documentation Content -->
+<main class="main-content-body max-w-6xl mx-auto px-6 py-8">
+    <!-- Overview Section -->
+    <section id="overview" class="mb-16 animate-fadeIn">
+        <div class="rounded-xl p-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <h1 class="text-4xl font-bold mb-6" style="background: linear-gradient(135deg, var(--laser-blue), var(--build-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                ORM Model System
+            </h1>
+            <p class="text-xl mb-8" style="color: var(--doc-text-secondary);">
+                Comprehensive guide to using the ORM Model system in Dawn Framework applications.
+                This documentation covers model creation, CRUD operations, query building, and advanced features.
+            </p>
+            
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <div class="feature-card">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center text-white mb-4" style="background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2" style="color: var(--doc-text);">Model Creation</h3>
+                    <p style="color: var(--doc-text-secondary);">Define database schemas with fields, indexes, and relationships</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center text-white mb-4" style="background: linear-gradient(135deg, var(--build-green), var(--query-purple));">
+                        <i class="fas fa-plus-circle"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2" style="color: var(--doc-text);">CRUD Operations</h3>
+                    <p style="color: var(--doc-text-secondary);">Create, read, update, and delete operations with ease</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center text-white mb-4" style="background: linear-gradient(135deg, var(--query-purple), var(--warning-amber));">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2" style="color: var(--doc-text);">Query Building</h3>
+                    <p style="color: var(--doc-text-secondary);">Advanced query building with filtering, sorting, and pagination</p>
                 </div>
             </div>
-        </section>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Basic Setup</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- Import the Model base class</span>
+<span class="keyword">local</span> Model = <span class="keyword">require</span>(<span class="string">"path.to.model"</span>)
 
-        <!-- Advanced Features Section -->
-        <section id="advanced-features" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-warning-amber flex items-center justify-center text-white font-bold mr-4">4</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">Advanced Features</h2>
+<span class="comment">-- Define a simple User model</span>
+<span class="keyword">local</span> User = Model:<span class="function">extend</span>(<span class="string">"users"</span>, {
+    id = <span class="string">"integer"</span>,
+    username = <span class="string">"string"</span>,
+    email = <span class="string">"string"</span>,
+    created_at = <span class="string">"timestamp"</span>
+}, {
+    _primary_key = <span class="string">"id"</span>
+})
+
+<span class="comment">-- Now you can use all ORM methods</span>
+<span class="keyword">local</span> user, err = User:<span class="function">create</span>({
+    username = <span class="string">"john_doe"</span>,
+    email = <span class="string">"john@example.com"</span>
+})</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Model Creation Section -->
+    <section id="model-creation" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">1</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Model Creation & Configuration</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 mb-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">Model:extend(table_name, fields, options)</h4>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">Creates a new model class with the specified table schema and configuration.</p>
+                
+                <table class="param-table">
+                    <thead>
+                        <tr><th>Parameter</th><th>Type</th><th>Description</th> </thead>
+                    <tbody>
+                        <tr><td class="font-mono">table_name</td><td>string</td><td>The name of the database table</td></tr>
+                        <tr><td class="font-mono">fields</td><td>table</td><td>Field definitions as key-value pairs: {field_name = "type"}</td></tr>
+                        <tr><td class="font-mono">options</td><td>table</td><td>Optional configuration for the model</td></tr>
+                    </tbody>
+                </table>
+                
+                <p class="mt-3"><strong>Returns:</strong> New model class</p>
             </div>
             
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Relations & Eager Loading</h3>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Relations Example</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Define related models</span>
-<span class="code-keyword">local</span> Post = Model:<span class="code-type">extend</span>(<span class="code-string">"posts"</span>, {
-    id = <span class="code-string">"integer"</span>,
-    title = <span class="code-string">"string"</span>,
-    content = <span class="code-string">"text"</span>,
-    author_id = <span class="code-string">"integer"</span>,
-    created_at = <span class="code-string">"timestamp"</span>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Complete Model Definition</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="keyword">local</span> User = Model:<span class="function">extend</span>(<span class="string">"users"</span>, {
+    id = <span class="string">"integer"</span>,
+    username = <span class="string">"string"</span>,
+    email = <span class="string">"string"</span>,
+    password_hash = <span class="string">"string"</span>,
+    is_active = <span class="string">"boolean"</span>,
+    created_at = <span class="string">"timestamp"</span>
 }, {
-    _primary_key = <span class="code-string">"id"</span>,
+    _primary_key = <span class="string">"id"</span>,
+    _connection_mode = <span class="string">"sync"</span>,
+    _timestamps = true,
+    _unique_keys = {{<span class="string">"email"</span>}, {<span class="string">"username"</span>}},
+    _indexes = {<span class="string">"email"</span>, {<span class="string">"created_at"</span>}},
+})</code></pre>
+            </div>
+            
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">Supported Field Types</h4>
+                <table class="param-table">
+                    <thead><tr><th>Type</th><th>Description</th><th>Example</th> </thead>
+                    <tbody>
+                        <tr><td><code>"integer"</code></td><td>Whole numbers</td><td><code>age = "integer"</code></td></tr>
+                        <tr><td><code>"string"</code></td><td>Short text/VARCHAR</td><td><code>username = "string"</code></td></tr>
+                        <tr><td><code>"timestamp"</code></td><td>Date and time</td><td><code>created_at = "timestamp"</code></td></tr>
+                        <tr><td><code>"boolean"</code></td><td>True/false (stored as 1/0)</td><td><code>is_active = "boolean"</code></td></tr>
+                        <tr><td><code>"float"</code></td><td>Floating point numbers</td><td><code>salary = "float"</code></td></tr>
+                        <tr><td><code>"text"</code></td><td>Long text content</td><td><code>bio = "text"</code></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- CRUD Operations Section -->
+    <section id="crud-operations" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">2</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">CRUD Operations</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 mb-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">create(data, callback)</h4>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">Creates a new record and returns a model instance.</p>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Create Examples</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- Basic create operation</span>
+<span class="keyword">local</span> user, err = User:<span class="function">create</span>({
+    username = <span class="string">"john_doe"</span>,
+    email = <span class="string">"john@example.com"</span>,
+    age = <span class="number">30</span>
+})
+
+<span class="keyword">if</span> err <span class="keyword">then</span>
+    print(<span class="string">"Error creating user: "</span> .. err)
+<span class="keyword">else</span>
+    print(<span class="string">"User created with ID: "</span> .. user.id)
+<span class="keyword">end</span></code></pre>
+            </div>
+            
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">find(id, opts, callback)</h4>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">Finds a record by its primary key.</p>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Find Examples</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- Find by primary key</span>
+<span class="keyword">local</span> user, err = User:<span class="function">find</span>(<span class="number">1</span>)
+<span class="keyword">if</span> user <span class="keyword">then</span>
+    print(<span class="string">"Found user: "</span> .. user.username)
+<span class="keyword">end</span>
+
+<span class="comment">-- Find with relations (eager loading)</span>
+<span class="keyword">local</span> user, err = User:<span class="function">find</span>(<span class="number">1</span>, {include_relations = <span class="keyword">true</span>})</code></pre>
+            </div>
+            
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">save(callback)</h4>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">Saves the current model instance (inserts new or updates existing).</p>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Update Examples</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- Update existing instance</span>
+<span class="keyword">local</span> user = User:<span class="function">find</span>(<span class="number">1</span>)
+<span class="keyword">if</span> user <span class="keyword">then</span>
+    user.email = <span class="string">"new_email@example.com"</span>
+    <span class="keyword">local</span> success, err = user:<span class="function">save</span>()
+<span class="keyword">end</span>
+
+<span class="comment">-- Delete a record</span>
+<span class="keyword">local</span> user = User:<span class="function">find</span>(<span class="number">1</span>)
+<span class="keyword">if</span> user <span class="keyword">then</span>
+    <span class="keyword">local</span> success, err = user:<span class="function">delete</span>()
+<span class="keyword">end</span></code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Query Methods Section -->
+    <section id="query-methods" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">3</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Query Methods</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 mb-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Query Builder Examples</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- Basic where conditions</span>
+<span class="keyword">local</span> active_users, err = User:<span class="function">where</span>({is_active = <span class="keyword">true</span>})
+
+<span class="comment">-- Complex query with query builder</span>
+<span class="keyword">local</span> users, err = User:<span class="function">query</span>()
+    :<span class="function">where</span>(<span class="string">"is_active"</span>, <span class="string">"="</span>, <span class="keyword">true</span>)
+    :<span class="function">where</span>(<span class="string">"age"</span>, <span class="string">">="</span>, <span class="number">18</span>)
+    :<span class="function">order_by</span>(<span class="string">"created_at"</span>, <span class="string">"desc"</span>)
+    :<span class="function">limit</span>(<span class="number">10</span>)
+    :<span class="function">execute</span>()
+
+<span class="comment">-- Get all records</span>
+<span class="keyword">local</span> users, err = User:<span class="function">all</span>()</code></pre>
+            </div>
+            
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">paginate(page, per_page, opts, callback)</h4>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">Basic pagination with page numbers.</p>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Pagination Examples</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- Basic pagination</span>
+<span class="keyword">local</span> result, err = User:<span class="function">paginate</span>(<span class="number">1</span>, <span class="number">10</span>)
+<span class="keyword">if</span> result <span class="keyword">then</span>
+    print(<span class="string">"Page "</span> .. result.page .. <span class="string">" of "</span> .. result.pages)
+    print(<span class="string">"Total items: "</span> .. result.total)
+    <span class="keyword">for</span> i, user <span class="keyword">in</span> ipairs(result.items) <span class="keyword">do</span>
+        print(<span class="string">"User: "</span> .. user.username)
+    <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advanced Features Section -->
+    <section id="advanced-features" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">4</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Advanced Features</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 mb-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Relations & Eager Loading</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- Define related models</span>
+<span class="keyword">local</span> Post = Model:<span class="function">extend</span>(<span class="string">"posts"</span>, {
+    id = <span class="string">"integer"</span>,
+    title = <span class="string">"string"</span>,
+    content = <span class="string">"text"</span>,
+    author_id = <span class="string">"integer"</span>
+}, {
     _relations = {
         author = {
-            model = <span class="code-string">"User"</span>,
-            foreign_key = <span class="code-string">"author_id"</span>,
-            local_key = <span class="code-string">"id"</span>,
-            join_type = <span class="code-string">"LEFT"</span>
+            model = <span class="string">"User"</span>,
+            foreign_key = <span class="string">"author_id"</span>,
+            local_key = <span class="string">"id"</span>
         }
-    },
-    _model_classes = {User = User}
+    }
 })
 
-<span class="code-comment">-- Update User model with posts relation</span>
-User._relations.posts = {
-    model = <span class="code-string">"Post"</span>,
-    foreign_key = <span class="code-string">"author_id"</span>,
-    local_key = <span class="code-string">"id"</span>,
-    join_type = <span class="code-string">"LEFT"</span>
-}
-User._model_classes.Post = Post
-
-<span class="code-comment">-- Eager loading with relations</span>
-<span class="code-keyword">local</span> user, err = User:<span class="code-type">find</span>(1, {include_relations = true})
-<span class="code-keyword">if</span> user <span class="code-keyword">then</span>
-    print(<span class="code-string">"User: "</span> .. user.username)
-    print(<span class="code-string">"Post count: "</span> .. #user.posts)
-    <span class="code-keyword">for</span> i, post <span class="code-keyword">in</span> ipairs(user.posts) <span class="code-keyword">do</span>
-        print(<span class="code-string">" - Post: "</span> .. post.title)
-    <span class="code-keyword">end</span>
-<span class="code-keyword">end</span>
-
-<span class="code-comment">-- Get posts with author eager loaded</span>
-<span class="code-keyword">local</span> posts, err = Post:<span class="code-type">all</span>({include_relations = true})
-<span class="code-keyword">for</span> i, post <span class="code-keyword">in</span> ipairs(posts) <span class="code-keyword">do</span>
-    print(<span class="code-string">"Post: "</span> .. post.title .. <span class="code-string">" by "</span> .. post.author.username)
-<span class="code-keyword">end</span></code></pre>
-                </div>
+<span class="comment">-- Eager loading with relations</span>
+<span class="keyword">local</span> user, err = User:<span class="function">find</span>(<span class="number">1</span>, {include_relations = <span class="keyword">true</span>})
+<span class="keyword">if</span> user <span class="keyword">then</span>
+    print(<span class="string">"User: "</span> .. user.username)
+    print(<span class="string">"Post count: "</span> .. #user.posts)
+<span class="keyword">end</span></code></pre>
             </div>
             
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Filter Presets & Scopes</h3>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Filter Presets Example</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Define filter presets in model options</span>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Filter Presets & Scopes</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- Define filter presets in model options</span>
 _filter_presets = {
-    active = <span class="code-keyword">function</span>(qb)
-        <span class="code-keyword">return</span> qb:<span class="code-type">where</span>(<span class="code-string">"is_active"</span>, <span class="code-string">"="</span>, true)
-    <span class="code-keyword">end</span>,
-    recent = <span class="code-keyword">function</span>(qb)
-        <span class="code-keyword">return</span> qb:<span class="code-type">where</span>(<span class="code-string">"created_at"</span>, <span class="code-string">">"</span>, os.date(<span class="code-string">"!%Y-%m-%d"</span>, os.time() - 30*24*60*60))
-    <span class="code-keyword">end</span>,
-    popular = <span class="code-keyword">function</span>(qb)
-        <span class="code-keyword">return</span> qb:<span class="code-type">where</span>(<span class="code-string">"login_count"</span>, <span class="code-string">">"</span>, 100)
-               :<span class="code-type">order_by</span>(<span class="code-string">"login_count"</span>, <span class="code-string">"desc"</span>)
-    <span class="code-keyword">end</span>
+    active = <span class="keyword">function</span>(qb)
+        <span class="keyword">return</span> qb:<span class="function">where</span>(<span class="string">"is_active"</span>, <span class="string">"="</span>, <span class="keyword">true</span>)
+    <span class="keyword">end</span>,
+    recent = <span class="keyword">function</span>(qb)
+        <span class="keyword">return</span> qb:<span class="function">where</span>(<span class="string">"created_at"</span>, <span class="string">">"</span>, os.date(<span class="string">"!%Y-%m-%d"</span>, os.time() - <span class="number">30</span>*<span class="number">24</span>*<span class="number">60</span>*<span class="number">60</span>))
+    <span class="keyword">end</span>
 }
 
-<span class="code-comment">-- Use filter presets in queries</span>
-<span class="code-keyword">local</span> users, err = User:<span class="code-type">query</span>()
-    :<span class="code-type">apply_filter</span>(<span class="code-string">"active"</span>)
-    :<span class="code-type">apply_filter</span>(<span class="code-string">"recent"</span>)
-    :<span class="code-type">execute</span>()
-
-<span class="code-comment">-- Combine with other query methods</span>
-<span class="code-keyword">local</span> popular_users, err = User:<span class="code-type">query</span>()
-    :<span class="code-type">apply_filter</span>(<span class="code-string">"popular"</span>)
-    :<span class="code-type">limit</span>(10)
-    :<span class="code-type">execute</span>()</code></pre>
-                </div>
+<span class="comment">-- Use filter presets in queries</span>
+<span class="keyword">local</span> users, err = User:<span class="function">query</span>()
+    :<span class="function">apply_filter</span>(<span class="string">"active"</span>)
+    :<span class="function">apply_filter</span>(<span class="string">"recent"</span>)
+    :<span class="function">execute</span>()</code></pre>
             </div>
             
-            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Async Operations</h3>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Async Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Create model with async mode</span>
-<span class="code-keyword">local</span> User = Model:<span class="code-type">extend</span>(<span class="code-string">"users"</span>, {
-    <span class="code-comment">-- fields...</span>
-}, {
-    _connection_mode = <span class="code-string">"async"</span>,
-    <span class="code-comment">-- other options...</span>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Async Operations</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- Create model with async mode</span>
+<span class="keyword">local</span> User = Model:<span class="function">extend</span>(<span class="string">"users"</span>, {<span class="comment">-- fields...</span>}, {
+    _connection_mode = <span class="string">"async"</span>
 })
 
-<span class="code-comment">-- Async create</span>
-User:<span class="code-type">create</span>({
-    username = <span class="code-string">"async_user"</span>,
-    email = <span class="code-string">"async@example.com"</span>
-}, <span class="code-keyword">function</span>(user, err)
-    <span class="code-keyword">if</span> err <span class="code-keyword">then</span>
-        print(<span class="code-string">"Error: "</span> .. err)
-    <span class="code-keyword">else</span>
-        print(<span class="code-string">"User created: "</span> .. user.id)
-    <span class="code-keyword">end</span>
-<span class="code-keyword">end</span>)
-
-<span class="code-comment">-- Async find</span>
-User:<span class="code-type">find</span>(1, <span class="code-keyword">function</span>(user, err)
-    <span class="code-keyword">if</span> user <span class="code-keyword">then</span>
-        print(<span class="code-string">"Found user: "</span> .. user.username)
-        
-        <span class="code-comment">-- Async update</span>
-        user.email = <span class="code-string">"updated@example.com"</span>
-        user:<span class="code-type">save</span>(<span class="code-keyword">function</span>(success, err)
-            <span class="code-keyword">if</span> success <span class="code-keyword">then</span>
-                print(<span class="code-string">"User updated"</span>)
-            <span class="code-keyword">end</span>
-        <span class="code-keyword">end</span>)
-    <span class="code-keyword">end</span>
-<span class="code-keyword">end</span>)
-
-<span class="code-comment">-- Async pagination</span>
-User:<span class="code-type">paginate</span>(1, 10, <span class="code-keyword">function</span>(result, err)
-    <span class="code-keyword">if</span> result <span class="code-keyword">then</span>
-        print(<span class="code-string">"Page "</span> .. result.page .. <span class="code-string">" of "</span> .. result.pages)
-        <span class="code-keyword">for</span> i, user <span class="code-keyword">in</span> ipairs(result.items) <span class="code-keyword">do</span>
-            print(<span class="code-string">"User: "</span> .. user.username)
-        <span class="code-keyword">end</span>
-    <span class="code-keyword">end</span>
-<span class="code-keyword">end</span>)</code></pre>
-                </div>
+<span class="comment">-- Async create</span>
+User:<span class="function">create</span>({
+    username = <span class="string">"async_user"</span>,
+    email = <span class="string">"async@example.com"</span>
+}, <span class="keyword">function</span>(user, err)
+    <span class="keyword">if</span> err <span class="keyword">then</span>
+        print(<span class="string">"Error: "</span> .. err)
+    <span class="keyword">else</span>
+        print(<span class="string">"User created: "</span> .. user.id)
+    <span class="keyword">end</span>
+<span class="keyword">end</span>)</code></pre>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Footer -->
-        <footer class="mt-12 pt-8 border-t border-light-border text-center text-light-text-secondary">
-            <p>Dawn Framework ORM Model System &copy; 2023</p>
-            <div class="flex justify-center space-x-4 mt-4">
-                <a href="#" class="text-laser-blue hover:underline">Core Server Docs</a>
-                <a href="#" class="text-laser-blue hover:underline">API Reference</a>
-                <a href="#" class="text-laser-blue hover:underline">Examples Repository</a>
-                <a href="#" class="text-laser-blue hover:underline">Community</a>
-            </div>
-        </footer>
-    </main>
+    <!-- Footer -->
+    <footer class="mt-12 pt-8 border-t text-center" style="border-color: var(--doc-border); color: var(--doc-text-secondary);">
+        <p>Dawn Framework ORM Model System © 2023</p>
+        <div class="flex justify-center space-x-4 mt-4">
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">Core Server Docs</a>
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">API Reference</a>
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">Examples Repository</a>
+        </div>
+    </footer>
+</main>
 
-    <script>
-        // Copy code functionality
-        document.querySelectorAll('.copy-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const codeBlock = this.closest('.code-block').querySelector('pre code');
-                const textToCopy = codeBlock.textContent;
-                
-                navigator.clipboard.writeText(textToCopy).then(() => {
-                    const originalText = this.innerHTML;
-                    this.innerHTML = '<i class="fas fa-check mr-1"></i>Copied!';
-                    
-                    setTimeout(() => {
-                        this.innerHTML = originalText;
-                    }, 2000);
-                });
-            });
-        });
+<script>
+// Copy code functionality
+function copyCode(button) {
+    const codeBlock = button.closest('.code-block');
+    const code = codeBlock.querySelector('pre code');
+    const text = code.textContent;
+    
+    navigator.clipboard.writeText(text).then(() => {
+        const originalHTML = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        setTimeout(() => {
+            button.innerHTML = originalHTML;
+        }, 2000);
+    });
+}
+
+// Back to Top button
+const backToTop = document.createElement('button');
+backToTop.innerHTML = '<i class="fas fa-arrow-up"></i>';
+backToTop.className = 'back-to-top';
+document.body.appendChild(backToTop);
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+        backToTop.classList.add('visible');
+    } else {
+        backToTop.classList.remove('visible');
+    }
+});
+
+backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
         
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
+        const target = document.querySelector(targetId);
+        if (target) {
+            e.preventDefault();
+            const offset = 80;
+            const elementPosition = target.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - offset;
+            
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
             });
-        });
-    </script>
+        }
+    });
+});
+
+// Observe theme changes
+const observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+        if (mutation.attributeName === 'class') {
+            console.log('Theme updated');
+        }
+    });
+});
+
+observer.observe(document.body, { attributes: true });
+</script>

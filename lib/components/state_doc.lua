@@ -627,7 +627,7 @@ function TaskPage:renderLayout(state, props, children, H, clientState)
         ------------------------------------------------------
         -- HEADER
         ------------------------------------------------------
-        H.e("h1", { class = "text-3xl font-bold mb-6 text-gray-800" }, "Dual State Task Manager"),
+        H.e("h1", { class = "text-3xl font-bold mb-6 text-gray-800" }, "Dual State Task Manager Now now rain pour"),
 
         -- Quick action buttons using utils
         H.Row({ class = "mb-6 gap-3" }, {

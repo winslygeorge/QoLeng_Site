@@ -1,1190 +1,847 @@
-
-    <style>
-        /* Custom styles for code blocks and other elements */
-        .code-block {
-            background: #0A0A0F;
-            border-left: 4px solid #0066FF;
+<style>
+    /* Query Builder - Integrated Theme System */
+    
+    /* Theme Variables */
+    .main-content-body {
+        --doc-bg: #FFFFFF;
+        --doc-text: #2A2A3A;
+        --doc-text-secondary: #5A6578;
+        --doc-border: #E0E5EC;
+        --doc-card-bg: #FFFFFF;
+        --doc-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        --doc-code-bg: #1E1E2E;
+        --doc-code-text: #E0E5EC;
+        --doc-code-comment: #6A737D;
+        --doc-code-keyword: #00CC88;
+        --doc-code-string: #8A2BE2;
+        --doc-code-function: #0066FF;
+        --doc-code-number: #FFB300;
+        --doc-code-variable: #8A2BE2;
+        --doc-code-type: #FFB300;
+        --doc-table-header-bg: #F7F9FC;
+        --doc-table-border: #E0E5EC;
+        --doc-signature-bg: #F0F4F8;
+        --doc-badge-blue: #DBEAFE;
+        --doc-badge-green: #D1FAE5;
+        --doc-badge-purple: #EDE9FE;
+    }
+    
+    body.dark-theme .main-content-body {
+        --doc-bg: #151520;
+        --doc-text: #E0E5EC;
+        --doc-text-secondary: #A0A5B5;
+        --doc-border: #2A2A3A;
+        --doc-card-bg: #1F1F2E;
+        --doc-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        --doc-code-bg: #0A0A0F;
+        --doc-code-text: #E0E5EC;
+        --doc-code-comment: #6A737D;
+        --doc-code-keyword: #00CC88;
+        --doc-code-string: #8A2BE2;
+        --doc-code-function: #0066FF;
+        --doc-code-number: #FFB300;
+        --doc-code-variable: #8A2BE2;
+        --doc-code-type: #FFB300;
+        --doc-table-header-bg: #2A2A3A;
+        --doc-table-border: #2A2A3A;
+        --doc-signature-bg: #2A2A3A;
+        --doc-badge-blue: #1E3A8A;
+        --doc-badge-green: #064E3B;
+        --doc-badge-purple: #4C1D95;
+    }
+    
+    .main-content-body {
+        background-color: var(--doc-bg);
+        color: var(--doc-text);
+        transition: all 0.3s ease;
+    }
+    
+    /* Feature Cards */
+    .feature-card {
+        background: var(--doc-card-bg);
+        border-radius: 16px;
+        padding: 1.5rem;
+        border: 1px solid var(--doc-border);
+        transition: all 0.3s ease;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--laser-blue);
+        box-shadow: 0 10px 25px -5px rgba(0, 102, 255, 0.2);
+    }
+    
+    /* Code Blocks */
+    .code-block {
+        background: var(--doc-code-bg);
+        border-radius: 12px;
+        margin: 1.5rem 0;
+        overflow: hidden;
+        position: relative;
+        border: 1px solid var(--doc-border);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .code-block:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .code-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(138, 43, 226, 0.1));
+        border-bottom: 1px solid var(--doc-border);
+    }
+    
+    .code-language {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--doc-text-secondary);
+    }
+    
+    .copy-btn {
+        background: rgba(0, 102, 255, 0.2);
+        color: var(--doc-text);
+        border: none;
+        padding: 0.25rem 0.75rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .copy-btn:hover {
+        background: rgba(0, 102, 255, 0.4);
+        transform: scale(1.05);
+    }
+    
+    .code-block pre {
+        margin: 0;
+        padding: 1.5rem;
+        overflow-x: auto;
+        font-family: 'Fira Code', 'Courier New', monospace;
+        font-size: 0.875rem;
+        line-height: 1.6;
+    }
+    
+    .code-block code {
+        font-family: 'Fira Code', 'Courier New', monospace;
+        color: var(--doc-code-text);
+    }
+    
+    /* Syntax Highlighting */
+    .code-block code .keyword {
+        color: var(--doc-code-keyword);
+        font-weight: 500;
+    }
+    
+    .code-block code .string {
+        color: var(--doc-code-string);
+    }
+    
+    .code-block code .function {
+        color: var(--doc-code-function);
+    }
+    
+    .code-block code .number {
+        color: var(--doc-code-number);
+    }
+    
+    .code-block code .comment {
+        color: var(--doc-code-comment);
+        font-style: italic;
+    }
+    
+    .code-block code .variable {
+        color: var(--doc-code-variable);
+    }
+    
+    .code-block code .type {
+        color: var(--doc-code-type);
+    }
+    
+    /* Section Numbers */
+    .section-number {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--laser-blue), var(--build-green));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        margin-right: 1rem;
+    }
+    
+    /* Function Signatures */
+    .function-signature {
+        background: var(--doc-signature-bg);
+        border-left: 4px solid var(--laser-blue);
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+    
+    /* Parameter Tables */
+    .param-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0;
+        background-color: var(--doc-card-bg);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    .param-table th,
+    .param-table td {
+        padding: 0.75rem 1rem;
+        text-align: left;
+        border-bottom: 1px solid var(--doc-border);
+        color: var(--doc-text);
+    }
+    
+    .param-table th {
+        background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));
+        color: white;
+        font-weight: 600;
+    }
+    
+    .param-table tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .param-table tr:hover {
+        background-color: rgba(0, 102, 255, 0.05);
+    }
+    
+    body.dark-theme .param-table tr:hover {
+        background-color: rgba(0, 204, 136, 0.05);
+    }
+    
+    .param-table code {
+        background-color: rgba(0, 102, 255, 0.1);
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-family: 'Fira Code', monospace;
+        font-size: 0.8125rem;
+        color: var(--laser-blue);
+    }
+    
+    body.dark-theme .param-table code {
+        background-color: rgba(0, 204, 136, 0.1);
+        color: var(--build-green);
+    }
+    
+    /* Query Type Badges */
+    .query-type {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 0.25rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-right: 0.5rem;
+    }
+    
+    .type-select { background-color: var(--build-green); color: white; }
+    .type-insert { background-color: var(--laser-blue); color: white; }
+    .type-update { background-color: var(--warning-amber); color: var(--neural-charcoal); }
+    .type-delete { background-color: #EF4444; color: white; }
+    .type-join { background-color: var(--query-purple); color: white; }
+    
+    /* Back to Top Button */
+    .back-to-top {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--laser-blue), var(--build-green));
+        color: white;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+    }
+    
+    .back-to-top.visible {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .back-to-top:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
         }
-        
-        .light-theme .code-block {
-            background: #F7F9FC;
-            border-left: 4px solid #0066FF;
-            color: #2A2A3A;
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
-        
-        .code-keyword {
-            color: #0066FF;
-        }
-        
-        .code-string {
-            color: #00CC88;
-        }
-        
-        .code-comment {
-            color: #6A737D;
-        }
-        
-        .light-theme .code-comment {
-            color: #9AA5B5;
-        }
-        
-        .code-variable {
-            color: #8A2BE2;
-        }
-        
-        .code-type {
-            color: #FFB300;
-        }
-        
-        /* Custom scrollbar for code blocks */
-        .code-block::-webkit-scrollbar {
-            height: 8px;
-        }
-        
-        .code-block::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 4px;
-        }
-        
-        .code-block::-webkit-scrollbar-thumb {
-            background: rgba(0, 102, 255, 0.5);
-            border-radius: 4px;
-        }
-        
-        .code-block::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 102, 255, 0.7);
-        }
-        
-        /* Additional custom styles */
-        .nav-link {
-            position: relative;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #00CC88, #8A2BE2);
-            transition: width 0.3s ease;
-        }
-        
-        .nav-link:hover::after {
-            width: 100%;
-        }
-        
+    }
+    
+    .animate-fadeIn {
+        animation: fadeIn 0.6s ease-out;
+    }
+    
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: var(--doc-border);
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));
+        border-radius: 10px;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
         .feature-card {
-            transition: all 0.3s ease;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        }
-        
-        .data-source-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 1rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-right: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .function-signature {
-            background: #F0F4F8;
-            border-left: 4px solid #0066FF;
             padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 0.5rem;
         }
         
-        .param-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0;
+        .section-number {
+            width: 2rem;
+            height: 2rem;
+            font-size: 0.875rem;
         }
         
-        .param-table th, .param-table td {
-            padding: 0.75rem;
-            text-align: left;
-            border-bottom: 1px solid #E0E5EC;
-        }
-        
-        .param-table th {
-            background-color: #F7F9FC;
-            font-weight: 600;
-        }
-        
-        .query-type {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 0.25rem;
+        .code-block pre {
             font-size: 0.75rem;
-            font-weight: 600;
-            margin-right: 0.5rem;
+            padding: 1rem;
         }
         
-        .type-select { background-color: #00CC88; color: white; }
-        .type-insert { background-color: #0066FF; color: white; }
-        .type-update { background-color: #FFB300; color: white; }
-        .type-delete { background-color: #FF4444; color: white; }
-        .type-join { background-color: #8A2BE2; color: white; }
-    </style>
+        .param-table th,
+        .param-table td {
+            padding: 0.5rem;
+        }
+    }
+</style>
 
-    <!-- Main Documentation Content -->
-    <main class="main-content-body max-w-6xl mx-auto px-6 py-8 light-theme">
-        <!-- Overview Section -->
-        <section id="overview" class="mb-16 animate-fadeIn">
-            <div class="bg-white rounded-xl shadow-lg p-8 border border-light-border">
-                <h1 class="text-4xl font-bold mb-6 text-neural-charcoal">Query Builder</h1>
-                <p class="text-xl text-light-text-secondary mb-8">
-                    Comprehensive guide to using the QueryBuilder module for constructing and executing
-                    SQL queries programmatically with a fluent, chainable API in Dawn Framework applications.
-                </p>
-                
-                <div class="grid md:grid-cols-3 gap-6 mb-8">
-                    <div class="feature-card bg-blue-50 p-6 rounded-lg border border-blue-100">
-                        <div class="w-12 h-12 rounded-full bg-laser-blue flex items-center justify-center text-white mb-4">
-                            <i class="fas fa-code"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 text-laser-blue">Fluent API</h3>
-                        <p class="text-light-text-secondary">Chainable methods for building complex queries programmatically</p>
-                    </div>
-                    
-                    <div class="feature-card bg-green-50 p-6 rounded-lg border border-green-100">
-                        <div class="w-12 h-12 rounded-full bg-build-green flex items-center justify-center text-white mb-4">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 text-build-green">SQL Injection Protection</h3>
-                        <p class="text-light-text-secondary">Automatic parameter binding and safe query execution</p>
-                    </div>
-                    
-                    <div class="feature-card bg-purple-50 p-6 rounded-lg border border-purple-100">
-                        <div class="w-12 h-12 rounded-full bg-query-purple flex items-center justify-center text-white mb-4">
-                            <i class="fas fa-sync-alt"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 text-query-purple">Sync & Async Support</h3>
-                        <p class="text-light-text-secondary">Support for both synchronous and asynchronous execution</p>
-                    </div>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-bold">Basic Setup</h3>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Load required modules</span>
-<span class="code-keyword">local</span> QueryBuilder = <span class="code-keyword">require</span>(<span class="code-string">"orm.query_builder"</span>)
-<span class="code-keyword">local</span> User = <span class="code-keyword">require</span>(<span class="code-string">"models.user"</span>) <span class="code-comment">-- Your ORM model</span>
-
-<span class="code-comment">-- Create a QueryBuilder instance</span>
-<span class="code-keyword">local</span> qb = QueryBuilder.<span class="code-type">new</span>(<span class="code-string">"users"</span>, <span class="code-string">"sync"</span>, User)
-
-<span class="code-comment">-- Build and execute a query</span>
-<span class="code-keyword">local</span> users = qb:<span class="code-type">select</span>(<span class="code-string">"*"</span>)
-                  :<span class="code-type">where</span>(<span class="code-string">"is_active"</span>, <span class="code-string">"="</span>, true)
-                  :<span class="code-type">order_by</span>(<span class="code-string">"created_at"</span>, <span class="code-string">"DESC"</span>)
-                  :<span class="code-type">limit</span>(10)
-                  :<span class="code-type">get</span>()
-
-<span class="code-comment">-- Or use the model's query method</span>
-<span class="code-keyword">local</span> users = User:<span class="code-type">query</span>()
-                  :<span class="code-type">where</span>(<span class="code-string">"is_active"</span>, <span class="code-string">"="</span>, true)
-                  :<span class="code-type">get</span>()</code></pre>
-                </div>
-            </div>
-        </section>
-
-        <!-- Query Types Section -->
-        <section id="query-types" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-laser-blue flex items-center justify-center text-white font-bold mr-4">1</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">Query Types & Initialization</h2>
-            </div>
+<!-- Main Documentation Content -->
+<main class="main-content-body max-w-6xl mx-auto px-6 py-8">
+    <!-- Overview Section -->
+    <section id="overview" class="mb-16 animate-fadeIn">
+        <div class="rounded-xl p-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <h1 class="text-4xl font-bold mb-6" style="background: linear-gradient(135deg, var(--laser-blue), var(--build-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                Query Builder
+            </h1>
+            <p class="text-xl mb-8" style="color: var(--doc-text-secondary);">
+                Comprehensive guide to using the QueryBuilder module for constructing and executing
+                SQL queries programmatically with a fluent, chainable API in Dawn Framework applications.
+            </p>
             
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">QueryBuilder Initialization</h3>
-                <p class="text-light-text-secondary mb-6">
-                    The QueryBuilder can be created directly or through model instances, supporting
-                    various query types including SELECT, INSERT, UPDATE, and DELETE operations.
-                </p>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">new(table_name, connection_mode, model_class)</h4>
-                    <p class="text-light-text-secondary mb-3">Creates a new QueryBuilder instance for a given table.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Required</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>table_name</td>
-                                <td>string</td>
-                                <td>The name of the database table this query builder operates on</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>connection_mode</td>
-                                <td>string</td>
-                                <td>The connection mode ("sync" or "async") for this query</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>model_class</td>
-                                <td>table</td>
-                                <td>The ORM model class associated with this query builder</td>
-                                <td>No</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> table - A new QueryBuilder instance</p>
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <div class="feature-card">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center text-white mb-4" style="background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2" style="color: var(--doc-text);">Fluent API</h3>
+                    <p style="color: var(--doc-text-secondary);">Chainable methods for building complex queries programmatically</p>
                 </div>
                 
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Initialization Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
+                <div class="feature-card">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center text-white mb-4" style="background: linear-gradient(135deg, var(--build-green), var(--query-purple));">
+                        <i class="fas fa-shield-alt"></i>
                     </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Direct QueryBuilder creation</span>
-<span class="code-keyword">local</span> QueryBuilder = <span class="code-keyword">require</span>(<span class="code-string">"orm.query_builder"</span>)
-<span class="code-keyword">local</span> qb = QueryBuilder.<span class="code-type">new</span>(<span class="code-string">"users"</span>, <span class="code-string">"sync"</span>, User)
-
-<span class="code-comment">-- Through model instance (recommended)</span>
-<span class="code-keyword">local</span> qb = User:<span class="code-type">query</span>() <span class="code-comment">-- Automatically sets table_name and model_class</span>
-
-<span class="code-comment">-- Async query builder</span>
-<span class="code-keyword">local</span> async_qb = User:<span class="code-type">query</span>(<span class="code-string">"async"</span>)
-
-<span class="code-comment">-- Custom table without model</span>
-<span class="code-keyword">local</span> custom_qb = QueryBuilder.<span class="code-type">new</span>(<span class="code-string">"custom_table"</span>)</code></pre>
+                    <h3 class="text-xl font-bold mb-2" style="color: var(--doc-text);">SQL Injection Protection</h3>
+                    <p style="color: var(--doc-text-secondary);">Automatic parameter binding and safe query execution</p>
                 </div>
                 
-                <div class="grid md:grid-cols-2 gap-6 mt-8">
-                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                        <h4 class="font-bold text-blue-800 mb-2">Query Builder State Properties</h4>
-                        <ul class="text-sm text-blue-700 space-y-1">
-                            <li><code>_select_columns</code> - Columns to SELECT</li>
-                            <li><code>_where_clauses</code> - WHERE conditions</li>
-                            <li><code>_limit</code> - LIMIT clause</li>
-                            <li><code>_offset</code> - OFFSET clause</li>
-                            <li><code>_order_by</code> - ORDER BY clauses</li>
-                            <li><code>_group_by</code> - GROUP BY clauses</li>
-                            <li><code>_joins</code> - JOIN clauses</li>
-                            <li><code>_parameters</code> - Query parameters</li>
-                        </ul>
+                <div class="feature-card">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center text-white mb-4" style="background: linear-gradient(135deg, var(--query-purple), var(--warning-amber));">
+                        <i class="fas fa-sync-alt"></i>
                     </div>
-                    <div class="bg-green-50 p-4 rounded-lg border border-green-200">
-                        <h4 class="font-bold text-green-800 mb-2">Query Type Flags</h4>
-                        <ul class="text-sm text-green-700 space-y-1">
-                            <li><code>_is_insert</code> - INSERT operation</li>
-                            <li><code>_is_update</code> - UPDATE operation</li>
-                            <li><code>_is_delete</code> - DELETE operation</li>
-                            <li><code>_insert_data</code> - INSERT data</li>
-                            <li><code>_update_data</code> - UPDATE data</li>
-                            <li><code>_on_conflict_clause</code> - ON CONFLICT handling</li>
-                        </ul>
-                    </div>
+                    <h3 class="text-xl font-bold mb-2" style="color: var(--doc-text);">Sync & Async Support</h3>
+                    <p style="color: var(--doc-text-secondary);">Support for both synchronous and asynchronous execution</p>
                 </div>
             </div>
             
-            <!-- SELECT Queries -->
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">
-                    <span class="query-type type-select">SELECT</span>
-                    SELECT Queries
-                </h3>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">select(...)</h4>
-                    <p class="text-light-text-secondary mb-3">Sets the columns to select. Supports aliasing with "as".</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>...</td>
-                                <td>string|table</td>
-                                <td>Column names as strings, or a table of column names</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> QueryBuilder instance for chaining</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Basic Setup</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
+                <pre><code><span class="comment">-- Create a QueryBuilder instance</span>
+<span class="keyword">local</span> qb = QueryBuilder.<span class="function">new</span>(<span class="string">"users"</span>, <span class="string">"sync"</span>, User)
+
+<span class="comment">-- Build and execute a query</span>
+<span class="keyword">local</span> users = qb:<span class="function">select</span>(<span class="string">"*"</span>)
+                  :<span class="function">where</span>(<span class="string">"is_active"</span>, <span class="string">"="</span>, <span class="keyword">true</span>)
+                  :<span class="function">order_by</span>(<span class="string">"created_at"</span>, <span class="string">"DESC"</span>)
+                  :<span class="function">limit</span>(<span class="number">10</span>)
+                  :<span class="function">get</span>()
+
+<span class="comment">-- Or use the model's query method</span>
+<span class="keyword">local</span> users = User:<span class="function">query</span>()
+                  :<span class="function">where</span>(<span class="string">"is_active"</span>, <span class="string">"="</span>, <span class="keyword">true</span>)
+                  :<span class="function">get</span>()</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Query Types Section -->
+    <section id="query-types" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">1</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Query Types & Initialization</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 mb-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">new(table_name, connection_mode, model_class)</h4>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">Creates a new QueryBuilder instance for a given table.</p>
                 
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">SELECT Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Select all columns (default)</span>
-qb:<span class="code-type">select</span>(<span class="code-string">"*"</span>)
-
-<span class="code-comment">-- Select specific columns</span>
-qb:<span class="code-type">select</span>(<span class="code-string">"id"</span>, <span class="code-string">"name"</span>, <span class="code-string">"email"</span>)
-
-<span class="code-comment">-- Select with aliases</span>
-qb:<span class="code-type">select</span>(<span class="code-string">"users.name as user_name"</span>, <span class="code-string">"posts.title as post_title"</span>)
-
-<span class="code-comment">-- Select with table of columns</span>
-qb:<span class="code-type">select</span>({<span class="code-string">"id"</span>, <span class="code-string">"name"</span>, <span class="code-string">"email"</span>})
-
-<span class="code-comment">-- Count records</span>
-qb:<span class="code-type">count</span>() <span class="code-comment">-- Sets select to "COUNT(*) as count"</span></code></pre>
-                </div>
+                <table class="param-table">
+                    <thead>
+                        <tr><th>Parameter</th><th>Type</th><th>Description</th><th>Required</th> </thead>
+                    <tbody>
+                        <tr><td class="font-mono">table_name</td><td>string</td><td>The name of the database table</td><td>Yes</td> </tr>
+                        <tr><td class="font-mono">connection_mode</td><td>string</td><td>The connection mode ("sync" or "async")</td><td>No</td> </tr>
+                        <tr><td class="font-mono">model_class</td><td>table</td><td>The ORM model class associated</td><td>No</td> </tr>
+                    </tbody>
+                </table>
+                
+                <p class="mt-3"><strong>Returns:</strong> table - A new QueryBuilder instance</p>
             </div>
             
-            <!-- INSERT Queries -->
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">
-                    <span class="query-type type-insert">INSERT</span>
-                    INSERT Queries
-                </h3>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">insert(data)</h4>
-                    <p class="text-light-text-secondary mb-3">Configures the query for an INSERT operation.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>data</td>
-                                <td>table</td>
-                                <td>A table where keys are column names and values are the data to insert</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> QueryBuilder instance for chaining</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Initialization Examples</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">INSERT Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Basic INSERT</span>
-qb:<span class="code-type">insert</span>({
-    name = <span class="code-string">"John Doe"</span>,
-    email = <span class="code-string">"john@example.com"</span>,
-    age = 30
-}):<span class="code-type">execute</span>()
+                <pre><code><span class="comment">-- Direct QueryBuilder creation</span>
+<span class="keyword">local</span> qb = QueryBuilder.<span class="function">new</span>(<span class="string">"users"</span>, <span class="string">"sync"</span>, User)
 
-<span class="code-comment">-- INSERT with ON CONFLICT (UPSERT)</span>
-qb:<span class="code-type">insert</span>({
-    email = <span class="code-string">"john@example.com"</span>,
-    name = <span class="code-string">"John Updated"</span>
-}):<span class="code-type">on_conflict</span>(<span class="code-string">"email"</span>, <span class="code-string">"DO UPDATE SET name = EXCLUDED.name"</span>)
- :<span class="code-type">execute</span>()
+<span class="comment">-- Through model instance (recommended)</span>
+<span class="keyword">local</span> qb = User:<span class="function">query</span>()
 
-<span class="code-comment">-- Generated SQL:</span>
-<span class="code-comment">-- INSERT INTO users (name, email, age) VALUES (?, ?, ?)</span>
-<span class="code-comment">-- INSERT INTO users (email, name) VALUES (?, ?) ON CONFLICT (email) DO UPDATE SET name = EXCLUDED.name</span></code></pre>
-                </div>
+<span class="comment">-- Async query builder</span>
+<span class="keyword">local</span> async_qb = User:<span class="function">query</span>(<span class="string">"async"</span>)</code></pre>
+            </div>
+        </div>
+        
+        <!-- SELECT Queries -->
+        <div class="rounded-xl p-6 mb-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <h3 class="text-2xl font-bold mb-4 flex items-center">
+                <span class="query-type type-select">SELECT</span>
+                <span style="color: var(--doc-text);">SELECT Queries</span>
+            </h3>
+            
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">select(...)</h4>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">Sets the columns to select. Supports aliasing with "as".</p>
             </div>
             
-            <!-- UPDATE Queries -->
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">
-                    <span class="query-type type-update">UPDATE</span>
-                    UPDATE Queries
-                </h3>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">update(data)</h4>
-                    <p class="text-light-text-secondary mb-3">Configures the query for an UPDATE operation.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>data</td>
-                                <td>table</td>
-                                <td>A table where keys are column names and values are the data to update</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> QueryBuilder instance for chaining</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - SELECT Examples</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">UPDATE Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Basic UPDATE</span>
-qb:<span class="code-type">update</span>({
-    name = <span class="code-string">"Jane Doe"</span>,
-    email = <span class="code-string">"jane@example.com"</span>
-}):<span class="code-type">where</span>(<span class="code-string">"id"</span>, <span class="code-string">"="</span>, 123)
- :<span class="code-type">execute</span>()
+                <pre><code><span class="comment">-- Select specific columns</span>
+qb:<span class="function">select</span>(<span class="string">"id"</span>, <span class="string">"name"</span>, <span class="string">"email"</span>)
 
-<span class="code-comment">-- UPDATE with multiple conditions</span>
-qb:<span class="code-type">update</span>({
-    status = <span class="code-string">"inactive"</span>,
-    updated_at = <span class="code-string">"CURRENT_TIMESTAMP"</span>
-}):<span class="code-type">where</span>(<span class="code-string">"last_login"</span>, <span class="code-string">"<"</span>, <span class="code-string">"2023-01-01"</span>)
- :<span class="code-type">and_where</span>(<span class="code-string">"is_active"</span>, <span class="code-string">"="</span>, true)
- :<span class="code-type">execute</span>()
+<span class="comment">-- Select with aliases</span>
+qb:<span class="function">select</span>(<span class="string">"users.name as user_name"</span>, <span class="string">"posts.title as post_title"</span>)
 
-<span class="code-comment">-- Generated SQL:</span>
-<span class="code-comment">-- UPDATE users SET name = ?, email = ? WHERE id = ?</span>
-<span class="code-comment">-- UPDATE users SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE last_login < ? AND is_active = ?</span></code></pre>
+<span class="comment">-- Count records</span>
+qb:<span class="function">count</span>() <span class="comment">-- Sets select to "COUNT(*) as count"</span></code></pre>
+            </div>
+        </div>
+        
+        <!-- INSERT Queries -->
+        <div class="rounded-xl p-6 mb-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <h3 class="text-2xl font-bold mb-4 flex items-center">
+                <span class="query-type type-insert">INSERT</span>
+                <span style="color: var(--doc-text);">INSERT Queries</span>
+            </h3>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - INSERT Examples</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
+                <pre><code><span class="comment">-- Basic INSERT</span>
+qb:<span class="function">insert</span>({
+    name = <span class="string">"John Doe"</span>,
+    email = <span class="string">"john@example.com"</span>,
+    age = <span class="number">30</span>
+}):<span class="function">execute</span>()
+
+<span class="comment">-- INSERT with ON CONFLICT (UPSERT)</span>
+qb:<span class="function">insert</span>({
+    email = <span class="string">"john@example.com"</span>,
+    name = <span class="string">"John Updated"</span>
+}):<span class="function">on_conflict</span>(<span class="string">"email"</span>, <span class="string">"DO UPDATE SET name = EXCLUDED.name"</span>)
+ :<span class="function">execute</span>()</code></pre>
+            </div>
+        </div>
+        
+        <!-- UPDATE Queries -->
+        <div class="rounded-xl p-6 mb-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <h3 class="text-2xl font-bold mb-4 flex items-center">
+                <span class="query-type type-update">UPDATE</span>
+                <span style="color: var(--doc-text);">UPDATE Queries</span>
+            </h3>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - UPDATE Examples</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- Basic UPDATE</span>
+qb:<span class="function">update</span>({
+    name = <span class="string">"Jane Doe"</span>,
+    email = <span class="string">"jane@example.com"</span>
+}):<span class="function">where</span>(<span class="string">"id"</span>, <span class="string">"="</span>, <span class="number">123</span>)
+ :<span class="function">execute</span>()
+
+<span class="comment">-- UPDATE with multiple conditions</span>
+qb:<span class="function">update</span>({
+    status = <span class="string">"inactive"</span>
+}):<span class="function">where</span>(<span class="string">"last_login"</span>, <span class="string">"<"</span>, <span class="string">"2023-01-01"</span>)
+ :<span class="function">and_where</span>(<span class="string">"is_active"</span>, <span class="string">"="</span>, <span class="keyword">true</span>)
+ :<span class="function">execute</span>()</code></pre>
+            </div>
+        </div>
+        
+        <!-- DELETE Queries -->
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <h3 class="text-2xl font-bold mb-4 flex items-center">
+                <span class="query-type type-delete">DELETE</span>
+                <span style="color: var(--doc-text);">DELETE Queries</span>
+            </h3>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - DELETE Examples</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- Basic DELETE</span>
+qb:<span class="function">delete</span>()
+   :<span class="function">where</span>(<span class="string">"id"</span>, <span class="string">"="</span>, <span class="number">123</span>)
+   :<span class="function">execute</span>()
+
+<span class="comment">-- Soft delete (using with_soft_deleted)</span>
+qb:<span class="function">with_soft_deleted</span>()
+   :<span class="function">delete</span>()
+   :<span class="function">where</span>(<span class="string">"id"</span>, <span class="string">"="</span>, <span class="number">123</span>)
+   :<span class="function">execute</span>()</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Clause Methods Section -->
+    <section id="clause-methods" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">2</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Clause Methods</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 mb-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">where(column, operator, value, conjunction)</h4>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">Adds a WHERE clause to the query with parameter binding.</p>
             </div>
             
-            <!-- DELETE Queries -->
-            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">
-                    <span class="query-type type-delete">DELETE</span>
-                    DELETE Queries
-                </h3>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">delete()</h4>
-                    <p class="text-light-text-secondary mb-3">Configures the query for a DELETE operation.</p>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> QueryBuilder instance for chaining</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - WHERE Examples</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">DELETE Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Basic DELETE</span>
-qb:<span class="code-type">delete</span>()
-   :<span class="code-type">where</span>(<span class="code-string">"id"</span>, <span class="code-string">"="</span>, 123)
-   :<span class="code-type">execute</span>()
+                <pre><code><span class="comment">-- Basic equality</span>
+qb:<span class="function">where</span>(<span class="string">"name"</span>, <span class="string">"="</span>, <span class="string">"John"</span>)
 
-<span class="code-comment">-- DELETE with multiple conditions</span>
-qb:<span class="code-type">delete</span>()
-   :<span class="code-type">where</span>(<span class="code-string">"status"</span>, <span class="code-string">"="</span>, <span class="code-string">"deleted"</span>)
-   :<span class="code-type">and_where</span>(<span class="code-string">"deleted_at"</span>, <span class="code-string">"<"</span>, <span class="code-string">"2020-01-01"</span>)
-   :<span class="code-type">execute</span>()
+<span class="comment">-- LIKE operator</span>
+qb:<span class="function">where</span>(<span class="string">"name"</span>, <span class="string">"LIKE"</span>, <span class="string">"J%"</span>)
 
-<span class="code-comment">-- Soft delete (using with_soft_deleted)</span>
-qb:<span class="code-type">with_soft_deleted</span>()
-   :<span class="code-type">delete</span>()
-   :<span class="code-type">where</span>(<span class="code-string">"id"</span>, <span class="code-string">"="</span>, 123)
-   :<span class="code-type">execute</span>()
+<span class="comment">-- IN operator with table</span>
+qb:<span class="function">where</span>(<span class="string">"status"</span>, <span class="string">"IN"</span>, {<span class="string">"active"</span>, <span class="string">"pending"</span>})
 
-<span class="code-comment">-- Generated SQL:</span>
-<span class="code-comment">-- DELETE FROM users WHERE id = ?</span>
-<span class="code-comment">-- DELETE FROM users WHERE status = ? AND deleted_at < ?</span></code></pre>
-                </div>
-            </div>
-        </section>
-
-        <!-- Clause Methods Section -->
-        <section id="clause-methods" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-build-green flex items-center justify-center text-white font-bold mr-4">2</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">Clause Methods</h2>
+<span class="comment">-- Complex conditions with AND/OR</span>
+qb:<span class="function">where</span>(<span class="string">"status"</span>, <span class="string">"="</span>, <span class="string">"active"</span>)
+   :<span class="function">or_where</span>(<span class="string">"age"</span>, <span class="string">">="</span>, <span class="number">65</span>)
+   :<span class="function">and_where</span>(<span class="string">"country"</span>, <span class="string">"="</span>, <span class="string">"US"</span>)</code></pre>
             </div>
             
-            <!-- WHERE Clauses -->
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">WHERE Clauses</h3>
-                <p class="text-light-text-secondary mb-6">
-                    Build complex WHERE conditions with support for various operators, logical conjunctions,
-                    and parameter binding for SQL injection protection.
-                </p>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">where(column, operator, value, conjunction)</h4>
-                    <p class="text-light-text-secondary mb-3">Adds a WHERE clause to the query with parameter binding.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Default</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>column</td>
-                                <td>string</td>
-                                <td>The name of the column</td>
-                                <td>Required</td>
-                            </tr>
-                            <tr>
-                                <td>operator</td>
-                                <td>string</td>
-                                <td>Comparison operator (=, >, <, LIKE, IN, IS, etc.)</td>
-                                <td>Required</td>
-                            </tr>
-                            <tr>
-                                <td>value</td>
-                                <td>mixed</td>
-                                <td>The value to compare against</td>
-                                <td>Required</td>
-                            </tr>
-                            <tr>
-                                <td>conjunction</td>
-                                <td>string</td>
-                                <td>Logical conjunction (AND or OR)</td>
-                                <td>"AND"</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Supported Operators:</strong> =, !=, <>, >, <, >=, <=, LIKE, ILIKE, IN, NOT IN, IS, IS NOT</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">WHERE Clause Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Basic equality</span>
-qb:<span class="code-type">where</span>(<span class="code-string">"name"</span>, <span class="code-string">"="</span>, <span class="code-string">"John"</span>)
-
-<span class="code-comment">-- Greater than</span>
-qb:<span class="code-type">where</span>(<span class="code-string">"age"</span>, <span class="code-string">">"</span>, 18)
-
-<span class="code-comment">-- LIKE operator</span>
-qb:<span class="code-type">where</span>(<span class="code-string">"name"</span>, <span class="code-string">"LIKE"</span>, <span class="code-string">"J%"</span>)
-
-<span class="code-comment">-- IN operator with table</span>
-qb:<span class="code-type">where</span>(<span class="code-string">"status"</span>, <span class="code-string">"IN"</span>, {<span class="code-string">"active"</span>, <span class="code-string">"pending"</span>})
-
-<span class="code-comment">-- IS NULL</span>
-qb:<span class="code-type">where</span>(<span class="code-string">"deleted_at"</span>, <span class="code-string">"IS"</span>, <span class="code-string">"NULL"</span>)
-
-<span class="code-comment">-- Complex conditions with AND/OR</span>
-qb:<span class="code-type">where</span>(<span class="code-string">"status"</span>, <span class="code-string">"="</span>, <span class="code-string">"active"</span>)
-   :<span class="code-type">or_where</span>(<span class="code-string">"age"</span>, <span class="code-string">">="</span>, 65)
-   :<span class="code-type">and_where</span>(<span class="code-string">"country"</span>, <span class="code-string">"="</span>, <span class="code-string">"US"</span>)
-
-<span class="code-comment">-- Raw WHERE clause (use with caution)</span>
-qb:<span class="code-type">where_raw</span>(<span class="code-string">"price > ? AND discount < ?"</span>, {100, 50})</code></pre>
-                </div>
-                
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="function-signature">
-                        <h4 class="font-bold text-lg mb-2">and_where(column, operator, value)</h4>
-                        <p class="text-light-text-secondary mb-3">Adds an "AND" WHERE clause (convenience method).</p>
-                        <p><strong>Returns:</strong> QueryBuilder instance for chaining</p>
-                    </div>
-                    
-                    <div class="function-signature">
-                        <h4 class="font-bold text-lg mb-2">or_where(column, operator, value)</h4>
-                        <p class="text-light-text-secondary mb-3">Adds an "OR" WHERE clause (convenience method).</p>
-                        <p><strong>Returns:</strong> QueryBuilder instance for chaining</p>
-                    </div>
-                </div>
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">join(join_type, table_name, on_clause)</h4>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">Adds a JOIN clause to the query.</p>
             </div>
             
-            <!-- JOIN Clauses -->
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">
-                    <span class="query-type type-join">JOIN</span>
-                    JOIN Clauses
-                </h3>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">join(join_type, table_name, on_clause)</h4>
-                    <p class="text-light-text-secondary mb-3">Adds a JOIN clause to the query.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>join_type</td>
-                                <td>string</td>
-                                <td>The type of join (INNER, LEFT, RIGHT, FULL)</td>
-                            </tr>
-                            <tr>
-                                <td>table_name</td>
-                                <td>string</td>
-                                <td>The name of the table to join</td>
-                            </tr>
-                            <tr>
-                                <td>on_clause</td>
-                                <td>string</td>
-                                <td>The ON clause specifying the join condition</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> QueryBuilder instance for chaining</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - JOIN Examples</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">JOIN Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- INNER JOIN</span>
-qb:<span class="code-type">select</span>(<span class="code-string">"users.name"</span>, <span class="code-string">"posts.title"</span>)
-   :<span class="code-type">join</span>(<span class="code-string">"INNER"</span>, <span class="code-string">"posts"</span>, <span class="code-string">"users.id = posts.user_id"</span>)
+                <pre><code><span class="comment">-- INNER JOIN</span>
+qb:<span class="function">select</span>(<span class="string">"users.name"</span>, <span class="string">"posts.title"</span>)
+   :<span class="function">join</span>(<span class="string">"INNER"</span>, <span class="string">"posts"</span>, <span class="string">"users.id = posts.user_id"</span>)
 
-<span class="code-comment">-- LEFT JOIN with aliases</span>
-qb:<span class="code-type">select</span>(<span class="code-string">"u.name as user_name"</span>, <span class="code-string">"p.title as post_title"</span>)
-   :<span class="code-type">join</span>(<span class="code-string">"LEFT"</span>, <span class="code-string">"posts p"</span>, <span class="code-string">"u.id = p.user_id"</span>)
-
-<span class="code-comment">-- Multiple JOINs</span>
-qb:<span class="code-type">select</span>(<span class="code-string">"*"</span>)
-   :<span class="code-type">join</span>(<span class="code-string">"INNER"</span>, <span class="code-string">"posts"</span>, <span class="code-string">"users.id = posts.user_id"</span>)
-   :<span class="code-type">join</span>(<span class="code-string">"LEFT"</span>, <span class="code-string">"comments"</span>, <span class="code-string">"posts.id = comments.post_id"</span>)
-
-<span class="code-comment">-- Generated SQL:</span>
-<span class="code-comment">-- SELECT users.name, posts.title FROM users INNER JOIN posts ON users.id = posts.user_id</span>
-<span class="code-comment">-- SELECT u.name as user_name, p.title as post_title FROM users u LEFT JOIN posts p ON u.id = p.user_id</span></code></pre>
-                </div>
+<span class="comment">-- LEFT JOIN with aliases</span>
+qb:<span class="function">select</span>(<span class="string">"u.name as user_name"</span>, <span class="string">"p.title as post_title"</span>)
+   :<span class="function">join</span>(<span class="string">"LEFT"</span>, <span class="string">"posts p"</span>, <span class="string">"u.id = p.user_id"</span>)</code></pre>
             </div>
             
-            <!-- Other Clauses -->
-            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Other Clauses</h3>
-                
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="function-signature">
-                        <h4 class="font-bold text-lg mb-2">order_by(column, direction)</h4>
-                        <p class="text-light-text-secondary mb-3">Adds an ORDER BY clause to the query.</p>
-                        <p><strong>Parameters:</strong> column (string), direction ("ASC" or "DESC")</p>
-                        <p><strong>Returns:</strong> QueryBuilder instance for chaining</p>
-                    </div>
-                    
-                    <div class="function-signature">
-                        <h4 class="font-bold text-lg mb-2">group_by(...)</h4>
-                        <p class="text-light-text-secondary mb-3">Adds a GROUP BY clause to the query.</p>
-                        <p><strong>Parameters:</strong> Column names as strings or table</p>
-                        <p><strong>Returns:</strong> QueryBuilder instance for chaining</p>
-                    </div>
-                    
-                    <div class="function-signature">
-                        <h4 class="font-bold text-lg mb-2">limit(count)</h4>
-                        <p class="text-light-text-secondary mb-3">Sets the LIMIT for the query.</p>
-                        <p><strong>Parameters:</strong> count (number)</p>
-                        <p><strong>Returns:</strong> QueryBuilder instance for chaining</p>
-                    </div>
-                    
-                    <div class="function-signature">
-                        <h4 class="font-bold text-lg mb-2">offset(count)</h4>
-                        <p class="text-light-text-secondary mb-3">Sets the OFFSET for the query.</p>
-                        <p><strong>Parameters:</strong> count (number)</p>
-                        <p><strong>Returns:</strong> QueryBuilder instance for chaining</p>
-                    </div>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Other Clauses</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mt-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Clause Combination Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Complex query with multiple clauses</span>
-<span class="code-keyword">local</span> users = qb:<span class="code-type">select</span>(<span class="code-string">"*"</span>)
-                  :<span class="code-type">where</span>(<span class="code-string">"status"</span>, <span class="code-string">"="</span>, <span class="code-string">"active"</span>)
-                  :<span class="code-type">group_by</span>(<span class="code-string">"department"</span>)
-                  :<span class="code-type">order_by</span>(<span class="code-string">"created_at"</span>, <span class="code-string">"DESC"</span>)
-                  :<span class="code-type">limit</span>(10)
-                  :<span class="code-type">offset</span>(20)
-                  :<span class="code-type">get</span>()
+                <pre><code><span class="comment">-- ORDER BY</span>
+qb:<span class="function">order_by</span>(<span class="string">"created_at"</span>, <span class="string">"DESC"</span>)
 
-<span class="code-comment">-- Count with conditions</span>
-<span class="code-keyword">local</span> count = qb:<span class="code-type">count</span>()
-                   :<span class="code-type">where</span>(<span class="code-string">"is_active"</span>, <span class="code-string">"="</span>, true)
-                   :<span class="code-type">and_where</span>(<span class="code-string">"created_at"</span>, <span class="code-string">">"</span>, <span class="code-string">"2023-01-01"</span>)
-                   :<span class="code-type">get</span>()
+<span class="comment">-- GROUP BY</span>
+qb:<span class="function">group_by</span>(<span class="string">"department"</span>)
 
-<span class="code-comment">-- Generated SQL:</span>
-<span class="code-comment">-- SELECT * FROM users WHERE status = ? GROUP BY department ORDER BY created_at DESC LIMIT ? OFFSET ?</span>
-<span class="code-comment">-- SELECT COUNT(*) as count FROM users WHERE is_active = ? AND created_at > ?</span></code></pre>
-                </div>
+<span class="comment">-- LIMIT and OFFSET</span>
+qb:<span class="function">limit</span>(<span class="number">10</span>):<span class="function">offset</span>(<span class="number">20</span>)
+
+<span class="comment">-- Complex query with multiple clauses</span>
+<span class="keyword">local</span> users = qb:<span class="function">select</span>(<span class="string">"*"</span>)
+                  :<span class="function">where</span>(<span class="string">"status"</span>, <span class="string">"="</span>, <span class="string">"active"</span>)
+                  :<span class="function">group_by</span>(<span class="string">"department"</span>)
+                  :<span class="function">order_by</span>(<span class="string">"created_at"</span>, <span class="string">"DESC"</span>)
+                  :<span class="function">limit</span>(<span class="number">10</span>)
+                  :<span class="function">offset</span>(<span class="number">20</span>)
+                  :<span class="function">get</span>()</code></pre>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Execution Section -->
-        <section id="execution" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-query-purple flex items-center justify-center text-white font-bold mr-4">3</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">Query Execution</h2>
-            </div>
-            
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Execution Methods</h3>
-                <p class="text-light-text-secondary mb-6">
-                    Execute built queries with support for both synchronous and asynchronous operations,
-                    automatic result mapping, and proper connection management.
-                </p>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">get(callback)</h4>
-                    <p class="text-light-text-secondary mb-3">Executes the built SELECT query and returns a list of model instances.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>callback</td>
-                                <td>function</td>
-                                <td>Optional callback for async mode: function(results, error)</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> table|nil - A list of model instances (sync only)</p>
-                    <p class="mt-2"><strong>Raises:</strong> Error if the query operation fails in sync mode</p>
+    <!-- Execution Section -->
+    <section id="execution" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">3</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Query Execution</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Execution Examples</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">GET Execution Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Synchronous execution</span>
-<span class="code-keyword">local</span> users = User:<span class="code-type">query</span>()
-                  :<span class="code-type">where</span>(<span class="code-string">"is_active"</span>, <span class="code-string">"="</span>, true)
-                  :<span class="code-type">get</span>()
+                <pre><code><span class="comment">-- Synchronous execution</span>
+<span class="keyword">local</span> users = User:<span class="function">query</span>()
+                  :<span class="function">where</span>(<span class="string">"is_active"</span>, <span class="string">"="</span>, <span class="keyword">true</span>)
+                  :<span class="function">get</span>()
 
-<span class="code-comment">-- Asynchronous execution with callback</span>
-User:<span class="code-type">query</span>(<span class="code-string">"async"</span>)
-    :<span class="code-type">where</span>(<span class="code-string">"is_active"</span>, <span class="code-string">"="</span>, true)
-    :<span class="code-type">get</span>(<span class="code-keyword">function</span>(users, err)
-        <span class="code-keyword">if</span> err <span class="code-keyword">then</span>
-            print(<span class="code-string">"Error:"</span>, err)
-        <span class="code-keyword">else</span>
-            <span class="code-keyword">for</span> i, user <span class="code-keyword">in</span> <span class="code-keyword">ipairs</span>(users) <span class="code-keyword">do</span>
+<span class="comment">-- Asynchronous execution with callback</span>
+User:<span class="function">query</span>(<span class="string">"async"</span>)
+    :<span class="function">where</span>(<span class="string">"is_active"</span>, <span class="string">"="</span>, <span class="keyword">true</span>)
+    :<span class="function">get</span>(<span class="keyword">function</span>(users, err)
+        <span class="keyword">if</span> err <span class="keyword">then</span>
+            print(<span class="string">"Error:"</span>, err)
+        <span class="keyword">else</span>
+            <span class="keyword">for</span> i, user <span class="keyword">in</span> <span class="keyword">ipairs</span>(users) <span class="keyword">do</span>
                 print(user.name)
-            <span class="code-keyword">end</span>
-        <span class="code-keyword">end</span>
-    <span class="code-keyword">end</span>)
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>)
 
-<span class="code-comment">-- Count execution</span>
-<span class="code-keyword">local</span> result = User:<span class="code-type">query</span>()
-                   :<span class="code-type">count</span>()
-                   :<span class="code-type">where</span>(<span class="code-string">"is_active"</span>, <span class="code-string">"="</span>, true)
-                   :<span class="code-type">get</span>()
-<span class="code-keyword">local</span> user_count = result[1].count</code></pre>
-                </div>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">execute(callback)</h4>
-                    <p class="text-light-text-secondary mb-3">Executes the built DML (INSERT, UPDATE, DELETE) query.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>callback</td>
-                                <td>function</td>
-                                <td>Optional callback for async mode: function(success, error)</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> boolean|nil - True if successful (sync only), or nil for async</p>
-                    <p class="mt-2"><strong>Raises:</strong> Error if the query operation fails in sync mode</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">EXECUTE Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Synchronous INSERT</span>
-<span class="code-keyword">local</span> success = User:<span class="code-type">query</span>()
-                    :<span class="code-type">insert</span>({
-                        name = <span class="code-string">"John Doe"</span>,
-                        email = <span class="code-string">"john@example.com"</span>
-                    })
-                    :<span class="code-type">execute</span>()
+<span class="comment">-- Count execution</span>
+<span class="keyword">local</span> result = User:<span class="function">query</span>()
+                   :<span class="function">count</span>()
+                   :<span class="function">where</span>(<span class="string">"is_active"</span>, <span class="string">"="</span>, <span class="keyword">true</span>)
+                   :<span class="function">get</span>()
+<span class="keyword">local</span> user_count = result[<span class="number">1</span>].count
 
-<span class="code-comment">-- Asynchronous UPDATE</span>
-User:<span class="code-type">query</span>(<span class="code-string">"async"</span>)
-    :<span class="code-type">update</span>({ status = <span class="code-string">"inactive"</span> })
-    :<span class="code-type">where</span>(<span class="code-string">"last_login"</span>, <span class="code-string">"<"</span>, <span class="code-string">"2020-01-01"</span>)
-    :<span class="code-type">execute</span>(<span class="code-keyword">function</span>(success, err)
-        <span class="code-keyword">if</span> err <span class="code-keyword">then</span>
-            print(<span class="code-string">"Update failed:"</span>, err)
-        <span class="code-keyword">else</span>
-            print(<span class="code-string">"Update successful"</span>)
-        <span class="code-keyword">end</span>
-    <span class="code-keyword">end</span>)
+<span class="comment">-- Utility methods</span>
+<span class="comment">-- Clone a query builder</span>
+<span class="keyword">local</span> count_query = base_query:<span class="function">clone</span>():<span class="function">count</span>():<span class="function">get</span>()
 
-<span class="code-comment">-- Synchronous DELETE</span>
-<span class="code-keyword">local</span> deleted = User:<span class="code-type">query</span>()
-                   :<span class="code-type">delete</span>()
-                   :<span class="code-type">where</span>(<span class="code-string">"id"</span>, <span class="code-string">"="</span>, 123)
-                   :<span class="code-type">execute</span>()</code></pre>
+<span class="comment">-- Get SQL for debugging</span>
+<span class="keyword">local</span> sql, params = User:<span class="function">query</span>()
+                         :<span class="function">where</span>(<span class="string">"name"</span>, <span class="string">"LIKE"</span>, <span class="string">"J%"</span>)
+                         :<span class="function">to_sql</span>()</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Examples Section -->
+    <section id="examples" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">4</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Practical Examples</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - E-commerce Product Queries</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
+                <pre><code><span class="comment">-- Get active products with categories</span>
+<span class="keyword">local</span> products = Product:<span class="function">query</span>()
+                        :<span class="function">select</span>(<span class="string">"products.*"</span>, <span class="string">"categories.name as category_name"</span>)
+                        :<span class="function">join</span>(<span class="string">"INNER"</span>, <span class="string">"categories"</span>, <span class="string">"products.category_id = categories.id"</span>)
+                        :<span class="function">where</span>(<span class="string">"products.is_active"</span>, <span class="string">"="</span>, <span class="keyword">true</span>)
+                        :<span class="function">where</span>(<span class="string">"products.stock_quantity"</span>, <span class="string">">"</span>, <span class="number">0</span>)
+                        :<span class="function">order_by</span>(<span class="string">"products.created_at"</span>, <span class="string">"DESC"</span>)
+                        :<span class="function">limit</span>(<span class="number">20</span>)
+                        :<span class="function">get</span>()
+
+<span class="comment">-- Count products by category</span>
+<span class="keyword">local</span> category_counts = Product:<span class="function">query</span>()
+                               :<span class="function">select</span>(<span class="string">"category_id"</span>, <span class="string">"COUNT(*) as product_count"</span>)
+                               :<span class="function">where</span>(<span class="string">"is_active"</span>, <span class="string">"="</span>, <span class="keyword">true</span>)
+                               :<span class="function">group_by</span>(<span class="string">"category_id"</span>)
+                               :<span class="function">get</span>()</code></pre>
             </div>
             
-            <!-- Utility Methods -->
-            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Utility Methods</h3>
-                
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="function-signature">
-                        <h4 class="font-bold text-lg mb-2">clone()</h4>
-                        <p class="text-light-text-secondary mb-3">Creates a deep copy of the QueryBuilder instance.</p>
-                        <p><strong>Returns:</strong> QueryBuilder - New instance with copied state</p>
-                    </div>
-                    
-                    <div class="function-signature">
-                        <h4 class="font-bold text-lg mb-2">to_sql()</h4>
-                        <p class="text-light-text-secondary mb-3">Generates the SQL string and parameters for the current query.</p>
-                        <p><strong>Returns:</strong> string, table - SQL query and parameters</p>
-                    </div>
-                    
-                    <div class="function-signature">
-                        <h4 class="font-bold text-lg mb-2">use_async(enable)</h4>
-                        <p class="text-light-text-secondary mb-3">Enables or disables asynchronous execution.</p>
-                        <p><strong>Parameters:</strong> enable (boolean)</p>
-                        <p><strong>Returns:</strong> QueryBuilder instance for chaining</p>
-                    </div>
-                    
-                    <div class="function-signature">
-                        <h4 class="font-bold text-lg mb-2">with_soft_deleted()</h4>
-                        <p class="text-light-text-secondary mb-3">Includes soft-deleted records in queries.</p>
-                        <p><strong>Returns:</strong> QueryBuilder instance for chaining</p>
-                    </div>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Advanced Search Function</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mt-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Utility Method Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Clone a query builder</span>
-<span class="code-keyword">local</span> base_query = User:<span class="code-type">query</span>():<span class="code-type">where</span>(<span class="code-string">"is_active"</span>, <span class="code-string">"="</span>, true)
-<span class="code-keyword">local</span> count_query = base_query:<span class="code-type">clone</span>():<span class="code-type">count</span>():<span class="code-type">get</span>()
-<span class="code-keyword">local</span> users = base_query:<span class="code-type">clone</span>():<span class="code-type">limit</span>(10):<span class="code-type">get</span>()
-
-<span class="code-comment">-- Get SQL for debugging</span>
-<span class="code-keyword">local</span> sql, params = User:<span class="code-type">query</span>()
-                         :<span class="code-type">where</span>(<span class="code-string">"name"</span>, <span class="code-string">"LIKE"</span>, <span class="code-string">"J%"</span>)
-                         :<span class="code-type">to_sql</span>()
-print(<span class="code-string">"SQL:"</span>, sql)
-print(<span class="code-string">"Parameters:"</span>, table.concat(params, <span class="code-string">", "</span>))
-
-<span class="code-comment">-- Force async execution</span>
-User:<span class="code-type">query</span>()
-    :<span class="code-type">use_async</span>(true)
-    :<span class="code-type">where</span>(<span class="code-string">"status"</span>, <span class="code-string">"="</span>, <span class="code-string">"active"</span>)
-    :<span class="code-type">get</span>(<span class="code-keyword">function</span>(users, err) ... <span class="code-keyword">end</span>)
-
-<span class="code-comment">-- Include soft deleted records</span>
-<span class="code-keyword">local</span> all_users = User:<span class="code-type">query</span>()
-                     :<span class="code-type">with_soft_deleted</span>()
-                     :<span class="code-type">get</span>()</code></pre>
-                </div>
-            </div>
-        </section>
-
-        <!-- Examples Section -->
-        <section id="examples" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-warning-amber flex items-center justify-center text-white font-bold mr-4">4</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">Practical Examples</h2>
-            </div>
-            
-            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Real-World Query Examples</h3>
-                <p class="text-light-text-secondary mb-6">
-                    Comprehensive examples showing how to build complex queries for common real-world scenarios.
-                </p>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">E-commerce Product Queries</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Get active products with categories</span>
-<span class="code-keyword">local</span> products = Product:<span class="code-type">query</span>()
-                        :<span class="code-type">select</span>(<span class="code-string">"products.*"</span>, <span class="code-string">"categories.name as category_name"</span>)
-                        :<span class="code-type">join</span>(<span class="code-string">"INNER"</span>, <span class="code-string">"categories"</span>, <span class="code-string">"products.category_id = categories.id"</span>)
-                        :<span class="code-type">where</span>(<span class="code-string">"products.is_active"</span>, <span class="code-string">"="</span>, true)
-                        :<span class="code-type">where</span>(<span class="code-string">"products.stock_quantity"</span>, <span class="code-string">">"</span>, 0)
-                        :<span class="code-type">where</span>(<span class="code-string">"products.price"</span>, <span class="code-string">"<="</span>, 100.00)
-                        :<span class="code-type">order_by</span>(<span class="code-string">"products.created_at"</span>, <span class="code-string">"DESC"</span>)
-                        :<span class="code-type">limit</span>(20)
-                        :<span class="code-type">get</span>()
-
-<span class="code-comment">-- Count products by category</span>
-<span class="code-keyword">local</span> category_counts = Product:<span class="code-type">query</span>()
-                               :<span class="code-type">select</span>(<span class="code-string">"category_id"</span>, <span class="code-string">"COUNT(*) as product_count"</span>)
-                               :<span class="code-type">where</span>(<span class="code-string">"is_active"</span>, <span class="code-string">"="</span>, true)
-                               :<span class="code-type">group_by</span>(<span class="code-string">"category_id"</span>)
-                               :<span class="code-type">get</span>()
-
-<span class="code-comment">-- Search products with multiple criteria</span>
-<span class="code-keyword">local</span> search_results = Product:<span class="code-type">query</span>()
-                             :<span class="code-type">where</span>(<span class="code-string">"name"</span>, <span class="code-string">"LIKE"</span>, <span class="code-string">"%laptop%"</span>)
-                             :<span class="code-type">or_where</span>(<span class="code-string">"description"</span>, <span class="code-string">"LIKE"</span>, <span class="code-string">"%laptop%"</span>)
-                             :<span class="code-type">and_where</span>(<span class="code-string">"price"</span>, <span class="code-string">"BETWEEN"</span>, {500, 2000})
-                             :<span class="code-type">and_where</span>(<span class="code-string">"brand"</span>, <span class="code-string">"IN"</span>, {<span class="code-string">"Dell"</span>, <span class="code-string">"HP"</span>, <span class="code-string">"Lenovo"</span>})
-                             :<span class="code-type">order_by</span>(<span class="code-string">"price"</span>, <span class="code-string">"ASC"</span>)
-                             :<span class="code-type">get</span>()</code></pre>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">User Management Queries</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Get users with their roles and permissions</span>
-<span class="code-keyword">local</span> users = User:<span class="code-type">query</span>()
-                  :<span class="code-type">select</span>(<span class="code-string">"users.*"</span>, <span class="code-string">"roles.name as role_name"</span>, <span class="code-string">"permissions.action"</span>)
-                  :<span class="code-type">join</span>(<span class="code-string">"LEFT"</span>, <span class="code-string">"user_roles"</span>, <span class="code-string">"users.id = user_roles.user_id"</span>)
-                  :<span class="code-type">join</span>(<span class="code-string">"LEFT"</span>, <span class="code-string">"roles"</span>, <span class="code-string">"user_roles.role_id = roles.id"</span>)
-                  :<span class="code-type">join</span>(<span class="code-string">"LEFT"</span>, <span class="code-string">"role_permissions"</span>, <span class="code-string">"roles.id = role_permissions.role_id"</span>)
-                  :<span class="code-type">join</span>(<span class="code-string">"LEFT"</span>, <span class="code-string">"permissions"</span>, <span class="code-string">"role_permissions.permission_id = permissions.id"</span>)
-                  :<span class="code-type">where</span>(<span class="code-string">"users.is_active"</span>, <span class="code-string">"="</span>, true)
-                  :<span class="code-type">where</span>(<span class="code-string">"users.last_login"</span>, <span class="code-string">">"</span>, <span class="code-string">"2023-01-01"</span>)
-                  :<span class="code-type">get</span>()
-
-<span class="code-comment">-- Bulk update user status</span>
-<span class="code-keyword">local</span> updated = User:<span class="code-type">query</span>()
-                   :<span class="code-type">update</span>({ status = <span class="code-string">"inactive"</span> })
-                   :<span class="code-type">where</span>(<span class="code-string">"last_login"</span>, <span class="code-string">"<"</span>, <span class="code-string">"2022-01-01"</span>)
-                   :<span class="code-type">and_where</span>(<span class="code-string">"status"</span>, <span class="code-string">"="</span>, <span class="code-string">"active"</span>)
-                   :<span class="code-type">execute</span>()
-
-<span class="code-comment">-- Get user statistics</span>
-<span class="code-keyword">local</span> stats = User:<span class="code-type">query</span>()
-                 :<span class="code-type">select</span>(
-                     <span class="code-string">"COUNT(*) as total_users"</span>,
-                     <span class="code-string">"COUNT(CASE WHEN is_active THEN 1 END) as active_users"</span>,
-                     <span class="code-string">"COUNT(CASE WHEN last_login > CURRENT_DATE - INTERVAL '30 days' THEN 1 END) as recent_users"</span>
-                 )
-                 :<span class="code-type">get</span>()</code></pre>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Advanced Reporting Queries</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Monthly sales report with multiple joins</span>
-<span class="code-keyword">local</span> sales_report = Order:<span class="code-type">query</span>()
-                         :<span class="code-type">select</span>(
-                             <span class="code-string">"DATE_TRUNC('month', orders.created_at) as month"</span>,
-                             <span class="code-string">"COUNT(*) as order_count"</span>,
-                             <span class="code-string">"SUM(order_items.quantity * order_items.unit_price) as total_revenue"</span>,
-                             <span class="code-string">"AVG(order_items.quantity * order_items.unit_price) as avg_order_value"</span>,
-                             <span class="code-string">"customers.country"</span>
-                         )
-                         :<span class="code-type">join</span>(<span class="code-string">"INNER"</span>, <span class="code-string">"order_items"</span>, <span class="code-string">"orders.id = order_items.order_id"</span>)
-                         :<span class="code-type">join</span>(<span class="code-string">"INNER"</span>, <span class="code-string">"customers"</span>, <span class="code-string">"orders.customer_id = customers.id"</span>)
-                         :<span class="code-type">where</span>(<span class="code-string">"orders.status"</span>, <span class="code-string">"="</span>, <span class="code-string">"completed"</span>)
-                         :<span class="code-type">where</span>(<span class="code-string">"orders.created_at"</span>, <span class="code-string">">="</span>, <span class="code-string">"2023-01-01"</span>)
-                         :<span class="code-type">group_by</span>(<span class="code-string">"month"</span>, <span class="code-string">"customers.country"</span>)
-                         :<span class="code-type">order_by</span>(<span class="code-string">"month"</span>, <span class="code-string">"DESC"</span>)
-                         :<span class="code-type">order_by</span>(<span class="code-string">"total_revenue"</span>, <span class="code-string">"DESC"</span>)
-                         :<span class="code-type">get</span>()
-
-<span class="code-comment">-- Product inventory alert</span>
-<span class="code-keyword">local</span> low_stock = Product:<span class="code-type">query</span>()
-                       :<span class="code-type">select</span>(<span class="code-string">"name"</span>, <span class="code-string">"stock_quantity"</span>, <span class="code-string">"min_stock_level"</span>)
-                       :<span class="code-type">where</span>(<span class="code-string">"stock_quantity"</span>, <span class="code-string">"<="</span>, <span class="code-string">"min_stock_level"</span>)
-                       :<span class="code-type">and_where</span>(<span class="code-string">"is_active"</span>, <span class="code-string">"="</span>, true)
-                       :<span class="code-type">order_by</span>(<span class="code-string">"stock_quantity"</span>, <span class="code-string">"ASC"</span>)
-                       :<span class="code-type">get</span>()
-
-<span class="code-comment">-- User activity timeline</span>
-<span class="code-keyword">local</span> user_activity = User:<span class="code-type">query</span>()
-                         :<span class="code-type">select</span>(<span class="code-string">"users.name"</span>, <span class="code-string">"logs.action"</span>, <span class="code-string">"logs.created_at"</span>)
-                         :<span class="code-type">join</span>(<span class="code-string">"INNER"</span>, <span class="code-string">"activity_logs logs"</span>, <span class="code-string">"users.id = logs.user_id"</span>)
-                         :<span class="code-type">where</span>(<span class="code-string">"logs.created_at"</span>, <span class="code-string">">="</span>, <span class="code-string">"CURRENT_DATE - INTERVAL '7 days'"</span>)
-                         :<span class="code-type">where</span>(<span class="code-string">"logs.action"</span>, <span class="code-string">"IN"</span>, {<span class="code-string">"login"</span>, <span class="code-string">"purchase"</span>, <span class="code-string">"profile_update"</span>})
-                         :<span class="code-type">order_by</span>(<span class="code-string">"logs.created_at"</span>, <span class="code-string">"DESC"</span>)
-                         :<span class="code-type">limit</span>(100)
-                         :<span class="code-type">get</span>()</code></pre>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Custom Complex Queries</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Advanced search with multiple optional filters</span>
-<span class="code-keyword">local</span> <span class="code-keyword">function</span> search_users(filters)
-    <span class="code-keyword">local</span> query = User:<span class="code-type">query</span>()
+                <pre><code><span class="keyword">local</span> <span class="keyword">function</span> search_users(filters)
+    <span class="keyword">local</span> query = User:<span class="function">query</span>()
     
-    <span class="code-comment">-- Add optional filters</span>
-    <span class="code-keyword">if</span> filters.name <span class="code-keyword">then</span>
-        query:<span class="code-type">where</span>(<span class="code-string">"name"</span>, <span class="code-string">"LIKE"</span>, <span class="code-string">"%"</span> .. filters.name .. <span class="code-string">"%"</span>)
-    <span class="code-keyword">end</span>
+    <span class="comment">-- Add optional filters</span>
+    <span class="keyword">if</span> filters.name <span class="keyword">then</span>
+        query:<span class="function">where</span>(<span class="string">"name"</span>, <span class="string">"LIKE"</span>, <span class="string">"%"</span> .. filters.name .. <span class="string">"%"</span>)
+    <span class="keyword">end</span>
     
-    <span class="code-keyword">if</span> filters.email <span class="code-keyword">then</span>
-        query:<span class="code-type">where</span>(<span class="code-string">"email"</span>, <span class="code-string">"LIKE"</span>, <span class="code-string">"%"</span> .. filters.email .. <span class="code-string">"%"</span>)
-    <span class="code-keyword">end</span>
+    <span class="keyword">if</span> filters.min_age <span class="keyword">then</span>
+        query:<span class="function">where</span>(<span class="string">"age"</span>, <span class="string">">="</span>, filters.min_age)
+    <span class="keyword">end</span>
     
-    <span class="code-keyword">if</span> filters.min_age <span class="code-keyword">then</span>
-        query:<span class="code-type">where</span>(<span class="code-string">"age"</span>, <span class="code-string">">="</span>, filters.min_age)
-    <span class="code-keyword">end</span>
+    <span class="keyword">if</span> filters.max_age <span class="keyword">then</span>
+        query:<span class="function">where</span>(<span class="string">"age"</span>, <span class="string">"<="</span>, filters.max_age)
+    <span class="keyword">end</span>
     
-    <span class="code-keyword">if</span> filters.max_age <span class="code-keyword">then</span>
-        query:<span class="code-type">where</span>(<span class="code-string">"age"</span>, <span class="code-string">"<="</span>, filters.max_age)
-    <span class="code-keyword">end</span>
+    <span class="keyword">if</span> filters.countries <span class="keyword">then</span>
+        query:<span class="function">where</span>(<span class="string">"country"</span>, <span class="string">"IN"</span>, filters.countries)
+    <span class="keyword">end</span>
     
-    <span class="code-keyword">if</span> filters.countries <span class="code-keyword">then</span>
-        query:<span class="code-type">where</span>(<span class="code-string">"country"</span>, <span class="code-string">"IN"</span>, filters.countries)
-    <span class="code-keyword">end</span>
+    <span class="comment">-- Add pagination</span>
+    <span class="keyword">local</span> page = filters.page <span class="keyword">or</span> <span class="number">1</span>
+    <span class="keyword">local</span> per_page = filters.per_page <span class="keyword">or</span> <span class="number">25</span>
+    query:<span class="function">limit</span>(per_page):<span class="function">offset</span>((page - <span class="number">1</span>) * per_page)
     
-    <span class="code-keyword">if</span> filters.is_active ~= <span class="code-keyword">nil</span> <span class="code-keyword">then</span>
-        query:<span class="code-type">where</span>(<span class="code-string">"is_active"</span>, <span class="code-string">"="</span>, filters.is_active)
-    <span class="code-keyword">end</span>
-    
-    <span class="code-comment">-- Add sorting</span>
-    <span class="code-keyword">local</span> sort_field = filters.sort_by <span class="code-keyword">or</span> <span class="code-string">"created_at"</span>
-    <span class="code-keyword">local</span> sort_direction = filters.sort_order <span class="code-keyword">or</span> <span class="code-string">"DESC"</span>
-    query:<span class="code-type">order_by</span>(sort_field, sort_direction)
-    
-    <span class="code-comment">-- Add pagination</span>
-    <span class="code-keyword">local</span> page = filters.page <span class="code-keyword">or</span> 1
-    <span class="code-keyword">local</span> per_page = filters.per_page <span class="code-keyword">or</span> 25
-    query:<span class="code-type">limit</span>(per_page):<span class="code-type">offset</span>((page - 1) * per_page)
-    
-    <span class="code-keyword">return</span> query:<span class="code-type">get</span>()
-<span class="code-keyword">end</span>
+    <span class="keyword">return</span> query:<span class="function">get</span>()
+<span class="keyword">end</span>
 
-<span class="code-comment">-- Usage:</span>
-<span class="code-keyword">local</span> filters = {
-    name = <span class="code-string">"John"</span>,
-    min_age = 25,
-    max_age = 40,
-    countries = {<span class="code-string">"US"</span>, <span class="code-string">"CA"</span>, <span class="code-string">"UK"</span>},
-    is_active = true,
-    sort_by = <span class="code-string">"last_login"</span>,
-    page = 2,
-    per_page = 50
+<span class="comment">-- Usage:</span>
+<span class="keyword">local</span> filters = {
+    name = <span class="string">"John"</span>,
+    min_age = <span class="number">25</span>,
+    max_age = <span class="number">40</span>,
+    countries = {<span class="string">"US"</span>, <span class="string">"CA"</span>},
+    page = <span class="number">2</span>,
+    per_page = <span class="number">50</span>
 }
 
-<span class="code-keyword">local</span> users = search_users(filters)</code></pre>
-                </div>
+<span class="keyword">local</span> users = search_users(filters)</code></pre>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Footer -->
-        <footer class="mt-12 pt-8 border-t border-light-border text-center text-light-text-secondary">
-            <p>Dawn Framework Query Builder &copy; 2023</p>
-            <div class="flex justify-center space-x-4 mt-4">
-                <a href="#" class="text-laser-blue hover:underline">Core Server Docs</a>
-                <a href="#" class="text-laser-blue hover:underline">API Reference</a>
-                <a href="#" class="text-laser-blue hover:underline">Examples Repository</a>
-                <a href="#" class="text-laser-blue hover:underline">Community</a>
-            </div>
-        </footer>
-    </main>
+    <!-- Footer -->
+    <footer class="mt-12 pt-8 border-t text-center" style="border-color: var(--doc-border); color: var(--doc-text-secondary);">
+        <p>Dawn Framework Query Builder © 2023</p>
+        <div class="flex justify-center space-x-4 mt-4">
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">Core Server Docs</a>
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">API Reference</a>
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">Examples Repository</a>
+        </div>
+    </footer>
+</main>
 
-    <script>
-        // Copy code functionality
-        document.querySelectorAll('.copy-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const codeBlock = this.closest('.code-block').querySelector('pre code');
-                const textToCopy = codeBlock.textContent;
-                
-                navigator.clipboard.writeText(textToCopy).then(() => {
-                    const originalText = this.innerHTML;
-                    this.innerHTML = '<i class="fas fa-check mr-1"></i>Copied!';
-                    
-                    setTimeout(() => {
-                        this.innerHTML = originalText;
-                    }, 2000);
-                });
-            });
-        });
+<script>
+// Copy code functionality
+function copyCode(button) {
+    const codeBlock = button.closest('.code-block');
+    const code = codeBlock.querySelector('pre code');
+    const text = code.textContent;
+    
+    navigator.clipboard.writeText(text).then(() => {
+        const originalHTML = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        setTimeout(() => {
+            button.innerHTML = originalHTML;
+        }, 2000);
+    });
+}
+
+// Back to Top button
+const backToTop = document.createElement('button');
+backToTop.innerHTML = '<i class="fas fa-arrow-up"></i>';
+backToTop.className = 'back-to-top';
+document.body.appendChild(backToTop);
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+        backToTop.classList.add('visible');
+    } else {
+        backToTop.classList.remove('visible');
+    }
+});
+
+backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
         
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
+        const target = document.querySelector(targetId);
+        if (target) {
+            e.preventDefault();
+            const offset = 80;
+            const elementPosition = target.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - offset;
+            
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
             });
-        });
-    </script>
+        }
+    });
+});
+
+// Observe theme changes
+const observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+        if (mutation.attributeName === 'class') {
+            console.log('Theme updated');
+        }
+    });
+});
+
+observer.observe(document.body, { attributes: true });
+</script>

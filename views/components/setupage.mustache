@@ -1,562 +1,681 @@
+<style>
+    /* Dawn Framework Getting Started - Integrated Theme System */
+    
+    /* Theme Variables */
+    .main-content-body {
+        --doc-bg: #FFFFFF;
+        --doc-text: #2A2A3A;
+        --doc-text-secondary: #5A6578;
+        --doc-border: #E0E5EC;
+        --doc-card-bg: #FFFFFF;
+        --doc-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        --doc-code-bg: #1E1E2E;
+        --doc-code-text: #E0E5EC;
+        --doc-code-comment: #6A737D;
+        --doc-code-keyword: #00CC88;
+        --doc-code-string: #8A2BE2;
+        --doc-code-function: #0066FF;
+        --doc-code-number: #FFB300;
+        --doc-code-variable: #8A2BE2;
+        --doc-code-type: #FFB300;
+        --doc-table-header-bg: #F7F9FC;
+        --doc-table-border: #E0E5EC;
+        --doc-signature-bg: #F0F4F8;
+        --doc-badge-blue: #DBEAFE;
+        --doc-badge-green: #D1FAE5;
+        --doc-badge-purple: #EDE9FE;
+        --doc-badge-amber: #FEF3C7;
+    }
+    
+    body.dark-theme .main-content-body {
+        --doc-bg: #151520;
+        --doc-text: #E0E5EC;
+        --doc-text-secondary: #A0A5B5;
+        --doc-border: #2A2A3A;
+        --doc-card-bg: #1F1F2E;
+        --doc-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        --doc-code-bg: #0A0A0F;
+        --doc-code-text: #E0E5EC;
+        --doc-code-comment: #6A737D;
+        --doc-code-keyword: #00CC88;
+        --doc-code-string: #8A2BE2;
+        --doc-code-function: #0066FF;
+        --doc-code-number: #FFB300;
+        --doc-code-variable: #8A2BE2;
+        --doc-code-type: #FFB300;
+        --doc-table-header-bg: #2A2A3A;
+        --doc-table-border: #2A2A3A;
+        --doc-signature-bg: #2A2A3A;
+        --doc-badge-blue: #1E3A8A;
+        --doc-badge-green: #064E3B;
+        --doc-badge-purple: #4C1D95;
+        --doc-badge-amber: #78350F;
+    }
+    
+    .main-content-body {
+        background-color: var(--doc-bg);
+        color: var(--doc-text);
+        transition: all 0.3s ease;
+    }
+    
+    /* Feature Cards */
+    .feature-card {
+        background: var(--doc-card-bg);
+        border-radius: 16px;
+        padding: 1.5rem;
+        border: 1px solid var(--doc-border);
+        transition: all 0.3s ease;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--laser-blue);
+        box-shadow: 0 10px 25px -5px rgba(0, 102, 255, 0.2);
+    }
+    
+    /* Code Blocks */
+    .code-block {
+        background: var(--doc-code-bg);
+        border-radius: 12px;
+        margin: 1.5rem 0;
+        overflow: hidden;
+        position: relative;
+        border: 1px solid var(--doc-border);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .code-block:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .code-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(138, 43, 226, 0.1));
+        border-bottom: 1px solid var(--doc-border);
+    }
+    
+    .code-language {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--doc-text-secondary);
+    }
+    
+    .copy-btn {
+        background: rgba(0, 102, 255, 0.2);
+        color: var(--doc-text);
+        border: none;
+        padding: 0.25rem 0.75rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .copy-btn:hover {
+        background: rgba(0, 102, 255, 0.4);
+        transform: scale(1.05);
+    }
+    
+    .code-block pre {
+        margin: 0;
+        padding: 1.5rem;
+        overflow-x: auto;
+        font-family: 'Fira Code', 'Courier New', monospace;
+        font-size: 0.875rem;
+        line-height: 1.6;
+    }
+    
+    .code-block code {
+        font-family: 'Fira Code', 'Courier New', monospace;
+        color: var(--doc-code-text);
+    }
+    
+    /* Syntax Highlighting */
+    .code-block code .keyword {
+        color: var(--doc-code-keyword);
+        font-weight: 500;
+    }
+    
+    .code-block code .string {
+        color: var(--doc-code-string);
+    }
+    
+    .code-block code .function {
+        color: var(--doc-code-function);
+    }
+    
+    .code-block code .number {
+        color: var(--doc-code-number);
+    }
+    
+    .code-block code .comment {
+        color: var(--doc-code-comment);
+        font-style: italic;
+    }
+    
+    .code-block code .variable {
+        color: var(--doc-code-variable);
+    }
+    
+    .code-block code .type {
+        color: var(--doc-code-type);
+    }
+    
+    /* Section Numbers */
+    .section-number {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--laser-blue), var(--build-green));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        margin-right: 1rem;
+    }
+    
+    /* Back to Top Button */
+    .back-to-top {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--laser-blue), var(--build-green));
+        color: white;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+    }
+    
+    .back-to-top.visible {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .back-to-top:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .animate-fadeIn {
+        animation: fadeIn 0.6s ease-out;
+    }
+    
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: var(--doc-border);
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));
+        border-radius: 10px;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .feature-card {
+            padding: 1rem;
+        }
+        
+        .section-number {
+            width: 2rem;
+            height: 2rem;
+            font-size: 0.875rem;
+        }
+        
+        .code-block pre {
+            font-size: 0.75rem;
+            padding: 1rem;
+        }
+        
+        .code-header {
+            padding: 0.5rem;
+        }
+        
+        .copy-btn {
+            padding: 0.2rem 0.5rem;
+            font-size: 0.7rem;
+        }
+    }
+</style>
 
-    <style>
-        /* Custom styles for code blocks and other elements */
-        .code-block {
-            background: #0A0A0F;
-            border-left: 4px solid #0066FF;
-        }
-        
-        .light-theme .code-block {
-            background: #F7F9FC;
-            border-left: 4px solid #0066FF;
-            color: #2A2A3A;
-        }
-        
-        .code-keyword {
-            color: #0066FF;
-        }
-        
-        .code-string {
-            color: #00CC88;
-        }
-        
-        .code-comment {
-            color: #6A737D;
-        }
-        
-        .light-theme .code-comment {
-            color: #9AA5B5;
-        }
-        
-        .code-variable {
-            color: #8A2BE2;
-        }
-        
-        .code-type {
-            color: #FFB300;
-        }
-        
-        /* Custom scrollbar for code blocks */
-        .code-block::-webkit-scrollbar {
-            height: 8px;
-        }
-        
-        .code-block::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 4px;
-        }
-        
-        .code-block::-webkit-scrollbar-thumb {
-            background: rgba(0, 102, 255, 0.5);
-            border-radius: 4px;
-        }
-        
-        .code-block::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 102, 255, 0.7);
-        }
-    </style>
-    <!-- Main Documentation Content -->
-    <main class="main-content-body max-w-6xl mx-auto px-6 py-8 light-theme">
-        <!-- Header Section -->
-        <header class="mb-12">
-            <div class="flex items-center justify-between mb-6">
-                <div>
-                    <h1 class="text-4xl font-bold bg-gradient-to-r from-laser-blue to-build-green bg-clip-text text-transparent">Dawn Framework</h1>
-                    <p class="text-light-text-secondary mt-2 text-lg">Modern web development with Lua</p>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <span class="px-3 py-1 bg-laser-blue text-white text-sm rounded-full">v1.0.0</span>
-                    <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors">
-                        <i class="fas fa-download mr-2"></i>Download
-                    </button>
-                </div>
+<main class="main-content-body max-w-6xl mx-auto px-6 py-8">
+    <!-- Header Section -->
+    <section class="mb-12">
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h1 class="text-4xl font-bold" style="background: linear-gradient(135deg, var(--laser-blue), var(--build-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                    Dawn Framework
+                </h1>
+                <p class="mt-2 text-lg" style="color: var(--doc-text-secondary);">Modern web development with Lua</p>
             </div>
-            
-            <div class="bg-white rounded-xl shadow-lg p-6 border border-light-border">
-                <p class="text-lg text-light-text-secondary">
-                    Welcome to the Dawn Framework documentation. Here you'll find everything you need to build fast, scalable web applications with Lua.
-                </p>
+            <div class="flex items-center space-x-4">
+                <span class="px-3 py-1 text-white text-sm rounded-full" style="background: var(--laser-blue);">v1.0.0</span>
+                <button class="px-4 py-2 rounded-lg transition-colors" style="background: var(--doc-card-bg); color: var(--doc-text); border: 1px solid var(--doc-border);">
+                    <i class="fas fa-download mr-2"></i>Download
+                </button>
             </div>
-        </header>
+        </div>
+        
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <p class="text-lg" style="color: var(--doc-text-secondary);">
+                Welcome to the Dawn Framework documentation. Here you'll find everything you need to build fast, scalable web applications with Lua.
+            </p>
+        </div>
+    </section>
 
-        <!-- Getting Started Section -->
-        <section id="getting-started" class="mb-16 animate-fadeIn">
-            <h2 class="text-3xl font-bold mb-6 text-neural-charcoal">Getting Started with Dawn Framework</h2>
-            
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border transition-all duration-300 hover:shadow-lg">
-                <h3 class="text-xl font-semibold mb-4 text-laser-blue flex items-center">
-                    <i class="fas fa-rocket mr-3"></i>Quick Start
-                </h3>
-                <p class="text-light-text-secondary mb-4">
-                    Get up and running with Dawn Framework in just a few minutes. Follow these steps to create your first application.
-                </p>
-                <div class="bg-gray-50 p-4 rounded-lg border border-light-border">
-                    <pre class="text-sm overflow-x-auto"><code class="text-neural-charcoal">
+    <!-- Getting Started Section -->
+    <section id="getting-started" class="mb-16 animate-fadeIn">
+        <h2 class="text-3xl font-bold mb-6" style="color: var(--doc-text);">Getting Started with Dawn Framework</h2>
+        
+        <div class="rounded-xl p-6 mb-8 border transition-all duration-300" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <h3 class="text-xl font-semibold mb-4 flex items-center" style="color: var(--laser-blue);">
+                <i class="fas fa-rocket mr-3"></i>Quick Start
+            </h3>
+            <p class="mb-4" style="color: var(--doc-text-secondary);">
+                Get up and running with Dawn Framework in just a few minutes. Follow these steps to create your first application.
+            </p>
+            <div class="rounded-lg p-4 border" style="background: var(--doc-signature-bg); border-color: var(--doc-border);">
+                <pre class="text-sm overflow-x-auto"><code style="color: var(--doc-text);">
 dawn new my_awesome_app
 cd my_awesome_app
 sudo dawn install
 dawn serve
-                    </code></pre>
-                </div>
+                </code></pre>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Requirements Section -->
-        <section id="requirements" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-laser-blue flex items-center justify-center text-white font-bold mr-4">1</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">Requirements</h2>
-            </div>
+    <!-- Requirements Section -->
+    <section id="requirements" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">1</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Requirements</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 mb-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <p class="text-lg mb-6" style="color: var(--doc-text-secondary);">
+                Before you begin, ensure your system meets the following requirements:
+            </p>
             
-            <div class="bg-white rounded-xl shadow-md p-6 mb-6 border border-light-border">
-                <p class="text-lg text-light-text-secondary mb-6">
-                    Before you begin, ensure your system meets the following requirements:
-                </p>
-                
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="bg-blue-50 p-5 rounded-lg border border-blue-100">
-                        <h4 class="font-bold text-lg mb-3 text-laser-blue flex items-center">
-                            <i class="fab fa-windows mr-2"></i> Windows Users
-                        </h4>
-                        <p class="text-light-text-secondary mb-3">
-                            Windows Subsystem for Linux (WSL) is required, as Dawn Framework currently supports Linux-based systems.
-                        </p>
-                        <a href="https://learn.microsoft.com/en-us/windows/wsl/install" target="_blank" class="inline-flex items-center text-laser-blue hover:underline font-medium">
-                            Install WSL Guide
-                            <i class="fas fa-external-link-alt ml-1 text-sm"></i>
-                        </a>
-                    </div>
-                    
-                    <div class="bg-green-50 p-5 rounded-lg border border-green-100">
-                        <h4 class="font-bold text-lg mb-3 text-build-green flex items-center">
-                            <i class="fab fa-linux mr-2"></i> Linux Users
-                        </h4>
-                        <p class="text-light-text-secondary mb-3">
-                            A Debian-based Linux distribution (like Ubuntu) is recommended. Ensure you have <code class="bg-gray-100 px-1 rounded">sudo</code> privileges.
-                        </p>
-                        <div class="text-light-text-secondary text-sm">
-                            <i class="fas fa-check-circle text-build-green mr-1"></i> Tested on Ubuntu 20.04+
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Installation Section -->
-        <section id="installation" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-build-green flex items-center justify-center text-white font-bold mr-4">2</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">Installation</h2>
-            </div>
-            
-            <div class="bg-white rounded-xl shadow-md p-6 mb-6 border border-light-border">
-                <p class="text-lg text-light-text-secondary mb-6">
-                    Dawn Framework installation is automated via a shell script. Follow these steps:
-                </p>
-                
-                <!-- Step 1 -->
-                <div class="mb-8">
-                    <h3 class="text-xl font-bold text-laser-blue mb-4 flex items-center">
-                        <span class="w-6 h-6 rounded-full bg-laser-blue text-white text-xs flex items-center justify-center mr-3">1</span>
-                        Update your system's package list
-                    </h3>
-                    <div class="relative bg-gray-800 text-gray-200 rounded-lg p-4 mb-4 code-block">
-                        <button class="absolute top-3 right-3 bg-laser-blue text-white p-1 rounded text-sm hover:bg-blue-700 transition-colors">
-                            <i class="fas fa-copy"></i>
-                        </button>
-                        <pre class="overflow-x-auto"><code>sudo apt update</code></pre>
-                    </div>
-                </div>
-                
-                <!-- Step 2 -->
-                <div class="mb-8">
-                    <h3 class="text-xl font-bold text-laser-blue mb-4 flex items-center">
-                        <span class="w-6 h-6 rounded-full bg-laser-blue text-white text-xs flex items-center justify-center mr-3">2</span>
-                        Download the <code class="bg-gray-100 px-1 rounded text-neural-charcoal">build_dawn.sh</code> script
-                    </h3>
-                    <p class="text-light-text-secondary mb-4">
-                        Download the official <code class="bg-gray-100 px-1 rounded text-neural-charcoal">build_dawn.sh</code> script. You can usually find it in the Dawn Framework's GitHub repository.
-                    </p>
-                    <div class="relative bg-gray-800 text-gray-200 rounded-lg p-4 mb-4 code-block">
-                        <button class="absolute top-3 right-3 bg-laser-blue text-white p-1 rounded text-sm hover:bg-blue-700 transition-colors">
-                            <i class="fas fa-copy"></i>
-                        </button>
-                        <pre class="overflow-x-auto"><code>wget https://example.com/path/to/build_dawn.sh <span class="code-comment"># Replace with actual download URL</span></code></pre>
-                    </div>
-                </div>
-                
-                <!-- Step 3 -->
-                <div class="mb-8">
-                    <h3 class="text-xl font-bold text-laser-blue mb-4 flex items-center">
-                        <span class="w-6 h-6 rounded-full bg-laser-blue text-white text-xs flex items-center justify-center mr-3">3</span>
-                        Make the script executable
-                    </h3>
-                    <p class="text-light-text-secondary mb-4">
-                        Before running, you need to grant execution permissions to the script:
-                    </p>
-                    <div class="relative bg-gray-800 text-gray-200 rounded-lg p-4 mb-4 code-block">
-                        <button class="absolute top-3 right-3 bg-laser-blue text-white p-1 rounded text-sm hover:bg-blue-700 transition-colors">
-                            <i class="fas fa-copy"></i>
-                        </button>
-                        <pre class="overflow-x-auto"><code>chmod +x build_dawn.sh</code></pre>
-                    </div>
-                </div>
-                
-                <!-- Step 4 -->
-                <div class="mb-8">
-                    <h3 class="text-xl font-bold text-laser-blue mb-4 flex items-center">
-                        <span class="w-6 h-6 rounded-full bg-laser-blue text-white text-xs flex items-center justify-center mr-3">4</span>
-                        Run the installation script
-                    </h3>
-                    <p class="text-light-text-secondary mb-4">
-                        Execute the script with <code class="bg-gray-100 px-1 rounded text-neural-charcoal">sudo</code> permissions. The script will prompt you for confirmations for various installations. You can add <code class="bg-gray-100 px-1 rounded text-neural-charcoal">-Y</code> to auto-approve all prompts.
-                    </p>
-                    <div class="relative bg-gray-800 text-gray-200 rounded-lg p-4 mb-4 code-block">
-                        <button class="absolute top-3 right-3 bg-laser-blue text-white p-1 rounded text-sm hover:bg-blue-700 transition-colors">
-                            <i class="fas fa-copy"></i>
-                        </button>
-                        <pre class="overflow-x-auto"><code>sudo ./build_dawn.sh
-<span class="code-comment"># Or for non-interactive installation:</span>
-sudo ./build_dawn.sh -Y</code></pre>
-                    </div>
-                </div>
-                
-                <div class="bg-blue-50 p-5 rounded-lg border border-blue-100">
-                    <h4 class="font-bold text-lg mb-3 text-laser-blue flex items-center">
-                        <i class="fas fa-info-circle mr-2"></i> What gets installed?
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="p-5 rounded-lg border" style="background: var(--doc-badge-blue); border-color: var(--doc-border);">
+                    <h4 class="font-bold text-lg mb-3 flex items-center" style="color: var(--doc-text);">
+                        <i class="fab fa-windows mr-2"></i> Windows Users
                     </h4>
-                    <ul class="list-disc pl-5 text-light-text-secondary space-y-2">
-                        <li>Essential system dependencies (Git, CMake, Python 3, G++)</li>
-                        <li>Development libraries (OpenSSL, Zlib, PostgreSQL client/server)</li>
-                        <li>Lua environments (Lua 5.1, LuaJIT) and LuaRocks</li>
-                        <li>LuaRocks dependencies specific to Dawn</li>
-                        <li>PostgreSQL and Redis servers</li>
-                        <li>The <code class="bg-gray-100 px-1 rounded text-neural-charcoal">dawn</code> CLI executable</li>
-                    </ul>
+                    <p class="mb-3" style="color: var(--doc-text-secondary);">
+                        Windows Subsystem for Linux (WSL) is required, as Dawn Framework currently supports Linux-based systems.
+                    </p>
+                    <a href="https://learn.microsoft.com/en-us/windows/wsl/install" target="_blank" class="inline-flex items-center hover:underline font-medium" style="color: var(--laser-blue);">
+                        Install WSL Guide
+                        <i class="fas fa-external-link-alt ml-1 text-sm"></i>
+                    </a>
+                </div>
+                
+                <div class="p-5 rounded-lg border" style="background: var(--doc-badge-green); border-color: var(--doc-border);">
+                    <h4 class="font-bold text-lg mb-3 flex items-center" style="color: var(--doc-text);">
+                        <i class="fab fa-linux mr-2"></i> Linux Users
+                    </h4>
+                    <p class="mb-3" style="color: var(--doc-text-secondary);">
+                        A Debian-based Linux distribution (like Ubuntu) is recommended. Ensure you have <code class="px-1 rounded" style="background: var(--doc-code-bg); color: var(--doc-code-text);">sudo</code> privileges.
+                    </p>
+                    <div class="text-sm" style="color: var(--doc-text-secondary);">
+                        <i class="fas fa-check-circle mr-1" style="color: var(--build-green);"></i> Tested on Ubuntu 20.04+
+                    </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- First App Section -->
-        <section id="first-app" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-query-purple flex items-center justify-center text-white font-bold mr-4">3</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">Your First Dawn App</h2>
+    <!-- Installation Section -->
+    <section id="installation" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">2</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Installation</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 mb-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fas fa-terminal"></i> Bash - Installation Commands</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment"># Step 1: Update system package list</span>
+sudo apt update
+
+<span class="comment"># Step 2: Download the build script</span>
+wget https://example.com/path/to/build_dawn.sh
+
+<span class="comment"># Step 3: Make script executable</span>
+chmod +x build_dawn.sh
+
+<span class="comment"># Step 4: Run installation</span>
+sudo ./build_dawn.sh
+<span class="comment"># Or for non-interactive installation:</span>
+sudo ./build_dawn.sh -Y</code></pre>
             </div>
             
-            <div class="bg-white rounded-xl shadow-md p-6 mb-6 border border-light-border">
-                <p class="text-lg text-light-text-secondary mb-6">
-                    Create a new Dawn project using the CLI:
-                </p>
-                
-                <div class="relative bg-gray-800 text-gray-200 rounded-lg p-4 mb-8 code-block">
-                    <button class="absolute top-3 right-3 bg-laser-blue text-white p-1 rounded text-sm hover:bg-blue-700 transition-colors">
-                        <i class="fas fa-copy"></i>
-                    </button>
-                    <div class="absolute top-3 left-4 flex space-x-1">
-                        <span class="w-3 h-3 bg-warning-amber rounded-full"></span>
-                        <span class="w-3 h-3 bg-build-green rounded-full"></span>
-                        <span class="w-3 h-3 bg-query-purple rounded-full"></span>
-                    </div>
-                    <pre class="overflow-x-auto pt-4"><code>dawn new my_awesome_app
+            <div class="p-5 rounded-lg border mt-6" style="background: var(--doc-badge-blue); border-color: var(--doc-border);">
+                <h4 class="font-bold text-lg mb-3 flex items-center" style="color: var(--doc-text);">
+                    <i class="fas fa-info-circle mr-2"></i> What gets installed?
+                </h4>
+                <ul class="list-disc pl-5 space-y-2" style="color: var(--doc-text-secondary);">
+                    <li>Essential system dependencies (Git, CMake, Python 3, G++)</li>
+                    <li>Development libraries (OpenSSL, Zlib, PostgreSQL client/server)</li>
+                    <li>Lua environments (Lua 5.1, LuaJIT) and LuaRocks</li>
+                    <li>LuaRocks dependencies specific to Dawn</li>
+                    <li>PostgreSQL and Redis servers</li>
+                    <li>The <code class="px-1 rounded" style="background: var(--doc-code-bg); color: var(--doc-code-text);">dawn</code> CLI executable</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- First App Section -->
+    <section id="first-app" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">3</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Your First Dawn App</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 mb-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fas fa-terminal"></i> Bash - Create and Run App</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code>dawn new my_awesome_app
 cd my_awesome_app
 sudo dawn install
 dawn serve</code></pre>
-                </div>
-                
-                <p class="text-light-text-secondary mb-6">
-                    The CLI will set up a basic project structure. Your main entry file is typically <code class="bg-gray-100 px-1 rounded text-neural-charcoal">main.lua</code>.
-                </p>
-                
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div>
-                        <h3 class="text-xl font-bold text-laser-blue mb-4">main.lua</h3>
-                        <div class="relative bg-gray-800 text-gray-200 rounded-lg p-4 code-block h-full">
-                            <button class="absolute top-3 right-3 bg-laser-blue text-white p-1 rounded text-sm hover:bg-blue-700 transition-colors">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                            <div class="absolute top-3 left-4 flex space-x-1">
-                                <span class="w-3 h-3 bg-warning-amber rounded-full"></span>
-                                <span class="w-3 h-3 bg-build-green rounded-full"></span>
-                                <span class="w-3 h-3 bg-query-purple rounded-full"></span>
-                            </div>
-                            <pre class="overflow-x-auto pt-4 text-sm"><code><span class="code-keyword">require</span>(<span class="code-string">"bootstrap"</span>)(<span class="code-string">"./"</span>)
-<span class="code-keyword">local</span> DawnServer = <span class="code-keyword">require</span>(<span class="code-string">"dawn"</span>).dawn_server
-<span class="code-keyword">local</span> server_config = <span class="code-keyword">require</span>(<span class="code-string">'config.server_config'</span>)
-<span class="code-keyword">local</span> routes = <span class="code-keyword">require</span>(<span class="code-string">'routes._index'</span>)
-
-<span class="code-comment">-- Create a new DawnServer instance</span>
-<span class="code-keyword">local</span> server = DawnServer:<span class="code-type">new</span>(server_config)
-
-<span class="code-comment">-- Register all routes</span>
-routes:<span class="code-type">load</span>(server):<span class="code-type">registerAllRoutes</span>()
-
-<span class="code-comment">-- Start the server</span>
-server:<span class="code-type">start</span>()</code></pre>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-6 mt-6">
+                <div>
+                    <h3 class="text-xl font-bold mb-4" style="color: var(--laser-blue);">main.lua</h3>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-language"><i class="fab fa-lua"></i> Lua - Main Entry Point</span>
+                            <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                         </div>
+                        <pre><code><span class="keyword">require</span>(<span class="string">"bootstrap"</span>)(<span class="string">"./"</span>)
+<span class="keyword">local</span> DawnServer = <span class="keyword">require</span>(<span class="string">"dawn"</span>).dawn_server
+<span class="keyword">local</span> server_config = <span class="keyword">require</span>(<span class="string">'config.server_config'</span>)
+<span class="keyword">local</span> routes = <span class="keyword">require</span>(<span class="string">'routes._index'</span>)
+
+<span class="comment">-- Create a new DawnServer instance</span>
+<span class="keyword">local</span> server = DawnServer:<span class="function">new</span>(server_config)
+
+<span class="comment">-- Register all routes</span>
+routes:<span class="function">load</span>(server):<span class="function">registerAllRoutes</span>()
+
+<span class="comment">-- Start the server</span>
+server:<span class="function">start</span>()</code></pre>
                     </div>
-                    
-                    <div>
-                        <h3 class="text-xl font-bold text-laser-blue mb-4">routes/_index.lua</h3>
-                        <div class="relative bg-gray-800 text-gray-200 rounded-lg p-4 code-block h-full">
-                            <button class="absolute top-3 right-3 bg-laser-blue text-white p-1 rounded text-sm hover:bg-blue-700 transition-colors">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                            <div class="absolute top-3 left-4 flex space-x-1">
-                                <span class="w-3 h-3 bg-warning-amber rounded-full"></span>
-                                <span class="w-3 h-3 bg-build-green rounded-full"></span>
-                                <span class="w-3 h-3 bg-query-purple rounded-full"></span>
-                            </div>
-                            <pre class="overflow-x-auto pt-4 text-sm"><code><span class="code-keyword">local</span> json = <span class="code-keyword">require</span>(<span class="code-string">'dkjson'</span>)
-
-<span class="code-keyword">local</span> M = {}
-M.<span class="code-variable">__index</span> = M
-
-<span class="code-keyword">function</span> M:<span class="code-type">new</span>(server)
-  <span class="code-keyword">local</span> self = <span class="code-keyword">setmetatable</span>({}, M)
-  self.<span class="code-variable">server</span> = server
-  <span class="code-keyword">return</span> self
-<span class="code-keyword">end</span>
-
-<span class="code-keyword">function</span> M:<span class="code-type">routes</span>()
-
-  <span class="code-comment">-- Your routes go here, e.g.:</span>
-  self.<span class="code-variable">server</span>:<span class="code-type">get</span>(<span class="code-string">"/home"</span>, <span class="code-keyword">function</span>(req, res)
-    <span class="code-comment">-- Your data handling logic</span>
-    res:<span class="code-type">writeStatus</span>(200):<span class="code-type">send</span>(<span class="code-string">"Hello, Welcome to Dawn web server!"</span>);
-  <span class="code-keyword">end</span>)
-
-<span class="code-keyword">end</span>
-
-<span class="code-keyword">return</span> M</code></pre>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4" style="color: var(--laser-blue);">routes/_index.lua</h3>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-language"><i class="fab fa-lua"></i> Lua - Route Definition</span>
+                            <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                         </div>
+                        <pre><code><span class="keyword">local</span> json = <span class="keyword">require</span>(<span class="string">'dkjson'</span>)
+
+<span class="keyword">local</span> M = {}
+M.<span class="variable">__index</span> = M
+
+<span class="keyword">function</span> M:<span class="function">new</span>(server)
+    <span class="keyword">local</span> self = <span class="keyword">setmetatable</span>({}, M)
+    self.<span class="variable">server</span> = server
+    <span class="keyword">return</span> self
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> M:<span class="function">routes</span>()
+    <span class="comment">-- Your routes go here</span>
+    self.<span class="variable">server</span>:<span class="function">get</span>(<span class="string">"/home"</span>, <span class="keyword">function</span>(req, res)
+        res:<span class="function">writeStatus</span>(<span class="number">200</span>):<span class="function">send</span>(<span class="string">"Hello, Welcome to Dawn web server!"</span>)
+    <span class="keyword">end</span>)
+<span class="keyword">end</span>
+
+<span class="keyword">return</span> M</code></pre>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Structure Section -->
+    <section id="project-structure" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">4</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Project Structure Overview</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4 flex items-center" style="color: var(--laser-blue);">
+                        <i class="fas fa-folder-open mr-2"></i> Root Files
+                    </h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-file-code mt-1 mr-2" style="color: var(--laser-blue);"></i>
+                            <div>
+                                <span class="font-medium">main.lua</span>
+                                <p class="text-sm" style="color: var(--doc-text-secondary);">The primary entry point of your Dawn application</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-file-code mt-1 mr-2" style="color: var(--laser-blue);"></i>
+                            <div>
+                                <span class="font-medium">bootstrap.lua</span>
+                                <p class="text-sm" style="color: var(--doc-text-secondary);">Handles initial setup and path configurations</p>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
                 
-                <div class="mt-8">
-                    <p class="text-light-text-secondary mb-4">
-                        To run your application, use the Dawn CLI:
-                    </p>
-                    <div class="relative bg-gray-800 text-gray-200 rounded-lg p-4 code-block max-w-md">
-                        <button class="absolute top-3 right-3 bg-laser-blue text-white p-1 rounded text-sm hover:bg-blue-700 transition-colors">
-                            <i class="fas fa-copy"></i>
-                        </button>
-                        <pre class="overflow-x-auto"><code>dawn serve</code></pre>
-                    </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4 flex items-center" style="color: var(--build-green);">
+                        <i class="fas fa-folder mr-2"></i> config/ Directory
+                    </h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-file-code mt-1 mr-2" style="color: var(--build-green);"></i>
+                            <div>
+                                <span class="font-medium">dependencies.json</span>
+                                <p class="text-sm" style="color: var(--doc-text-secondary);">Lists LuaRocks modules for your project</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-file-code mt-1 mr-2" style="color: var(--build-green);"></i>
+                            <div>
+                                <span class="font-medium">server_config.lua</span>
+                                <p class="text-sm" style="color: var(--doc-text-secondary);">Core configuration for your Dawn server</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4 flex items-center" style="color: var(--query-purple);">
+                        <i class="fas fa-folder mr-2"></i> routes/ Directory
+                    </h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-file-code mt-1 mr-2" style="color: var(--query-purple);"></i>
+                            <div>
+                                <span class="font-medium">_index.lua</span>
+                                <p class="text-sm" style="color: var(--doc-text-secondary);">Central orchestrator for all routes</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4 flex items-center" style="color: var(--warning-amber);">
+                        <i class="fas fa-folder mr-2"></i> Other Directories
+                    </h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-folder mt-1 mr-2" style="color: var(--warning-amber);"></i>
+                            <div>
+                                <span class="font-medium">lib/</span>
+                                <p class="text-sm" style="color: var(--doc-text-secondary);">Utility and library files</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-folder mt-1 mr-2" style="color: var(--warning-amber);"></i>
+                            <div>
+                                <span class="font-medium">public/</span>
+                                <p class="text-sm" style="color: var(--doc-text-secondary);">Static assets (CSS, JS, images)</p>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Project Structure Section -->
-        <section id="project-structure" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-warning-amber flex items-center justify-center text-white font-bold mr-4">4</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">Project Structure Overview</h2>
+    <!-- CLI Reference Section -->
+    <section id="cli-reference" class="mb-16 animate-fadeIn">
+        <h2 class="text-3xl font-bold mb-6" style="color: var(--doc-text);">Dawn CLI Reference</h2>
+        
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fas fa-terminal"></i> Bash - Dawn CLI Commands</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment"># Dawn Web Framework CLI</span>
+
+<span class="variable">Usage:</span>
+  <span class="keyword">dawn new</span> <span class="string">&lt;project_name&gt;</span>             <span class="comment"># Create a new project</span>
+  <span class="keyword">dawn install</span>                     <span class="comment"># Install LuaRocks dependencies</span>
+  <span class="keyword">dawn serve</span>                       <span class="comment"># Run the dev server</span>
+  <span class="keyword">dawn generate</span> <span class="string">&lt;type&gt; &lt;name&gt;</span>       <span class="comment"># Generate controller/model</span>
+  <span class="keyword">dawn db migrate</span> <span class="string">[&lt;migration_file&gt;]</span> <span class="comment"># Run database migrations</span>
+  <span class="keyword">dawn test</span>                        <span class="comment"># Run unit tests</span>
+  <span class="keyword">dawn version</span>                     <span class="comment"># Show version</span></code></pre>
             </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="mt-12 pt-8 border-t text-center" style="border-color: var(--doc-border); color: var(--doc-text-secondary);">
+        <p>Dawn Framework Documentation © 2023</p>
+        <div class="flex justify-center space-x-4 mt-4">
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">GitHub</a>
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">Issues</a>
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">Contribute</a>
+        </div>
+    </footer>
+</main>
+
+<script>
+// Copy code functionality
+function copyCode(button) {
+    const codeBlock = button.closest('.code-block');
+    const code = codeBlock.querySelector('pre code');
+    const text = code.textContent;
+    
+    navigator.clipboard.writeText(text).then(() => {
+        const originalHTML = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        setTimeout(() => {
+            button.innerHTML = originalHTML;
+        }, 2000);
+    });
+}
+
+// Back to Top button
+const backToTop = document.createElement('button');
+backToTop.innerHTML = '<i class="fas fa-arrow-up"></i>';
+backToTop.className = 'back-to-top';
+document.body.appendChild(backToTop);
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+        backToTop.classList.add('visible');
+    } else {
+        backToTop.classList.remove('visible');
+    }
+});
+
+backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const target = document.querySelector(targetId);
+        if (target) {
+            e.preventDefault();
+            const offset = 80;
+            const elementPosition = target.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - offset;
             
-            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
-                <p class="text-lg text-light-text-secondary mb-6">
-                    A typical Dawn Framework project generated by <code class="bg-gray-100 px-1 rounded text-neural-charcoal">dawn new</code> provides a well-organized directory structure to help you build scalable applications.
-                </p>
-                
-                <div class="grid md:grid-cols-2 gap-8">
-                    <!-- Root Files -->
-                    <div>
-                        <h3 class="text-xl font-bold text-laser-blue mb-4 flex items-center">
-                            <i class="fas fa-folder-open mr-2"></i> Root Files
-                        </h3>
-                        <ul class="space-y-3">
-                            <li class="flex items-start">
-                                <i class="fas fa-file-code text-laser-blue mt-1 mr-2"></i>
-                                <div>
-                                    <span class="font-medium">main.lua</span>
-                                    <p class="text-light-text-secondary text-sm">The primary entry point of your Dawn application</p>
-                                </div>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-file-code text-laser-blue mt-1 mr-2"></i>
-                                <div>
-                                    <span class="font-medium">bootstrap.lua</span>
-                                    <p class="text-light-text-secondary text-sm">Handles initial setup and path configurations</p>
-                                </div>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-file-code text-laser-blue mt-1 mr-2"></i>
-                                <div>
-                                    <span class="font-medium">env.lua</span>
-                                    <p class="text-light-text-secondary text-sm">Utility for loading environment variables</p>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <!-- Config Directory -->
-                    <div>
-                        <h3 class="text-xl font-bold text-build-green mb-4 flex items-center">
-                            <i class="fas fa-folder mr-2"></i> config/ Directory
-                        </h3>
-                        <ul class="space-y-3">
-                            <li class="flex items-start">
-                                <i class="fas fa-file-code text-build-green mt-1 mr-2"></i>
-                                <div>
-                                    <span class="font-medium">dependencies.json</span>
-                                    <p class="text-light-text-secondary text-sm">Lists LuaRocks modules for your project</p>
-                                </div>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-file-code text-build-green mt-1 mr-2"></i>
-                                <div>
-                                    <span class="font-medium">server_config.lua</span>
-                                    <p class="text-light-text-secondary text-sm">Core configuration for your Dawn server</p>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <!-- Routes Directory -->
-                    <div>
-                        <h3 class="text-xl font-bold text-query-purple mb-4 flex items-center">
-                            <i class="fas fa-folder mr-2"></i> routes/ Directory
-                        </h3>
-                        <ul class="space-y-3">
-                            <li class="flex items-start">
-                                <i class="fas fa-file-code text-query-purple mt-1 mr-2"></i>
-                                <div>
-                                    <span class="font-medium">_index.lua</span>
-                                    <p class="text-light-text-secondary text-sm">Central orchestrator for all routes</p>
-                                </div>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-file-code text-query-purple mt-1 mr-2"></i>
-                                <div>
-                                    <span class="font-medium">auth_routes.lua</span>
-                                    <p class="text-light-text-secondary text-sm">Authentication-related routes</p>
-                                </div>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-file-code text-query-purple mt-1 mr-2"></i>
-                                <div>
-                                    <span class="font-medium">ws_routes.lua</span>
-                                    <p class="text-light-text-secondary text-sm">WebSocket-specific routes</p>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <!-- Other Directories -->
-                    <div>
-                        <h3 class="text-xl font-bold text-warning-amber mb-4 flex items-center">
-                            <i class="fas fa-folder mr-2"></i> Other Directories
-                        </h3>
-                        <ul class="space-y-3">
-                            <li class="flex items-start">
-                                <i class="fas fa-folder text-warning-amber mt-1 mr-2"></i>
-                                <div>
-                                    <span class="font-medium">lib/</span>
-                                    <p class="text-light-text-secondary text-sm">Utility and library files</p>
-                                </div>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-folder text-warning-amber mt-1 mr-2"></i>
-                                <div>
-                                    <span class="font-medium">models/</span>
-                                    <p class="text-light-text-secondary text-sm">Data models for ORM functionalities</p>
-                                </div>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-folder text-warning-amber mt-1 mr-2"></i>
-                                <div>
-                                    <span class="font-medium">public/</span>
-                                    <p class="text-light-text-secondary text-sm">Static assets (CSS, JS, images)</p>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- CLI Reference Section -->
-        <section id="cli-reference" class="mb-16 animate-fadeIn">
-            <h2 class="text-3xl font-bold mb-6 text-neural-charcoal">Dawn CLI Reference</h2>
-            
-            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
-                <p class="text-lg text-light-text-secondary mb-6">
-                    The Dawn Command Line Interface (CLI) is your primary tool for managing Dawn projects, from creation to development and deployment.
-                </p>
-                
-                <div class="relative bg-gray-800 text-gray-200 rounded-lg p-4 code-block">
-                    <button class="absolute top-3 right-3 bg-laser-blue text-white p-1 rounded text-sm hover:bg-blue-700 transition-colors">
-                        <i class="fas fa-copy"></i>
-                    </button>
-                    <div class="absolute top-3 left-4 flex space-x-1">
-                        <span class="w-3 h-3 bg-warning-amber rounded-full"></span>
-                        <span class="w-3 h-3 bg-build-green rounded-full"></span>
-                        <span class="w-3 h-3 bg-query-purple rounded-full"></span>
-                    </div>
-                    <pre class="overflow-x-auto pt-4"><code><span class="code-comment"># Dawn Web Framework CLI</span>
-
-<span class="code-variable">Usage:</span>
-  <span class="code-keyword">dawn new</span> <span class="code-string">&lt;project_name&gt;</span>             <span class="code-comment"># Create a new project</span>
-  <span class="code-keyword">dawn install</span>                     <span class="code-comment"># Install LuaRocks dependencies from config</span>
-  <span class="code-keyword">dawn serve</span>                       <span class="code-comment"># Run the dev server</span>
-  <span class="code-keyword">dawn generate</span> <span class="code-string">&lt;type&gt; &lt;name&gt;</span>       <span class="code-comment"># Generate controller/model/middleware/etc.</span>
-  <span class="code-keyword">dawn db migrate</span> <span class="code-string">[&lt;migration_file&gt;]</span> <span class="code-comment"># Run database migrations</span>
-  <span class="code-keyword">dawn db create_table</span> <span class="code-string">&lt;model_name&gt;</span>  <span class="code-comment"># Create a specific table based on model</span>
-  <span class="code-keyword">dawn db drop_table</span> <span class="code-string">&lt;model_name&gt;</span>    <span class="code-comment"># Drop a specific table based on model</span>
-  <span class="code-keyword">dawn test</span>                        <span class="code-comment"># Run unit tests</span>
-  <span class="code-keyword">dawn version</span>                     <span class="code-comment"># Show version</span></code></pre>
-                </div>
-            </div>
-        </section>
-
-        <!-- API Reference Section -->
-        <section id="api-reference" class="mb-16 animate-fadeIn">
-            <h2 class="text-3xl font-bold mb-6 text-neural-charcoal">API Reference</h2>
-            
-            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
-                <p class="text-lg text-light-text-secondary mb-6">
-                    Explore the detailed API documentation for Dawn Framework's modules and functions. This section will link to auto-generated or extensively written API docs once available.
-                </p>
-                
-                <div class="bg-yellow-50 p-5 rounded-lg border border-yellow-100">
-                    <h4 class="font-bold text-lg mb-3 text-warning-amber flex items-center">
-                        <i class="fas fa-exclamation-triangle mr-2"></i> Coming Soon
-                    </h4>
-                    <p class="text-light-text-secondary">
-                        The complete API reference is currently being developed and will be available in the next release.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="mt-12 pt-8 border-t border-light-border text-center text-light-text-secondary">
-            <p>Dawn Framework Documentation &copy; 2023</p>
-            <div class="flex justify-center space-x-4 mt-4">
-                <a href="#" class="text-laser-blue hover:underline">GitHub</a>
-                <a href="#" class="text-laser-blue hover:underline">Issues</a>
-                <a href="#" class="text-laser-blue hover:underline">Contribute</a>
-                <a href="#" class="text-laser-blue hover:underline">License</a>
-            </div>
-        </footer>
-    </main>
-
-    <script>
-        // Simple copy functionality for code blocks
-        document.querySelectorAll('.code-block button').forEach(button => {
-            button.addEventListener('click', function() {
-                const codeBlock = this.parentElement.querySelector('pre code');
-                const textToCopy = codeBlock.textContent;
-                
-                navigator.clipboard.writeText(textToCopy).then(() => {
-                    const originalText = this.innerHTML;
-                    this.innerHTML = '<i class="fas fa-check"></i>';
-                    
-                    setTimeout(() => {
-                        this.innerHTML = originalText;
-                    }, 2000);
-                });
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
             });
-        });
-    </script>
+        }
+    });
+});
+
+// Observe theme changes
+const observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+        if (mutation.attributeName === 'class') {
+            console.log('Theme updated');
+        }
+    });
+});
+
+observer.observe(document.body, { attributes: true });
+</script>

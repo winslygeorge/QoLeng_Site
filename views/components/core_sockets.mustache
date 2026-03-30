@@ -1,1079 +1,752 @@
-    <style>
-        /* Custom styles for code blocks and other elements */
-        .code-block {
-            background: #0A0A0F;
-            border-left: 4px solid #0066FF;
+<style>
+    /* Dawn Sockets - Integrated Theme System */
+    
+    /* Theme Variables */
+    .main-content-body {
+        --doc-bg: #FFFFFF;
+        --doc-text: #2A2A3A;
+        --doc-text-secondary: #5A6578;
+        --doc-border: #E0E5EC;
+        --doc-card-bg: #FFFFFF;
+        --doc-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        --doc-code-bg: #1E1E2E;
+        --doc-code-text: #E0E5EC;
+        --doc-code-comment: #6A737D;
+        --doc-code-keyword: #00CC88;
+        --doc-code-string: #8A2BE2;
+        --doc-code-function: #0066FF;
+        --doc-code-number: #FFB300;
+        --doc-code-variable: #8A2BE2;
+        --doc-code-type: #FFB300;
+        --doc-method-bg: #F0F4F8;
+        --doc-badge-blue: #DBEAFE;
+        --doc-badge-green: #D1FAE5;
+        --doc-badge-purple: #EDE9FE;
+        --doc-signature-bg: #F0F4F8;
+    }
+    
+    body.dark-theme .main-content-body {
+        --doc-bg: #151520;
+        --doc-text: #E0E5EC;
+        --doc-text-secondary: #A0A5B5;
+        --doc-border: #2A2A3A;
+        --doc-card-bg: #1F1F2E;
+        --doc-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        --doc-code-bg: #0A0A0F;
+        --doc-code-text: #E0E5EC;
+        --doc-code-comment: #6A737D;
+        --doc-code-keyword: #00CC88;
+        --doc-code-string: #8A2BE2;
+        --doc-code-function: #0066FF;
+        --doc-code-number: #FFB300;
+        --doc-code-variable: #8A2BE2;
+        --doc-code-type: #FFB300;
+        --doc-method-bg: #2A2A3A;
+        --doc-badge-blue: #1E3A8A;
+        --doc-badge-green: #064E3B;
+        --doc-badge-purple: #4C1D95;
+        --doc-signature-bg: #2A2A3A;
+    }
+    
+    .main-content-body {
+        background-color: var(--doc-bg);
+        color: var(--doc-text);
+        transition: all 0.3s ease;
+    }
+    
+    /* Feature Cards */
+    .feature-card {
+        background: var(--doc-card-bg);
+        border-radius: 16px;
+        padding: 1.5rem;
+        border: 1px solid var(--doc-border);
+        transition: all 0.3s ease;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--laser-blue);
+        box-shadow: 0 10px 25px -5px rgba(0, 102, 255, 0.2);
+    }
+    
+    /* Code Blocks */
+    .code-block {
+        background: var(--doc-code-bg);
+        border-radius: 12px;
+        margin: 1.5rem 0;
+        overflow: hidden;
+        position: relative;
+        border: 1px solid var(--doc-border);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .code-block:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .code-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(138, 43, 226, 0.1));
+        border-bottom: 1px solid var(--doc-border);
+    }
+    
+    .code-language {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--doc-text-secondary);
+    }
+    
+    .copy-btn {
+        background: rgba(0, 102, 255, 0.2);
+        color: var(--doc-text);
+        border: none;
+        padding: 0.25rem 0.75rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .copy-btn:hover {
+        background: rgba(0, 102, 255, 0.4);
+        transform: scale(1.05);
+    }
+    
+    .code-block pre {
+        margin: 0;
+        padding: 1.5rem;
+        overflow-x: auto;
+        font-family: 'Fira Code', 'Courier New', monospace;
+        font-size: 0.875rem;
+        line-height: 1.6;
+    }
+    
+    .code-block code {
+        font-family: 'Fira Code', 'Courier New', monospace;
+        color: var(--doc-code-text);
+    }
+    
+    /* Syntax Highlighting */
+    .code-block code .keyword {
+        color: var(--doc-code-keyword);
+        font-weight: 500;
+    }
+    
+    .code-block code .string {
+        color: var(--doc-code-string);
+    }
+    
+    .code-block code .function {
+        color: var(--doc-code-function);
+    }
+    
+    .code-block code .number {
+        color: var(--doc-code-number);
+    }
+    
+    .code-block code .comment {
+        color: var(--doc-code-comment);
+        font-style: italic;
+    }
+    
+    .code-block code .variable {
+        color: var(--doc-code-variable);
+    }
+    
+    .code-block code .type {
+        color: var(--doc-code-type);
+    }
+    
+    /* Section Numbers */
+    .section-number {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--laser-blue), var(--build-green));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        margin-right: 1rem;
+    }
+    
+    /* Function Signatures */
+    .function-signature {
+        background: var(--doc-signature-bg);
+        border-left: 4px solid var(--laser-blue);
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+    
+    /* Parameter Tables */
+    .param-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0;
+        background-color: var(--doc-card-bg);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    .param-table th,
+    .param-table td {
+        padding: 0.75rem 1rem;
+        text-align: left;
+        border-bottom: 1px solid var(--doc-border);
+        color: var(--doc-text);
+    }
+    
+    .param-table th {
+        background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));
+        color: white;
+        font-weight: 600;
+    }
+    
+    .param-table tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .param-table tr:hover {
+        background-color: rgba(0, 102, 255, 0.05);
+    }
+    
+    body.dark-theme .param-table tr:hover {
+        background-color: rgba(0, 204, 136, 0.05);
+    }
+    
+    .param-table code {
+        background-color: rgba(0, 102, 255, 0.1);
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-family: 'Fira Code', monospace;
+        font-size: 0.8125rem;
+        color: var(--laser-blue);
+    }
+    
+    body.dark-theme .param-table code {
+        background-color: rgba(0, 204, 136, 0.1);
+        color: var(--build-green);
+    }
+    
+    /* Method Category */
+    .method-category {
+        background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        margin: 2rem 0 1rem 0;
+        font-weight: bold;
+    }
+    
+    /* Back to Top Button */
+    .back-to-top {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--laser-blue), var(--build-green));
+        color: white;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+    }
+    
+    .back-to-top.visible {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .back-to-top:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
         }
-        
-        .light-theme .code-block {
-            background: #F7F9FC;
-            border-left: 4px solid #0066FF;
-            color: #2A2A3A;
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
-        
-        .code-keyword {
-            color: #0066FF;
-        }
-        
-        .code-string {
-            color: #00CC88;
-        }
-        
-        .code-comment {
-            color: #6A737D;
-        }
-        
-        .light-theme .code-comment {
-            color: #9AA5B5;
-        }
-        
-        .code-variable {
-            color: #8A2BE2;
-        }
-        
-        .code-type {
-            color: #FFB300;
-        }
-        
-        /* Custom scrollbar for code blocks */
-        .code-block::-webkit-scrollbar {
-            height: 8px;
-        }
-        
-        .code-block::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 4px;
-        }
-        
-        .code-block::-webkit-scrollbar-thumb {
-            background: rgba(0, 102, 255, 0.5);
-            border-radius: 4px;
-        }
-        
-        .code-block::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 102, 255, 0.7);
-        }
-        
-        /* Additional custom styles */
-        .nav-link {
-            position: relative;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #00CC88, #8A2BE2);
-            transition: width 0.3s ease;
-        }
-        
-        .nav-link:hover::after {
-            width: 100%;
-        }
-        
+    }
+    
+    .animate-fadeIn {
+        animation: fadeIn 0.6s ease-out;
+    }
+    
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: var(--doc-border);
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));
+        border-radius: 10px;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
         .feature-card {
-            transition: all 0.3s ease;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        }
-        
-        .data-source-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 1rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-right: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .function-signature {
-            background: #F0F4F8;
-            border-left: 4px solid #0066FF;
             padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 0.5rem;
         }
         
-        .param-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0;
+        .section-number {
+            width: 2rem;
+            height: 2rem;
+            font-size: 0.875rem;
         }
         
-        .param-table th, .param-table td {
-            padding: 0.75rem;
-            text-align: left;
-            border-bottom: 1px solid #E0E5EC;
+        .code-block pre {
+            font-size: 0.75rem;
+            padding: 1rem;
         }
-        
-        .param-table th {
-            background-color: #F7F9FC;
-            font-weight: 600;
-        }
-        
-        .method-category {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            margin: 2rem 0 1rem 0;
-            font-weight: bold;
-        }
-    </style>
+    }
+</style>
 
-    <!-- Main Documentation Content -->
-    <main class="main-content-body max-w-6xl mx-auto px-6 py-8 light-theme">
-        <!-- Overview Section -->
-        <section id="overview" class="mb-16 animate-fadeIn">
-            <div class="bg-white rounded-xl shadow-lg p-8 border border-light-border">
-                <h1 class="text-4xl font-bold mb-6 text-neural-charcoal">Dawn Sockets</h1>
-                <p class="text-xl text-light-text-secondary mb-8">
-                    Comprehensive WebSocket management system for Dawn Framework with real-time presence tracking,
-                    room management, and reliable message delivery. This documentation covers the essential methods
-                    developers need for building real-time applications.
-                </p>
-                
-                <div class="grid md:grid-cols-3 gap-6 mb-8">
-                    <div class="feature-card bg-blue-50 p-6 rounded-lg border border-blue-100">
-                        <div class="w-12 h-12 rounded-full bg-laser-blue flex items-center justify-center text-white mb-4">
-                            <i class="fas fa-plug"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 text-laser-blue">Connection Management</h3>
-                        <p class="text-light-text-secondary">WebSocket lifecycle, user binding, and connection tracking</p>
+<!-- Main Documentation Content -->
+<main class="main-content-body max-w-6xl mx-auto px-6 py-8">
+    <!-- Overview Section -->
+    <section id="overview" class="mb-16 animate-fadeIn">
+        <div class="rounded-xl p-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <h1 class="text-4xl font-bold mb-6" style="background: linear-gradient(135deg, var(--laser-blue), var(--build-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                Dawn Sockets
+            </h1>
+            <p class="text-xl mb-8" style="color: var(--doc-text-secondary);">
+                Comprehensive WebSocket management system for Dawn Framework with real-time presence tracking,
+                room management, and reliable message delivery. This documentation covers the essential methods
+                developers need for building real-time applications.
+            </p>
+            
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <div class="feature-card">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center text-white mb-4" style="background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));">
+                        <i class="fas fa-plug"></i>
                     </div>
-                    
-                    <div class="feature-card bg-green-50 p-6 rounded-lg border border-green-100">
-                        <div class="w-12 h-12 rounded-full bg-build-green flex items-center justify-center text-white mb-4">
-                            <i class="fas fa-broadcast-tower"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 text-build-green">Message Broadcasting</h3>
-                        <p class="text-light-text-secondary">Targeted messaging, room broadcasts, and user notifications</p>
-                    </div>
-                    
-                    <div class="feature-card bg-purple-50 p-6 rounded-lg border border-purple-100">
-                        <div class="w-12 h-12 rounded-full bg-query-purple flex items-center justify-center text-white mb-4">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 text-query-purple">Presence & Rooms</h3>
-                        <p class="text-light-text-secondary">Real-time presence tracking and dynamic room management</p>
-                    </div>
+                    <h3 class="text-xl font-bold mb-2" style="color: var(--doc-text);">Connection Management</h3>
+                    <p style="color: var(--doc-text-secondary);">WebSocket lifecycle, user binding, and connection tracking</p>
                 </div>
                 
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-bold">Basic Socket Setup</h3>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
+                <div class="feature-card">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center text-white mb-4" style="background: linear-gradient(135deg, var(--build-green), var(--query-purple));">
+                        <i class="fas fa-broadcast-tower"></i>
                     </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Basic Dawn Sockets integration</span>
-<span class="code-keyword">local</span> DawnSockets = <span class="code-keyword">require</span> <span class="code-string">"dawn_sockets"</span>
+                    <h3 class="text-xl font-bold mb-2" style="color: var(--doc-text);">Message Broadcasting</h3>
+                    <p style="color: var(--doc-text-secondary);">Targeted messaging, room broadcasts, and user notifications</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center text-white mb-4" style="background: linear-gradient(135deg, var(--query-purple), var(--warning-amber));">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2" style="color: var(--doc-text);">Presence & Rooms</h3>
+                    <p style="color: var(--doc-text-secondary);">Real-time presence tracking and dynamic room management</p>
+                </div>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Basic Socket Setup</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- Basic Dawn Sockets integration</span>
+<span class="keyword">local</span> DawnSockets = <span class="keyword">require</span> <span class="string">"dawn_sockets"</span>
 
-<span class="code-comment">-- Initialize with your Dawn server instance</span>
-<span class="code-keyword">local</span> socket_manager = DawnSockets:<span class="code-type">new</span>(dawn_server, parent_supervisor, shared_state, {
+<span class="comment">-- Initialize with your Dawn server instance</span>
+<span class="keyword">local</span> socket_manager = DawnSockets:<span class="function">new</span>(dawn_server, parent_supervisor, shared_state, {
     handlers = {
         channels = {
-            <span class="code-comment">-- Your channel handlers here</span>
             chat = {
-                join = <span class="code-keyword">function</span>(self, ws, payload, state, shared, topic, state_management)
-                    <span class="code-comment">-- Handle user joining chat</span>
-                <span class="code-keyword">end</span>,
-                message = <span class="code-keyword">function</span>(self, ws, payload, state, shared, topic, state_management)
-                    <span class="code-comment">-- Handle incoming messages</span>
-                <span class="code-keyword">end</span>
+                join = <span class="keyword">function</span>(self, ws, payload, state, shared, topic, state_management)
+                    <span class="comment">-- Handle user joining chat</span>
+                <span class="keyword">end</span>,
+                message = <span class="keyword">function</span>(self, ws, payload, state, shared, topic, state_management)
+                    <span class="comment">-- Handle incoming messages</span>
+                <span class="keyword">end</span>
             }
-        }
-    },
-    state = {
-        state_management = {
-            <span class="code-string">"__active__"</span> = your_state_manager
         }
     }
 })</code></pre>
-                </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Initialization Section -->
-        <section id="initialization" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-laser-blue flex items-center justify-center text-white font-bold mr-4">1</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">Initialization & Setup</h2>
+    <!-- Initialization Section -->
+    <section id="initialization" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">1</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Initialization & Setup</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 mb-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">new(dawn_server, parent_supervisor, shared_state, options)</h4>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">Creates a new DawnSockets instance with the specified configuration.</p>
+                
+                <table class="param-table">
+                    <thead><tr><th>Parameter</th><th>Type</th><th>Description</th> </thead>
+                    <tbody>
+                        <tr><td>dawn_server</td><td>object</td><td>The main Dawn server instance</td></tr>
+                        <tr><td>parent_supervisor</td><td>object</td><td>Supervisor for process management</td></tr>
+                        <tr><td>shared_state</td><td>table</td><td>Shared application state (optional)</td></tr>
+                        <tr><td>options</td><td>table</td><td>Configuration options including handlers and state management</td></tr>
+                    </tbody>
+                </table>
+                
+                <p class="mt-3"><strong>Returns:</strong> DawnSockets instance</p>
             </div>
             
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Core Initialization</h3>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">new(dawn_server, parent_supervisor, shared_state, options)</h4>
-                    <p class="text-light-text-secondary mb-3">Creates a new DawnSockets instance with the specified configuration.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>dawn_server</td>
-                                <td>object</td>
-                                <td>The main Dawn server instance</td>
-                            </tr>
-                            <tr>
-                                <td>parent_supervisor</td>
-                                <td>object</td>
-                                <td>Supervisor for process management</td>
-                            </tr>
-                            <tr>
-                                <td>shared_state</td>
-                                <td>table</td>
-                                <td>Shared application state (optional)</td>
-                            </tr>
-                            <tr>
-                                <td>options</td>
-                                <td>table</td>
-                                <td>Configuration options including handlers and state management</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> DawnSockets instance</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Complete Initialization</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Complete Initialization Example</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Complete DawnSockets setup</span>
-<span class="code-keyword">local</span> DawnSockets = <span class="code-keyword">require</span> <span class="code-string">"dawn_sockets"</span>
-
-<span class="code-comment">-- Define channel handlers</span>
-<span class="code-keyword">local</span> channel_handlers = {
+                <pre><code><span class="comment">-- Define channel handlers</span>
+<span class="keyword">local</span> channel_handlers = {
     chat = {
-        join = <span class="code-keyword">function</span>(self, ws, payload, state, shared, topic, state_management)
-            <span class="code-comment">-- User joined chat room</span>
-            <span class="code-keyword">local</span> ws_id = self:<span class="code-type">safe_get_ws_id</span>(ws)
-            print(<span class="code-string">"User joined chat:"</span> .. ws_id)
+        join = <span class="keyword">function</span>(self, ws, payload, state, shared, topic, state_management)
+            <span class="keyword">local</span> ws_id = self:<span class="function">safe_get_ws_id</span>(ws)
+            print(<span class="string">"User joined chat:"</span> .. ws_id)
             
-            <span class="code-comment">-- Send welcome message</span>
-            self:<span class="code-type">send_to_user</span>(ws_id, {
-                type = <span class="code-string">"system_message"</span>,
-                content = <span class="code-string">"Welcome to the chat!"</span>,
-                timestamp = os.time()
+            self:<span class="function">send_to_user</span>(ws_id, {
+                type = <span class="string">"system_message"</span>,
+                content = <span class="string">"Welcome to the chat!"</span>
             })
-        <span class="code-keyword">end</span>,
+        <span class="keyword">end</span>,
         
-        message = <span class="code-keyword">function</span>(self, ws, payload, state, shared, topic, state_management)
-            <span class="code-comment">-- Broadcast message to room</span>
-            self:<span class="code-type">broadcast_to_room</span>(topic, {
-                type = <span class="code-string">"chat_message"</span>,
+        message = <span class="keyword">function</span>(self, ws, payload, state, shared, topic, state_management)
+            self:<span class="function">broadcast_to_room</span>(topic, {
+                type = <span class="string">"chat_message"</span>,
                 sender = state.user_id,
-                content = payload.content,
-                timestamp = os.time()
+                content = payload.content
             })
-        <span class="code-keyword">end</span>,
-        
-        leave = <span class="code-keyword">function</span>(self, ws, payload, state, shared, topic, state_management)
-            <span class="code-comment">-- User left chat room</span>
-            <span class="code-keyword">local</span> ws_id = self:<span class="code-type">safe_get_ws_id</span>(ws)
-            print(<span class="code-string">"User left chat:"</span> .. ws_id)
-        <span class="code-keyword">end</span>
+        <span class="keyword">end</span>
     }
 }
 
-<span class="code-comment">-- Initialize DawnSockets</span>
-<span class="code-keyword">local</span> socket_manager = DawnSockets:<span class="code-type">new</span>(
+<span class="comment">-- Initialize DawnSockets</span>
+<span class="keyword">local</span> socket_manager = DawnSockets:<span class="function">new</span>(
     dawn_server_instance,
     supervisor_instance,
     shared_state_table,
-    {
-        handlers = {
-            channels = channel_handlers
-        },
-        state = {
-            state_management = {
-                <span class="code-string">"__active__"</span> = redis_state_manager
-            }
-        }
-    }
+    { handlers = { channels = channel_handlers } }
 )
 
-<span class="code-comment">-- Start heartbeat for connection monitoring</span>
-socket_manager:<span class="code-type">start_heartbeat</span>(30000, 60) <span class="code-comment">-- 30s interval, 60s timeout</span></code></pre>
-                </div>
+<span class="comment">-- Start heartbeat for connection monitoring</span>
+socket_manager:<span class="function">start_heartbeat</span>(<span class="number">30000</span>, <span class="number">60</span>)</code></pre>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Core Methods Section -->
-        <section id="core-methods" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-build-green flex items-center justify-center text-white font-bold mr-4">2</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">Core Socket Methods</h2>
+    <!-- Core Methods Section -->
+    <section id="core-methods" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">2</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Core Socket Methods</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 mb-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="method-category">Connection & Identification</div>
+            
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">safe_get_ws_id(ws)</h4>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">Safely retrieves the WebSocket ID from a WebSocket object.</p>
+                <table class="param-table"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+                <tbody><tr><td>ws</td><td>object</td><td>WebSocket connection object</td></tr></tbody></table>
+                <p class="mt-3"><strong>Returns:</strong> string (WebSocket ID) or nil if invalid</p>
             </div>
             
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Connection & Identification</h3>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">safe_get_ws_id(ws)</h4>
-                    <p class="text-light-text-secondary mb-3">Safely retrieves the WebSocket ID from a WebSocket object.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>ws</td>
-                                <td>object</td>
-                                <td>WebSocket connection object</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> string (WebSocket ID) or nil if invalid</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - WebSocket ID Usage</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">get_ws_id(ws)</h4>
-                    <p class="text-light-text-secondary mb-3">Internal function to get WebSocket ID (use safe_get_ws_id instead).</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>ws</td>
-                                <td>object</td>
-                                <td>WebSocket connection object</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> string (WebSocket ID) or nil if invalid</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">WebSocket ID Usage</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- In a channel handler</span>
-message = <span class="code-keyword">function</span>(self, ws, payload, state, shared, topic, state_management)
-    <span class="code-comment">-- Get the WebSocket ID safely</span>
-    <span class="code-keyword">local</span> ws_id = self:<span class="code-type">safe_get_ws_id</span>(ws)
+                <pre><code>message = <span class="keyword">function</span>(self, ws, payload, state, shared, topic, state_management)
+    <span class="keyword">local</span> ws_id = self:<span class="function">safe_get_ws_id</span>(ws)
     
-    <span class="code-keyword">if</span> <span class="code-keyword">not</span> ws_id <span class="code-keyword">then</span>
-        self.logger:log(log_level.ERROR, <span class="code-string">"Invalid WebSocket connection"</span>)
-        <span class="code-keyword">return</span>
-    <span class="code-keyword">end</span>
+    <span class="keyword">if</span> <span class="keyword">not</span> ws_id <span class="keyword">then</span>
+        self.logger:log(log_level.ERROR, <span class="string">"Invalid WebSocket connection"</span>)
+        <span class="keyword">return</span>
+    <span class="keyword">end</span>
     
-    print(<span class="code-string">"Message from WebSocket ID:"</span> .. ws_id)
-    print(<span class="code-string">"User ID:"</span> .. (state.user_id <span class="code-keyword">or</span> <span class="code-string">"unknown"</span>))
-    
-    <span class="code-comment">-- Send response back to the same connection</span>
-    self:<span class="code-type">send_to_user</span>(ws_id, {
-        type = <span class="code-string">"acknowledgement"</span>,
+    self:<span class="function">send_to_user</span>(ws_id, {
+        type = <span class="string">"acknowledgement"</span>,
         message_id = payload.message_id,
-        status = <span class="code-string">"received"</span>
+        status = <span class="string">"received"</span>
     })
-<span class="code-keyword">end</span></code></pre>
+<span class="keyword">end</span></code></pre>
+            </div>
+            
+            <div class="method-category">Message Sending</div>
+            
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">send_to_user(ws_unique_identifier, message_table, ack_callback)</h4>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">Sends a message to a specific user/connection with optional acknowledgement.</p>
+                <table class="param-table">
+                    <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td>ws_unique_identifier</td><td>string</td><td>WebSocket ID or user ID to send message to</td></tr>
+                        <tr><td>message_table</td><td>table</td><td>Message data (will be JSON encoded)</td></tr>
+                        <tr><td>ack_callback</td><td>function</td><td>Optional callback for message acknowledgement</td></tr>
+                    </tbody>
+                </table>
+                <p class="mt-3"><strong>Returns:</strong> boolean (true if sent, false if queued or failed)</p>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Message Sending Examples</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-                
-                <h3 class="text-2xl font-bold mb-4 text-build-green mt-8">Message Sending</h3>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">send_to_user(ws_unique_identifier, message_table, ack_callback)</h4>
-                    <p class="text-light-text-secondary mb-3">Sends a message to a specific user/connection with optional acknowledgement.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>ws_unique_identifier</td>
-                                <td>string</td>
-                                <td>WebSocket ID or user ID to send message to</td>
-                            </tr>
-                            <tr>
-                                <td>message_table</td>
-                                <td>table</td>
-                                <td>Message data (will be JSON encoded)</td>
-                            </tr>
-                            <tr>
-                                <td>ack_callback</td>
-                                <td>function</td>
-                                <td>Optional callback for message acknowledgement</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> boolean (true if sent, false if queued or failed)</p>
-                </div>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">send_binary_to_user(ws_unique_identifier, binary_data)</h4>
-                    <p class="text-light-text-secondary mb-3">Sends binary data to a specific user/connection.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>ws_unique_identifier</td>
-                                <td>string</td>
-                                <td>WebSocket ID or user ID to send binary data to</td>
-                            </tr>
-                            <tr>
-                                <td>binary_data</td>
-                                <td>string</td>
-                                <td>Raw binary data to send</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> boolean (true if sent, false if failed)</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Message Sending Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Send a simple message</span>
-<span class="code-keyword">local</span> success = socket_manager:<span class="code-type">send_to_user</span>(<span class="code-string">"ws_12345"</span>, {
-    type = <span class="code-string">"notification"</span>,
-    title = <span class="code-string">"New Message"</span>,
-    content = <span class="code-string">"You have a new message"</span>,
-    timestamp = os.time()
+                <pre><code><span class="comment">-- Send a simple message</span>
+socket_manager:<span class="function">send_to_user</span>(<span class="string">"ws_12345"</span>, {
+    type = <span class="string">"notification"</span>,
+    title = <span class="string">"New Message"</span>,
+    content = <span class="string">"You have a new message"</span>
 })
 
-<span class="code-keyword">if</span> <span class="code-keyword">not</span> success <span class="code-keyword">then</span>
-    print(<span class="code-string">"Message queued for offline delivery"</span>)
-<span class="code-keyword">end</span>
-
-<span class="code-comment">-- Send with acknowledgement</span>
-socket_manager:<span class="code-type">send_to_user</span>(<span class="code-string">"user_67890"</span>, {
-    id = <span class="code-string">"msg_001"</span>,
-    type = <span class="code-string">"important_update"</span>,
-    data = { update = <span class="code-string">"critical"</span> }
-}, <span class="code-keyword">function</span>(response)
-    <span class="code-keyword">if</span> response.error <span class="code-keyword">then</span>
-        print(<span class="code-string">"Acknowledgement failed:"</span> .. response.error)
-    <span class="code-keyword">else</span>
-        print(<span class="code-string">"Message acknowledged by client"</span>)
-    <span class="code-keyword">end</span>
-<span class="code-keyword">end</span>)
-
-<span class="code-comment">-- Send binary data (images, files, etc.)</span>
-<span class="code-keyword">local</span> image_data = <span class="code-string">"binary_image_data_here"</span>
-socket_manager:<span class="code-type">send_binary_to_user</span>(<span class="code-string">"ws_12345"</span>, image_data)</code></pre>
-                </div>
+<span class="comment">-- Send with acknowledgement</span>
+socket_manager:<span class="function">send_to_user</span>(<span class="string">"user_67890"</span>, {
+    id = <span class="string">"msg_001"</span>,
+    type = <span class="string">"important_update"</span>
+}, <span class="keyword">function</span>(response)
+    <span class="keyword">if</span> response.error <span class="keyword">then</span>
+        print(<span class="string">"Acknowledgement failed:"</span> .. response.error)
+    <span class="keyword">end</span>
+<span class="keyword">end</span>)</code></pre>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Room Management Section -->
-        <section id="room-management" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-query-purple flex items-center justify-center text-white font-bold mr-4">3</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">Room Management</h2>
+    <!-- Room Management Section -->
+    <section id="room-management" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">3</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Room Management</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 mb-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">join_room(topic, ws, payload)</h4>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">Adds a WebSocket connection to a room with optional metadata.</p>
             </div>
             
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Room Operations</h3>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">join_room(topic, ws, payload)</h4>
-                    <p class="text-light-text-secondary mb-3">Adds a WebSocket connection to a room with optional metadata.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>topic</td>
-                                <td>string</td>
-                                <td>Room name/topic to join</td>
-                            </tr>
-                            <tr>
-                                <td>ws</td>
-                                <td>object</td>
-                                <td>WebSocket connection object</td>
-                            </tr>
-                            <tr>
-                                <td>payload</td>
-                                <td>table</td>
-                                <td>Optional metadata for the presence</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> None</p>
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">leave_room(topic, ws)</h4>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">Removes a WebSocket connection from a room.</p>
+            </div>
+            
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">broadcast_to_room(topic, message_table)</h4>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">Sends a message to all connections in a room.</p>
+            </div>
+            
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">broadcast_to_all(message_table)</h4>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">Sends a message to all connected WebSocket clients.</p>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Room Management Examples</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">leave_room(topic, ws)</h4>
-                    <p class="text-light-text-secondary mb-3">Removes a WebSocket connection from a room.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>topic</td>
-                                <td>string</td>
-                                <td>Room name/topic to leave</td>
-                            </tr>
-                            <tr>
-                                <td>ws</td>
-                                <td>object</td>
-                                <td>WebSocket connection object</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> None</p>
-                </div>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">broadcast_to_room(topic, message_table)</h4>
-                    <p class="text-light-text-secondary mb-3">Sends a message to all connections in a room.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>topic</td>
-                                <td>string</td>
-                                <td>Room name/topic to broadcast to</td>
-                            </tr>
-                            <tr>
-                                <td>message_table</td>
-                                <td>table</td>
-                                <td>Message data to broadcast</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> None</p>
-                </div>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">broadcast_to_all(message_table)</h4>
-                    <p class="text-light-text-secondary mb-3">Sends a message to all connected WebSocket clients.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>message_table</td>
-                                <td>table</td>
-                                <td>Message data to broadcast</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> None</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Room Management Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- In a channel handler for joining rooms</span>
-join = <span class="code-keyword">function</span>(self, ws, payload, state, shared, topic, state_management)
-    <span class="code-comment">-- Add user to the room</span>
-    self:<span class="code-type">join_room</span>(topic, ws, {
+                <pre><code>join = <span class="keyword">function</span>(self, ws, payload, state, shared, topic, state_management)
+    self:<span class="function">join_room</span>(topic, ws, {
         username = payload.username,
-        avatar = payload.avatar,
         joined_at = os.time()
     })
     
-    <span class="code-comment">-- Notify room about new user</span>
-    self:<span class="code-type">broadcast_to_room</span>(topic, {
-        type = <span class="code-string">"user_joined"</span>,
+    self:<span class="function">broadcast_to_room</span>(topic, {
+        type = <span class="string">"user_joined"</span>,
         user_id = state.user_id,
-        username = payload.username,
-        timestamp = os.time()
+        username = payload.username
     })
-<span class="code-keyword">end</span>
+<span class="keyword">end</span>
 
-<span class="code-comment">-- In a message handler for room communication</span>
-message = <span class="code-keyword">function</span>(self, ws, payload, state, shared, topic, state_management)
-    <span class="code-comment">-- Broadcast message to everyone in the room</span>
-    self:<span class="code-type">broadcast_to_room</span>(topic, {
-        type = <span class="code-string">"chat_message"</span>,
+message = <span class="keyword">function</span>(self, ws, payload, state, shared, topic, state_management)
+    self:<span class="function">broadcast_to_room</span>(topic, {
+        type = <span class="string">"chat_message"</span>,
         user_id = state.user_id,
         username = state.username,
-        content = payload.message,
-        timestamp = os.time()
+        content = payload.message
     })
-<span class="code-keyword">end</span>
+<span class="keyword">end</span>
 
-<span class="code-comment">-- Global announcement to all connected clients</span>
-socket_manager:<span class="code-type">broadcast_to_all</span>({
-    type = <span class="code-string">"system_announcement"</span>,
-    message = <span class="code-string">"Server maintenance in 5 minutes"</span>,
-    urgency = <span class="code-string">"high"</span>,
-    timestamp = os.time()
-})
-
-<span class="code-comment">-- Remove user from room when they leave</span>
-leave = <span class="code-keyword">function</span>(self, ws, payload, state, shared, topic, state_management)
-    self:<span class="code-type">leave_room</span>(topic, ws)
-<span class="code-keyword">end</span></code></pre>
-                </div>
-                
-                <h3 class="text-2xl font-bold mb-4 text-build-green mt-8">Room Creation & Validation</h3>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">room_exists(room_id)</h4>
-                    <p class="text-light-text-secondary mb-3">Checks if a room exists in the state management system.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>room_id</td>
-                                <td>string</td>
-                                <td>Room identifier to check</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> boolean (true if room exists)</p>
-                </div>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">create_room(room_id, options)</h4>
-                    <p class="text-light-text-secondary mb-3">Creates a new room in the state management system.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>room_id</td>
-                                <td>string</td>
-                                <td>Room identifier to create</td>
-                            </tr>
-                            <tr>
-                                <td>options</td>
-                                <td>table</td>
-                                <td>Optional room configuration</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> boolean (true if created successfully)</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Room Validation Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Check if room exists before joining</span>
-<span class="code-keyword">local</span> room_name = <span class="code-string">"general_chat"</span>
-<span class="code-keyword">if</span> <span class="code-keyword">not</span> socket_manager:<span class="code-type">room_exists</span>(room_name) <span class="code-keyword">then</span>
-    <span class="code-comment">-- Create room if it doesn't exist</span>
-    <span class="code-keyword">local</span> created = socket_manager:<span class="code-type">create_room</span>(room_name, {
-        max_users = 100,
-        public = true,
-        created_by = <span class="code-string">"system"</span>
-    })
-    
-    <span class="code-keyword">if</span> created <span class="code-keyword">then</span>
-        print(<span class="code-string">"Room created:"</span> .. room_name)
-    <span class="code-keyword">else</span>
-        print(<span class="code-string">"Failed to create room:"</span> .. room_name)
-        <span class="code-keyword">return</span>
-    <span class="code-keyword">end</span>
-<span class="code-keyword">end</span>
-
-<span class="code-comment">-- Now join the room</span>
-socket_manager:<span class="code-type">join_room</span>(room_name, ws, {
-    username = <span class="code-string">"john_doe"</span>,
-    join_method = <span class="code-string">"direct"</span>
+<span class="comment">-- Global announcement to all connected clients</span>
+socket_manager:<span class="function">broadcast_to_all</span>({
+    type = <span class="string">"system_announcement"</span>,
+    message = <span class="string">"Server maintenance in 5 minutes"</span>
 })</code></pre>
-                </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- User Management Section -->
-        <section id="user-management" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-warning-amber flex items-center justify-center text-white font-bold mr-4">4</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">User & Presence Management</h2>
+    <!-- User Management Section -->
+    <section id="user-management" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">4</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">User & Presence Management</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">syncPrivateChat(user_id, ws)</h4>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">Binds a user ID to a WebSocket connection for private messaging.</p>
             </div>
             
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">User Identification</h3>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">syncPrivateChat(user_id, ws)</h4>
-                    <p class="text-light-text-secondary mb-3">Binds a user ID to a WebSocket connection for private messaging.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>user_id</td>
-                                <td>string</td>
-                                <td>User identifier to bind</td>
-                            </tr>
-                            <tr>
-                                <td>ws</td>
-                                <td>object</td>
-                                <td>WebSocket connection object</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> None</p>
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">getSyncPrivateChatId(user_id)</h4>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">Gets the WebSocket ID associated with a user ID.</p>
+            </div>
+            
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">cleanup_stale_clients(timeout_seconds)</h4>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">Removes connections that haven't responded within the timeout period.</p>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - User Binding Examples</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">getSyncPrivateChatId(user_id)</h4>
-                    <p class="text-light-text-secondary mb-3">Gets the WebSocket ID associated with a user ID.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>user_id</td>
-                                <td>string</td>
-                                <td>User identifier to lookup</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> string (WebSocket ID) or nil if not found</p>
-                </div>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">getSyncPrivateUserID(ws_id)</h4>
-                    <p class="text-light-text-secondary mb-3">Gets the user ID associated with a WebSocket ID.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>ws_id</td>
-                                <td>string</td>
-                                <td>WebSocket identifier to lookup</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> string (user ID) or nil if not found</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">User Binding Examples</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- When user authenticates or identifies themselves</span>
-identify = <span class="code-keyword">function</span>(self, ws, payload, state, shared, topic, state_management)
-    <span class="code-keyword">local</span> user_id = payload.user_id
-    <span class="code-keyword">local</span> ws_id = self:<span class="code-type">safe_get_ws_id</span>(ws)
+                <pre><code>identify = <span class="keyword">function</span>(self, ws, payload, state, shared, topic, state_management)
+    <span class="keyword">local</span> user_id = payload.user_id
+    <span class="keyword">local</span> ws_id = self:<span class="function">safe_get_ws_id</span>(ws)
     
-    <span class="code-comment">-- Bind user ID to WebSocket connection</span>
-    self:<span class="code-type">syncPrivateChat</span>(user_id, ws)
-    
-    <span class="code-comment">-- Update connection state</span>
+    <span class="comment">-- Bind user ID to WebSocket connection</span>
+    self:<span class="function">syncPrivateChat</span>(user_id, ws)
     state.user_id = user_id
     state.username = payload.username
     
-    <span class="code-comment">-- Send confirmation</span>
-    self:<span class="code-type">send_to_user</span>(ws_id, {
-        type = <span class="code-string">"identification_success"</span>,
-        user_id = user_id,
-        timestamp = os.time()
+    self:<span class="function">send_to_user</span>(ws_id, {
+        type = <span class="string">"identification_success"</span>,
+        user_id = user_id
     })
-    
-    print(<span class="code-string">"User"</span> .. user_id .. <span class="code-string">"bound to WebSocket"</span> .. ws_id)
-<span class="code-keyword">end</span>
+<span class="keyword">end</span>
 
-<span class="code-comment">-- Later, send private message using user ID</span>
-<span class="code-keyword">local</span> target_user_id = <span class="code-string">"user_123"</span>
-<span class="code-keyword">local</span> target_ws_id = socket_manager:<span class="code-type">getSyncPrivateChatId</span>(target_user_id)
-
-<span class="code-keyword">if</span> target_ws_id <span class="code-keyword">then</span>
-    socket_manager:<span class="code-type">send_to_user</span>(target_ws_id, {
-        type = <span class="code-string">"private_message"</span>,
+<span class="comment">-- Send private message using user ID</span>
+<span class="keyword">local</span> target_ws_id = socket_manager:<span class="function">getSyncPrivateChatId</span>(<span class="string">"user_123"</span>)
+<span class="keyword">if</span> target_ws_id <span class="keyword">then</span>
+    socket_manager:<span class="function">send_to_user</span>(target_ws_id, {
+        type = <span class="string">"private_message"</span>,
         from = current_user_id,
-        message = <span class="code-string">"Hello there!"</span>,
-        timestamp = os.time()
+        message = <span class="string">"Hello there!"</span>
     })
-<span class="code-keyword">else</span>
-    print(<span class="code-string">"User is offline, message will be queued"</span>)
-<span class="code-keyword">end</span></code></pre>
-                </div>
-                
-                <h3 class="text-2xl font-bold mb-4 text-build-green mt-8">Presence & Notifications</h3>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">broadcast_presence_diff(topic, diff)</h4>
-                    <p class="text-light-text-secondary mb-3">Broadcasts presence changes (joins/leaves) to a room.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>topic</td>
-                                <td>string</td>
-                                <td>Room name to broadcast to</td>
-                            </tr>
-                            <tr>
-                                <td>diff</td>
-                                <td>table</td>
-                                <td>Presence difference data with joins and leaves</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> None</p>
-                </div>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">push_notification(ws, payload)</h4>
-                    <p class="text-light-text-secondary mb-3">Sends a push notification to a WebSocket connection.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>ws</td>
-                                <td>object</td>
-                                <td>WebSocket connection object</td>
-                            </tr>
-                            <tr>
-                                <td>payload</td>
-                                <td>table</td>
-                                <td>Notification data including receiver, topic, event, and data</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> boolean (true if sent successfully)</p>
-                </div>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">cleanup_stale_clients(timeout_seconds)</h4>
-                    <p class="text-light-text-secondary mb-3">Removes connections that haven't responded within the timeout period.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>timeout_seconds</td>
-                                <td>number</td>
-                                <td>Seconds of inactivity before considering connection stale</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> None</p>
-                </div>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">reloadPersistedRoomMembers()</h4>
-                    <p class="text-light-text-secondary mb-3">Reloads room members from persistent storage.</p>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> None</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Presence & Notification Examples</h4>
-                        <button class="bg-linar-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Send push notification to user</span>
-<span class="code-keyword">local</span> success = socket_manager:<span class="code-type">push_notification</span>(ws, {
-    receiver = <span class="code-string">"user_123"</span>,
-    topic = <span class="code-string">"system"</span>,
-    event = <span class="code-string">"friend_request"</span>,
-    data = {
-        from_user = <span class="code-string">"user_456"</span>,
-        message = <span class="code-string">"wants to be your friend"</span>
-    }
-})
+<span class="keyword">end</span>
 
-<span class="code-comment">-- Manual presence diff broadcasting</span>
-<span class="code-keyword">local</span> presence_diff = {
-    joins = { <span class="code-string">"user_123"</span>, <span class="code-string">"user_456"</span> },
-    leaves = { <span class="code-string">"user_789"</span> }
+<span class="comment">-- Clean up stale connections</span>
+socket_manager:<span class="function">cleanup_stale_clients</span>(<span class="number">60</span>)</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="mt-12 pt-8 border-t text-center" style="border-color: var(--doc-border); color: var(--doc-text-secondary);">
+        <p>Dawn Framework WebSocket Management © 2023</p>
+        <div class="flex justify-center space-x-4 mt-4">
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">Core Server Docs</a>
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">API Reference</a>
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">Examples Repository</a>
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">Community</a>
+        </div>
+    </footer>
+</main>
+
+<script>
+// Copy code functionality
+function copyCode(button) {
+    const codeBlock = button.closest('.code-block');
+    const code = codeBlock.querySelector('pre code');
+    const text = code.textContent;
+    
+    navigator.clipboard.writeText(text).then(() => {
+        const originalHTML = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        setTimeout(() => {
+            button.innerHTML = originalHTML;
+        }, 2000);
+    });
 }
 
-socket_manager:<span class="code-type">broadcast_presence_diff</span>(<span class="code-string">"chat_room"</span>, presence_diff)
+// Back to Top button
+const backToTop = document.createElement('button');
+backToTop.innerHTML = '<i class="fas fa-arrow-up"></i>';
+backToTop.className = 'back-to-top';
+document.body.appendChild(backToTop);
 
-<span class="code-comment">-- Clean up stale connections (typically called automatically by heartbeat)</span>
-socket_manager:<span class="code-type">cleanup_stale_clients</span>(60) <span class="code-comment">-- 60 second timeout</span>
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+        backToTop.classList.add('visible');
+    } else {
+        backToTop.classList.remove('visible');
+    }
+});
 
-<span class="code-comment">-- Reload room members after server restart</span>
-socket_manager:<span class="code-type">reloadPersistedRoomMembers</span>()</code></pre>
-                </div>
-            </div>
-        </section>
+backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
 
-        <!-- Footer -->
-        <footer class="mt-12 pt-8 border-t border-light-border text-center text-light-text-secondary">
-            <p>Dawn Framework WebSocket Management &copy; 2023</p>
-            <div class="flex justify-center space-x-4 mt-4">
-                <a href="#" class="text-laser-blue hover:underline">Core Server Docs</a>
-                <a href="#" class="text-laser-blue hover:underline">API Reference</a>
-                <a href="#" class="text-laser-blue hover:underline">Examples Repository</a>
-                <a href="#" class="text-laser-blue hover:underline">Community</a>
-            </div>
-        </footer>
-    </main>
-
-    <script>
-        // Copy code functionality
-        document.querySelectorAll('.copy-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const codeBlock = this.closest('.code-block').querySelector('pre code');
-                const textToCopy = codeBlock.textContent;
-                
-                navigator.clipboard.writeText(textToCopy).then(() => {
-                    const originalText = this.innerHTML;
-                    this.innerHTML = '<i class="fas fa-check mr-1"></i>Copied!';
-                    
-                    setTimeout(() => {
-                        this.innerHTML = originalText;
-                    }, 2000);
-                });
-            });
-        });
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
         
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
+        const target = document.querySelector(targetId);
+        if (target) {
+            e.preventDefault();
+            const offset = 80;
+            const elementPosition = target.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - offset;
+            
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
             });
-        });
-    </script>
+        }
+    });
+});
+
+// Observe theme changes
+const observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+        if (mutation.attributeName === 'class') {
+            console.log('Theme updated');
+        }
+    });
+});
+
+observer.observe(document.body, { attributes: true });
+</script>

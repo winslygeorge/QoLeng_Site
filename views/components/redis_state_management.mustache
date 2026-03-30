@@ -1,992 +1,823 @@
-    <style>
-        /* Custom styles for code blocks and other elements */
-        .code-block {
-            background: #0A0A0F;
-            border-left: 4px solid #0066FF;
-        }
-        
-        .light-theme .code-block {
-            background: #F7F9FC;
-            border-left: 4px solid #0066FF;
-            color: #2A2A3A;
-        }
-        
-        .code-keyword {
-            color: #0066FF;
-        }
-        
-        .code-string {
-            color: #00CC88;
-        }
-        
-        .code-comment {
-            color: #6A737D;
-        }
-        
-        .light-theme .code-comment {
-            color: #9AA5B5;
-        }
-        
-        .code-variable {
-            color: #8A2BE2;
-        }
-        
-        .code-type {
-            color: #FFB300;
-        }
-        
-        /* Custom scrollbar for code blocks */
-        .code-block::-webkit-scrollbar {
-            height: 8px;
-        }
-        
-        .code-block::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 4px;
-        }
-        
-        .code-block::-webkit-scrollbar-thumb {
-            background: rgba(0, 102, 255, 0.5);
-            border-radius: 4px;
-        }
-        
-        .code-block::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 102, 255, 0.7);
-        }
-        
-        /* Additional custom styles */
-        .nav-link {
-            position: relative;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #00CC88, #8A2BE2);
-            transition: width 0.3s ease;
-        }
-        
-        .nav-link:hover::after {
-            width: 100%;
-        }
-        
-        .feature-card {
-            transition: all 0.3s ease;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        }
-        
-        .data-source-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 1rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-right: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .function-signature {
-            background: #F0F4F8;
-            border-left: 4px solid #0066FF;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 0.5rem;
-        }
-        
-        .param-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0;
-        }
-        
-        .param-table th, .param-table td {
-            padding: 0.75rem;
-            text-align: left;
-            border-bottom: 1px solid #E0E5EC;
-        }
-        
-        .param-table th {
-            background-color: #F7F9FC;
-            font-weight: 600;
-        }
-    </style>
-
-    <!-- Main Documentation Content -->
-    <main class="main-content-body max-w-6xl mx-auto px-6 py-8 light-theme">
-        <!-- Overview Section -->
-        <section id="overview" class="mb-16 animate-fadeIn">
-            <div class="bg-white rounded-xl shadow-lg p-8 border border-light-border">
-                <h1 class="text-4xl font-bold mb-6 text-neural-charcoal">Redis State Management</h1>
-                <p class="text-xl text-light-text-secondary mb-8">
-                    Comprehensive guide to using Redis as a backend strategy for state management in Dawn Framework applications.
-                    This documentation covers all functions, parameters, and return values for managing presence, messages, and real-time data.
-                </p>
-                
-                <div class="grid md:grid-cols-3 gap-6 mb-8">
-                    <div class="feature-card bg-blue-50 p-6 rounded-lg border border-blue-100">
-                        <div class="w-12 h-12 rounded-full bg-laser-blue flex items-center justify-center text-white mb-4">
-                            <i class="fas fa-broadcast-tower"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 text-laser-blue">Pub/Sub System</h3>
-                        <p class="text-light-text-secondary">Real-time messaging with publish/subscribe pattern</p>
-                    </div>
-                    
-                    <div class="feature-card bg-green-50 p-6 rounded-lg border border-green-100">
-                        <div class="w-12 h-12 rounded-full bg-build-green flex items-center justify-center text-white mb-4">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 text-build-green">Presence Tracking</h3>
-                        <p class="text-light-text-secondary">User status, online presence, and room management</p>
-                    </div>
-                    
-                    <div class="feature-card bg-purple-50 p-6 rounded-lg border border-purple-100">
-                        <div class="w-12 h-12 rounded-full bg-query-purple flex items-center justify-center text-white mb-4">
-                            <i class="fas fa-comments"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 text-query-purple">Message Queues</h3>
-                        <p class="text-light-text-secondary">Private messages, room messages, and queued delivery</p>
-                    </div>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-bold">Basic Setup</h3>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Initialize RedisBackendStrategy</span>
-<span class="code-keyword">local</span> RedisBackendStrategy = <span class="code-keyword">require</span> <span class="code-string">"redis_state_management"</span>
-
-<span class="code-comment">-- Configuration for Redis connection</span>
-<span class="code-keyword">local</span> config = {
-    host = <span class="code-string">"127.0.0.1"</span>,
-    port = 6379,
-    <span class="code-comment">-- Add other Redis connection parameters as needed</span>
-}
-
-<span class="code-comment">-- Create a new instance</span>
-<span class="code-keyword">local</span> redis_backend = RedisBackendStrategy.<span class="code-type">new</span>(config)
-
-<span class="code-comment">-- Now you can use all the Redis state management functions</span></code></pre>
-                </div>
-            </div>
-        </section>
-
-        <!-- Pub/Sub Section -->
-        <section id="pubsub" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-laser-blue flex items-center justify-center text-white font-bold mr-4">1</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">Pub/Sub Messaging</h2>
-            </div>
-            
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Publish/Subscribe Pattern</h3>
-                <p class="text-light-text-secondary mb-6">
-                    Redis Pub/Sub allows real-time messaging between different parts of your application. 
-                    Publishers send messages to channels, and subscribers receive those messages.
-                </p>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">subscribe(topic, callback)</h4>
-                    <p class="text-light-text-secondary mb-3">Subscribe to a topic to receive messages published to that channel.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>topic</td>
-                                <td>string</td>
-                                <td>The channel/topic to subscribe to</td>
-                            </tr>
-                            <tr>
-                                <td>callback</td>
-                                <td>function</td>
-                                <td>Function called when a message is received: function(received_topic, message_data)</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> None (blocking function)</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Subscribe Example</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Subscribe to a topic</span>
-redis_backend:<span class="code-type">subscribe</span>(<span class="code-string">"user_updates"</span>, <span class="code-keyword">function</span>(topic, message)
-    print(<span class="code-string">"Received message on topic: "</span> .. topic)
-    print(<span class="code-string">"Message data: "</span> .. json.encode(message))
+<style>
+    /* Redis State Management - Integrated Theme System */
     
-    <span class="code-comment">-- Handle the message based on its content</span>
-    <span class="code-keyword">if</span> message.type == <span class="code-string">"user_joined"</span> <span class="code-keyword">then</span>
-        print(<span class="code-string">"User joined: "</span> .. message.user_id)
-    <span class="code-keyword">end</span>
-<span class="code-keyword">end</span>)</code></pre>
-                </div>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">publish(topic, message)</h4>
-                    <p class="text-light-text-secondary mb-3">Publish a message to a specific topic/channel.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>topic</td>
-                                <td>string</td>
-                                <td>The channel/topic to publish to</td>
-                            </tr>
-                            <tr>
-                                <td>message</td>
-                                <td>table</td>
-                                <td>The message data to publish (will be JSON encoded)</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> Number of clients that received the message</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Publish Example</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Publish a message to a topic</span>
-<span class="code-keyword">local</span> message = {
-    type = <span class="code-string">"user_joined"</span>,
-    user_id = <span class="code-string">"user123"</span>,
-    timestamp = os.time()
-}
-
-<span class="code-keyword">local</span> recipients = redis_backend:<span class="code-type">publish</span>(<span class="code-string">"user_updates"</span>, message)
-print(<span class="code-string">"Message sent to "</span> .. recipients .. <span class="code-string">" subscribers"</span>)</code></pre>
-                </div>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">unsubscribe(topic)</h4>
-                    <p class="text-light-text-secondary mb-3">Unsubscribe from a topic to stop receiving messages.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>topic</td>
-                                <td>string</td>
-                                <td>The channel/topic to unsubscribe from</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> Redis reply indicating success</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Unsubscribe Example</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Unsubscribe from a topic</span>
-redis_backend:<span class="code-type">unsubscribe</span>(<span class="code-string">"user_updates"</span>)
-print(<span class="code-string">"Unsubscribed from user_updates topic"</span>)</code></pre>
-                </div>
-            </div>
-        </section>
-
-        <!-- State Management Section -->
-        <section id="state-management" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-build-green flex items-center justify-center text-white font-bold mr-4">2</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">State Management</h2>
-            </div>
-            
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">User Status & Presence</h3>
-                <p class="text-light-text-secondary mb-6">
-                    Track user status (online/offline) and manage presence information across different topics/rooms.
-                </p>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">set_user_status(user_id, status)</h4>
-                    <p class="text-light-text-secondary mb-3">Set the online status for a user.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>user_id</td>
-                                <td>string</td>
-                                <td>The ID of the user</td>
-                            </tr>
-                            <tr>
-                                <td>status</td>
-                                <td>string</td>
-                                <td>The status to set (e.g., "online", "offline", "away")</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> None</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">User Status Example</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Set user status to online</span>
-redis_backend:<span class="code-type">set_user_status</span>(<span class="code-string">"user123"</span>, <span class="code-string">"online"</span>)
-
-<span class="code-comment">-- Set user status to offline</span>
-redis_backend:<span class="code-type">set_user_status</span>(<span class="code-string">"user456"</span>, <span class="code-string">"offline"</span>)
-
-<span class="code-comment">-- Get user status</span>
-<span class="code-keyword">local</span> status = redis_backend:<span class="code-type">get_user_status</span>(<span class="code-string">"user123"</span>)
-print(<span class="code-string">"User status: "</span> .. status) <span class="code-comment">-- Output: "online"</span></code></pre>
-                </div>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">set_presence(topic, ws_id, user_id, meta)</h4>
-                    <p class="text-light-text-secondary mb-3">Set presence information for a user in a specific topic/room.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>topic</td>
-                                <td>string</td>
-                                <td>The topic/room where presence is being set</td>
-                            </tr>
-                            <tr>
-                                <td>ws_id</td>
-                                <td>string</td>
-                                <td>The websocket connection ID</td>
-                            </tr>
-                            <tr>
-                                <td>user_id</td>
-                                <td>string</td>
-                                <td>The ID of the user (optional if using ws_id only)</td>
-                            </tr>
-                            <tr>
-                                <td>meta</td>
-                                <td>table</td>
-                                <td>Additional metadata about the presence</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> None</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Presence Example</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Set presence for a user in a room</span>
-<span class="code-keyword">local</span> presence_meta = {
-    joined_at = os.time(),
-    display_name = <span class="code-string">"John Doe"</span>,
-    avatar_url = <span class="code-string">"https://example.com/avatar.jpg"</span>
-}
-
-redis_backend:<span class="code-type">set_presence</span>(<span class="code-string">"room_123"</span>, <span class="code-string">"ws_connection_456"</span>, <span class="code-string">"user123"</span>, presence_meta)
-
-<span class="code-comment">-- Get all presence in a room</span>
-<span class="code-keyword">local</span> all_presence = redis_backend:<span class="code-type">get_all_presence</span>(<span class="code-string">"room_123"</span>)
-<span class="code-keyword">for</span> user_id, meta <span class="code-keyword">in</span> <span class="code-keyword">pairs</span>(all_presence) <span class="code-keyword">do</span>
-    print(<span class="code-string">"User "</span> .. user_id .. <span class="code-string">" is present with meta: "</span> .. json.encode(meta))
-<span class="code-keyword">end</span></code></pre>
-                </div>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">diff_presence(topic, old_state, new_state)</h4>
-                    <p class="text-light-text-secondary mb-3">Calculate the difference between two presence states to detect joins and leaves.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>topic</td>
-                                <td>string</td>
-                                <td>The topic/room being analyzed</td>
-                            </tr>
-                            <tr>
-                                <td>old_state</td>
-                                <td>table</td>
-                                <td>The previous presence state</td>
-                            </tr>
-                            <tr>
-                                <td>new_state</td>
-                                <td>table</td>
-                                <td>The current presence state</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> Table with 'joins' and 'leaves' arrays containing user IDs</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Presence Diff Example</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Calculate presence changes</span>
-<span class="code-keyword">local</span> old_presence = {
-    user123 = { display_name = <span class="code-string">"John"</span> },
-    user456 = { display_name = <span class="code-string">"Jane"</span> }
-}
-
-<span class="code-keyword">local</span> new_presence = {
-    user123 = { display_name = <span class="code-string">"John"</span> },
-    user789 = { display_name = <span class="code-string">"Bob"</span> }
-}
-
-<span class="code-keyword">local</span> changes = redis_backend:<span class="code-type">diff_presence</span>(<span class="code-string">"room_123"</span>, old_presence, new_presence)
-
-print(<span class="code-string">"Users who joined: "</span> .. json.encode(changes.joins)) <span class="code-comment">-- ["user789"]</span>
-print(<span class="code-string">"Users who left: "</span> .. json.encode(changes.leaves)) <span class="code-comment">-- ["user456"]</span></code></pre>
-                </div>
-            </div>
-            
-            <!-- Socket Management -->
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Socket & User Binding</h3>
-                <p class="text-light-text-secondary mb-6">
-                    Manage the relationship between websocket connections and user identities.
-                </p>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">mark_socket_active(socket_id, user_id)</h4>
-                    <p class="text-light-text-secondary mb-3">Mark a socket as active and bind it to a user.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>socket_id</td>
-                                <td>string</td>
-                                <td>The websocket connection ID</td>
-                            </tr>
-                            <tr>
-                                <td>user_id</td>
-                                <td>string</td>
-                                <td>The ID of the user to bind to the socket</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> None</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Socket Management Example</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- When a user connects via websocket</span>
-<span class="code-keyword">local</span> socket_id = <span class="code-string">"ws_connection_789"</span>
-<span class="code-keyword">local</span> user_id = <span class="code-string">"user123"</span>
-
-<span class="code-comment">-- Mark socket as active and bind to user</span>
-redis_backend:<span class="code-type">mark_socket_active</span>(socket_id, user_id)
-
-<span class="code-comment">-- Get user ID from socket ID</span>
-<span class="code-keyword">local</span> bound_user_id = redis_backend:<span class="code-type">get_ws_id_binded_user_id</span>(socket_id)
-print(<span class="code-string">"Socket bound to user: "</span> .. bound_user_id) <span class="code-comment">-- "user123"</span>
-
-<span class="code-comment">-- Get socket ID from user ID</span>
-<span class="code-keyword">local</span> bound_socket_id = redis_backend:<span class="code-type">get_user_binded_socket_id</span>(user_id)
-print(<span class="code-string">"User bound to socket: "</span> .. bound_socket_id) <span class="code-comment">-- "ws_connection_789"</span></code></pre>
-                </div>
-            </div>
-        </section>
-
-        <!-- Private Messages Section -->
-        <section id="private-messages" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-query-purple flex items-center justify-center text-white font-bold mr-4">3</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">Private Messages</h2>
-            </div>
-            
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Direct Messaging</h3>
-                <p class="text-light-text-secondary mb-6">
-                    Store and retrieve private messages between users with support for message history and queued delivery.
-                </p>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">store_private_message(from_id, to_id, message)</h4>
-                    <p class="text-light-text-secondary mb-3">Store a private message between two users.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>from_id</td>
-                                <td>string</td>
-                                <td>The ID of the sender</td>
-                            </tr>
-                            <tr>
-                                <td>to_id</td>
-                                <td>string</td>
-                                <td>The ID of the recipient</td>
-                            </tr>
-                            <tr>
-                                <td>message</td>
-                                <td>table</td>
-                                <td>The message content and metadata</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> None</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Private Message Example</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Store a private message</span>
-<span class="code-keyword">local</span> message = {
-    id = <span class="code-string">"msg_123"</span>,
-    content = <span class="code-string">"Hello, how are you?"</span>,
-    timestamp = os.time(),
-    type = <span class="code-string">"text"</span>
-}
-
-redis_backend:<span class="code-type">store_private_message</span>(<span class="code-string">"user123"</span>, <span class="code-string">"user456"</span>, message)
-
-<span class="code-comment">-- Fetch message history between two users</span>
-<span class="code-keyword">local</span> history = redis_backend:<span class="code-type">fetch_private_history</span>(<span class="code-string">"user123"</span>, <span class="code-string">"user456"</span>)
-
-<span class="code-keyword">for</span> i, msg <span class="code-keyword">in</span> <span class="code-keyword">ipairs</span>(history) <span class="code-keyword">do</span>
-    print(<span class="code-string">"Message from "</span> .. msg.from_id .. <span class="code-string">": "</span> .. msg.content)
-<span class="code-keyword">end</span></code></pre>
-                </div>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">fetch_private_history(user1, user2, opts)</h4>
-                    <p class="text-light-text-secondary mb-3">Retrieve the message history between two users.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>user1</td>
-                                <td>string</td>
-                                <td>First user ID</td>
-                            </tr>
-                            <tr>
-                                <td>user2</td>
-                                <td>string</td>
-                                <td>Second user ID</td>
-                            </tr>
-                            <tr>
-                                <td>opts</td>
-                                <td>table</td>
-                                <td>Optional parameters: offset, limit</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> Array of message objects</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Message History with Options</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Fetch last 10 messages with pagination</span>
-<span class="code-keyword">local</span> opts = {
-    offset = 0,   <span class="code-comment">-- Start from the beginning</span>
-    limit = 10    <span class="code-comment">-- Get 10 messages</span>
-}
-
-<span class="code-keyword">local</span> messages = redis_backend:<span class="code-type">fetch_private_history</span>(<span class="code-string">"user123"</span>, <span class="code-string">"user456"</span>, opts)
-
-<span class="code-comment">-- Fetch next 10 messages (pagination)</span>
-opts.offset = 10
-<span class="code-keyword">local</span> next_messages = redis_backend:<span class="code-type">fetch_private_history</span>(<span class="code-string">"user123"</span>, <span class="code-string">"user456"</span>, opts)</code></pre>
-                </div>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">queue_private_message(to_id, message)</h4>
-                    <p class="text-light-text-secondary mb-3">Queue a private message for a user who is currently offline.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>to_id</td>
-                                <td>string</td>
-                                <td>The ID of the recipient</td>
-                            </tr>
-                            <tr>
-                                <td>message</td>
-                                <td>table</td>
-                                <td>The message to queue</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> None</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Queued Messages Example</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Queue a message for an offline user</span>
-<span class="code-keyword">local</span> queued_message = {
-    from_id = <span class="code-string">"user123"</span>,
-    content = <span class="code-string">"This message will be delivered when you come online"</span>,
-    timestamp = os.time()
-}
-
-redis_backend:<span class="code-type">queue_private_message</span>(<span class="code-string">"user456"</span>, queued_message)
-
-<span class="code-comment">-- When user comes online, fetch their queued messages</span>
-<span class="code-keyword">local</span> queued_messages = redis_backend:<span class="code-type">fetch_queued_messages</span>(<span class="code-string">"user456"</span>)
-
-<span class="code-keyword">for</span> i, msg <span class="code-keyword">in</span> <span class="code-keyword">ipairs</span>(queued_messages) <span class="code-keyword">do</span>
-    print(<span class="code-string">"Queued message from "</span> .. msg.from_id .. <span class="code-string">": "</span> .. msg.content)
-    <span class="code-comment">-- Deliver the message to the user</span>
-<span class="code-keyword">end</span>
-
-<span class="code-comment">-- Clear queued messages after delivery</span>
-redis_backend:<span class="code-type">clear_queued_messages</span>(<span class="code-string">"user456"</span>)</code></pre>
-                </div>
-            </div>
-        </section>
-
-        <!-- Room Management Section -->
-        <section id="room-management" class="mb-16 animate-fadeIn">
-            <div class="flex items-center mb-6">
-                <div class="w-10 h-10 rounded-full bg-warning-amber flex items-center justify-center text-white font-bold mr-4">4</div>
-                <h2 class="text-3xl font-bold text-neural-charcoal">Room & Channel Management</h2>
-            </div>
-            
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Room Operations</h3>
-                <p class="text-light-text-secondary mb-6">
-                    Create, manage, and distribute messages across rooms/channels with support for queued message delivery.
-                </p>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">create_room(room_id)</h4>
-                    <p class="text-light-text-secondary mb-3">Create a new room/channel.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>room_id</td>
-                                <td>string</td>
-                                <td>The unique identifier for the room</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> None</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Room Management Example</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Create a new room</span>
-redis_backend:<span class="code-type">create_room</span>(<span class="code-string">"general_chat"</span>)
-
-<span class="code-comment">-- Check if room exists</span>
-<span class="code-keyword">local</span> exists = redis_backend:<span class="code-type">room_exists</span>(<span class="code-string">"general_chat"</span>)
-print(<span class="code-string">"Room exists: "</span> .. <span class="code-keyword">tostring</span>(exists)) <span class="code-comment">-- true</span>
-
-<span class="code-comment">-- Get all rooms</span>
-<span class="code-keyword">local</span> all_rooms = redis_backend:<span class="code-type">get_all_rooms</span>()
-<span class="code-keyword">for</span> i, room <span class="code-keyword">in</span> <span class="code-keyword">ipairs</span>(all_rooms) <span class="code-keyword">do</span>
-    print(<span class="code-string">"Room: "</span> .. room)
-<span class="code-keyword">end</span>
-
-<span class="code-comment">-- Delete a room</span>
-redis_backend:<span class="code-type">delete_room</span>(<span class="code-string">"old_room"</span>)</code></pre>
-                </div>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">queue_room_message(topic, message)</h4>
-                    <p class="text-light-text-secondary mb-3">Queue a message for a room to be delivered to all participants.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>topic</td>
-                                <td>string</td>
-                                <td>The room/topic to queue the message for</td>
-                            </tr>
-                            <tr>
-                                <td>message</td>
-                                <td>table</td>
-                                <td>The message to queue</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> None</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Room Messages Example</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Queue a message for a room</span>
-<span class="code-keyword">local</span> room_message = {
-    from_user = <span class="code-string">"user123"</span>,
-    content = <span class="code-string">"Hello everyone in the room!"</span>,
-    timestamp = os.time(),
-    type = <span class="code-string">"room_message"</span>
-}
-
-redis_backend:<span class="code-type">queue_room_message</span>(<span class="code-string">"general_chat"</span>, room_message)
-
-<span class="code-comment">-- Drain all queued messages for a room</span>
-<span class="code-keyword">local</span> queued_messages = redis_backend:<span class="code-type">drain_room_messages</span>(<span class="code-string">"general_chat"</span>)
-
-<span class="code-keyword">for</span> i, msg <span class="code-keyword">in</span> <span class="code-keyword">ipairs</span>(queued_messages) <span class="code-keyword">do</span>
-    print(<span class="code-string">"Room message from "</span> .. msg.from_user .. <span class="code-string">": "</span> .. msg.content)
-    <span class="code-comment">-- Distribute to all room participants</span>
-<span class="code-keyword">end</span></code></pre>
-                </div>
-            </div>
-            
-            <!-- Data Persistence -->
-            <div class="bg-white rounded-xl shadow-md p-6 border border-light-border">
-                <h3 class="text-2xl font-bold mb-4 text-laser-blue">Data Persistence</h3>
-                <p class="text-light-text-secondary mb-6">
-                    Store and retrieve arbitrary application state with optional TTL (Time To Live) for automatic expiration.
-                </p>
-                
-                <div class="function-signature">
-                    <h4 class="font-bold text-lg mb-2">persist_state(key, value, ttl_seconds)</h4>
-                    <p class="text-light-text-secondary mb-3">Persist application state with optional expiration.</p>
-                    
-                    <table class="param-table">
-                        <thead>
-                            <tr>
-                                <th>Parameter</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>key</td>
-                                <td>string</td>
-                                <td>The unique key for the state</td>
-                            </tr>
-                            <tr>
-                                <td>value</td>
-                                <td>table</td>
-                                <td>The state data to persist</td>
-                            </tr>
-                            <tr>
-                                <td>ttl_seconds</td>
-                                <td>number</td>
-                                <td>Optional TTL in seconds for automatic expiration</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <p class="mt-3"><strong>Returns:</strong> None</p>
-                </div>
-                
-                <div class="bg-gray-800 text-gray-200 rounded-lg p-6 code-block">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold">Data Persistence Example</h4>
-                        <button class="bg-laser-blue text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors copy-btn">
-                            <i class="fas fa-copy mr-1"></i>Copy
-                        </button>
-                    </div>
-                    <pre class="overflow-x-auto text-sm"><code><span class="code-comment">-- Persist application state without TTL</span>
-<span class="code-keyword">local</span> app_state = {
-    last_backup = os.time(),
-    active_users = {<span class="code-string">"user123"</span>, <span class="code-string">"user456"</span>},
-    settings = { theme = <span class="code-string">"dark"</span>, notifications = true }
-}
-
-redis_backend:<span class="code-type">persist_state</span>(<span class="code-string">"app_state_v1"</span>, app_state)
-
-<span class="code-comment">-- Persist with TTL (expires in 1 hour)</span>
-<span class="code-keyword">local</span> temp_data = { session_id = <span class="code-string">"session_789"</span>, expires_in = 3600 }
-redis_backend:<span class="code-type">persist_state</span>(<span class="code-string">"temp_session"</span>, temp_data, 3600)
-
-<span class="code-comment">-- Retrieve persisted state</span>
-<span class="code-keyword">local</span> saved_state = redis_backend:<span class="code-type">retrieve_state</span>(<span class="code-string">"app_state_v1"</span>)
-<span class="code-keyword">if</span> saved_state <span class="code-keyword">then</span>
-    print(<span class="code-string">"Last backup: "</span> .. saved_state.last_backup)
-<span class="code-keyword">end</span>
-
-<span class="code-comment">-- Delete state</span>
-redis_backend:<span class="code-type">delete_state</span>(<span class="code-string">"old_state"</span>)</code></pre>
-                </div>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="mt-12 pt-8 border-t border-light-border text-center text-light-text-secondary">
-            <p>Dawn Framework Redis State Management &copy; 2023</p>
-            <div class="flex justify-center space-x-4 mt-4">
-                <a href="#" class="text-laser-blue hover:underline">Core Server Docs</a>
-                <a href="#" class="text-laser-blue hover:underline">API Reference</a>
-                <a href="#" class="text-laser-blue hover:underline">Examples Repository</a>
-                <a href="#" class="text-laser-blue hover:underline">Community</a>
-            </div>
-        </footer>
-    </main>
-
-    <script>
-        // Copy code functionality
-        document.querySelectorAll('.copy-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const codeBlock = this.closest('.code-block').querySelector('pre code');
-                const textToCopy = codeBlock.textContent;
-                
-                navigator.clipboard.writeText(textToCopy).then(() => {
-                    const originalText = this.innerHTML;
-                    this.innerHTML = '<i class="fas fa-check mr-1"></i>Copied!';
-                    
-                    setTimeout(() => {
-                        this.innerHTML = originalText;
-                    }, 2000);
-                });
-            });
-        });
+    /* Theme Variables */
+    .main-content-body {
+        --doc-bg: #FFFFFF;
+        --doc-text: #2A2A3A;
+        --doc-text-secondary: #5A6578;
+        --doc-border: #E0E5EC;
+        --doc-card-bg: #FFFFFF;
+        --doc-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        --doc-code-bg: #1E1E2E;
+        --doc-code-text: #E0E5EC;
+        --doc-code-comment: #6A737D;
+        --doc-code-keyword: #00CC88;
+        --doc-code-string: #8A2BE2;
+        --doc-code-function: #0066FF;
+        --doc-code-number: #FFB300;
+        --doc-code-variable: #8A2BE2;
+        --doc-code-type: #FFB300;
+        --doc-badge-blue: #DBEAFE;
+        --doc-badge-green: #D1FAE5;
+        --doc-badge-purple: #EDE9FE;
+        --doc-signature-bg: #F0F4F8;
+        --doc-info-bg: #DBEAFE;
+        --doc-info-border: #3B82F6;
+    }
+    
+    body.dark-theme .main-content-body {
+        --doc-bg: #151520;
+        --doc-text: #E0E5EC;
+        --doc-text-secondary: #A0A5B5;
+        --doc-border: #2A2A3A;
+        --doc-card-bg: #1F1F2E;
+        --doc-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        --doc-code-bg: #0A0A0F;
+        --doc-code-text: #E0E5EC;
+        --doc-code-comment: #6A737D;
+        --doc-code-keyword: #00CC88;
+        --doc-code-string: #8A2BE2;
+        --doc-code-function: #0066FF;
+        --doc-code-number: #FFB300;
+        --doc-code-variable: #8A2BE2;
+        --doc-code-type: #FFB300;
+        --doc-badge-blue: #1E3A8A;
+        --doc-badge-green: #064E3B;
+        --doc-badge-purple: #4C1D95;
+        --doc-signature-bg: #2A2A3A;
+        --doc-info-bg: #1E3A8A;
+        --doc-info-border: #3B82F6;
+    }
+    
+    .main-content-body {
+        background-color: var(--doc-bg);
+        color: var(--doc-text);
+        transition: all 0.3s ease;
+    }
+    
+    /* Feature Cards */
+    .feature-card {
+        background: var(--doc-card-bg);
+        border-radius: 16px;
+        padding: 1.5rem;
+        border: 1px solid var(--doc-border);
+        transition: all 0.3s ease;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--laser-blue);
+        box-shadow: 0 10px 25px -5px rgba(0, 102, 255, 0.2);
+    }
+    
+    /* Code Blocks */
+    .code-block {
+        background: var(--doc-code-bg);
+        border-radius: 12px;
+        margin: 1.5rem 0;
+        overflow: hidden;
+        position: relative;
+        border: 1px solid var(--doc-border);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .code-block:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .code-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(138, 43, 226, 0.1));
+        border-bottom: 1px solid var(--doc-border);
+    }
+    
+    .code-language {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--doc-text-secondary);
+    }
+    
+    .copy-btn {
+        background: rgba(0, 102, 255, 0.2);
+        color: var(--doc-text);
+        border: none;
+        padding: 0.25rem 0.75rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .copy-btn:hover {
+        background: rgba(0, 102, 255, 0.4);
+        transform: scale(1.05);
+    }
+    
+    .code-block pre {
+        margin: 0;
+        padding: 1.5rem;
+        overflow-x: auto;
+        font-family: 'Fira Code', 'Courier New', monospace;
+        font-size: 0.875rem;
+        line-height: 1.6;
+    }
+    
+    .code-block code {
+        font-family: 'Fira Code', 'Courier New', monospace;
+        color: var(--doc-code-text);
+    }
+    
+    /* Syntax Highlighting */
+    .code-block code .keyword {
+        color: var(--doc-code-keyword);
+        font-weight: 500;
+    }
+    
+    .code-block code .string {
+        color: var(--doc-code-string);
+    }
+    
+    .code-block code .function {
+        color: var(--doc-code-function);
+    }
+    
+    .code-block code .number {
+        color: var(--doc-code-number);
+    }
+    
+    .code-block code .comment {
+        color: var(--doc-code-comment);
+        font-style: italic;
+    }
+    
+    .code-block code .variable {
+        color: var(--doc-code-variable);
+    }
+    
+    .code-block code .type {
+        color: var(--doc-code-type);
+    }
+    
+    /* Function Signatures */
+    .function-signature {
+        background: var(--doc-signature-bg);
+        border-left: 4px solid var(--laser-blue);
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+    
+    /* Parameter Tables */
+    .param-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0;
+        background-color: var(--doc-card-bg);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    .param-table th,
+    .param-table td {
+        padding: 0.75rem 1rem;
+        text-align: left;
+        border-bottom: 1px solid var(--doc-border);
+        color: var(--doc-text);
+    }
+    
+    .param-table th {
+        background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));
+        color: white;
+        font-weight: 600;
+    }
+    
+    .param-table tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .param-table tr:hover {
+        background-color: rgba(0, 102, 255, 0.05);
+    }
+    
+    body.dark-theme .param-table tr:hover {
+        background-color: rgba(0, 204, 136, 0.05);
+    }
+    
+    .param-table code {
+        background-color: rgba(0, 102, 255, 0.1);
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-family: 'Fira Code', monospace;
+        font-size: 0.8125rem;
+        color: var(--laser-blue);
+    }
+    
+    body.dark-theme .param-table code {
+        background-color: rgba(0, 204, 136, 0.1);
+        color: var(--build-green);
+    }
+    
+    /* Section Numbers */
+    .section-number {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--laser-blue), var(--build-green));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        margin-right: 1rem;
+    }
+    
+    /* Info Boxes */
+    .info-box {
+        background: var(--doc-info-bg);
+        border-left: 4px solid var(--doc-info-border);
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 8px;
+        color: var(--doc-text);
+    }
+    
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: var(--doc-border);
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));
+        border-radius: 10px;
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .animate-fadeIn {
+        animation: fadeIn 0.6s ease-out;
+    }
+    
+    /* Back to Top Button */
+    .back-to-top {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--laser-blue), var(--build-green));
+        color: white;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+    }
+    
+    .back-to-top.visible {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .back-to-top:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .feature-card {
+            padding: 1rem;
+        }
         
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
+        .section-number {
+            width: 2rem;
+            height: 2rem;
+            font-size: 0.875rem;
+        }
+        
+        .code-block pre {
+            font-size: 0.75rem;
+            padding: 1rem;
+        }
+    }
+</style>
+
+<!-- Main Documentation Content -->
+<main class="main-content-body max-w-6xl mx-auto px-6 py-8">
+    <!-- Overview Section -->
+    <section id="overview" class="mb-16 animate-fadeIn">
+        <div class="rounded-xl p-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <h1 class="text-4xl font-bold mb-6" style="background: linear-gradient(135deg, var(--laser-blue), var(--build-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                Redis State Management
+            </h1>
+            <p class="text-xl mb-8" style="color: var(--doc-text-secondary);">
+                Comprehensive guide to using Redis as a backend strategy for state management in Dawn Framework applications.
+                This documentation covers all functions, parameters, and return values for managing presence, messages, and real-time data.
+            </p>
+            
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <div class="feature-card">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center text-white mb-4" style="background: linear-gradient(135deg, var(--laser-blue), var(--query-purple));">
+                        <i class="fas fa-broadcast-tower"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2" style="color: var(--doc-text);">Pub/Sub System</h3>
+                    <p style="color: var(--doc-text-secondary);">Real-time messaging with publish/subscribe pattern</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center text-white mb-4" style="background: linear-gradient(135deg, var(--build-green), var(--query-purple));">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2" style="color: var(--doc-text);">Presence Tracking</h3>
+                    <p style="color: var(--doc-text-secondary);">User status, online presence, and room management</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center text-white mb-4" style="background: linear-gradient(135deg, var(--query-purple), var(--warning-amber));">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2" style="color: var(--doc-text);">Message Queues</h3>
+                    <p style="color: var(--doc-text-secondary);">Private messages, room messages, and queued delivery</p>
+                </div>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Basic Setup</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- Initialize RedisBackendStrategy</span>
+<span class="keyword">local</span> RedisBackendStrategy = <span class="keyword">require</span> <span class="string">"redis_state_management"</span>
+
+<span class="comment">-- Configuration for Redis connection</span>
+<span class="keyword">local</span> config = {
+    host = <span class="string">"127.0.0.1"</span>,
+    port = <span class="number">6379</span>,
+    <span class="comment">-- Add other Redis connection parameters as needed</span>
+}
+
+<span class="comment">-- Create a new instance</span>
+<span class="keyword">local</span> redis_backend = RedisBackendStrategy.<span class="function">new</span>(config)
+
+<span class="comment">-- Now you can use all the Redis state management functions</span></code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pub/Sub Section -->
+    <section id="pubsub" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">1</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Pub/Sub Messaging</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 mb-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <h3 class="text-2xl font-bold mb-4" style="color: var(--laser-blue);">Publish/Subscribe Pattern</h3>
+            <p class="mb-6" style="color: var(--doc-text-secondary);">
+                Redis Pub/Sub allows real-time messaging between different parts of your application. 
+                Publishers send messages to channels, and subscribers receive those messages.
+            </p>
+            
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">subscribe(topic, callback)</h4>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">Subscribe to a topic to receive messages published to that channel.</p>
+                
+                <table class="param-table">
+                    <thead>
+                        <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>topic</td><td>string</td><td>The channel/topic to subscribe to</td></tr>
+                        <tr><td>callback</td><td>function</td><td>Function called when a message is received: function(received_topic, message_data)</td></tr>
+                    </tbody>
+                </table>
+                
+                <p class="mt-3"><strong>Returns:</strong> None (blocking function)</p>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Subscribe Example</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- Subscribe to a topic</span>
+redis_backend:<span class="function">subscribe</span>(<span class="string">"user_updates"</span>, <span class="keyword">function</span>(topic, message)
+    print(<span class="string">"Received message on topic: "</span> .. topic)
+    print(<span class="string">"Message data: "</span> .. json.encode(message))
+    
+    <span class="comment">-- Handle the message based on its content</span>
+    <span class="keyword">if</span> message.type == <span class="string">"user_joined"</span> <span class="keyword">then</span>
+        print(<span class="string">"User joined: "</span> .. message.user_id)
+    <span class="keyword">end</span>
+<span class="keyword">end</span>)</code></pre>
+            </div>
+            
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">publish(topic, message)</h4>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">Publish a message to a specific topic/channel.</p>
+                
+                <table class="param-table">
+                    <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td>topic</td><td>string</td><td>The channel/topic to publish to</td></tr>
+                        <tr><td>message</td><td>table</td><td>The message data to publish (will be JSON encoded)</td></tr>
+                    </tbody>
+                </table>
+                
+                <p class="mt-3"><strong>Returns:</strong> Number of clients that received the message</p>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Publish Example</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- Publish a message to a topic</span>
+<span class="keyword">local</span> message = {
+    type = <span class="string">"user_joined"</span>,
+    user_id = <span class="string">"user123"</span>,
+    timestamp = os.time()
+}
+
+<span class="keyword">local</span> recipients = redis_backend:<span class="function">publish</span>(<span class="string">"user_updates"</span>, message)
+print(<span class="string">"Message sent to "</span> .. recipients .. <span class="string">" subscribers"</span>)</code></pre>
+            </div>
+            
+            <div class="function-signature">
+                <h4 class="font-bold text-lg mb-2">unsubscribe(topic)</h4>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">Unsubscribe from a topic to stop receiving messages.</p>
+                
+                <table class="param-table">
+                    <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+                    <tbody><tr><td>topic</td><td>string</td><td>The channel/topic to unsubscribe from</td></tr></tbody>
+                </table>
+                
+                <p class="mt-3"><strong>Returns:</strong> Redis reply indicating success</p>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Unsubscribe Example</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- Unsubscribe from a topic</span>
+redis_backend:<span class="function">unsubscribe</span>(<span class="string">"user_updates"</span>)
+print(<span class="string">"Unsubscribed from user_updates topic"</span>)</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- State Management Section -->
+    <section id="state-management" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">2</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">State Management</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 mb-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <h3 class="text-2xl font-bold mb-4" style="color: var(--laser-blue);">User Status & Presence</h3>
+            <p class="mb-6" style="color: var(--doc-text-secondary);">
+                Track user status (online/offline) and manage presence information across different topics/rooms.
+            </p>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - User Status Example</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- Set user status to online</span>
+redis_backend:<span class="function">set_user_status</span>(<span class="string">"user123"</span>, <span class="string">"online"</span>)
+
+<span class="comment">-- Set user status to offline</span>
+redis_backend:<span class="function">set_user_status</span>(<span class="string">"user456"</span>, <span class="string">"offline"</span>)
+
+<span class="comment">-- Get user status</span>
+<span class="keyword">local</span> status = redis_backend:<span class="function">get_user_status</span>(<span class="string">"user123"</span>)
+print(<span class="string">"User status: "</span> .. status) <span class="comment">-- Output: "online"</span></code></pre>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Presence Example</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- Set presence for a user in a room</span>
+<span class="keyword">local</span> presence_meta = {
+    joined_at = os.time(),
+    display_name = <span class="string">"John Doe"</span>,
+    avatar_url = <span class="string">"https://example.com/avatar.jpg"</span>
+}
+
+redis_backend:<span class="function">set_presence</span>(<span class="string">"room_123"</span>, <span class="string">"ws_connection_456"</span>, <span class="string">"user123"</span>, presence_meta)
+
+<span class="comment">-- Get all presence in a room</span>
+<span class="keyword">local</span> all_presence = redis_backend:<span class="function">get_all_presence</span>(<span class="string">"room_123"</span>)
+<span class="keyword">for</span> user_id, meta <span class="keyword">in</span> <span class="keyword">pairs</span>(all_presence) <span class="keyword">do</span>
+    print(<span class="string">"User "</span> .. user_id .. <span class="string">" is present with meta: "</span> .. json.encode(meta))
+<span class="keyword">end</span></code></pre>
+            </div>
+        </div>
+        
+        <div class="rounded-xl p-6 mb-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <h3 class="text-2xl font-bold mb-4" style="color: var(--laser-blue);">Socket & User Binding</h3>
+            <p class="mb-6" style="color: var(--doc-text-secondary);">
+                Manage the relationship between websocket connections and user identities.
+            </p>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Socket Management Example</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- When a user connects via websocket</span>
+<span class="keyword">local</span> socket_id = <span class="string">"ws_connection_789"</span>
+<span class="keyword">local</span> user_id = <span class="string">"user123"</span>
+
+<span class="comment">-- Mark socket as active and bind to user</span>
+redis_backend:<span class="function">mark_socket_active</span>(socket_id, user_id)
+
+<span class="comment">-- Get user ID from socket ID</span>
+<span class="keyword">local</span> bound_user_id = redis_backend:<span class="function">get_ws_id_binded_user_id</span>(socket_id)
+print(<span class="string">"Socket bound to user: "</span> .. bound_user_id) <span class="comment">-- "user123"</span>
+
+<span class="comment">-- Get socket ID from user ID</span>
+<span class="keyword">local</span> bound_socket_id = redis_backend:<span class="function">get_user_binded_socket_id</span>(user_id)
+print(<span class="string">"User bound to socket: "</span> .. bound_socket_id) <span class="comment">-- "ws_connection_789"</span></code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Private Messages Section -->
+    <section id="private-messages" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">3</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Private Messages</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 mb-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <h3 class="text-2xl font-bold mb-4" style="color: var(--laser-blue);">Direct Messaging</h3>
+            <p class="mb-6" style="color: var(--doc-text-secondary);">
+                Store and retrieve private messages between users with support for message history and queued delivery.
+            </p>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Private Message Example</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- Store a private message</span>
+<span class="keyword">local</span> message = {
+    id = <span class="string">"msg_123"</span>,
+    content = <span class="string">"Hello, how are you?"</span>,
+    timestamp = os.time(),
+    type = <span class="string">"text"</span>
+}
+
+redis_backend:<span class="function">store_private_message</span>(<span class="string">"user123"</span>, <span class="string">"user456"</span>, message)
+
+<span class="comment">-- Fetch message history between two users</span>
+<span class="keyword">local</span> history = redis_backend:<span class="function">fetch_private_history</span>(<span class="string">"user123"</span>, <span class="string">"user456"</span>)
+
+<span class="keyword">for</span> i, msg <span class="keyword">in</span> <span class="keyword">ipairs</span>(history) <span class="keyword">do</span>
+    print(<span class="string">"Message from "</span> .. msg.from_id .. <span class="string">": "</span> .. msg.content)
+<span class="keyword">end</span></code></pre>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Queued Messages Example</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- Queue a message for an offline user</span>
+<span class="keyword">local</span> queued_message = {
+    from_id = <span class="string">"user123"</span>,
+    content = <span class="string">"This message will be delivered when you come online"</span>,
+    timestamp = os.time()
+}
+
+redis_backend:<span class="function">queue_private_message</span>(<span class="string">"user456"</span>, queued_message)
+
+<span class="comment">-- When user comes online, fetch their queued messages</span>
+<span class="keyword">local</span> queued_messages = redis_backend:<span class="function">fetch_queued_messages</span>(<span class="string">"user456"</span>)
+
+<span class="keyword">for</span> i, msg <span class="keyword">in</span> <span class="keyword">ipairs</span>(queued_messages) <span class="keyword">do</span>
+    print(<span class="string">"Queued message from "</span> .. msg.from_id .. <span class="string">": "</span> .. msg.content)
+    <span class="comment">-- Deliver the message to the user</span>
+<span class="keyword">end</span>
+
+<span class="comment">-- Clear queued messages after delivery</span>
+redis_backend:<span class="function">clear_queued_messages</span>(<span class="string">"user456"</span>)</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Room Management Section -->
+    <section id="room-management" class="mb-16 animate-fadeIn">
+        <div class="flex items-center mb-6">
+            <div class="section-number">4</div>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">Room & Channel Management</h2>
+        </div>
+        
+        <div class="rounded-xl p-6 mb-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <h3 class="text-2xl font-bold mb-4" style="color: var(--laser-blue);">Room Operations</h3>
+            <p class="mb-6" style="color: var(--doc-text-secondary);">
+                Create, manage, and distribute messages across rooms/channels with support for queued message delivery.
+            </p>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Room Management Example</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- Create a new room</span>
+redis_backend:<span class="function">create_room</span>(<span class="string">"general_chat"</span>)
+
+<span class="comment">-- Check if room exists</span>
+<span class="keyword">local</span> exists = redis_backend:<span class="function">room_exists</span>(<span class="string">"general_chat"</span>)
+print(<span class="string">"Room exists: "</span> .. <span class="keyword">tostring</span>(exists)) <span class="comment">-- true</span>
+
+<span class="comment">-- Get all rooms</span>
+<span class="keyword">local</span> all_rooms = redis_backend:<span class="function">get_all_rooms</span>()
+<span class="keyword">for</span> i, room <span class="keyword">in</span> <span class="keyword">ipairs</span>(all_rooms) <span class="keyword">do</span>
+    print(<span class="string">"Room: "</span> .. room)
+<span class="keyword">end</span>
+
+<span class="comment">-- Delete a room</span>
+redis_backend:<span class="function">delete_room</span>(<span class="string">"old_room"</span>)</code></pre>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Room Messages Example</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- Queue a message for a room</span>
+<span class="keyword">local</span> room_message = {
+    from_user = <span class="string">"user123"</span>,
+    content = <span class="string">"Hello everyone in the room!"</span>,
+    timestamp = os.time(),
+    type = <span class="string">"room_message"</span>
+}
+
+redis_backend:<span class="function">queue_room_message</span>(<span class="string">"general_chat"</span>, room_message)
+
+<span class="comment">-- Drain all queued messages for a room</span>
+<span class="keyword">local</span> queued_messages = redis_backend:<span class="function">drain_room_messages</span>(<span class="string">"general_chat"</span>)
+
+<span class="keyword">for</span> i, msg <span class="keyword">in</span> <span class="keyword">ipairs</span>(queued_messages) <span class="keyword">do</span>
+    print(<span class="string">"Room message from "</span> .. msg.from_user .. <span class="string">": "</span> .. msg.content)
+    <span class="comment">-- Distribute to all room participants</span>
+<span class="keyword">end</span></code></pre>
+            </div>
+        </div>
+        
+        <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
+            <h3 class="text-2xl font-bold mb-4" style="color: var(--laser-blue);">Data Persistence</h3>
+            <p class="mb-6" style="color: var(--doc-text-secondary);">
+                Store and retrieve arbitrary application state with optional TTL (Time To Live) for automatic expiration.
+            </p>
+            
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - Data Persistence Example</span>
+                    <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <pre><code><span class="comment">-- Persist application state without TTL</span>
+<span class="keyword">local</span> app_state = {
+    last_backup = os.time(),
+    active_users = {<span class="string">"user123"</span>, <span class="string">"user456"</span>},
+    settings = { theme = <span class="string">"dark"</span>, notifications = <span class="keyword">true</span> }
+}
+
+redis_backend:<span class="function">persist_state</span>(<span class="string">"app_state_v1"</span>, app_state)
+
+<span class="comment">-- Persist with TTL (expires in 1 hour)</span>
+<span class="keyword">local</span> temp_data = { session_id = <span class="string">"session_789"</span>, expires_in = <span class="number">3600</span> }
+redis_backend:<span class="function">persist_state</span>(<span class="string">"temp_session"</span>, temp_data, <span class="number">3600</span>)
+
+<span class="comment">-- Retrieve persisted state</span>
+<span class="keyword">local</span> saved_state = redis_backend:<span class="function">retrieve_state</span>(<span class="string">"app_state_v1"</span>)
+<span class="keyword">if</span> saved_state <span class="keyword">then</span>
+    print(<span class="string">"Last backup: "</span> .. saved_state.last_backup)
+<span class="keyword">end</span>
+
+<span class="comment">-- Delete state</span>
+redis_backend:<span class="function">delete_state</span>(<span class="string">"old_state"</span>)</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="mt-12 pt-8 border-t text-center" style="border-color: var(--doc-border); color: var(--doc-text-secondary);">
+        <p>Dawn Framework Redis State Management © 2023</p>
+        <div class="flex justify-center space-x-4 mt-4">
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">Core Server Docs</a>
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">API Reference</a>
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">Examples Repository</a>
+            <a href="#" class="hover:underline" style="color: var(--laser-blue);">Community</a>
+        </div>
+    </footer>
+</main>
+
+<script>
+// Copy code functionality
+function copyCode(button) {
+    const codeBlock = button.closest('.code-block');
+    const code = codeBlock.querySelector('pre code');
+    const text = code.textContent;
+    
+    navigator.clipboard.writeText(text).then(() => {
+        const originalHTML = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        setTimeout(() => {
+            button.innerHTML = originalHTML;
+        }, 2000);
+    });
+}
+
+// Back to Top button
+const backToTop = document.createElement('button');
+backToTop.innerHTML = '<i class="fas fa-arrow-up"></i>';
+backToTop.className = 'back-to-top';
+document.body.appendChild(backToTop);
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+        backToTop.classList.add('visible');
+    } else {
+        backToTop.classList.remove('visible');
+    }
+});
+
+backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const target = document.querySelector(targetId);
+        if (target) {
+            e.preventDefault();
+            const offset = 80;
+            const elementPosition = target.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - offset;
+            
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
             });
-        });
-    </script>
+        }
+    });
+});
+
+// Observe theme changes
+const observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+        if (mutation.attributeName === 'class') {
+            // Theme changed, CSS variables handle the rest
+            console.log('Theme updated');
+        }
+    });
+});
+
+observer.observe(document.body, { attributes: true });
+</script>

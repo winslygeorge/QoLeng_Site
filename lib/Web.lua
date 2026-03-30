@@ -1,13 +1,15 @@
 local FuncComponent = require('layout.renderer.FuncComponent')
-local navComponent = require('lib.components.navpage')
-local footer = require('lib.components.footerpage')
-local header = require('lib.components.headerpage')
+
 
 local  MainComponent = FuncComponent:extends()
 
 MainComponent:setView('layouts/default')
 
 function MainComponent:startInit()
+
+local navComponent = require('lib.components.navpage')
+local footer = require('lib.components.footerpage')
+local header = require('lib.components.headerpage')
 
     self:init(function (children, props, style)
       props.layout_data = {
