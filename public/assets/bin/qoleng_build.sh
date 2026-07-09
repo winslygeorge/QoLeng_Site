@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Dawn Web Framework Build Script for Debian-based systems
+# QoLeng Web Framework Build Script for Debian-based systems
 
 # --- Configuration ---
 # Define colors for terminal output
@@ -144,16 +144,16 @@ check_and_install_luarocks_dep() {
     fi
 }
 
-# Function to generate the dawn.lua script
-generate_dawn_lua() {
-    log_header "Generating dawn.lua CLI Script"
-    echo -e "${ARROW_ICON} Creating 'dawn.lua' in the current directory..."
+# Function to generate the qoleng.lua script
+generate_qoleng_lua() {
+    log_header "Generating qoleng.lua CLI Script"
+    echo -e "${ARROW_ICON} Creating 'qoleng.lua' in the current directory..."
 
-    cat << 'EOF' > dawn.lua
+    cat << 'EOF' > qoleng.lua
 #!/usr/bin/env luajit
 
--- Dawn Web Framework CLI
--- This script provides a command-line interface for managing Dawn projects.
+-- QoLeng Web Framework CLI
+-- This script provides a command-line interface for managing QoLeng projects.
 local json = require("dkjson")
 local lustache = require("lustache")
 
@@ -206,23 +206,25 @@ local function download_project_structure(name)
 end
 
 local function print_help()
-Dawn Web Framework CLI
+    print([[
+QoLeng Web Framework CLI
 
 Usage:
-    dawn new <project_name>             Create a new project
-    dawn install                        Install LuaRocks dependencies from config
-    dawn serve                          Run the dev server
-    dawn generate <type> <name>         Generate controller/model/middleware/fcomp/route/migration/ui-reactors
-    dawn db migrate [<migration_file>]  Run database migrations (optional: specify file)
-    dawn db create_table <model_name>   Create a specific table based on model
-    dawn db drop_table <model_name>     Drop a specific table based on model
-    dawn test                           Run unit tests
-    dawn version                        Show version
-    dawn help                           Show this help
+    qoleng new <project_name>             Create a new project
+    qoleng install                        Install LuaRocks dependencies from config
+    qoleng serve                          Run the dev server
+    qoleng generate <type> <name>         Generate controller/model/middleware/fcomp/route/migration/ui-reactors
+    qoleng db migrate [<migration_file>]  Run database migrations (optional: specify file)
+    qoleng db create_table <model_name>   Create a specific table based on model
+    qoleng db drop_table <model_name>     Drop a specific table based on model
+    qoleng test                           Run unit tests
+    qoleng version                        Show version
+    qoleng help                           Show this help
 ]])
 end
 
 local function get_version()
+    print("QoLeng CLI v1.0")
 end
 
 local function run_server()
@@ -310,7 +312,7 @@ end
 -- Define the snippets
 local snippets = {
     ["Lua Functional Component Usage"] = {
-        prefix = "!dawn_fcomp",
+        prefix = "!qoleng_fcomp",
         body = {
             "local FuncComponent = require(\"layout.renderer.FuncComponent\")",
             "",
@@ -330,7 +332,7 @@ local snippets = {
         description = "Scaffolds a basic usage example for FunctionalComponent"
     },
     ["Lua Controller Class Usage"] = {
-        prefix = "!dawn_controller",
+        prefix = "!qoleng_controller",
         body = {
             "local Controller = require(\"layout.renderer.Controller\")",
             "local MainLayout = require(\"lib.main_layout\")",
@@ -360,7 +362,7 @@ local snippets = {
         description = "Scaffolds a basic usage example for the Controller base class"
     },
     ["Lua ORM Model Definition and Usage"] = {
-        prefix = "!dawn_ormmodel",
+        prefix = "!qoleng_ormmodel",
         body = {
             "local Model = require(\"orm.model\")",
             "local env = require(\"config.get_env\")",
@@ -516,7 +518,7 @@ local snippets = {
         description = "Comprehensive example for defining and using Lua ORM Models (User & Profile)."
     },
     ["Lua Generic Middleware Skeleton"] = {
-        prefix = "!dawn_middleware",
+        prefix = "!qoleng_middleware",
         body = {
             "return function(options)",
             " options = options or {} -- Optional: Process configuration options for the middleware",
@@ -545,7 +547,7 @@ local snippets = {
         description = "Generates a generic Lua middleware skeleton for uWebSockets applications."
     },
     ["Lua uWebSockets Routes Module"] = {
-        prefix = "!dawn_route",
+        prefix = "!qoleng_route",
         body = {
             "local json = require('dkjson')",
             "",
@@ -578,7 +580,7 @@ local snippets = {
         description = "Lua uWebSockets module for defining server routes with common middleware setup."
     },
     ["Lua Create Table Migration"] = {
-        prefix = "!dawn_migration",
+        prefix = "!qoleng_migration",
         body = {
             "-- Auto-generated migration to create table for model '{{model_name_pascal_case}}'",
             "",
@@ -911,13 +913,13 @@ else
 end
 EOF
 
-    if [ -f "dawn.lua" ]; then
-        echo -e "  ${CHECK_MARK} 'dawn.lua' created successfully."
+    if [ -f "qoleng.lua" ]; then
+        echo -e "  ${CHECK_MARK} 'qoleng.lua' created successfully."
         INSTALLED_COUNT=$((INSTALLED_COUNT + 1))
     else
-        echo -e "  ${CROSS_MARK} Failed to create 'dawn.lua'."
+        echo -e "  ${CROSS_MARK} Failed to create 'qoleng.lua'."
         FAILED_COUNT=$((FAILED_COUNT + 1))
-        FAILED_PACKAGES+=("dawn.lua creation")
+        FAILED_PACKAGES+=("qoleng.lua creation")
         exit 1 # Exit if the core CLI script cannot be created
     fi
 }
@@ -933,44 +935,44 @@ fi
 # Ensure running as root for apt commands
 if [[ $EUID -ne 0 ]]; then
    echo -e "${RED}${CROSS_MARK} This script must be run as root.${NC}"
-   echo -e "${INFO_ICON} Please run with: ${YELLOW}sudo ./build_dawn.sh${NC}"
+   echo -e "${INFO_ICON} Please run with: ${YELLOW}sudo ./build_qoleng.sh${NC}"
    exit 1
 fi
 
-log_header "Starting Dawn Web Framework Installation"
+log_header "Starting QoLeng Web Framework Installation"
 
-# 1. Generate dawn.lua
-generate_dawn_lua
+# 1. Generate qoleng.lua
+generate_qoleng_lua
 
-# 2. Set Dawn CLI (make executable and move to /usr/local/bin)
-log_header "Setting up Dawn CLI"
-if [ -f "dawn.lua" ]; then
-    if confirm_action "Make dawn.lua executable and move it to /usr/local/bin?"; then
-        echo -e "${ARROW_ICON} Making dawn.lua executable..."
-        if chmod +x dawn.lua; then
-            echo -e "  ${CHECK_MARK} dawn.lua is now executable."
-            echo -e "${ARROW_ICON} Moving dawn.lua to /usr/local/bin/dawn..."
-            if mv dawn.lua /usr/local/bin/dawn; then
-                echo -e "  ${CHECK_MARK} Dawn CLI installed at /usr/local/bin/dawn."
+# 2. Set QoLeng CLI (make executable and move to /usr/local/bin)
+log_header "Setting up QoLeng CLI"
+if [ -f "qoleng.lua" ]; then
+    if confirm_action "Make qoleng.lua executable and move it to /usr/local/bin?"; then
+        echo -e "${ARROW_ICON} Making qoleng.lua executable..."
+        if chmod +x qoleng.lua; then
+            echo -e "  ${CHECK_MARK} qoleng.lua is now executable."
+            echo -e "${ARROW_ICON} Moving qoleng.lua to /usr/local/bin/qoleng..."
+            if mv qoleng.lua /usr/local/bin/qoleng; then
+                echo -e "  ${CHECK_MARK} QoLeng CLI installed at /usr/local/bin/qoleng."
                 INSTALLED_COUNT=$((INSTALLED_COUNT + 1))
             else
-                echo -e "  ${CROSS_MARK} Failed to move dawn.lua to /usr/local/bin. Manual intervention may be required."
+                echo -e "  ${CROSS_MARK} Failed to move qoleng.lua to /usr/local/bin. Manual intervention may be required."
                 FAILED_COUNT=$((FAILED_COUNT + 1))
-                FAILED_PACKAGES+=("Move dawn.lua")
+                FAILED_PACKAGES+=("Move qoleng.lua")
             fi
         else
-            echo -e "  ${CROSS_MARK} Failed to make dawn.lua executable."
+            echo -e "  ${CROSS_MARK} Failed to make qoleng.lua executable."
             FAILED_COUNT=$((FAILED_COUNT + 1))
-            FAILED_PACKAGES+=("Chmod dawn.lua")
+            FAILED_PACKAGES+=("Chmod qoleng.lua")
         fi
     else
-        echo -e "  ${INFO_ICON} Skipping Dawn CLI setup. You will need to manage 'dawn.lua' manually."
+        echo -e "  ${INFO_ICON} Skipping QoLeng CLI setup. You will need to manage 'qoleng.lua' manually."
         SKIPPED_COUNT=$((SKIPPED_COUNT + 1))
     fi
 else
-    echo -e "${WARNING_ICON} dawn.lua not found. Cannot set up CLI."
+    echo -e "${WARNING_ICON} qoleng.lua not found. Cannot set up CLI."
     FAILED_COUNT=$((FAILED_COUNT + 1))
-    FAILED_PACKAGES+=("dawn.lua not found for CLI setup")
+    FAILED_PACKAGES+=("qoleng.lua not found for CLI setup")
 fi
 
 
@@ -1158,8 +1160,8 @@ if [ "$FAILED_COUNT" -gt 0 ]; then
     echo -e "${RED}Please review the failures and try to resolve them manually.${NC}"
     exit 1
 else
-    echo -e "${GREEN}All requested Dawn Web Framework components and dependencies installed/checked successfully!${NC}"
-    echo -e "${YELLOW}You can now use 'dawn' command from anywhere in your terminal.${NC}"
+    echo -e "${GREEN}All requested QoLeng Web Framework components and dependencies installed/checked successfully!${NC}"
+    echo -e "${YELLOW}You can now use 'qoleng' command from anywhere in your terminal.${NC}"
 fi
 
 exit 0
