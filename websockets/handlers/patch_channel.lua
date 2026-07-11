@@ -356,14 +356,14 @@ function PatchWSHandler:unsubscribe(ws, payload, state, shared, topic, presence)
                 comp.clients[ws_id] = nil
             end
             -- Remove Redis-stored client state for this component
-            if self.server.dawn_sockets_handler.state_management.redis and comp.component_key then
+            if self.server.qoleng_sockets_handler.state_management.redis and comp.component_key then
                 self.server.logger:log(log_level.INFO,
                     string.format("Clearing Redis client state for %s:%s", comp.component_key, ws_id),
                     "PatchWSHandler", "unsubscribe"
                 )
                 local redis_key = string.format("client_state:%s:%s", comp.component_key, ws_id)
                 local ok, err = pcall(function()
-                    self.server.dawn_sockets_handler.state_management.redis:del(redis_key)
+                    self.server.qoleng_sockets_handler.state_management.redis:del(redis_key)
                 end)
                 if not ok then
                     self.server.logger:log(log_level.WARN,

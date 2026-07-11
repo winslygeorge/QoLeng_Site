@@ -406,7 +406,7 @@
                     <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
                 <pre><code><span class="comment">-- Load required modules</span>
-<span class="keyword">local</span> QolengModelRoute = <span class="keyword">require</span>(<span class="string">"path.to.dawn_model_route"</span>)
+<span class="keyword">local</span> QolengModelRoute = <span class="keyword">require</span>(<span class="string">"path.to.qoleng_model_route"</span>)
 <span class="keyword">local</span> User = <span class="keyword">require</span>(<span class="string">"models.user"</span>)
 
 <span class="comment">-- Create model route</span>
@@ -426,7 +426,7 @@ user_route:<span class="function">initialize</span>()
     </section>
 
     <!-- QolengModelRoute Section -->
-    <section id="dawn-model-route" class="mb-16 animate-fadeIn">
+    <section id="qoleng-model-route" class="mb-16 animate-fadeIn">
         <div class="flex items-center mb-6">
             <div class="section-number">1</div>
             <h2 class="text-3xl font-bold" style="color: var(--doc-text);">QolengModelRoute</h2>
@@ -616,8 +616,8 @@ user_route:<span class="function">initialize</span>()
                 <pre><code><span class="comment">-- app.lua - Main application file</span>
 
 <span class="comment">-- Load required modules</span>
-<span class="keyword">local</span> QolengServer = <span class="keyword">require</span>(<span class="string">"dawn"</span>)
-<span class="keyword">local</span> QolengModelRoute = <span class="keyword">require</span>(<span class="string">"path.to.dawn_model_route"</span>)
+<span class="keyword">local</span> QolengServer = <span class="keyword">require</span>(<span class="string">"qoleng"</span>)
+<span class="keyword">local</span> QolengModelRoute = <span class="keyword">require</span>(<span class="string">"path.to.qoleng_model_route"</span>)
 
 <span class="comment">-- Load your ORM models</span>
 <span class="keyword">local</span> User = <span class="keyword">require</span>(<span class="string">"models.user"</span>)

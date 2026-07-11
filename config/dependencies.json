@@ -1,6 +1,6 @@
 [
-  { "name": "dawn"},
-  { "name": "dawn_db"},
+  { "name": "qoleng"},
+  { "name": "qoleng_db"},
   { "name": "dkjson" },
   { "name": "lua-zlib" },
   { "name": "luasocket" },

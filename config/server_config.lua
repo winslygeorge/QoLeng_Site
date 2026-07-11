@@ -1,5 +1,5 @@
 -- Initialize a logger
-local  store = require('dawn').token_store
+local  store = require('qoleng').token_store
 
 local log_level = require('utils.logger').LogLevel
 

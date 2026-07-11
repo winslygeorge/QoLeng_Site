@@ -13,7 +13,7 @@ function binary_handler:message( ws, payload, state, shared)
     sender_id = sender_id,
     topic = "binary",
     receiver_id = sender_id,
-    type = "dawn_reply",
+    type = "qoleng_reply",
     event = "message",
     payload = {
       status = "ok",
@@ -23,7 +23,7 @@ function binary_handler:message( ws, payload, state, shared)
 
   if not payload or type(payload) ~= "string" then
     shared.sockets:send_to_user(ws, {
-      type = "dawn_reply",
+      type = "qoleng_reply",
       event = "message",
       payload = {
         status = "error",

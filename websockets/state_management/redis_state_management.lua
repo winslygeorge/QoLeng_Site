@@ -14,7 +14,7 @@ local RedisBackendStrategy = {}
 RedisBackendStrategy.__index = RedisBackendStrategy
 
 -- Inherit from BackendStrategy (optional, but good practice for ensuring interface compliance)
-local BackendStrategy = require ("dawn").presence_interface  -- Assuming this is in a separate file
+local BackendStrategy = require ("qoleng").presence_interface  -- Assuming this is in a separate file
 
 --- Creates a new instance of RedisBackendStrategy.
 --- @param config table Configuration options for Redis.

@@ -323,10 +323,10 @@
             </p>
             <div class="rounded-lg p-4 border" style="background: var(--doc-signature-bg); border-color: var(--doc-border);">
                 <pre class="text-sm overflow-x-auto"><code style="color: var(--doc-text);">
-dawn new my_awesome_app
+qoleng new my_awesome_app
 cd my_awesome_app
-sudo dawn install
-dawn serve
+sudo qoleng install
+qoleng serve
                 </code></pre>
             </div>
         </div>
@@ -390,15 +390,15 @@ dawn serve
 sudo apt update
 
 <span class="comment"># Step 2: Download the build script</span>
-wget https://example.com/path/to/build_dawn.sh
+wget https://example.com/path/to/build_qoleng.sh
 
 <span class="comment"># Step 3: Make script executable</span>
-chmod +x build_dawn.sh
+chmod +x build_qoleng.sh
 
 <span class="comment"># Step 4: Run installation</span>
-sudo ./build_dawn.sh
+sudo ./build_qoleng.sh
 <span class="comment"># Or for non-interactive installation:</span>
-sudo ./build_dawn.sh -Y</code></pre>
+sudo ./build_qoleng.sh -Y</code></pre>
             </div>
             
             <div class="p-5 rounded-lg border mt-6" style="background: var(--doc-badge-blue); border-color: var(--doc-border);">
@@ -411,7 +411,7 @@ sudo ./build_dawn.sh -Y</code></pre>
                     <li>Lua environments (Lua 5.1, LuaJIT) and LuaRocks</li>
                     <li>LuaRocks dependencies specific to Qoleng</li>
                     <li>PostgreSQL and Redis servers</li>
-                    <li>The <code class="px-1 rounded" style="background: var(--doc-code-bg); color: var(--doc-code-text);">dawn</code> CLI executable</li>
+                    <li>The <code class="px-1 rounded" style="background: var(--doc-code-bg); color: var(--doc-code-text);">qoleng</code> CLI executable</li>
                 </ul>
             </div>
         </div>
@@ -430,10 +430,10 @@ sudo ./build_dawn.sh -Y</code></pre>
                     <span class="code-language"><i class="fas fa-terminal"></i> Bash - Create and Run App</span>
                     <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-                <pre><code>dawn new my_awesome_app
+                <pre><code>qoleng new my_awesome_app
 cd my_awesome_app
-sudo dawn install
-dawn serve</code></pre>
+sudo qoleng install
+qoleng serve</code></pre>
             </div>
             
             <div class="grid md:grid-cols-2 gap-6 mt-6">
@@ -445,7 +445,7 @@ dawn serve</code></pre>
                             <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                         </div>
                         <pre><code><span class="keyword">require</span>(<span class="string">"bootstrap"</span>)(<span class="string">"./"</span>)
-<span class="keyword">local</span> QolengServer = <span class="keyword">require</span>(<span class="string">"dawn"</span>).dawn_server
+<span class="keyword">local</span> QolengServer = <span class="keyword">require</span>(<span class="string">"qoleng"</span>).qoleng_server
 <span class="keyword">local</span> server_config = <span class="keyword">require</span>(<span class="string">'config.server_config'</span>)
 <span class="keyword">local</span> routes = <span class="keyword">require</span>(<span class="string">'routes._index'</span>)
 
@@ -598,13 +598,13 @@ M.<span class="variable">__index</span> = M
                 <pre><code><span class="comment"># Qoleng Web Framework CLI</span>
 
 <span class="variable">Usage:</span>
-  <span class="keyword">dawn new</span> <span class="string">&lt;project_name&gt;</span>             <span class="comment"># Create a new project</span>
-  <span class="keyword">dawn install</span>                     <span class="comment"># Install LuaRocks dependencies</span>
-  <span class="keyword">dawn serve</span>                       <span class="comment"># Run the dev server</span>
-  <span class="keyword">dawn generate</span> <span class="string">&lt;type&gt; &lt;name&gt;</span>       <span class="comment"># Generate controller/model</span>
-  <span class="keyword">dawn db migrate</span> <span class="string">[&lt;migration_file&gt;]</span> <span class="comment"># Run database migrations</span>
-  <span class="keyword">dawn test</span>                        <span class="comment"># Run unit tests</span>
-  <span class="keyword">dawn version</span>                     <span class="comment"># Show version</span></code></pre>
+  <span class="keyword">qoleng new</span> <span class="string">&lt;project_name&gt;</span>             <span class="comment"># Create a new project</span>
+  <span class="keyword">qoleng install</span>                     <span class="comment"># Install LuaRocks dependencies</span>
+  <span class="keyword">qoleng serve</span>                       <span class="comment"># Run the dev server</span>
+  <span class="keyword">qoleng generate</span> <span class="string">&lt;type&gt; &lt;name&gt;</span>       <span class="comment"># Generate controller/model</span>
+  <span class="keyword">qoleng db migrate</span> <span class="string">[&lt;migration_file&gt;]</span> <span class="comment"># Run database migrations</span>
+  <span class="keyword">qoleng test</span>                        <span class="comment"># Run unit tests</span>
+  <span class="keyword">qoleng version</span>                     <span class="comment"># Show version</span></code></pre>
             </div>
         </div>
     </section>

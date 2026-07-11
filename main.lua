@@ -1,5 +1,5 @@
 require("bootstrap")("./") 
-local QolengServer = require("dawn").dawn_server 
+local QolengServer = require("qoleng").qoleng_server 
 local server_config = require('config.server_config')
 local routes = require('routes._index')
 

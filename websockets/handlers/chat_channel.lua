@@ -119,7 +119,7 @@ function ChatHandler:typing( ws, payload, state, shared, topic, presence)
 end
 
 -- Event handler for a custom 'stopped_typing' indicator
-function ChatHandler:stopped_typing(dawn_sockets, ws, payload, state, shared, topic, presence)
+function ChatHandler:stopped_typing(qoleng_sockets, ws, payload, state, shared, topic, presence)
     local user_id = state.user_id
     if not user_id then return end
 
@@ -204,12 +204,12 @@ function ChatHandler:private_message( ws, payload, state, shared, topic, presenc
 end
 
 -- Event handler for a user setting their nickname in the chat room
-function ChatHandler:set_nickname(dawn_sockets, ws, payload, state, shared, topic, presence)
+function ChatHandler:set_nickname(qoleng_sockets, ws, payload, state, shared, topic, presence)
     local user_id = state.user_id
     local new_nickname = payload.nickname
 
     if not user_id or not new_nickname or #new_nickname == 0 then
-        dawn_sockets:push_notification(ws, {
+        qoleng_sockets:push_notification(ws, {
             topic = topic,
             event = "error",
             data = { message = "Invalid nickname provided." }
@@ -222,7 +222,7 @@ function ChatHandler:set_nickname(dawn_sockets, ws, payload, state, shared, topi
 
     presence:set_presence(topic, state.ws_id, { nickname = new_nickname, user_id = user_id })
 
-    dawn_sockets:broadcast_to_room(topic, {
+    qoleng_sockets:broadcast_to_room(topic, {
         type = "chat_presence",
         topic = topic,
         event = "nickname_updated",
@@ -232,7 +232,7 @@ function ChatHandler:set_nickname(dawn_sockets, ws, payload, state, shared, topi
         }
     })
 
-    dawn_sockets:push_notification(ws, {
+    qoleng_sockets:push_notification(ws, {
         topic = topic,
         event = "system_message",
         data = { message = "Your nickname has been updated to: " .. new_nickname }
@@ -252,7 +252,7 @@ function ChatHandler:get_user_list( ws, payload, state, shared, topic, presence)
 
     shared.sockets:send_to_user(state.ws_id, {
         id = payload.id,
-        type = "dawn_reply",
+        type = "qoleng_reply",
         topic = topic,
         event = "user_list",
         payload = { users = users }
@@ -261,12 +261,12 @@ function ChatHandler:get_user_list( ws, payload, state, shared, topic, presence)
 end
 
 -- Event handler that runs before a WebSocket connection is closed for this channel
-function ChatHandler:before_close(dawn_sockets, ws, state, shared, topic, presence)
+function ChatHandler:before_close(qoleng_sockets, ws, state, shared, topic, presence)
     local user_id = state.user_id
     if user_id then
         local sender_presence = presence:get_all_presence(topic)[state.ws_id]
         local sender_nickname = sender_presence and sender_presence.meta and sender_presence.meta.nickname or "User"
-        dawn_sockets:broadcast_to_room(topic, {
+        qoleng_sockets:broadcast_to_room(topic, {
             type = "system_message",
             topic = topic,
             event = "user_disconnected",

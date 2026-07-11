@@ -215,10 +215,10 @@ window.__patchHelpers.getOverlayContainer = function() {
     }
     
     // Fallback implementation
-    let container = document.querySelector("#__dawn_hmr_overlay__");
+    let container = document.querySelector("#__qoleng_hmr_overlay__");
     if (!container) {
         container = document.createElement("div");
-        container.id = "__dawn_hmr_overlay__";
+        container.id = "__qoleng_hmr_overlay__";
         container.style.position = "fixed";
         container.style.top = "10px";
         container.style.right = "10px";
@@ -242,11 +242,11 @@ window.__patchHelpers.showHotReloadOverlay = function(message, type = "info", du
 };
 
 window.__patchHelpers.getOrCreateProgressOverlay = function (fileId, fileName) {
-    let overlay = document.querySelector(`.__dawn_toast_progress__[data-file-id="${fileId}"]`);
+    let overlay = document.querySelector(`.__qoleng_toast_progress__[data-file-id="${fileId}"]`);
     if (!overlay) {
         // Create the main overlay toast
         overlay = document.createElement("div");
-        overlay.className = "__dawn_toast__ __dawn_toast_progress__";
+        overlay.className = "__qoleng_toast__ __qoleng_toast_progress__";
         overlay.setAttribute("data-file-id", fileId);
         overlay.style.background = "rgba(44, 62, 80, 0.9)";
         overlay.style.color = "white";
@@ -288,7 +288,7 @@ window.__patchHelpers.getOrCreateProgressOverlay = function (fileId, fileName) {
         container.appendChild(overlay);
         
         // Ensure clear bar exists
-        const clearBar = container.querySelector("#__dawn_hmr_clear__");
+        const clearBar = container.querySelector("#__qoleng_hmr_clear__");
         if (clearBar) {
             clearBar.style.display = "flex";
         }
@@ -342,7 +342,7 @@ window.__patchHelpers.streamAndAwaitUpload = function (fileObject, { batchId, fi
             if (offset >= base64Content.length) {
                 // Finalize progress for this file
                 if (displayProgressBar) {
-                    const progressOverlay = document.querySelector(`.__dawn_toast_progress__[data-file-id="${fileId}"]`);
+                    const progressOverlay = document.querySelector(`.__qoleng_toast_progress__[data-file-id="${fileId}"]`);
                     if (progressOverlay) {
                         const progressBar = progressOverlay.querySelector(".progress-bar-fill");
                         if (progressBar) {
@@ -388,7 +388,7 @@ window.__patchHelpers.streamAndAwaitUpload = function (fileObject, { batchId, fi
             const progress = Math.min(100, Math.round((offset / base64Content.length) * 100));
 
             if (displayProgressBar) {
-                const progressOverlay = document.querySelector(`.__dawn_toast_progress__[data-file-id="${fileId}"]`);
+                const progressOverlay = document.querySelector(`.__qoleng_toast_progress__[data-file-id="${fileId}"]`);
                 if (progressOverlay) {
                     const progressBar = progressOverlay.querySelector(".progress-bar-fill");
                     if (progressBar) {
@@ -741,7 +741,7 @@ window.ws.onmessage = (event) => {
 
                     // Update global state or remove overlay
                     if (upload.displayProgressBar) {
-                        const progressOverlay = document.querySelector(`.__dawn_toast_progress__[data-file-id="${message.payload.fileId}"]`);
+                        const progressOverlay = document.querySelector(`.__qoleng_toast_progress__[data-file-id="${message.payload.fileId}"]`);
                         if (progressOverlay) {
                             progressOverlay.remove();
                         }
@@ -771,7 +771,7 @@ window.ws.onmessage = (event) => {
 
                     // Update global state or remove overlay
                     if (upload.displayProgressBar) {
-                        const progressOverlay = document.querySelector(`.__dawn_toast_progress__[data-file-id="${message.payload.fileId}"]`);
+                        const progressOverlay = document.querySelector(`.__qoleng_toast_progress__[data-file-id="${message.payload.fileId}"]`);
                         if (progressOverlay) {
                             progressOverlay.style.opacity = "0";
                             progressOverlay.style.transform = "translateX(100%)";
@@ -928,7 +928,7 @@ window.ws.onmessage = (event) => {
             // ========================
             // QOLENG ERROR
             // ========================
-            case 'dawn_error':
+            case 'qoleng_error':
                 console.error("❌ Server error:", message.payload?.reason || message.payload);
                 if (window.__patchHelpers && window.__patchHelpers.showHotReloadOverlay) {
                     window.__patchHelpers.showHotReloadOverlay(

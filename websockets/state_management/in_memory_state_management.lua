@@ -1,5 +1,5 @@
 local cjson = require("dkjson")
-local BackendStrategy = require("dawn").presence_interface
+local BackendStrategy = require("qoleng").presence_interface
 --- @class InMemoryBackend : BackendStrategy
 local InMemoryBackend = {}
 setmetatable(InMemoryBackend, { __index = BackendStrategy })

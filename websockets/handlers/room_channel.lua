@@ -12,7 +12,7 @@ function room_management:create_room( ws, payload, state, shared, topic, state_m
     local room_id = payload.room_id
     if not room_id or room_id == "" then
         shared.sockets:send_to_user(ws_id, {
-            type = "dawn_reply",
+            type = "qoleng_reply",
             topic = "room_management",
             event = "create_room",
             payload = { status = "error", reason = "Room ID cannot be empty." }
@@ -23,7 +23,7 @@ function room_management:create_room( ws, payload, state, shared, topic, state_m
     -- Validate room ID (basic example: check for uniqueness)
     if state_management:room_exists(room_id) then
         shared.sockets:send_to_user(ws_id, {
-            type = "dawn_reply",
+            type = "qoleng_reply",
             topic = "room_management",
             event = "create_room",
             payload = { status = "error", reason = "Room ID already exists." }
@@ -34,7 +34,7 @@ function room_management:create_room( ws, payload, state, shared, topic, state_m
     -- Create the room
     state_management:create_room(room_id)
     shared.sockets:send_to_user(ws_id, {
-        type = "dawn_reply",
+        type = "qoleng_reply",
         topic = "room_management",
         event = "create_room",
         payload = { status = "ok", room_id = room_id }
@@ -56,7 +56,7 @@ function room_handler:join( ws, payload, state, shared, topic, state_management)
 
     if not user_id then
         shared.sockets:send_to_user(ws_id, {
-            type = "dawn_reply",
+            type = "qoleng_reply",
             topic = topic, 
             event = "join",
             payload = { status = "error", reason = "User not identified." }
@@ -66,7 +66,7 @@ function room_handler:join( ws, payload, state, shared, topic, state_management)
 
     shared.sockets:join_room(topic, ws, { user_id = user_id, user_name = user_name, joined_at = os.time() }) -- Include user name in metadata
     shared.sockets:send_to_user(ws_id, {
-        type = "dawn_reply",
+        type = "qoleng_reply",
         topic = topic,
         event = "join",
         payload = { status = "ok", room_id = topic, message = "Joined room successfully." }
@@ -80,7 +80,7 @@ function room_handler:leave( ws, payload, state, shared, topic, state_management
 
     shared.sockets:leave_room(topic, ws)
     shared.sockets:send_to_user(ws_id, {
-        type = "dawn_reply",
+        type = "qoleng_reply",
         topic = topic,
         event = "leave",
         payload = { status = "ok", room_id = topic, message = "Left room." }
@@ -95,7 +95,7 @@ function room_handler:message( ws, payload, state, shared, topic, state_manageme
 
     if not payload or not payload.content then
         shared.sockets:send_to_user(ws, {
-            type = "dawn_reply",
+            type = "qoleng_reply",
             topic = topic,
             event = "message",
             payload = { status = "error", reason = "Message content is required." }

@@ -381,10 +381,10 @@
                     <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
                 <pre><code><span class="comment">-- Basic Qoleng Sockets integration</span>
-<span class="keyword">local</span> QolengSockets = <span class="keyword">require</span> <span class="string">"dawn_sockets"</span>
+<span class="keyword">local</span> QolengSockets = <span class="keyword">require</span> <span class="string">"qoleng_sockets"</span>
 
 <span class="comment">-- Initialize with your Qoleng server instance</span>
-<span class="keyword">local</span> socket_manager = QolengSockets:<span class="function">new</span>(dawn_server, parent_supervisor, shared_state, {
+<span class="keyword">local</span> socket_manager = QolengSockets:<span class="function">new</span>(qoleng_server, parent_supervisor, shared_state, {
     handlers = {
         channels = {
             chat = {
@@ -411,13 +411,13 @@
         
         <div class="rounded-xl p-6 mb-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
             <div class="function-signature">
-                <h4 class="font-bold text-lg mb-2">new(dawn_server, parent_supervisor, shared_state, options)</h4>
+                <h4 class="font-bold text-lg mb-2">new(qoleng_server, parent_supervisor, shared_state, options)</h4>
                 <p class="mb-3" style="color: var(--doc-text-secondary);">Creates a new QolengSockets instance with the specified configuration.</p>
                 
                 <table class="param-table">
                     <thead><tr><th>Parameter</th><th>Type</th><th>Description</th> </thead>
                     <tbody>
-                        <tr><td>dawn_server</td><td>object</td><td>The main Qoleng server instance</td></tr>
+                        <tr><td>qoleng_server</td><td>object</td><td>The main Qoleng server instance</td></tr>
                         <tr><td>parent_supervisor</td><td>object</td><td>Supervisor for process management</td></tr>
                         <tr><td>shared_state</td><td>table</td><td>Shared application state (optional)</td></tr>
                         <tr><td>options</td><td>table</td><td>Configuration options including handlers and state management</td></tr>
@@ -457,7 +457,7 @@
 
 <span class="comment">-- Initialize QolengSockets</span>
 <span class="keyword">local</span> socket_manager = QolengSockets:<span class="function">new</span>(
-    dawn_server_instance,
+    qoleng_server_instance,
     supervisor_instance,
     shared_state_table,
     { handlers = { channels = channel_handlers } }

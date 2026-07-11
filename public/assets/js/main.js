@@ -20,7 +20,7 @@ tailwind.config = {
                 'primary-lighter': '#2C2D50',
                 'secondary': '#FF7733',     // Ember Orange
                 'accent': '#FF5C0A',        // Lava Orange
-                'dawn-white': '#FFFBFF',
+                'qoleng-white': '#FFFBFF',
                 'tertiary': '#0E402D',
                 'steel-gray': '#2C2D50',
                 'light-gray': '#EAEAEAEA',

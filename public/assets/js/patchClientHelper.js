@@ -7,10 +7,10 @@ window.__patchHandlers = {};
 
 // --- Overlay Container with "Clear All" ---
 window.__patchHelpers.getOverlayContainer = function() {
-    let container = document.querySelector("#__dawn_hmr_overlay__");
+    let container = document.querySelector("#__qoleng_hmr_overlay__");
     if (!container) {
         container = document.createElement("div");
-        container.id = "__dawn_hmr_overlay__";
+        container.id = "__qoleng_hmr_overlay__";
         container.style.position = "fixed";
         container.style.top = "10px";
         container.style.right = "10px";
@@ -22,7 +22,7 @@ window.__patchHelpers.getOverlayContainer = function() {
 
         // --- Add "Clear All" bar ---
         const clearBar = document.createElement("div");
-        clearBar.id = "__dawn_hmr_clear__";
+        clearBar.id = "__qoleng_hmr_clear__";
         clearBar.style.display = "none"; // hidden until overlays exist
         clearBar.style.justifyContent = "flex-end";
         clearBar.style.alignItems = "center";
@@ -36,7 +36,7 @@ window.__patchHelpers.getOverlayContainer = function() {
         clearBar.textContent = "Clear All ✕";
 
         clearBar.addEventListener("click", () => {
-            const toasts = container.querySelectorAll(".__dawn_toast__");
+            const toasts = container.querySelectorAll(".__qoleng_toast__");
             toasts.forEach(t => t.remove());
             clearBar.style.display = "none";
         });
@@ -58,17 +58,17 @@ window.__patchHelpers.showHotReloadOverlay = function (message, type = "info", d
     }
 
     const container = window.__patchHelpers.getOverlayContainer();
-    const clearBar = container.querySelector("#__dawn_hmr_clear__");
+    const clearBar = container.querySelector("#__qoleng_hmr_clear__");
 
     // --- Limit overlays to 5 ---
     const MAX_OVERLAYS = 5;
-    const toasts = container.querySelectorAll(".__dawn_toast__");
+    const toasts = container.querySelectorAll(".__qoleng_toast__");
     if (toasts.length >= MAX_OVERLAYS) {
         toasts[0].remove(); // remove oldest
     }
 
     let overlay = document.createElement("div");
-    overlay.className = "__dawn_toast__"; // mark as toast
+    overlay.className = "__qoleng_toast__"; // mark as toast
     overlay.style.background = "rgba(0,0,0,0.7)";
     overlay.style.color = "white";
     overlay.style.padding = "8px 12px";
@@ -103,7 +103,7 @@ window.__patchHelpers.showHotReloadOverlay = function (message, type = "info", d
     closeBtn.addEventListener("click", (e) => {
         e.stopPropagation();
         overlay.remove();
-        if (container.querySelectorAll(".__dawn_toast__").length === 0) {
+        if (container.querySelectorAll(".__qoleng_toast__").length === 0) {
             clearBar.style.display = "none";
         }
     });
@@ -135,7 +135,7 @@ window.__patchHelpers.showHotReloadOverlay = function (message, type = "info", d
     clearBar.style.display = "flex";
 
     // --- Staggered slide-in ---
-    const index = container.querySelectorAll(".__dawn_toast__").length - 1;
+    const index = container.querySelectorAll(".__qoleng_toast__").length - 1;
     const staggerDelay = index * 100;
 
     setTimeout(() => {
@@ -150,7 +150,7 @@ window.__patchHelpers.showHotReloadOverlay = function (message, type = "info", d
         overlay.style.transform = "translateX(100%)";
         setTimeout(() => {
             overlay.remove();
-            if (container.querySelectorAll(".__dawn_toast__").length === 0) {
+            if (container.querySelectorAll(".__qoleng_toast__").length === 0) {
                 clearBar.style.display = "none";
             }
         }, 400);
