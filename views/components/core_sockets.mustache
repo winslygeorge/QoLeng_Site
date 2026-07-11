@@ -1,5 +1,5 @@
 <style>
-    /* Dawn Sockets - Integrated Theme System */
+    /* Qoleng Sockets - Integrated Theme System */
     
     /* Theme Variables */
     .main-content-body {
@@ -341,10 +341,10 @@
     <section id="overview" class="mb-16 animate-fadeIn">
         <div class="rounded-xl p-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
             <h1 class="text-4xl font-bold mb-6" style="background: linear-gradient(135deg, var(--laser-blue), var(--build-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-                Dawn Sockets
+                Qoleng Sockets
             </h1>
             <p class="text-xl mb-8" style="color: var(--doc-text-secondary);">
-                Comprehensive WebSocket management system for Dawn Framework with real-time presence tracking,
+                Comprehensive WebSocket management system for Qoleng Framework with real-time presence tracking,
                 room management, and reliable message delivery. This documentation covers the essential methods
                 developers need for building real-time applications.
             </p>
@@ -380,11 +380,11 @@
                     <span class="code-language"><i class="fab fa-lua"></i> Lua - Basic Socket Setup</span>
                     <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-                <pre><code><span class="comment">-- Basic Dawn Sockets integration</span>
-<span class="keyword">local</span> DawnSockets = <span class="keyword">require</span> <span class="string">"dawn_sockets"</span>
+                <pre><code><span class="comment">-- Basic Qoleng Sockets integration</span>
+<span class="keyword">local</span> QolengSockets = <span class="keyword">require</span> <span class="string">"dawn_sockets"</span>
 
-<span class="comment">-- Initialize with your Dawn server instance</span>
-<span class="keyword">local</span> socket_manager = DawnSockets:<span class="function">new</span>(dawn_server, parent_supervisor, shared_state, {
+<span class="comment">-- Initialize with your Qoleng server instance</span>
+<span class="keyword">local</span> socket_manager = QolengSockets:<span class="function">new</span>(dawn_server, parent_supervisor, shared_state, {
     handlers = {
         channels = {
             chat = {
@@ -412,19 +412,19 @@
         <div class="rounded-xl p-6 mb-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
             <div class="function-signature">
                 <h4 class="font-bold text-lg mb-2">new(dawn_server, parent_supervisor, shared_state, options)</h4>
-                <p class="mb-3" style="color: var(--doc-text-secondary);">Creates a new DawnSockets instance with the specified configuration.</p>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">Creates a new QolengSockets instance with the specified configuration.</p>
                 
                 <table class="param-table">
                     <thead><tr><th>Parameter</th><th>Type</th><th>Description</th> </thead>
                     <tbody>
-                        <tr><td>dawn_server</td><td>object</td><td>The main Dawn server instance</td></tr>
+                        <tr><td>dawn_server</td><td>object</td><td>The main Qoleng server instance</td></tr>
                         <tr><td>parent_supervisor</td><td>object</td><td>Supervisor for process management</td></tr>
                         <tr><td>shared_state</td><td>table</td><td>Shared application state (optional)</td></tr>
                         <tr><td>options</td><td>table</td><td>Configuration options including handlers and state management</td></tr>
                     </tbody>
                 </table>
                 
-                <p class="mt-3"><strong>Returns:</strong> DawnSockets instance</p>
+                <p class="mt-3"><strong>Returns:</strong> QolengSockets instance</p>
             </div>
             
             <div class="code-block">
@@ -455,8 +455,8 @@
     }
 }
 
-<span class="comment">-- Initialize DawnSockets</span>
-<span class="keyword">local</span> socket_manager = DawnSockets:<span class="function">new</span>(
+<span class="comment">-- Initialize QolengSockets</span>
+<span class="keyword">local</span> socket_manager = QolengSockets:<span class="function">new</span>(
     dawn_server_instance,
     supervisor_instance,
     shared_state_table,
@@ -674,7 +674,7 @@ socket_manager:<span class="function">cleanup_stale_clients</span>(<span class="
 
     <!-- Footer -->
     <footer class="mt-12 pt-8 border-t text-center" style="border-color: var(--doc-border); color: var(--doc-text-secondary);">
-        <p>Dawn Framework WebSocket Management © 2023</p>
+        <p>Qoleng Framework WebSocket Management © 2023</p>
         <div class="flex justify-center space-x-4 mt-4">
             <a href="#" class="hover:underline" style="color: var(--laser-blue);">Core Server Docs</a>
             <a href="#" class="hover:underline" style="color: var(--laser-blue);">API Reference</a>

@@ -1,5 +1,5 @@
 <style>
-    /* Dawn Database Setup - Integrated Theme System */
+    /* Qoleng Database Setup - Integrated Theme System */
     
     /* Theme Variables */
     .main-content-body {
@@ -336,10 +336,10 @@
     <section id="prerequisites" class="mb-16 animate-fadeIn">
         <div class="rounded-xl p-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
             <h1 class="text-4xl font-bold mb-6" style="background: linear-gradient(135deg, var(--laser-blue), var(--build-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-                Dawn Database Setup & Management
+                Qoleng Database Setup & Management
             </h1>
             <p class="text-xl mb-8" style="color: var(--doc-text-secondary);">
-                Complete guide to setting up PostgreSQL, configuring database connections, and managing migrations with Dawn Framework's database manager.
+                Complete guide to setting up PostgreSQL, configuring database connections, and managing migrations with Qoleng Framework's database manager.
             </p>
             
             <div class="grid md:grid-cols-3 gap-6 mb-8">
@@ -539,7 +539,7 @@ sudo /usr/pgadmin4/bin/setup-web.sh</code></pre>
                     <span class="code-language"><i class="fas fa-file-alt"></i> dev.env - Development Environment</span>
                     <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-                <pre><code><span class="comment"># Dawn Framework Development Environment</span>
+                <pre><code><span class="comment"># Qoleng Framework Development Environment</span>
 DB_CONFIG={
   <span class="string">"host"</span>: <span class="string">"localhost"</span>,
   <span class="string">"port"</span>: <span class="number">5432</span>,
@@ -562,7 +562,7 @@ LOG_LEVEL=debug</code></pre>
                     <span class="code-language"><i class="fas fa-file-alt"></i> prod.env - Production Environment</span>
                     <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-                <pre><code><span class="comment"># Dawn Framework Production Environment</span>
+                <pre><code><span class="comment"># Qoleng Framework Production Environment</span>
 DB_CONFIG={
   <span class="string">"host"</span>: <span class="string">"production-db.example.com"</span>,
   <span class="string">"port"</span>: <span class="number">5432</span>,
@@ -595,7 +595,7 @@ LOG_LEVEL=info</code></pre>
         <div class="rounded-xl p-6 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
             <div class="function-signature">
                 <h4 class="font-bold text-lg mb-2">Step 6: Create Your Data Model</h4>
-                <p class="mb-3" style="color: var(--doc-text-secondary);">Define your data structure using Dawn's ORM model system.</p>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">Define your data structure using Qoleng's ORM model system.</p>
             </div>
             
             <div class="code-block">
@@ -707,7 +707,7 @@ sudo -u postgres psql -d myapp_development -c "\dt+"</code></pre>
 
     <!-- Footer -->
     <footer class="mt-12 pt-8 border-t text-center" style="border-color: var(--doc-border); color: var(--doc-text-secondary);">
-        <p>Dawn Framework Database Setup Guide © 2023</p>
+        <p>Qoleng Framework Database Setup Guide © 2023</p>
         <div class="flex justify-center space-x-4 mt-4">
             <a href="#" class="hover:underline" style="color: var(--laser-blue);">ORM Documentation</a>
             <a href="#" class="hover:underline" style="color: var(--laser-blue);">API Reference</a>

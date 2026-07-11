@@ -13,7 +13,7 @@ local header = require('lib.components.headerpage')
 
     self:init(function (children, props, style)
       props.layout_data = {
-        title = "Home - Dawnserver",
+        title = "Home - Qolengserver",
         head_extra = '<meta name="keywords" content="luajit, webserver, uwebsockets">',
         -- body_extra = '<script src="/static/js/home-page-specific.js" defer></script>',
         current_year = os.date("%Y")

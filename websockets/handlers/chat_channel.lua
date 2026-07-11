@@ -182,7 +182,7 @@ function ChatHandler:private_message( ws, payload, state, shared, topic, presenc
             })
         end
     else
-        -- Handle offline private messages (using the queuing mechanism in DawnSockets)
+        -- Handle offline private messages (using the queuing mechanism in QolengSockets)
         shared.sockets:send_to_user(receiver_id, { -- Sending to user_id will trigger queuing if offline
             type = "chat_message",
             topic = "private_chat",

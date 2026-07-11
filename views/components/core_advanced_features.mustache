@@ -1,5 +1,5 @@
 <style>
-    /* Dawn Framework Advanced Features - Integrated Theme System */
+    /* Qoleng Framework Advanced Features - Integrated Theme System */
     
     /* Theme Variables */
     .main-content-body {
@@ -300,10 +300,10 @@
     <section id="overview" class="mb-16 animate-fadeIn">
         <div class="rounded-xl p-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
             <h1 class="text-4xl font-bold mb-6" style="background: linear-gradient(135deg, var(--laser-blue), var(--build-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-                Dawn Framework Advanced Features
+                Qoleng Framework Advanced Features
             </h1>
             <p class="text-xl mb-8" style="color: var(--doc-text-secondary);">
-                Explore the powerful additional features of Dawn Framework including timers, HTTP client capabilities, 
+                Explore the powerful additional features of Qoleng Framework including timers, HTTP client capabilities, 
                 and comprehensive file operations for building robust web applications.
             </p>
             
@@ -476,7 +476,7 @@ server:<span class="function">http_get</span>(<span class="string">"https://api.
     print(<span class="string">"Status:"</span>, res.status)
 <span class="keyword">end</span>, {
     [<span class="string">"Authorization"</span>] = <span class="string">"Bearer 12345"</span>,
-    [<span class="string">"X-Client"</span>] = <span class="string">"DawnServer"</span>
+    [<span class="string">"X-Client"</span>] = <span class="string">"QolengServer"</span>
 })</code></pre>
             </div>
             
@@ -547,7 +547,7 @@ server:<span class="function">http_put</span>(<span class="string">"https://api.
                     <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
                 <pre><code><span class="comment">-- Write a file synchronously</span>
-<span class="keyword">local</span> ok, err = server:<span class="function">write_file</span>(<span class="string">"hello.txt"</span>, <span class="string">"Hello Dawn Server!"</span>)
+<span class="keyword">local</span> ok, err = server:<span class="function">write_file</span>(<span class="string">"hello.txt"</span>, <span class="string">"Hello Qoleng Server!"</span>)
 <span class="keyword">if</span> <span class="keyword">not</span> ok <span class="keyword">then</span>
     print(<span class="string">"Write error:"</span>, err)
 <span class="keyword">end</span>
@@ -651,7 +651,7 @@ server:<span class="function">get</span>(<span class="string">"/api/weather"</sp
 
     <!-- Footer -->
     <footer class="mt-12 pt-8 border-t text-center" style="border-color: var(--doc-border); color: var(--doc-text-secondary);">
-        <p>Dawn Framework Advanced Features Guide © 2023</p>
+        <p>Qoleng Framework Advanced Features Guide © 2023</p>
         <div class="flex justify-center space-x-4 mt-4">
             <a href="#" class="hover:underline" style="color: var(--laser-blue);">Core Server Docs</a>
             <a href="#" class="hover:underline" style="color: var(--laser-blue);">Routing Guide</a>

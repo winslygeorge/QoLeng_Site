@@ -370,8 +370,8 @@
                 Model Route Management
             </h1>
             <p class="text-xl mb-8" style="color: var(--doc-text-secondary);">
-                Comprehensive guide to using DawnModelRoute and ModelRoute modules for automatic REST API generation
-                from ORM models in Dawn Framework applications.
+                Comprehensive guide to using QolengModelRoute and ModelRoute modules for automatic REST API generation
+                from ORM models in Qoleng Framework applications.
             </p>
             
             <div class="grid md:grid-cols-3 gap-6 mb-8">
@@ -406,11 +406,11 @@
                     <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
                 <pre><code><span class="comment">-- Load required modules</span>
-<span class="keyword">local</span> DawnModelRoute = <span class="keyword">require</span>(<span class="string">"path.to.dawn_model_route"</span>)
+<span class="keyword">local</span> QolengModelRoute = <span class="keyword">require</span>(<span class="string">"path.to.dawn_model_route"</span>)
 <span class="keyword">local</span> User = <span class="keyword">require</span>(<span class="string">"models.user"</span>)
 
 <span class="comment">-- Create model route</span>
-<span class="keyword">local</span> user_route = DawnModelRoute:<span class="function">new</span>(<span class="string">"users"</span>, User, DawnServer)
+<span class="keyword">local</span> user_route = QolengModelRoute:<span class="function">new</span>(<span class="string">"users"</span>, User, QolengServer)
 
 <span class="comment">-- Initialize routes</span>
 user_route:<span class="function">initialize</span>()
@@ -425,17 +425,17 @@ user_route:<span class="function">initialize</span>()
         </div>
     </section>
 
-    <!-- DawnModelRoute Section -->
+    <!-- QolengModelRoute Section -->
     <section id="dawn-model-route" class="mb-16 animate-fadeIn">
         <div class="flex items-center mb-6">
             <div class="section-number">1</div>
-            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">DawnModelRoute</h2>
+            <h2 class="text-3xl font-bold" style="color: var(--doc-text);">QolengModelRoute</h2>
         </div>
         
         <div class="rounded-xl p-6 mb-8 border" style="background: var(--doc-card-bg); border-color: var(--doc-border);">
             <div class="function-signature">
                 <h4 class="font-bold text-lg mb-2">new(model_name, Model, server)</h4>
-                <p class="mb-3" style="color: var(--doc-text-secondary);">Creates a new DawnModelRoute instance for automatic route generation.</p>
+                <p class="mb-3" style="color: var(--doc-text-secondary);">Creates a new QolengModelRoute instance for automatic route generation.</p>
                 
                 <table class="param-table">
                     <thead>
@@ -444,20 +444,20 @@ user_route:<span class="function">initialize</span>()
                     <tbody>
                         <tr><td>model_name</td><td>string</td><td>The name of the model used in route paths</td><td>Yes</td></tr>
                         <tr><td>Model</td><td>table</td><td>The ORM model class to which the route is associated</td><td>Yes</td></tr>
-                        <tr><td>server</td><td>table</td><td>The DawnServer instance to which the route is associated</td><td>Yes</td></tr>
+                        <tr><td>server</td><td>table</td><td>The QolengServer instance to which the route is associated</td><td>Yes</td></tr>
                     </tbody>
                 </table>
                 
-                <p class="mt-3"><strong>Returns:</strong> table - A new DawnModelRoute instance</p>
+                <p class="mt-3"><strong>Returns:</strong> table - A new QolengModelRoute instance</p>
             </div>
             
             <div class="code-block">
                 <div class="code-header">
-                    <span class="code-language"><i class="fab fa-lua"></i> Lua - DawnModelRoute Creation</span>
+                    <span class="code-language"><i class="fab fa-lua"></i> Lua - QolengModelRoute Creation</span>
                     <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
                 <pre><code><span class="comment">-- Create routes for User model</span>
-<span class="keyword">local</span> user_route = DawnModelRoute:<span class="function">new</span>(<span class="string">"users"</span>, User, server)
+<span class="keyword">local</span> user_route = QolengModelRoute:<span class="function">new</span>(<span class="string">"users"</span>, User, server)
 user_route:<span class="function">initialize</span>()
 
 <span class="comment">-- Generated endpoints:</span>
@@ -616,19 +616,19 @@ user_route:<span class="function">initialize</span>()
                 <pre><code><span class="comment">-- app.lua - Main application file</span>
 
 <span class="comment">-- Load required modules</span>
-<span class="keyword">local</span> DawnServer = <span class="keyword">require</span>(<span class="string">"dawn"</span>)
-<span class="keyword">local</span> DawnModelRoute = <span class="keyword">require</span>(<span class="string">"path.to.dawn_model_route"</span>)
+<span class="keyword">local</span> QolengServer = <span class="keyword">require</span>(<span class="string">"dawn"</span>)
+<span class="keyword">local</span> QolengModelRoute = <span class="keyword">require</span>(<span class="string">"path.to.dawn_model_route"</span>)
 
 <span class="comment">-- Load your ORM models</span>
 <span class="keyword">local</span> User = <span class="keyword">require</span>(<span class="string">"models.user"</span>)
 <span class="keyword">local</span> Product = <span class="keyword">require</span>(<span class="string">"models.product"</span>)
 
-<span class="comment">-- Create DawnServer instance</span>
-<span class="keyword">local</span> server = DawnServer:<span class="function">new</span>({ port = <span class="number">8080</span> })
+<span class="comment">-- Create QolengServer instance</span>
+<span class="keyword">local</span> server = QolengServer:<span class="function">new</span>({ port = <span class="number">8080</span> })
 
 <span class="comment">-- Create model routes</span>
-<span class="keyword">local</span> user_route = DawnModelRoute:<span class="function">new</span>(<span class="string">"users"</span>, User, server)
-<span class="keyword">local</span> product_route = DawnModelRoute:<span class="function">new</span>(<span class="string">"products"</span>, Product, server)
+<span class="keyword">local</span> user_route = QolengModelRoute:<span class="function">new</span>(<span class="string">"users"</span>, User, server)
+<span class="keyword">local</span> product_route = QolengModelRoute:<span class="function">new</span>(<span class="string">"products"</span>, Product, server)
 
 <span class="comment">-- Initialize all routes</span>
 user_route:<span class="function">initialize</span>()
@@ -649,7 +649,7 @@ server:<span class="function">start</span>()
                     <li>Proper route scoping under <code>/api</code> prefix</li>
                     <li>Support for pagination, filtering, and ordering</li>
                     <li>Proper HTTP status codes and error handling</li>
-                    <li>Integration with DawnServer's request/response cycle</li>
+                    <li>Integration with QolengServer's request/response cycle</li>
                 </ul>
             </div>
         </div>
@@ -657,7 +657,7 @@ server:<span class="function">start</span>()
 
     <!-- Footer -->
     <footer class="mt-12 pt-8 border-t text-center" style="border-color: var(--doc-border); color: var(--doc-text-secondary);">
-        <p>Dawn Framework Model Route Management © 2023</p>
+        <p>Qoleng Framework Model Route Management © 2023</p>
         <div class="flex justify-center space-x-4 mt-4">
             <a href="#" class="hover:underline" style="color: var(--laser-blue);">Core Server Docs</a>
             <a href="#" class="hover:underline" style="color: var(--laser-blue);">API Reference</a>

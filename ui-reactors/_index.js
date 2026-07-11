@@ -15,9 +15,9 @@ const reactorModules = [
   for (const file of reactorModules) {
     try {
       await import(`${basePath}${file}`);
-      console.log(`[DawnUI] Loaded: ${file}`);
+      console.log(`[QolengUI] Loaded: ${file}`);
     } catch (err) {
-      console.warn(`[DawnUI] Failed to load reactor: ${file}`, err);
+      console.warn(`[QolengUI] Failed to load reactor: ${file}`, err);
     }
   }
 })();

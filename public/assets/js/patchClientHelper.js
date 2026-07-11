@@ -49,7 +49,7 @@ window.__patchHelpers.getOverlayContainer = function() {
 // --- Main Overlay Function ---
 window.__patchHelpers.showHotReloadOverlay = function (message, type = "info", duration = 3000, persist = false, details = null) {
     if (persist) {
-        sessionStorage.setItem("__DAWN_LAST_RELOAD__", JSON.stringify({
+        sessionStorage.setItem("__QOLENG_LAST_RELOAD__", JSON.stringify({
             message,
             type,
             details,

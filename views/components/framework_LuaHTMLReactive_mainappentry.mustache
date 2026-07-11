@@ -342,7 +342,7 @@
                 Page Registry & Routing
             </h1>
             <p class="text-xl mb-8" style="color: var(--doc-text-secondary);">
-                Comprehensive guide to creating and registering pages in Dawn Framework using both Lustache/Mustache templates
+                Comprehensive guide to creating and registering pages in Qoleng Framework using both Lustache/Mustache templates
                 and LuaReactive components. Learn how to set up routing for different page types and application architectures.
             </p>
             
@@ -377,7 +377,7 @@
                     <span class="code-language"><i class="fab fa-lua"></i> Lua - Quick Start Overview</span>
                     <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy"></i> Copy</button>
                 </div>
-                <pre><code><span class="comment">-- Dawn Framework supports two rendering approaches:</span>
+                <pre><code><span class="comment">-- Qoleng Framework supports two rendering approaches:</span>
 <span class="comment">-- 1. Lustache/Mustache: Server-side rendered templates</span>
 <span class="comment">-- 2. LuaReactive: Reactive components with client-side state</span>
 
@@ -426,7 +426,7 @@ MainComponent:setView(<span class="string">'layouts/default'</span>)
 <span class="keyword">function</span> MainComponent:startInit()
     <span class="keyword">self</span>:init(<span class="keyword">function</span> (children, props, style)
         props.layout_data = {
-            title = <span class="string">"Home - Dawnserver"</span>,
+            title = <span class="string">"Home - Qolengserver"</span>,
             head_extra = <span class="string">'&lt;meta name="keywords" content="luajit, webserver">'</span>,
             current_year = os.date(<span class="string">"%Y"</span>)
         }
@@ -577,7 +577,7 @@ RouteManager.registerRoute(<span class="string">"home"</span>, HomePage, {
 
     <!-- Footer -->
     <footer class="mt-12 pt-8 border-t text-center" style="border-color: var(--doc-border); color: var(--doc-text-secondary);">
-        <p>Dawn Framework Page Registry & Routing © 2023</p>
+        <p>Qoleng Framework Page Registry & Routing © 2023</p>
         <div class="flex justify-center space-x-4 mt-4">
             <a href="#" class="hover:underline" style="color: var(--laser-blue);">Core Server Docs</a>
             <a href="#" class="hover:underline" style="color: var(--laser-blue);">API Reference</a>

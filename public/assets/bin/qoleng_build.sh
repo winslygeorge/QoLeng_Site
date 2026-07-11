@@ -997,6 +997,7 @@ if command_exists "luarocks"; then
     check_and_install_luarocks_dep "luafilesystem" "LuaFileSystem"
     check_and_install_luarocks_dep "dkjson" "dkjson"
     check_and_install_luarocks_dep "lustache" "Lustache"
+    check_and_install_luarocks_dep "luv" "Lua luv"
 else
     echo -e "${RED}${CROSS_MARK} LuaRocks is not installed. Skipping LuaRocks package installations.${NC}"
     FAILED_COUNT=$((FAILED_COUNT + 1))

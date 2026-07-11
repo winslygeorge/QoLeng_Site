@@ -926,7 +926,7 @@ window.ws.onmessage = (event) => {
                 break;
                 
             // ========================
-            // DAWN ERROR
+            // QOLENG ERROR
             // ========================
             case 'dawn_error':
                 console.error("❌ Server error:", message.payload?.reason || message.payload);
