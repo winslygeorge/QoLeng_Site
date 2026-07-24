@@ -185,7 +185,8 @@ window.sendPatch = async function (component_key, methodName, args = {}) {
 };
 
 // --- WebSocket Setup ---
-const WS_URL = 'ws://' + window.location.host + '/ws?user_id=' + encodeURIComponent(userId);
+const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+const WS_URL = protocol + window.location.host + '/ws?user_id=' + encodeURIComponent(userId);
 let ws;
 let subscribed = false;
 
