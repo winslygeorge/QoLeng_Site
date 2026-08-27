@@ -37,6 +37,18 @@ function M:routes()
       res:send(layout)
     end)
 
+        self.server:get("/web/data-binding-concepts", function(req, res, query)
+
+      MainLayout:init(function(children, props, style)
+        local body = require("lib.components.data-binding-concepts")
+        children.body = body:build()
+      end)
+      local layout = MainLayout:render_layout()
+
+      res:writeHeader("Content-Type", "text/html")
+      res:send(layout)
+    end)
+
       self.server:get("/web/core-server", function(req, res, query)
 
       MainLayout:init(function(children, props, style)

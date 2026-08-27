@@ -1,0 +1,865 @@
+    <style>
+        /* Custom styles for code blocks and other elements */
+        .code-block {
+            background: #0A0A0F;
+            border-left: 4px solid #0066FF;
+        }
+
+        .light-theme .code-block {
+            background: #F7F9FC;
+            border-left: 4px solid #0066FF;
+            color: #2A2A3A;
+        }
+
+        .code-keyword { color: #0066FF; }
+        .code-string { color: #00CC88; }
+        .code-comment { color: #6A737D; }
+        .light-theme .code-comment { color: #9AA5B5; }
+        .code-variable { color: #8A2BE2; }
+        .code-type { color: #FFB300; }
+
+        .code-block::-webkit-scrollbar { height: 8px; }
+        .code-block::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); border-radius: 4px; }
+        .code-block::-webkit-scrollbar-thumb { background: rgba(0, 102, 255, 0.5); border-radius: 4px; }
+        .code-block::-webkit-scrollbar-thumb:hover { background: rgba(0, 102, 255, 0.7); }
+
+        .nav-link { position: relative; transition: all 0.3s ease; }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px; left: 0;
+            width: 0; height: 2px;
+            background: linear-gradient(90deg, #00CC88, #8A2BE2);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after { width: 100%; }
+
+        .feature-card { transition: all 0.3s ease; }
+        .feature-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); }
+
+        .data-source-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .function-signature {
+            background: #F0F4F8;
+            border-left: 4px solid #0066FF;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.5rem;
+        }
+
+        .param-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        .param-table th, .param-table td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #E0E5EC; }
+        .param-table th { background-color: #F7F9FC; font-weight: 600; }
+
+        /* Badge palette specific to binding types */
+        .badge-text { background: #DCEBFF; color: #0047B3; }
+        .badge-loop { background: #E6D9FF; color: #5B21B6; }
+        .badge-visibility { background: #D9FFF0; color: #00734D; }
+        .badge-model { background: #FFE8CC; color: #B45309; }
+        .badge-event { background: #FFD9E0; color: #B3123E; }
+        .badge-patch { background: #E0F2FE; color: #075985; }
+    </style>
+
+    <!-- Main Documentation Content -->
+    <main class="main-content-body max-w-6xl mx-auto px-6 py-8 light-theme">
+        <!-- Header -->
+        <div class="mb-12 text-center">
+            <h1 class="text-4xl font-bold mb-4">Data Binding Concepts Guide</h1>
+            <p class="text-xl text-gray-600">How state becomes DOM in Qoleng Framework applications</p>
+            <div class="mt-4 flex justify-center gap-2 flex-wrap">
+                <span class="data-source-badge badge-text">Text &amp; HTML</span>
+                <span class="data-source-badge badge-loop">Loops &amp; Templates</span>
+                <span class="data-source-badge badge-visibility">Visibility &amp; Class</span>
+                <span class="data-source-badge badge-model">Two-Way Model</span>
+                <span class="data-source-badge badge-event">Events</span>
+                <span class="data-source-badge badge-patch">Server Patches</span>
+            </div>
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="bg-gray-50 rounded-xl p-6 mb-12">
+            <h2 class="text-2xl font-bold mb-4">Table of Contents</h2>
+            <div class="grid md:grid-cols-2 gap-4">
+                <ul class="space-y-2">
+                    <li><a href="#overview" class="text-blue-600 hover:underline">1. Binding Architecture Overview</a></li>
+                    <li><a href="#binding-reference" class="text-blue-600 hover:underline">2. Binding Type Reference</a></li>
+                    <li><a href="#text-html" class="text-blue-600 hover:underline">3. Text &amp; HTML Content Binding</a></li>
+                    <li><a href="#nested-paths" class="text-blue-600 hover:underline">4. Nested Path Resolution</a></li>
+                    <li><a href="#loops" class="text-blue-600 hover:underline">5. Loop Rendering &amp; Templates</a></li>
+                    <li><a href="#visibility" class="text-blue-600 hover:underline">6. Conditional Visibility Bindings</a></li>
+                </ul>
+                <ul class="space-y-2">
+                    <li><a href="#class-style" class="text-blue-600 hover:underline">7. Class &amp; Style Bindings</a></li>
+                    <li><a href="#two-way" class="text-blue-600 hover:underline">8. Two-Way Model Binding</a></li>
+                    <li><a href="#events" class="text-blue-600 hover:underline">9. Event Binding &amp; Delegation</a></li>
+                    <li><a href="#patches" class="text-blue-600 hover:underline">10. Server-Driven Patch Binding</a></li>
+                    <li><a href="#expressions" class="text-blue-600 hover:underline">11. Expression &amp; Template Interpolation</a></li>
+                    <li><a href="#best-practices" class="text-blue-600 hover:underline">12. Configuration Reference &amp; Best Practices</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 1: Overview -->
+        <section id="overview" class="doc-section mb-16">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold mr-4">1</div>
+                <h2 class="text-3xl font-bold">Binding Architecture Overview</h2>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+                <p class="text-gray-700 mb-4">
+                    Qoleng renders state to the DOM through two complementary binding layers that share the same
+                    vocabulary of attributes and path syntax, but run in different places:
+                </p>
+
+                <div class="grid md:grid-cols-2 gap-4 mb-6">
+                    <div class="p-4 bg-blue-50 rounded-lg">
+                        <h3 class="font-bold text-blue-800 mb-2">🖨️ Server-Rendered Bindings</h3>
+                        <p class="text-sm text-gray-600">
+                            Lua templates (<code>HTML.e</code>) emit <code>data-bind</code>, <code>data-template-id</code>,
+                            and <code>data-bind-class-hidden</code> attributes as part of the initial HTML payload.
+                            The server also computes granular DOM <strong>patches</strong> when state changes, so the
+                            client never has to re-derive what changed.
+                        </p>
+                    </div>
+                    <div class="p-4 bg-purple-50 rounded-lg">
+                        <h3 class="font-bold text-purple-800 mb-2">🧩 Client-Reactive Bindings</h3>
+                        <p class="text-sm text-gray-600">
+                            <code>domBindings.js</code> implements a self-contained reactive layer using
+                            <code>ui-*</code> attributes (<code>ui-bind</code>, <code>ui-loop</code>, <code>ui-model</code>,
+                            <code>ui-on</code>, ...) for components that keep their own local state and re-bind on
+                            every state change without a server round trip.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <strong>💡 Key Insight:</strong> Both layers resolve the same kind of path expressions
+                    (<code>assignedTo.role.name</code>), scope those paths the same way inside loops, and use the same
+                    "attribute names the binding target" convention. Once you understand one layer, the other reads
+                    the same way.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Binding Type Reference -->
+        <section id="binding-reference" class="doc-section mb-16">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold mr-4">2</div>
+                <h2 class="text-3xl font-bold">Binding Type Reference</h2>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+                <p class="text-gray-700 mb-4">Every binding attribute maps to exactly one job. Nothing does double duty.</p>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr><th>Attribute</th><th>Layer</th><th>Purpose</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>data-bind</code></td><td>Server + Client</td><td>Bind element text content to a state path</td></tr>
+                        <tr><td><code>data-template-id</code></td><td>Server</td><td>Mark/target a <code>&lt;template&gt;</code> used to render each item of a bound array</td></tr>
+                        <tr><td><code>data-bind-class-hidden</code></td><td>Server</td><td>Hide an element when the named item field is truthy (or <code>not-&lt;field&gt;</code> when falsy)</td></tr>
+                        <tr><td><code>ui-bind</code></td><td>Client</td><td>Bind element text content to a state path (reactive layer)</td></tr>
+                        <tr><td><code>ui-html</code></td><td>Client</td><td>Bind element innerHTML to a state path</td></tr>
+                        <tr><td><code>ui-show</code> / <code>ui-if</code></td><td>Client</td><td>Toggle <code>display</code> based on truthiness of a state key</td></tr>
+                        <tr><td><code>ui-else</code></td><td>Client</td><td>Inverse of <code>ui-if</code> for the same key</td></tr>
+                        <tr><td><code>ui-class</code></td><td>Client</td><td><code>class:key</code> — toggle a CSS class based on a state key</td></tr>
+                        <tr><td><code>ui-style</code></td><td>Client</td><td><code>prop:key</code> — set an inline style property from a state key</td></tr>
+                        <tr><td><code>ui-attr-*</code></td><td>Client</td><td>Set an arbitrary HTML attribute from a state key</td></tr>
+                        <tr><td><code>ui-model</code> / <code>ui-model.lazy</code></td><td>Client</td><td>Two-way bind an input's value (immediate vs. on-blur)</td></tr>
+                        <tr><td><code>ui-loop</code></td><td>Client</td><td><code>item in list</code> — clone a template per array element</td></tr>
+                        <tr><td><code>ui-on</code></td><td>Client</td><td><code>event:action(args)</code> — delegated event dispatch</td></tr>
+                        <tr><td><code>ui-page-next</code> / <code>ui-page-prev</code></td><td>Client</td><td>Paginate a bound loop by key</td></tr>
+                        <tr><td><code>ui-form</code></td><td>Client</td><td>Intercept form submit and dispatch an action</td></tr>
+                        <tr><td><code>HTML.patch(...)</code></td><td>Server → Client</td><td>Emit a granular DOM patch (<code>attr</code>, <code>text</code>, <code>replace</code>, <code>list</code>, <code>object</code>, <code>nested</code>, <code>crud</code>)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Section 3: Text & HTML Content Binding -->
+        <section id="text-html" class="doc-section mb-16">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold mr-4">3</div>
+                <h2 class="text-3xl font-bold">Text &amp; HTML Content Binding</h2>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+                <p class="text-gray-700 mb-4">
+                    The simplest binding keeps an element's text in sync with a single state value. On the server this
+                    is <code>data-bind</code>; the reactive client layer mirrors it with <code>ui-bind</code> and adds
+                    <code>ui-html</code> for raw markup.
+                </p>
+
+                <h3 class="text-xl font-bold mt-6 mb-3">Server: <code>data-bind</code></h3>
+                <div class="code-block">
+                    <pre><code class="language-lua"><span class="text-gray-400">-- Render-time: emits &lt;span data-bind="title"&gt;&lt;/span&gt;</span>
+HTML.e(<span class="text-green-400">"span"</span>, {
+    [<span class="text-green-400">"data-bind"</span>] = <span class="text-green-400">"title"</span>,
+    class = <span class="text-green-400">"font-medium text-blue-800"</span>
+})</code></pre>
+                </div>
+
+                <h3 class="text-xl font-bold mt-6 mb-3">Client: <code>ui-bind</code> / <code>ui-html</code></h3>
+                <div class="code-block">
+                    <pre><code class="language-javascript"><span class="text-gray-400">// bindStateToDOM() walks every element with a ui-* attribute</span>
+<span class="text-blue-400">if</span> (el.hasAttribute(<span class="text-green-400">"ui-bind"</span>)) {
+    <span class="text-blue-400">const</span> key = el.getAttribute(<span class="text-green-400">"ui-bind"</span>);
+    <span class="text-blue-400">if</span> (state.hasOwnProperty(key)) el.textContent = state[key] ?? <span class="text-green-400">""</span>;
+}
+
+<span class="text-blue-400">if</span> (el.hasAttribute(<span class="text-green-400">"ui-html"</span>)) {
+    <span class="text-blue-400">const</span> key = el.getAttribute(<span class="text-green-400">"ui-html"</span>);
+    <span class="text-blue-400">if</span> (state.hasOwnProperty(key)) el.innerHTML = state[key] ?? <span class="text-green-400">""</span>;
+}</code></pre>
+                </div>
+
+                <div class="warning-box">
+                    <strong>⚠️ Important:</strong> <code>ui-html</code> sets raw <code>innerHTML</code>. Only bind it to
+                    state your own application produces — never to unescaped user input.
+                </div>
+
+                <h3 class="text-xl font-bold mt-6 mb-3">Server-Driven Patch Equivalent</h3>
+                <p class="text-gray-700 mb-3">
+                    When server state changes after the initial render, the framework doesn't re-render the whole
+                    page — it emits a small <code>text</code> patch that the client applies directly:
+                </p>
+                <div class="code-block">
+                    <pre><code class="language-javascript"><span class="text-gray-400">// patchClient.js — the "text" patch handler</span>
+<span class="text-green-400">"text"</span>: (target, patch) =&gt; {
+    <span class="text-blue-400">if</span> (!target.hasAttribute(<span class="text-green-400">'data-bind'</span>)) {
+        target.textContent = patch.content != <span class="text-keyword">null</span> ? String(patch.content) : <span class="text-green-400">""</span>;
+    }
+}</code></pre>
+                </div>
+                <p class="text-gray-700">
+                    Note the guard: elements that already carry <code>data-bind</code> are left alone here, because
+                    they're kept current by <code>applyDataBindings()</code> instead — this avoids two systems fighting
+                    over the same node.
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 4: Nested Path Resolution -->
+        <section id="nested-paths" class="doc-section mb-16">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold mr-4">4</div>
+                <h2 class="text-3xl font-bold">Nested Path Resolution</h2>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+                <p class="text-gray-700 mb-4">
+                    Every binding path supports dot notation, so deeply nested state — like
+                    <code>assignedTo.role.name</code> on a task object — binds directly without any manual flattening
+                    on the server.
+                </p>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="method-card">
+                        <h4 class="font-bold text-lg mb-2">Server: <code>data-bind</code> dot paths</h4>
+                        <div class="code-block bg-gray-900 p-3 rounded">
+                            <pre><code class="language-lua">HTML.e(<span class="text-green-400">"span"</span>, { [<span class="text-green-400">"data-bind"</span>] = <span class="text-green-400">"assignedTo.name"</span> }),
+HTML.e(<span class="text-green-400">"span"</span>, { [<span class="text-green-400">"data-bind"</span>] = <span class="text-green-400">"assignedTo.role.name"</span> }),
+HTML.e(<span class="text-green-400">"span"</span>, { [<span class="text-green-400">"data-bind"</span>] = <span class="text-green-400">"assignedTo.department.name"</span> })</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="method-card">
+                        <h4 class="font-bold text-lg mb-2">Client: <code>getDeepValue</code></h4>
+                        <div class="code-block bg-gray-900 p-3 rounded">
+                            <pre><code class="language-javascript"><span class="text-blue-400">function</span> getDeepValue(obj, path) {
+    <span class="text-blue-400">return</span> path.split(<span class="text-green-400">'.'</span>)
+        .reduce((acc, key) =&gt; acc?.[key], obj);
+}
+
+<span class="text-gray-400">// getDeepValue(task, "assignedTo.role.name")</span>
+<span class="text-gray-400">// → task.assignedTo.role.name</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="text-gray-700 mt-4 mb-3">
+                    <code>patchClientHelper.js</code>'s <code>getNestedValue</code> is the server-patch-layer analogue,
+                    used whenever <code>applyDataBindings()</code> needs to resolve a <code>data-bind</code> path
+                    against freshly patched state — same dot-path contract, different call site.
+                </p>
+
+                <div class="info-box">
+                    <strong>💡 Key Insight:</strong> Path resolution is <em>scope-relative</em>. Outside a loop, a path
+                    resolves against the top-level state object. Inside a loop, it resolves against the current item —
+                    see the next section.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Loop Rendering & Templates -->
+        <section id="loops" class="doc-section mb-16">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold mr-4">5</div>
+                <h2 class="text-3xl font-bold">Loop Rendering &amp; Templates</h2>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+                <p class="text-gray-700 mb-4">
+                    Arrays are rendered by cloning a template once per item and re-scoping every binding inside the
+                    clone to that item. The server and client implement the same idea with different attribute names.
+                </p>
+
+                <h3 class="text-xl font-bold mt-6 mb-3">Server: <code>data-template-id</code></h3>
+                <div class="code-block">
+                    <pre><code class="language-lua"><span class="text-gray-400">-- 1. Define the per-item template once</span>
+<span class="text-blue-400">local</span> StateTaskTemplate = <span class="text-blue-400">function</span>()
+    <span class="text-blue-400">return</span> HTML.e(<span class="text-green-400">"template"</span>, { [<span class="text-green-400">"data-template-id"</span>] = <span class="text-green-400">"tasks_template"</span> }, {
+        HTML.e(<span class="text-green-400">"span"</span>, { [<span class="text-green-400">"data-bind"</span>] = <span class="text-green-400">"title"</span> }),
+        HTML.e(<span class="text-green-400">"span"</span>, { [<span class="text-green-400">"data-bind"</span>] = <span class="text-green-400">"assignedTo.name"</span> })
+    })
+<span class="text-blue-400">end</span>
+
+<span class="text-gray-400">-- 2. Bind the array to a container referencing that template</span>
+H.e(<span class="text-green-400">"div"</span>, {
+    [<span class="text-green-400">"data-bind"</span>] = <span class="text-green-400">"tasks"</span>,
+    [<span class="text-green-400">"data-template-id"</span>] = <span class="text-green-400">"tasks_template"</span>
+})</code></pre>
+                </div>
+
+                <h3 class="text-xl font-bold mt-6 mb-3">Client: <code>ui-loop</code></h3>
+                <div class="code-block">
+                    <pre><code class="language-javascript"><span class="text-gray-400">// domBindings.js — renderLoops()</span>
+<span class="text-blue-400">const</span> match = loopExpr.match(<span class="text-orange-400">/^([\w$]+)\s+in\s+([\w$]+)$/</span>); <span class="text-gray-400">// "user in users"</span>
+<span class="text-blue-400">const</span> [_, itemName, listKey] = match;
+<span class="text-blue-400">const</span> list = state[listKey];
+
+<span class="text-gray-400">// Clone the stored template per visible item...</span>
+<span class="text-blue-400">const</span> clone = templateClone.cloneNode(<span class="text-orange-400">true</span>);
+clone.setAttribute(<span class="text-green-400">"data-loop-index"</span>, i);
+clone.setAttribute(<span class="text-green-400">"data-ui-loop-origin"</span>, listKey);
+
+<span class="text-gray-400">// ...and re-scope every ui-bind inside the clone to this item</span>
+clone.querySelectorAll(<span class="text-green-400">"[ui-bind]"</span>).forEach(bindEl =&gt; {
+    <span class="text-blue-400">const</span> bindKey = bindEl.getAttribute(<span class="text-green-400">"ui-bind"</span>);
+    <span class="text-blue-400">if</span> (bindKey.startsWith(<span class="text-green-400">`${itemName}.`</span>)) {
+        <span class="text-blue-400">const</span> localPath = bindKey.replace(<span class="text-green-400">`${itemName}.`</span>, <span class="text-green-400">''</span>);
+        bindEl.textContent = getDeepValue(item, localPath) ?? <span class="text-green-400">""</span>;
+    }
+});</code></pre>
+                </div>
+
+                <p class="text-gray-700 mt-4 mb-2">
+                    Two attributes shape how a loop renders without touching the underlying array:
+                </p>
+                <table class="param-table">
+                    <thead><tr><th>Attribute</th><th>Example</th><th>Effect</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>ui-loop-skip</code></td><td><code>"odd"</code>, <code>"even"</code>, <code>"every-3"</code></td><td>Skip rendering items matching the rule</td></tr>
+                        <tr><td><code>ui-loop-style</code></td><td><code>"odd:background:#f5f5f5"</code></td><td>Apply inline styles to items matching a rule</td></tr>
+                        <tr><td><code>ui-loop-empty</code></td><td><code>[ui-loop-empty="tasks"]</code></td><td>Element shown only when the bound list rendered zero items</td></tr>
+                        <tr><td><code>__page</code> / <code>__perPage</code> (in state)</td><td><code>state.__page.tasks = 2</code></td><td>Client-side pagination for a given list key, driven by <code>ui-page-next</code> / <code>ui-page-prev</code></td></tr>
+                    </tbody>
+                </table>
+
+                <div class="success-box">
+                    <strong>✨ Pro Tip:</strong> The client loop renderer stores the <em>original, unrendered</em>
+                    template the first time it sees a <code>ui-loop</code> element (<code>loopTemplates.set(loopEl,
+                    loopEl.cloneNode(true))</code>), then hides it. Every subsequent render clones from that saved
+                    template rather than the live DOM, so bindings never accumulate stale clones.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Conditional Visibility -->
+        <section id="visibility" class="doc-section mb-16">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white font-bold mr-4">6</div>
+                <h2 class="text-3xl font-bold">Conditional Visibility Bindings</h2>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+                <p class="text-gray-700 mb-4">
+                    Visibility bindings toggle whether an element is shown, driven by a boolean field — either on
+                    global state or, inside a loop, on the current item.
+                </p>
+
+                <h3 class="text-xl font-bold mt-6 mb-3">Server: <code>data-bind-class-hidden</code> (per item)</h3>
+                <div class="code-block">
+                    <pre><code class="language-lua"><span class="text-gray-400">-- Visible while NOT editing; hidden once item.editing is true</span>
+HTML.e(<span class="text-green-400">"span"</span>, {
+    [<span class="text-green-400">"data-bind"</span>] = <span class="text-green-400">"title"</span>,
+    [<span class="text-green-400">"data-bind-class-hidden"</span>] = <span class="text-green-400">"editing"</span>
+})
+
+<span class="text-gray-400">-- Visible only while editing; hidden while item.editing is false</span>
+HTML.e(<span class="text-green-400">"input"</span>, {
+    [<span class="text-green-400">"data-bind"</span>] = <span class="text-green-400">"editTitle"</span>,
+    [<span class="text-green-400">"data-bind-class-hidden"</span>] = <span class="text-green-400">"not-editing"</span>
+})</code></pre>
+                </div>
+                <p class="text-gray-700 mb-4">
+                    The <code>not-</code> prefix inverts the check — same field, opposite visibility — which is how
+                    <code>ClientStateTaskTemplate</code> shows exactly one of "display span" / "edit input" per task
+                    without any extra state field.
+                </p>
+
+                <h3 class="text-xl font-bold mt-6 mb-3">Client: <code>ui-show</code> / <code>ui-if</code> / <code>ui-else</code></h3>
+                <div class="code-block">
+                    <pre><code class="language-javascript"><span class="text-blue-400">if</span> (el.hasAttribute(<span class="text-green-400">"ui-show"</span>)) {
+    <span class="text-blue-400">const</span> key = el.getAttribute(<span class="text-green-400">"ui-show"</span>);
+    el.style.display = state[key] ? <span class="text-green-400">""</span> : <span class="text-green-400">"none"</span>;
+}
+<span class="text-blue-400">if</span> (el.hasAttribute(<span class="text-green-400">"ui-else"</span>)) {
+    <span class="text-blue-400">const</span> key = el.getAttribute(<span class="text-green-400">"ui-else"</span>);
+    el.style.display = !state[key] ? <span class="text-green-400">""</span> : <span class="text-green-400">"none"</span>;
+}</code></pre>
+                </div>
+
+                <div class="info-box">
+                    <strong>💡 Key Insight:</strong> <code>ui-show</code> and <code>ui-if</code> are intentionally
+                    identical in <code>domBindings.js</code> — both are kept only so templates authored against
+                    either naming convention behave the same way. <code>ui-else</code> is the only one that inverts.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7: Class & Style Bindings -->
+        <section id="class-style" class="doc-section mb-16">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white font-bold mr-4">7</div>
+                <h2 class="text-3xl font-bold">Class &amp; Style Bindings</h2>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+                <p class="text-gray-700 mb-4">
+                    Beyond show/hide, elements often need a class toggled or a single style property driven by state
+                    — for example, striking through a completed task's title.
+                </p>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="method-card">
+                        <h4 class="font-bold text-lg mb-2"><code>ui-class="cls:key"</code></h4>
+                        <div class="code-block bg-gray-900 p-3 rounded">
+                            <pre><code class="language-javascript"><span class="text-blue-400">const</span> [cls, key] = el.getAttribute(<span class="text-green-400">"ui-class"</span>).split(<span class="text-green-400">":"</span>);
+<span class="text-blue-400">if</span> (state[key]) el.classList.add(cls);
+<span class="text-blue-400">else</span> el.classList.remove(cls);
+
+<span class="text-gray-400">// &lt;span ui-class="line-through:completed"&gt;</span></code></pre>
+                        </div>
+                    </div>
+
+                    <div class="method-card">
+                        <h4 class="font-bold text-lg mb-2"><code>ui-style="prop:key"</code></h4>
+                        <div class="code-block bg-gray-900 p-3 rounded">
+                            <pre><code class="language-javascript"><span class="text-blue-400">const</span> [prop, key] = el.getAttribute(<span class="text-green-400">"ui-style"</span>).split(<span class="text-green-400">":"</span>);
+el.style[prop] = state[key];
+
+<span class="text-gray-400">// &lt;div ui-style="color:accentColor"&gt;</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="text-xl font-bold mt-6 mb-3">Arbitrary Attributes: <code>ui-attr-*</code></h3>
+                <div class="code-block">
+                    <pre><code class="language-javascript"><span class="text-gray-400">// &lt;a ui-attr-href="taskUrl"&gt; → sets href from state.taskUrl</span>
+<span class="text-blue-400">if</span> (attr.name.startsWith(<span class="text-green-400">"ui-attr-"</span>)) {
+    <span class="text-blue-400">const</span> htmlAttr = attr.name.slice(<span class="text-green-400">"ui-attr-"</span>.length);
+    <span class="text-blue-400">const</span> stateKey = attr.value;
+    <span class="text-blue-400">if</span> (state.hasOwnProperty(stateKey)) el.setAttribute(htmlAttr, state[stateKey]);
+    <span class="text-blue-400">else</span> el.removeAttribute(htmlAttr);
+}</code></pre>
+                </div>
+
+                <div class="warning-box">
+                    <strong>⚠️ Important:</strong> Each of <code>ui-class</code>, <code>ui-style</code>, and
+                    <code>ui-attr-*</code> handles exactly one class / property / attribute per element. For multiple
+                    conditional classes, add multiple elements' worth of coverage or compute a combined class string
+                    into a single state key rather than stacking several <code>ui-class</code> attributes.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 8: Two-Way Model Binding -->
+        <section id="two-way" class="doc-section mb-16">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-yellow-600 flex items-center justify-center text-white font-bold mr-4">8</div>
+                <h2 class="text-3xl font-bold">Two-Way Model Binding</h2>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+                <p class="text-gray-700 mb-4">
+                    Two-way binding keeps an <code>&lt;input&gt;</code>'s value synced <em>from</em> state on render,
+                    and dispatches an update <em>to</em> state whenever the user types. Two variants trade off
+                    responsiveness for chattiness.
+                </p>
+
+                <table class="comparison-table">
+                    <thead><tr><th>Attribute</th><th>Event</th><th>Best for</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>ui-model</code></td><td><code>input</code> (every keystroke)</td><td>Live previews, character counters, search-as-you-type</td></tr>
+                        <tr><td><code>ui-model.lazy</code></td><td><code>blur</code> (on field exit)</td><td>Form fields where every keystroke doesn't need a round trip</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="code-block">
+                    <pre><code class="language-javascript"><span class="text-gray-400">// setupTwoWayBinding() — domBindings.js</span>
+<span class="text-blue-400">function</span> setupTwoWayBinding(el, key, dispatchFn, isLazy = <span class="text-orange-400">false</span>) {
+    <span class="text-blue-400">const</span> eventType = isLazy ? <span class="text-green-400">"blur"</span> : <span class="text-green-400">"input"</span>;
+    <span class="text-blue-400">const</span> handler = (e) =&gt; {
+        dispatchFn({ type: <span class="text-green-400">"__SET_MODEL"</span>, key, value: e.target.value });
+    };
+    el.addEventListener(eventType, handler);
+}
+
+<span class="text-gray-400">// bindStateToDOM() sets the initial value, then wires the listener once</span>
+<span class="text-blue-400">if</span> (el.hasAttribute(<span class="text-green-400">"ui-model"</span>)) {
+    <span class="text-blue-400">const</span> key = el.getAttribute(<span class="text-green-400">"ui-model"</span>);
+    el.value = state[key] ?? <span class="text-green-400">""</span>;
+    setupTwoWayBinding(el, key, dispatch, <span class="text-orange-400">false</span>);
+}</code></pre>
+                </div>
+
+                <h3 class="text-xl font-bold mt-6 mb-3">Server-Rendered Equivalent: On-Demand Reads</h3>
+                <p class="text-gray-700 mb-3">
+                    Server-driven views skip a persistent model attribute entirely and instead read the current input
+                    value at the moment an action fires, via <code>HTML.client.getValue</code>:
+                </p>
+                <div class="code-block">
+                    <pre><code class="language-lua">HTML.e(<span class="text-green-400">"input"</span>, {
+    type = <span class="text-green-400">"text"</span>,
+    [<span class="text-green-400">"data-bind"</span>] = <span class="text-green-400">"editTitle"</span>,
+    oninput = HTML.patch(comp_key, <span class="text-keyword">nil</span>, <span class="text-green-400">"updateEditTitle"</span>, {
+        id = HTML.client.getVar(<span class="text-green-400">"id"</span>),
+        title = HTML.client.getValue(<span class="text-green-400">":scope &gt; input"</span>)
+    })
+})</code></pre>
+                </div>
+                <p class="text-gray-700">
+                    Both approaches converge on the same result — state is the source of truth for the input's value —
+                    but the client layer keeps the value locally between dispatches, while the server layer re-reads
+                    the DOM on every dispatch.
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 9: Event Binding & Delegation -->
+        <section id="events" class="doc-section mb-16">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center text-white font-bold mr-4">9</div>
+                <h2 class="text-3xl font-bold">Event Binding &amp; Delegation</h2>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+                <p class="text-gray-700 mb-4">
+                    Rather than attaching a listener to every element, the client layer registers <strong>one</strong>
+                    delegated listener on <code>document.body</code> and walks up from the click target looking for
+                    <code>ui-on</code>. This keeps re-rendered/looped elements automatically wired without re-binding.
+                </p>
+
+                <h3 class="text-xl font-bold mt-6 mb-3"><code>ui-on="click:action(args)"</code></h3>
+                <div class="code-block">
+                    <pre><code class="language-javascript"><span class="text-blue-400">const</span> [event, actionExpr] = uiOn.split(<span class="text-green-400">":"</span>);
+<span class="text-blue-400">const</span> match = actionExpr.match(<span class="text-orange-400">/^(\w+)\((.*)\)$/</span>); <span class="text-gray-400">// removeUser(user.name)</span>
+
+<span class="text-blue-400">if</span> (match) {
+    type = match[1]; <span class="text-gray-400">// function name</span>
+    args = match[2].split(<span class="text-green-400">","</span>).map(arg =&gt; {
+        <span class="text-gray-400">// string literal → strip quotes</span>
+        <span class="text-gray-400">// number literal → Number(arg)</span>
+        <span class="text-gray-400">// "user.field" inside a loop → resolved from the loop's item, via</span>
+        <span class="text-gray-400">// data-loop-index / data-ui-loop-origin set during renderLoops()</span>
+    });
+}
+
+dispatch({ type, args, event: e });</code></pre>
+                </div>
+
+                <p class="text-gray-700 mb-2">Two more delegated patterns round out interaction handling:</p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="method-card">
+                        <h4 class="font-bold text-lg mb-2">Pagination</h4>
+                        <div class="code-block bg-gray-900 p-3 rounded">
+                            <pre><code class="language-javascript"><span class="text-gray-400">// &lt;button ui-page-next="tasks"&gt;</span>
+dispatch({ type: <span class="text-green-400">"__PAGE_NEXT"</span>, key: <span class="text-green-400">"tasks"</span> });</code></pre>
+                        </div>
+                    </div>
+                    <div class="method-card">
+                        <h4 class="font-bold text-lg mb-2">Form Submit</h4>
+                        <div class="code-block bg-gray-900 p-3 rounded">
+                            <pre><code class="language-javascript"><span class="text-gray-400">// &lt;form ui-form="saveProfile"&gt;</span>
+e.preventDefault();
+dispatch({ type: target.getAttribute(<span class="text-green-400">"ui-form"</span>) });</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="text-xl font-bold mt-6 mb-3">Server: <code>HTML.patch(...)</code> as an event target</h3>
+                <div class="code-block">
+                    <pre><code class="language-lua"><span class="text-gray-400">-- Every onclick/oninput on a server-rendered element is a patch call:</span>
+<span class="text-gray-400">-- component key, ws_id (nil = current), method name, args table</span>
+onclick = HTML.patch(comp_key, <span class="text-keyword">nil</span>, <span class="text-green-400">"deleteClientTask"</span>, {
+    id = HTML.client.getVar(<span class="text-green-400">"id"</span>, { relative = <span class="text-orange-400">true</span> })
+})</code></pre>
+                </div>
+                <p class="text-gray-700">
+                    <code>{ relative = true }</code> is the server-layer counterpart to the client's loop-scope
+                    resolution above — both answer the same question: <em>"which item's <code>id</code> does this
+                    button belong to?"</em>
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 10: Server-Driven Patch Binding -->
+        <section id="patches" class="doc-section mb-16">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold mr-4">10</div>
+                <h2 class="text-3xl font-bold">Server-Driven Patch Binding</h2>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+                <p class="text-gray-700 mb-4">
+                    When server state changes, the framework doesn't send a new page — it sends a small, typed
+                    <strong>patch</strong> describing exactly what to change, keyed by <code>selector</code>. The
+                    client's patch handler table dispatches each patch type to the right DOM operation.
+                </p>
+
+                <table class="param-table">
+                    <thead><tr><th>Patch type</th><th>Effect</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>attr</code></td><td>Set one attribute (<code>patch.key</code> / <code>patch.value</code>)</td></tr>
+                        <tr><td><code>remove-attr</code></td><td>Remove one attribute</td></tr>
+                        <tr><td><code>text</code></td><td>Set <code>textContent</code> (skipped if the target has <code>data-bind</code>)</td></tr>
+                        <tr><td><code>replace</code></td><td>Swap the target element for freshly rendered HTML or a VDOM node</td></tr>
+                        <tr><td><code>remove</code></td><td>Remove the target element entirely</td></tr>
+                        <tr><td><code>list</code></td><td>Apply an array-level CRUD change to a bound loop</td></tr>
+                        <tr><td><code>object</code></td><td>Apply a shallow merge to a bound object</td></tr>
+                        <tr><td><code>nested</code></td><td>Apply a change at an arbitrary nested path</td></tr>
+                        <tr><td><code>crud</code></td><td>Dispatch one of <code>HTML.CRUD_OPERATIONS</code> against the bound target</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="code-block">
+                    <pre><code class="language-javascript"><span class="text-gray-400">// patchClient.js</span>
+<span class="text-blue-400">const</span> patchHandlers = {
+    <span class="text-green-400">"text"</span>: (target, patch) =&gt; {
+        <span class="text-blue-400">if</span> (!target.hasAttribute(<span class="text-green-400">'data-bind'</span>)) {
+            target.textContent = patch.content != <span class="text-keyword">null</span> ? String(patch.content) : <span class="text-green-400">""</span>;
+        }
+    },
+    <span class="text-green-400">"list"</span>: (target, patch) =&gt; window.__patchHandlers.list(target, patch),
+    <span class="text-green-400">"crud"</span>: (target, patch) =&gt; window.__patchHandlers.crud(target, patch)
+    <span class="text-gray-400">// ...attr, remove-attr, replace, remove, object, nested</span>
+};
+
+<span class="text-blue-400">function</span> applyPatch(patch, retryCount = <span class="text-orange-400">0</span>) {
+    <span class="text-blue-400">return</span> window.__patchHelpers.applyPatch(patch, retryCount, patchHandlers, isdebug);
+}</code></pre>
+                </div>
+
+                <div class="success-box">
+                    <strong>✨ Pro Tip:</strong> Because <code>applyDataBindings()</code> re-scans
+                    <code>[data-bind]</code> descendants after any structural patch (<code>replace</code>,
+                    <code>list</code>), newly inserted markup is bound automatically — you never need to manually
+                    re-wire bindings after a patch lands.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 11: Expression & Template Interpolation -->
+        <section id="expressions" class="doc-section mb-16">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold mr-4">11</div>
+                <h2 class="text-3xl font-bold">Expression &amp; Template Interpolation</h2>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+                <p class="text-gray-700 mb-4">
+                    Beyond attribute-based binding, <code>browserOps-helpers.js</code> provides a small expression
+                    engine used by declarative client operations (<code>_op</code> / <code>_ops</code> /
+                    <code>_handler</code> payloads) — string templates, path resolution, and condition evaluation.
+                </p>
+
+                <h3 class="text-xl font-bold mt-6 mb-3">String Interpolation: <code>{{ path }}</code></h3>
+                <div class="code-block">
+                    <pre><code class="language-javascript"><span class="text-gray-400">// resolveTemplate("Hi {{user.name}}, item #{{order.items[0].price}}", ctx)</span>
+value.replace(<span class="text-orange-400">/{{\s*([^}]+)\s*}}/g</span>, (_, expr) =&gt; {
+    <span class="text-blue-400">const</span> path = expr.split(<span class="text-green-400">"."</span>);
+    <span class="text-blue-400">let</span> current = ctx;
+    <span class="text-blue-400">for</span> (<span class="text-blue-400">let</span> part <span class="text-blue-400">of</span> path) {
+        <span class="text-blue-400">const</span> arrMatch = part.match(<span class="text-orange-400">/^(\w+)\[(\d+)\]$/</span>); <span class="text-gray-400">// items[0]</span>
+        current = arrMatch
+            ? current?.[arrMatch[1]]?.[parseInt(arrMatch[2], <span class="text-orange-400">10</span>)]
+            : current?.[part];
+    }
+    <span class="text-blue-400">return</span> current ?? <span class="text-green-400">""</span>;
+});</code></pre>
+                </div>
+
+                <h3 class="text-xl font-bold mt-6 mb-3">Path Resolution for Writes: <code>resolvePath</code></h3>
+                <p class="text-gray-700 mb-3">
+                    Where <code>getDeepValue</code>/<code>getNestedValue</code> only <em>read</em> a nested value,
+                    <code>resolvePath</code> also returns the parent context and final key — everything needed to
+                    <em>assign</em> into a nested path (e.g. for a client-side <code>SET</code> operation):
+                </p>
+                <div class="code-block">
+                    <pre><code class="language-javascript"><span class="text-blue-400">function</span> resolvePath(base, path) {
+    <span class="text-blue-400">const</span> parts = path.split(<span class="text-green-400">"."</span>);
+    <span class="text-blue-400">let</span> ctx = base, target = base;
+    <span class="text-blue-400">for</span> (<span class="text-blue-400">let</span> i = <span class="text-orange-400">0</span>; i &lt; parts.length; i++) {
+        <span class="text-blue-400">if</span> (target == <span class="text-keyword">null</span>) <span class="text-blue-400">return</span> { ctx, target: <span class="text-keyword">undefined</span>, key: parts[i] };
+        ctx = target;
+        target = target[parts[i]];
+        <span class="text-blue-400">if</span> (i === parts.length - <span class="text-orange-400">1</span>) <span class="text-blue-400">return</span> { ctx, target, key: parts[i] };
+    }
+}
+<span class="text-gray-400">// resolvePath(state, "uiState.activeTab") → { ctx: state.uiState, target: "...", key: "activeTab" }</span></code></pre>
+                </div>
+
+                <h3 class="text-xl font-bold mt-6 mb-3">Conditional Evaluation: <code>evalCondition</code></h3>
+                <div class="code-block">
+                    <pre><code class="language-javascript"><span class="text-gray-400">// Supports &amp;&amp; / || groups, unary "!", and binary comparisons</span>
+<span class="text-blue-400">switch</span> (cond.operator) {
+    <span class="text-blue-400">case</span> <span class="text-green-400">"=="</span>: <span class="text-blue-400">return</span> left == right;
+    <span class="text-blue-400">case</span> <span class="text-green-400">"&gt;"</span>:  <span class="text-blue-400">return</span> left &gt; right;
+    <span class="text-gray-400">// ...===, !=, !==, &gt;=, &lt;, &lt;=</span>
+}</code></pre>
+                </div>
+
+                <div class="info-box">
+                    <strong>💡 Key Insight:</strong> These helpers power any declarative op object — a click handler,
+                    a computed argument, a conditional patch — anywhere a value needs to be derived from context
+                    rather than hard-coded at render time.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 12: Configuration Reference & Best Practices -->
+        <section id="best-practices" class="doc-section mb-16">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-white font-bold mr-4">12</div>
+                <h2 class="text-3xl font-bold">Configuration Reference &amp; Best Practices</h2>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+                <h3 class="text-xl font-bold mb-3">Choosing a Binding Layer</h3>
+                <table class="comparison-table">
+                    <thead><tr><th>Scenario</th><th>Use</th></tr></thead>
+                    <tbody>
+                        <tr><td>Data every connected client should see</td><td>Server <code>data-bind</code> + <code>setState</code> patches</td></tr>
+                        <tr><td>Per-session UI state (drafts, toggles, filters)</td><td>Server <code>data-bind="cs.*"</code> + <code>setClientState</code>, or client <code>ui-*</code> for fully local widgets</td></tr>
+                        <tr><td>High-frequency local interaction (drag state, hover, in-progress typing before commit)</td><td>Client reactive layer (<code>ui-model</code>, <code>ui-show</code>) — avoids a round trip per keystroke</td></tr>
+                        <tr><td>Any list of items with per-item nested fields</td><td><code>data-template-id</code> (server) or <code>ui-loop</code> (client) — never hand-roll string concatenation for lists</td></tr>
+                    </tbody>
+                </table>
+
+                <h3 class="text-xl font-bold mt-6 mb-3">Checklist</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="p-4 bg-green-50 rounded-lg">
+                        <h4 class="font-bold text-green-800 mb-2">✅ Do</h4>
+                        <ul class="text-sm text-gray-700 list-disc list-inside space-y-1">
+                            <li>Use dot paths (<code>a.b.c</code>) instead of pre-flattening nested objects</li>
+                            <li>Give every <code>&lt;template&gt;</code> a unique <code>data-template-id</code>/<code>ui-loop</code> pairing</li>
+                            <li>Use <code>not-&lt;field&gt;</code> to express the inverse of an existing visibility field instead of adding a new one</li>
+                            <li>Prefer <code>HTML.CRUD_OPERATIONS</code> for single well-defined mutations</li>
+                        </ul>
+                    </div>
+                    <div class="p-4 bg-red-50 rounded-lg">
+                        <h4 class="font-bold text-red-800 mb-2">🚫 Avoid</h4>
+                        <ul class="text-sm text-gray-700 list-disc list-inside space-y-1">
+                            <li>Binding <code>ui-html</code> to anything containing unescaped user input</li>
+                            <li>Mixing a <code>data-bind</code> element with a manual <code>text</code> patch on the same node</li>
+                            <li>Re-querying the DOM inside a loop's per-item body instead of using the scoped clone</li>
+                            <li>Stacking multiple <code>ui-class</code> attributes on one element — compute a combined key instead</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="info-box mt-6">
+                    <strong>💡 See it end to end:</strong> <code>TaskPage</code> (in the companion state-management
+                    example) exercises nearly every binding described here — nested paths, loop templates,
+                    <code>data-bind-class-hidden</code> toggles, two-way inputs, and CRUD-based patches — in one
+                    working component.
+                </div>
+            </div>
+        </section>
+
+        <!-- Back to Top Button -->
+        <button id="backToTop"
+                class="fixed bottom-8 right-8 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 opacity-0 invisible"
+                style="transition: opacity 0.3s, visibility 0.3s; z-index: 1000;">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+
+        <!-- Footer -->
+        <footer class="mt-12 pt-8 border-t border-gray-200 text-center text-gray-500">
+            <p>Qoleng Framework - Data Binding Concepts Guide v1.0</p>
+            <div class="flex justify-center space-x-4 mt-4">
+                <a href="#" class="text-blue-600 hover:underline">API Reference</a>
+                <a href="#" class="text-blue-600 hover:underline">Examples Repository</a>
+                <a href="#" class="text-blue-600 hover:underline">Community Support</a>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        // Back to Top button functionality
+        const backToTopButton = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopButton.classList.remove('opacity-0', 'invisible');
+                backToTopButton.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopButton.classList.add('opacity-0', 'invisible');
+                backToTopButton.classList.remove('opacity-100', 'visible');
+            }
+        });
+
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Smooth scroll for anchor links with offset for fixed headers
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    e.preventDefault();
+                    const offset = 80;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - offset;
+                    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Copy code functionality
+        document.querySelectorAll('.code-block pre').forEach(block => {
+            const button = document.createElement('button');
+            button.textContent = 'Copy';
+            button.className = 'absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded hover:bg-blue-700 transition-colors';
+            button.style.position = 'absolute';
+
+            const wrapper = document.createElement('div');
+            wrapper.style.position = 'relative';
+            block.parentNode.insertBefore(wrapper, block);
+            wrapper.appendChild(block);
+            wrapper.appendChild(button);
+
+            button.addEventListener('click', () => {
+                const code = block.querySelector('code') || block;
+                navigator.clipboard.writeText(code.textContent).then(() => {
+                    button.textContent = 'Copied!';
+                    setTimeout(() => { button.textContent = 'Copy'; }, 2000);
+                });
+            });
+        });
+    </script>
